@@ -1,0 +1,46 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 224 71% 4%; /* #111827 */
+    --foreground: 210 40% 96%; /* #F3F4F6 */
+    --card: 222 47% 11%; /* #1F2937 */
+    --card-foreground: 210 40% 96%; /* #F3F4F6 */
+    --popover: 222 47% 11%; /* #1F2937 */
+    --popover-foreground: 210 40% 96%; /* #F3F4F6 */
+    --primary: 167 84% 39%; /* #14B8A6 */
+    --primary-foreground: 0 0% 100%; /* #ffffff */
+    --secondary: 242 84% 67%; /* #6366F1 */
+    --secondary-foreground: 0 0% 100%; /* #ffffff */
+    --muted: 217 33% 50%; /* Adjusted Muted Color */
+    --muted-foreground: 215 20% 65%;
+    --accent: 167 84% 39%; /* #14B8A6 */
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 217 33% 50%; /* Adjusted Border */
+    --input: 217 33% 50%; /* Adjusted Input */
+    --ring: 167 84% 39%; /* #14B8A6 */
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    /* Dark theme variables already set above as defaults */
+    /* You could override specific ones here if needed, but the base is dark */
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Inter', sans-serif;
+  }
+}
+
+/* Add Inter font import */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
