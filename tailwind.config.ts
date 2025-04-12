@@ -68,7 +68,8 @@ const config = {
         sm: "calc(var(--radius) - 4px)",
       },
       fontFamily: {
-        sans: ["Inter", ...fontFamily.sans], // Prioritize Inter
+        sans: ["Roboto", ...fontFamily.sans],
+        heading: ["Montserrat", ...fontFamily.sans],
       },
       keyframes: {
         "accordion-down": {

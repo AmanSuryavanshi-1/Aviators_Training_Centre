@@ -25,6 +25,7 @@ const Header: React.FC = () => {
         {/* Updated Logo Text */}
         <Link to="/" className="flex items-center space-x-2 text-primary hover:text-primary/80 transition-colors">
           <Plane className="h-6 w-6" />
+          {/* <img src="/ATC-Logo.webp" alt="" className='h-16 w-40'/> */}
           <span className="font-bold text-xl text-foreground">Aviators Training Centre</span>
         </Link>
 

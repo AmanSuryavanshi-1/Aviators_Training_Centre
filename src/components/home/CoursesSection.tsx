@@ -1,7 +1,6 @@
-
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { Clock, Calendar, Award } from 'lucide-react';
+import { Clock, Calendar, ChevronRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 
@@ -12,7 +11,7 @@ const CoursesSection = () => {
       description: 'The foundation of your aviation career. Learn to fly solo and carry passengers in good weather conditions.',
       duration: '3-6 months',
       hours: '40-60 flight hours',
-      image: 'https://images.unsplash.com/photo-1558903525-ccc815bf549e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=700&q=80',
+      image: '/Course1.webp',
       path: '/courses/private-pilot'
     },
     {
@@ -20,7 +19,7 @@ const CoursesSection = () => {
       description: 'Take your skills to the professional level and become eligible for paid flying positions.',
       duration: '6-12 months',
       hours: '200+ flight hours',
-      image: 'https://images.unsplash.com/photo-1540420773420-3366772f4999?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=700&q=80',
+      image: '/Course2.webp',
       path: '/courses/commercial-pilot'
     },
     {
@@ -28,7 +27,7 @@ const CoursesSection = () => {
       description: 'The highest level of aircraft pilot certification, required for airline captains.',
       duration: '18-24 months',
       hours: '1,500+ flight hours',
-      image: 'https://images.unsplash.com/photo-1559329255-2673bfe16970?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=700&q=80',
+      image: '/Course3.webp',
       path: '/courses/atpl'
     }
   ];
@@ -49,11 +48,11 @@ const CoursesSection = () => {
             <div 
               key={index} 
               className={cn(
-                "bg-white rounded-xl overflow-hidden shadow-md border border-gray-100",
+                "bg-white rounded-xl overflow-hidden shadow-md border border-gray-100 flex flex-col",
                 "group transition-all duration-300 hover:shadow-xl hover:-translate-y-1"
               )}
             >
-              <div className="relative h-48 overflow-hidden">
+              <div className="relative h-56 overflow-hidden">
                 <img 
                   src={course.image} 
                   alt={course.title} 
@@ -62,9 +61,9 @@ const CoursesSection = () => {
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
               </div>
               
-              <div className="p-6">
+              <div className="p-6 flex flex-col flex-grow">
                 <h3 className="text-xl font-bold text-aviation-navy mb-2">{course.title}</h3>
-                <p className="text-gray-600 mb-4">{course.description}</p>
+                <p className="text-gray-600 mb-4 flex-grow">{course.description}</p>
                 
                 <div className="space-y-2 mb-6">
                   <div className="flex items-center text-sm text-gray-500">
@@ -79,10 +78,13 @@ const CoursesSection = () => {
                 
                 <Button 
                   variant="outline" 
-                  className="w-full border-aviation-navy text-aviation-navy hover:bg-aviation-navy hover:text-white"
+                  className="w-full border-aviation-navy text-aviation-navy hover:bg-aviation-navy hover:text-white transition-all duration-300 flex items-center justify-center gap-2 py-5"
                   asChild
                 >
-                  <Link to={course.path}>Learn More</Link>
+                  <Link to={course.path}>
+                    Learn More
+                    <ChevronRight className="h-4 w-4" />
+                  </Link>
                 </Button>
               </div>
             </div>
