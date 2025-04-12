@@ -1,11 +1,31 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { ArrowRight } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
 import { Link } from 'react-router-dom';
 
 const HeroSection = () => {
+  const ref = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start start", "end start"]
+  });
+  
+  // Parallax effect values
+  const y = useTransform(scrollYProgress, [0, 1], [0, 300]);
+  const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
+  
+  // Button hover animation variants
+  const buttonHoverVariants = {
+    initial: { scale: 1, boxShadow: "0px 0px 0px rgba(0,0,0,0)" },
+    hover: { 
+      scale: 1.05, 
+      boxShadow: "0px 10px 20px rgba(0,0,0,0.2)",
+      transition: { duration: 0.3 }
+    }
+  };
+  
   const [currentSlide, setCurrentSlide] = useState(0);
   
   const slides = [
@@ -72,79 +92,76 @@ const HeroSection = () => {
   };
 
   return (
-    <section className="relative h-screen overflow-hidden">
-      {/* Slides */}
-      <AnimatePresence initial={false} custom={currentSlide}>
-        {slides.map((slide, index) => (
-          index === currentSlide && (
-            <motion.div
-              key={slide.id}
-              className="absolute inset-0"
-              initial="enter"
-              animate="center"
-              exit="exit"
-              variants={slideVariants}
-              custom={index}
-              transition={{ duration: 0.8, ease: "easeInOut" }}
-            >
-              <div 
-                className="w-full h-full bg-cover bg-center" 
-                style={{ backgroundImage: `url(${slide.image})` }}
-              >
-                <div className="absolute inset-0 bg-gradient-to-b from-aviation-primary/70 to-aviation-secondary/70"></div>
-              </div>
-            </motion.div>
-          )
-        ))}
-      </AnimatePresence>
+    <section ref={ref} className="relative h-screen overflow-hidden">
+      {/* Video Background */}
+      <div className="absolute inset-0 w-full h-full overflow-hidden">
+        <video 
+          autoPlay 
+          muted 
+          loop 
+          playsInline
+          className="absolute w-full h-full object-cover"
+        >
+          <source src="https://assets.mixkit.co/videos/preview/mixkit-cockpit-of-an-airplane-with-the-control-panel-9823-large.mp4" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+        <div className="absolute inset-0 bg-gradient-to-b from-[rgba(7,94,104,0.6)] to-[rgba(7,94,104,0.6)]"></div>
+      </div>
 
-      {/* Content overlay */}
-      <div className="absolute inset-0 z-10 flex flex-col justify-center items-center">
-        <div className="container mx-auto px-4 text-center">
-          <div className="bg-aviation-secondary/90 py-2 px-4 rounded-full mb-6 inline-block">
-            <p className="text-sm md:text-base font-medium text-white">
-              100% Online Training | No Physical Centers | Specialized in CPL/ATPL Exam Prep & Interview Coaching
+      {/* Content with Parallax Effect */}
+      <motion.div 
+        className="relative z-10 h-full flex items-center justify-center text-white"
+        style={{ y, opacity }}
+      >
+        <div className="container mx-auto px-4">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="max-w-4xl mx-auto text-center"
+          >
+            <h1 className="text-4xl md:text-6xl font-bold mb-4 tracking-tight">
+              Begin Your Journey to the Skies
+            </h1>
+            <p className="text-xl md:text-2xl mb-8 text-white/90 max-w-3xl mx-auto">
+              Premium flight training with industry-leading instructors and modern technology
             </p>
-          </div>
-          
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={slides[currentSlide].id}
-              initial="hidden"
-              animate="visible"
-              exit="hidden"
-              variants={contentVariants}
-              className="max-w-4xl mx-auto"
-            >
-              <h1 className="text-4xl md:text-6xl font-bold mb-4 text-white">
-                {slides[currentSlide].title}
-              </h1>
-              <p className="text-xl md:text-2xl mb-8 text-white max-w-2xl mx-auto">
-                {slides[currentSlide].subtitle}
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            
+            <div className="flex flex-col sm:flex-row justify-center gap-6 mt-10">
+              <motion.div
+                variants={buttonHoverVariants}
+                initial="initial"
+                whileHover="hover"
+              >
                 <Button 
-                  className="bg-aviation-secondary hover:bg-aviation-secondary/90 text-white text-lg px-8 py-6 transform transition-transform duration-300 hover:scale-105"
+                  className="bg-[#0C6E72] hover:bg-[#219099] text-white text-lg px-8 py-6 w-full sm:w-auto transition-colors duration-300"
                   asChild
                 >
-                  <Link to="#programs">
-                    Start Your Journey
+                  <Link to="/courses">
+                    Explore Courses
                   </Link>
                 </Button>
+              </motion.div>
+              
+              <motion.div
+                variants={buttonHoverVariants}
+                initial="initial"
+                whileHover="hover"
+              >
                 <Button 
                   variant="outline" 
-                  className="border-white text-white hover:bg-white/10 text-lg px-8 py-6 transform transition-transform duration-300 hover:scale-105"
+                  className="border-white text-white hover:bg-white/10 text-lg px-8 py-6 w-full sm:w-auto transition-colors duration-300"
                   asChild
                 >
-                  <Link to="#about">
-                    Learn More
+                  <Link to="/schedule">
+                    Schedule a Free Consultation <ArrowRight className="ml-2 h-5 w-5" />
                   </Link>
                 </Button>
-              </div>
-            </motion.div>
-          </AnimatePresence>
+              </motion.div>
+            </div>
+          </motion.div>
         </div>
-      </div>
+      </motion.div>
 
       {/* Slide indicators */}
       <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 flex space-x-3 z-20">

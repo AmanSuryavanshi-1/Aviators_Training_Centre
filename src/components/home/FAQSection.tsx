@@ -50,8 +50,8 @@ const FAQSection = () => {
   };
 
   return (
-    <section id="faq" className="section-padding bg-[#73B5BD]/10 dark:bg-aviation-primary/20">
-      <div className="container mx-auto">
+    <section id="faq" className="section-padding py-20 my-12 bg-[#73B5BD]/10 dark:bg-aviation-primary/20">
+      <div className="container mx-auto px-4">
         <motion.div 
           className="text-center mb-16"
           initial={{ opacity: 0, y: 20 }}

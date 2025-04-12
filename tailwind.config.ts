@@ -23,15 +23,15 @@ const config = {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
-        background: "#111827", // Dark background
-        foreground: "#F3F4F6", // Light text
+        background: "hsl(var(--background))",
+        foreground: "hsl(var(--foreground))",
         primary: {
-          DEFAULT: "#14B8A6", // Teal 500
-          foreground: "#ffffff", // White text on primary
+          DEFAULT: "hsl(var(--primary))",
+          foreground: "hsl(var(--primary-foreground))",
         },
         secondary: {
-          DEFAULT: "#6366F1", // Indigo 500
-          foreground: "#ffffff", // White text on secondary
+          DEFAULT: "hsl(var(--secondary))",
+          foreground: "hsl(var(--secondary-foreground))",
         },
         destructive: {
           DEFAULT: "hsl(var(--destructive))",
@@ -42,16 +42,24 @@ const config = {
           foreground: "hsl(var(--muted-foreground))",
         },
         accent: {
-          DEFAULT: "#14B8A6", // Teal 500 (using as main accent)
-          foreground: "#ffffff",
+          DEFAULT: "hsl(var(--accent))",
+          foreground: "hsl(var(--accent-foreground))",
         },
         popover: {
-          DEFAULT: "#1F2937", // Cool Gray 800 for popovers
-          foreground: "#F3F4F6", // Light text for popovers
+          DEFAULT: "hsl(var(--popover))",
+          foreground: "hsl(var(--popover-foreground))",
         },
         card: {
-          DEFAULT: "#1F2937", // Cool Gray 800 for cards
-          foreground: "#F3F4F6", // Light text for cards
+          DEFAULT: "hsl(var(--card))",
+          foreground: "hsl(var(--card-foreground))",
+        },
+        aviation: {
+          primary: "#1E3A8A",    /* Deep navy blue */
+          secondary: "#3B82F6",   /* Bright blue */
+          accent: "#FBBF24",      /* Warm yellow */
+          light: "#E0F2FE",       /* Light blue */
+          gradient: "#60A5FA",    /* Medium blue */
+          text: "#1F2937",        /* Dark grey */
         },
       },
       borderRadius: {

@@ -7,6 +7,7 @@ import {
   AccordionTrigger
 } from '@/components/ui/accordion';
 import { BookOpen, Award, Plane, FileText } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 const PilotPathway = () => {
   const steps = [
@@ -79,38 +80,74 @@ const PilotPathway = () => {
     }
   ];
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: { 
+      opacity: 1,
+      transition: { 
+        staggerChildren: 0.1
+      } 
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0 }
+  };
+
   return (
-    <section id="programs" className="section-padding bg-gray-50">
+    <section id="programs" className="section-padding bg-[#73B5BD]/10 dark:bg-aviation-primary/20">
       <div className="container mx-auto">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-aviation-navy mb-4">Your Path to Becoming a Pilot</h2>
-          <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+        <motion.div 
+          className="text-center mb-16"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+        >
+          <h2 className="text-3xl md:text-4xl font-bold text-aviation-primary dark:text-white mb-4">Your Path to Becoming a Pilot</h2>
+          <p className="text-lg text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
             The journey to earning your wings involves several key steps. Our structured program 
             guides you through each phase, from initial qualifications to your first solo flight.
           </p>
-        </div>
+        </motion.div>
 
-        <div className="max-w-3xl mx-auto">
+        <motion.div 
+          className="max-w-3xl mx-auto"
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+        >
           <Accordion type="single" collapsible className="w-full">
             {steps.map((step) => (
-              <AccordionItem value={step.id} key={step.id} className="border border-gray-200 rounded-lg mb-4 shadow-sm">
-                <AccordionTrigger className="px-6 py-4 hover:no-underline hover:bg-gray-50">
-                  <div className="flex items-center">
-                    <div className="bg-aviation-navy/5 p-2 rounded-full mr-3">
-                      {step.icon}
+              <motion.div
+                key={step.id}
+                variants={itemVariants}
+                transition={{ duration: 0.3 }}
+              >
+                <AccordionItem 
+                  value={step.id} 
+                  className="border border-gray-200 dark:border-gray-700 rounded-lg mb-4 shadow-sm bg-white dark:bg-aviation-primary/40 overflow-hidden"
+                >
+                  <AccordionTrigger className="px-6 py-4 hover:no-underline hover:bg-gray-50 dark:hover:bg-aviation-primary/60">
+                    <div className="flex items-center">
+                      <div className="bg-aviation-navy/5 dark:bg-white/5 p-2 rounded-full mr-3">
+                        {step.icon}
+                      </div>
+                      <span className="font-semibold text-lg text-aviation-primary dark:text-white">
+                        {step.title}
+                      </span>
                     </div>
-                    <span className="font-semibold text-lg text-aviation-navy">
-                      {step.title}
-                    </span>
-                  </div>
-                </AccordionTrigger>
-                <AccordionContent className="px-6 pt-2 pb-4 text-gray-600">
-                  {step.content}
-                </AccordionContent>
-              </AccordionItem>
+                  </AccordionTrigger>
+                  <AccordionContent className="px-6 pt-2 pb-4 text-gray-600 dark:text-gray-300">
+                    {step.content}
+                  </AccordionContent>
+                </AccordionItem>
+              </motion.div>
             ))}
           </Accordion>
-        </div>
+        </motion.div>
       </div>
     </section>
   );

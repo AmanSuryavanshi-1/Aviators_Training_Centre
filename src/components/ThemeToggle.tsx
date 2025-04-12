@@ -22,19 +22,43 @@ export function ThemeToggle() {
       variant="ghost"
       size="icon"
       onClick={() => setTheme(theme === "light" ? "dark" : "light")}
-      className="w-9 h-9 rounded-full border border-white/20 bg-white/10 text-white hover:bg-white/20"
+      className="w-10 h-10 rounded-full border border-border/30 bg-background/10 text-foreground hover:bg-background/20 shadow-sm transition-all duration-300 hover:shadow-md"
       aria-label="Toggle theme"
     >
       <motion.div
         initial={false}
-        animate={{ rotate: theme === "light" ? 0 : 180 }}
-        transition={{ duration: 0.4, ease: "easeInOut" }}
+        animate={{
+          rotate: theme === "light" ? 0 : 180,
+          scale: [1, 1.1, 1],
+        }}
+        transition={{
+          duration: 0.4,
+          ease: "easeInOut",
+          scale: { duration: 0.2 }
+        }}
+        className="relative w-5 h-5 flex items-center justify-center"
       >
-        {theme === "light" ? (
-          <Sun className="h-[1.2rem] w-[1.2rem]" />
-        ) : (
-          <Moon className="h-[1.2rem] w-[1.2rem]" />
-        )}
+        <motion.div
+          animate={{
+            opacity: theme === "light" ? 1 : 0,
+            y: theme === "light" ? 0 : -10,
+          }}
+          transition={{ duration: 0.2 }}
+          className="absolute"
+        >
+          <Sun className="h-5 w-5 text-amber-500" />
+        </motion.div>
+        
+        <motion.div
+          animate={{
+            opacity: theme === "dark" ? 1 : 0,
+            y: theme === "dark" ? 0 : 10,
+          }}
+          transition={{ duration: 0.2 }}
+          className="absolute"
+        >
+          <Moon className="h-5 w-5 text-indigo-300" />
+        </motion.div>
       </motion.div>
     </Button>
   );

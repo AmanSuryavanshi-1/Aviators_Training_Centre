@@ -3,6 +3,7 @@ import React from 'react';
 import { Users, Calendar, Award, Headset, Plane, Shield } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import { motion } from 'framer-motion';
 
 const WhyChooseUs = () => {
   const features = [
@@ -38,43 +39,98 @@ const WhyChooseUs = () => {
     }
   ];
 
+  // Animation variants for section
+  const sectionVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1
+      }
+    }
+  };
+
+  // Animation variants for cards
+  const cardVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
+  };
+
+  // Card hover variants
+  const cardHoverVariants = {
+    initial: { scale: 1, boxShadow: "0px 4px 10px rgba(0,0,0,0.05)" },
+    hover: { 
+      scale: 1.05, 
+      boxShadow: "0px 10px 20px rgba(0,0,0,0.1)",
+      transition: { duration: 0.3 }
+    }
+  };
+
   return (
-    <section id="about" className="section-padding bg-gray-50">
-      <div className="container mx-auto">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold text-aviation-navy mb-4">Why Choose Skybound Aviator</h2>
-          <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+    <section id="about" className="py-20 bg-background dark:bg-card/5">
+      <div className="container mx-auto px-8">
+        <motion.div 
+          className="text-center mb-16"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+        >
+          <h2 className="text-3xl md:text-4xl font-bold text-aviation-navy dark:text-white mb-4">Why Choose Skybound Aviator</h2>
+          <p className="text-lg text-foreground/70 max-w-3xl mx-auto">
             We pride ourselves on delivering exceptional flight training through experienced instructors,
             state-of-the-art facilities, and a supportive learning environment.
           </p>
-        </div>
+        </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <motion.div 
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12"
+          variants={sectionVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.1 }}
+        >
           {features.map((feature, index) => (
-            <div 
+            <motion.div 
               key={index}
+              variants={cardVariants}
+              whileHover="hover"
+              initial="initial"
+              variants={cardHoverVariants}
               className={cn(
-                "bg-white rounded-lg p-6 shadow-md card-hover",
+                "bg-card rounded-lg p-8 shadow-md border border-border/10",
                 "transform transition-all duration-300"
               )}
             >
-              <div className="text-aviation-gold mb-4">{feature.icon}</div>
-              <h3 className="text-xl font-bold text-aviation-navy mb-2">{feature.title}</h3>
-              <p className="text-gray-600 mb-4">{feature.description}</p>
-            </div>
+              <div className="text-aviation-accent mb-6">{feature.icon}</div>
+              <h3 className="text-xl font-bold text-foreground mb-3">{feature.title}</h3>
+              <p className="text-foreground/70 mb-4">{feature.description}</p>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
 
-        <div className="mt-12 text-center">
-          <Button 
-            className="bg-aviation-navy hover:bg-aviation-navy/90 text-white px-8 py-6 text-lg"
-            asChild
+        <motion.div 
+          className="mt-16 text-center"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.5, duration: 0.5 }}
+        >
+          <motion.div
+            whileHover={{ scale: 1.05 }}
+            transition={{ duration: 0.3 }}
+            className="inline-block"
           >
-            <a href="/about">
-              Learn More About Us
-            </a>
-          </Button>
-        </div>
+            <Button 
+              className="bg-[#0C6E72] hover:bg-[#219099] text-white px-8 py-6 text-lg shadow-md hover:shadow-lg transition-all duration-300"
+              asChild
+            >
+              <a href="/about">
+                Learn More About Us
+              </a>
+            </Button>
+          </motion.div>
+        </motion.div>
       </div>
     </section>
   );

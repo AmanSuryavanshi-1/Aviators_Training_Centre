@@ -30,7 +30,7 @@ const router = createBrowserRouter([
 
 const App: React.FC = () => (
   <QueryClientProvider client={queryClient}>
-    <ThemeProvider defaultTheme="dark" storageKey="skybound-ui-theme"> {/* Default to dark theme */} 
+    <ThemeProvider defaultTheme="system" storageKey="skybound-ui-theme"> {/* Changed to system to respect user preference */} 
       <TooltipProvider>
         <Toaster />
         <Sonner />
