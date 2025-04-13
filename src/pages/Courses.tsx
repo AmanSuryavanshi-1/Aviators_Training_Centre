@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { BookMarked, MicVocal, Plane, User, GraduationCap, CheckSquare, RadioTower, Briefcase, MessageCircle, Users, Clock } from 'lucide-react'; // Added/updated icons
 import { Link } from 'react-router-dom';
+import { cn } from "@/lib/utils";
 
 // Placeholder
 const courseHeaderUrl = "https://images.unsplash.com/photo-1519389950473-47ba0277781c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxfDB8MXxyYW5kb218MHx8YXZpYXRpb24lMjBzdHVkeXxlbnwwfHx8fDE2MTg1NTExMzA&ixlib=rb-1.2.1&q=80&w=1080";
@@ -21,6 +22,11 @@ const sectionVariants = {
 const itemVariants = {
   hidden: { opacity: 0, x: -20 },
   visible: { opacity: 1, x: 0, transition: { duration: 0.4 } }
+};
+
+const cardHoverVariants = {
+  initial: { scale: 1 },
+  hover: { scale: 1.05, transition: { duration: 0.3 } }
 };
 
 // ATC Course Data Structure
@@ -98,29 +104,36 @@ const Courses: React.FC = () => {
            whileInView="visible"
            viewport={{ once: true, amount: 0.2 }}
         >
-            <h2 className="text-3xl font-bold text-center mb-4">Complete CPL/ATPL Ground Training</h2>
+            <h2 className="text-3xl font-bold text-center mb-4 text-aviation-primary dark:text-aviation-tertiary">Complete CPL/ATPL Ground Training</h2>
             <p className="text-center text-foreground/70 max-w-3xl mx-auto mb-10">We provide in-depth training for all subjects under the DGCA CPL and ATPL syllabus.</p>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {cplAtplSubjects.map((subject, index) => (
-                    <motion.div key={index} variants={itemVariants}>
-                        <Card className="bg-card h-full flex flex-col items-center text-center p-6 hover:shadow-md transition-shadow">
-                             <div className="p-3 bg-primary/10 rounded-full mb-3">
-                                 <subject.icon className="h-7 w-7 text-primary" />
-                            </div>
-                            <CardTitle className="text-lg font-semibold text-foreground mb-1">{subject.name}</CardTitle>
-                            <CardDescription className="text-foreground/70 text-sm">{subject.description}</CardDescription>
-                        </Card>
+                    <motion.div key={index} variants={itemVariants} whileHover="hover" initial="initial">
+                        <motion.div variants={cardHoverVariants}>
+                            <Card className="bg-card h-full flex flex-col items-center text-center p-6 hover:shadow-lg transition-all duration-300 border border-border hover:border-aviation-primary/50 dark:hover:border-aviation-tertiary/50 relative overflow-hidden">
+                                <div className="absolute inset-0 bg-gradient-to-br from-aviation-primary/5 to-aviation-tertiary/5 opacity-0 hover:opacity-100 transition-opacity duration-300"></div>
+                                <div className="p-3 bg-aviation-primary/10 rounded-full mb-3 relative z-10">
+                                    <subject.icon className="h-7 w-7 text-aviation-primary dark:text-aviation-tertiary" />
+                                </div>
+                                <CardTitle className="text-lg font-semibold text-foreground mb-1 relative z-10">{subject.name}</CardTitle>
+                                <CardDescription className="text-foreground/70 text-sm relative z-10">{subject.description}</CardDescription>
+                            </Card>
+                        </motion.div>
                     </motion.div>
                 ))}
-                 <motion.div variants={itemVariants}> 
+                 <motion.div variants={itemVariants} whileHover="hover" initial="initial"> 
                     {/* Call to action card */}
-                    <Card className="bg-primary/10 border-primary border h-full flex flex-col items-center text-center p-6 justify-center">
-                         <GraduationCap className="h-8 w-8 text-primary mb-3"/>
-                         <CardTitle className="text-lg font-semibold text-primary mb-2">Ready to Master the Syllabus?</CardTitle>
-                         <Link to="/contact">
-                             <Button size="sm" variant="default">Enroll Now</Button>
-                         </Link>
-                    </Card>
+                    <motion.div variants={cardHoverVariants}>
+                        <Card className="bg-aviation-primary/10 border-aviation-primary dark:border-aviation-tertiary border h-full flex flex-col items-center text-center p-6 justify-center hover:shadow-lg transition-all duration-300">
+                            <GraduationCap className="h-8 w-8 text-aviation-primary dark:text-aviation-tertiary mb-3"/>
+                            <CardTitle className="text-lg font-semibold text-aviation-primary dark:text-aviation-tertiary mb-2">Ready to Master the Syllabus?</CardTitle>
+                            <Link to="/contact">
+                                <Button size="lg" variant="default" className="px-6 py-3 rounded-lg transform transition-all duration-300 hover:scale-105 shadow-md hover:shadow-lg">
+                                    Enroll Now
+                                </Button>
+                            </Link>
+                        </Card>
+                    </motion.div>
                  </motion.div>
             </div>
         </motion.section>
@@ -133,34 +146,38 @@ const Courses: React.FC = () => {
            viewport={{ once: true, amount: 0.1 }}
            className="space-y-12"
         >
-            <h2 className="text-3xl font-bold text-center mb-10">Additional Training & Prep Services</h2>
+            <h2 className="text-3xl font-bold text-center mb-10 text-aviation-primary dark:text-aviation-tertiary">Additional Training & Prep Services</h2>
              {otherPrograms.map((program, index) => (
-            <motion.div key={index} variants={itemVariants}>
-              <Card className="overflow-hidden bg-card shadow-md hover:shadow-lg transition-shadow">
-                <div className={`grid grid-cols-1 ${program.image ? 'md:grid-cols-3' : 'md:grid-cols-1'}`}> {/* Adjust grid if no image */} 
-                  {program.image && (
-                    <div className="md:col-span-1">
-                      <img src={program.image} alt={program.title} className="w-full h-full object-cover min-h-[200px] md:max-h-[250px]" />
+            <motion.div key={index} variants={itemVariants} whileHover="hover" initial="initial">
+              <motion.div variants={cardHoverVariants}>
+                <Card className="overflow-hidden bg-card shadow-md hover:shadow-lg transition-all duration-300 border border-border hover:border-aviation-primary/50 dark:hover:border-aviation-tertiary/50">
+                  <div className={`grid grid-cols-1 ${program.image ? 'md:grid-cols-3' : 'md:grid-cols-1'}`}> {/* Adjust grid if no image */} 
+                    {program.image && (
+                      <div className="md:col-span-1">
+                        <img src={program.image} alt={program.title} className="w-full h-full object-cover min-h-[200px] md:max-h-[250px]" />
+                      </div>
+                    )}
+                    <div className={`${program.image ? 'md:col-span-2' : 'md:col-span-1'} p-6 flex flex-col justify-between`}>
+                      <div>
+                        <CardHeader className="p-0 mb-3">
+                          <div className="flex items-center space-x-3 mb-2">
+                             <program.icon className="h-6 w-6 text-aviation-secondary flex-shrink-0" />
+                             <CardTitle className="text-2xl text-foreground">{program.title}</CardTitle>
+                          </div>
+                           <CardDescription className="text-foreground/70">{program.description}</CardDescription>
+                        </CardHeader>
+                      </div>
+                      <CardFooter className="p-0 pt-6 mt-auto">
+                        <Link to="/contact">
+                          <Button variant="secondary" className="px-6 py-3 rounded-lg transform transition-all duration-300 hover:scale-105 shadow-md hover:shadow-lg">
+                            Learn More
+                          </Button>
+                        </Link>
+                      </CardFooter>
                     </div>
-                  )}
-                  <div className={`${program.image ? 'md:col-span-2' : 'md:col-span-1'} p-6 flex flex-col justify-between`}>
-                    <div>
-                      <CardHeader className="p-0 mb-3">
-                        <div className="flex items-center space-x-3 mb-2">
-                           <program.icon className="h-6 w-6 text-secondary flex-shrink-0" />
-                           <CardTitle className="text-2xl text-foreground">{program.title}</CardTitle>
-                        </div>
-                         <CardDescription className="text-foreground/70">{program.description}</CardDescription>
-                      </CardHeader>
-                    </div>
-                    <CardFooter className="p-0 pt-6 mt-auto">
-                      <Link to="/contact">
-                        <Button variant="secondary">Learn More</Button>
-                      </Link>
-                    </CardFooter>
                   </div>
-                </div>
-              </Card>
+                </Card>
+              </motion.div>
             </motion.div>
           ))}
         </motion.section>
@@ -171,14 +188,14 @@ const Courses: React.FC = () => {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.3 }}
-          className="bg-card rounded-lg p-12"
+          className="bg-card rounded-lg p-12 border border-border shadow-md"
         >
-            <h2 className="text-3xl font-bold text-center mb-8">ATC Features</h2>
+            <h2 className="text-3xl font-bold text-center mb-8 text-aviation-primary dark:text-aviation-tertiary">ATC Features</h2>
             <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-6 text-center text-foreground/80">
-                <li className="flex flex-col items-center"><MessageCircle className="h-7 w-7 text-primary mb-2"/> 24/7 Doubt Support</li>
-                <li className="flex flex-col items-center"><Users className="h-7 w-7 text-primary mb-2"/> One-on-One Class Option</li>
-                <li className="flex flex-col items-center"><Clock className="h-7 w-7 text-primary mb-2"/> Flexible Timings</li>
-                <li className="flex flex-col items-center"><Briefcase className="h-7 w-7 text-primary mb-2"/> Airline Exam Prep</li>
+                <li className="flex flex-col items-center"><MessageCircle className="h-7 w-7 text-aviation-primary dark:text-aviation-tertiary mb-2"/> 24/7 Doubt Support</li>
+                <li className="flex flex-col items-center"><Users className="h-7 w-7 text-aviation-primary dark:text-aviation-tertiary mb-2"/> One-on-One Class Option</li>
+                <li className="flex flex-col items-center"><Clock className="h-7 w-7 text-aviation-primary dark:text-aviation-tertiary mb-2"/> Flexible Timings</li>
+                <li className="flex flex-col items-center"><Briefcase className="h-7 w-7 text-aviation-primary dark:text-aviation-tertiary mb-2"/> Airline Exam Prep</li>
             </ul>
         </motion.section>
 

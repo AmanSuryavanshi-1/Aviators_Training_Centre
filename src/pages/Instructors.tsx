@@ -6,6 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter }
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Award, BookOpen, Briefcase, UserCheck } from 'lucide-react'; // Added UserCheck
+import { cn } from "@/lib/utils";
 
 // Placeholders
 const instructorHeaderUrl = "https://images.unsplash.com/photo-1549057357-675a6ea03eae?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxfDB8MXxyYW5kb218MHx8ZmxpZ2h0JTIwaW5zdHJ1Y3RvcnN8fHx8fHwxNjE4NTQ5MzQ1&ixlib=rb-1.2.1&q=80&w=1080";
@@ -58,6 +59,11 @@ const itemVariants = {
   visible: { opacity: 1, scale: 1, transition: { duration: 0.5, type: "spring" } }
 };
 
+const cardHoverVariants = {
+  initial: { scale: 1 },
+  hover: { scale: 1.05, transition: { duration: 0.3 } }
+};
+
 const Instructors: React.FC = () => {
   return (
     <div className="flex flex-col min-h-screen bg-background text-foreground">
@@ -98,45 +104,49 @@ const Instructors: React.FC = () => {
            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
         >
           {instructors.map((instructor, index) => (
-            <motion.div key={index} variants={itemVariants}>
-              <Card className="flex flex-col h-full bg-card shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden">
-                <CardHeader className="flex flex-col items-center text-center p-6 bg-card/50">
-                  <Avatar className="w-24 h-24 mb-4 border-4 border-secondary"> {/* Changed border color */} 
-                    <AvatarImage src={instructor.avatar} alt={instructor.name} />
-                    <AvatarFallback>{instructor.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
-                  </Avatar>
-                  <CardTitle className="text-xl text-foreground">{instructor.name}</CardTitle>
-                  <CardDescription className="text-secondary font-medium">{instructor.title}</CardDescription> {/* Changed text color */} 
-                </CardHeader>
-                <CardContent className="p-6 flex-grow">
-                  <p className="text-foreground/70 text-sm mb-4">{instructor.bio}</p>
-                  <div className="mb-3">
-                     <h4 className="text-sm font-semibold text-foreground/90 mb-2">Area Focus / Ratings:</h4>
-                     <div className="flex flex-wrap gap-1">
-                        {instructor.ratings.map(rating => (
-                            <Badge key={rating} variant="secondary">{rating}</Badge>
-                        ))}
-                     </div>
-                  </div>
-                   <div>
-                     <h4 className="text-sm font-semibold text-foreground/90 mb-2">Expertise:</h4>
-                     <div className="flex flex-wrap gap-1">
-                        {instructor.expertise.map(area => (
-                            <Badge key={area} variant="outline">{area}</Badge>
-                        ))}
-                     </div>
-                  </div>
-                </CardContent>
-              </Card>
+            <motion.div key={index} variants={itemVariants} whileHover="hover" initial="initial">
+              <motion.div variants={cardHoverVariants}>
+                <Card className="flex flex-col h-full bg-card shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden border border-border hover:border-aviation-primary/50 dark:hover:border-aviation-tertiary/50">
+                  <CardHeader className="flex flex-col items-center text-center p-6 bg-card/50">
+                    <Avatar className="w-24 h-24 mb-4 border-4 border-aviation-secondary"> 
+                      <AvatarImage src={instructor.avatar} alt={instructor.name} />
+                      <AvatarFallback>{instructor.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
+                    </Avatar>
+                    <CardTitle className="text-xl text-foreground">{instructor.name}</CardTitle>
+                    <CardDescription className="text-aviation-secondary font-medium">{instructor.title}</CardDescription>
+                  </CardHeader>
+                  <CardContent className="p-6 flex-grow">
+                    <p className="text-foreground/70 text-sm mb-4">{instructor.bio}</p>
+                    <div className="mb-3">
+                       <h4 className="text-sm font-semibold text-foreground/90 mb-2">Area Focus / Ratings:</h4>
+                       <div className="flex flex-wrap gap-1">
+                          {instructor.ratings.map(rating => (
+                              <Badge key={rating} variant="secondary">{rating}</Badge>
+                          ))}
+                       </div>
+                    </div>
+                     <div>
+                       <h4 className="text-sm font-semibold text-foreground/90 mb-2">Expertise:</h4>
+                       <div className="flex flex-wrap gap-1">
+                          {instructor.expertise.map(area => (
+                              <Badge key={area} variant="outline">{area}</Badge>
+                          ))}
+                       </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
             </motion.div>
           ))}
              {/* Placeholder for adding more instructors or a general statement */} 
-             <motion.div variants={itemVariants}>
-                 <Card className="flex flex-col h-full bg-card/50 border border-dashed border-border/60 items-center justify-center text-center p-6">
+             <motion.div variants={itemVariants} whileHover="hover" initial="initial">
+                <motion.div variants={cardHoverVariants}>
+                  <Card className="flex flex-col h-full bg-card/50 border border-dashed border-border/60 items-center justify-center text-center p-6 hover:border-aviation-primary/50 dark:hover:border-aviation-tertiary/50 transition-all duration-300">
                     <UserCheck className="h-12 w-12 text-foreground/50 mb-4" />
                     <CardTitle className="text-xl text-foreground/80 mb-2">More Experts Coming Soon</CardTitle>
                     <CardDescription className="text-foreground/60 text-sm">Our team comprises highly experienced, airline-rated instructors dedicated to your success.</CardDescription>
-                 </Card>
+                  </Card>
+                </motion.div>
             </motion.div>
         </motion.section>
 
@@ -146,22 +156,22 @@ const Instructors: React.FC = () => {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.3 }} 
-            className="text-center mt-20 py-12 px-6"
+            className="text-center mt-20 py-12 px-6 bg-card rounded-lg shadow-md border border-border"
         > 
-            <h2 className="text-3xl font-bold mb-6">The Aviators Training Centre Difference</h2>
+            <h2 className="text-3xl font-bold mb-6 text-aviation-primary dark:text-aviation-tertiary">The Aviators Training Centre Difference</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
                  <div className="flex flex-col items-center">
-                     <Award className="h-10 w-10 text-primary mb-3"/>
+                     <Award className="h-10 w-10 text-aviation-primary dark:text-aviation-tertiary mb-3"/>
                      <h3 className="text-lg font-semibold mb-1 text-foreground">Real-World Experience</h3>
                      <p className="text-foreground/70 text-sm">Learn from instructors with direct airline and operational backgrounds.</p>
                  </div>
                  <div className="flex flex-col items-center">
-                     <BookOpen className="h-10 w-10 text-primary mb-3"/>
+                     <BookOpen className="h-10 w-10 text-aviation-primary dark:text-aviation-tertiary mb-3"/>
                      <h3 className="text-lg font-semibold mb-1 text-foreground">Commitment to Teaching</h3>
                      <p className="text-foreground/70 text-sm">Passionate educators focused on effective learning and concept mastery.</p>
                  </div>
                   <div className="flex flex-col items-center">
-                     <Briefcase className="h-10 w-10 text-primary mb-3"/>
+                     <Briefcase className="h-10 w-10 text-aviation-primary dark:text-aviation-tertiary mb-3"/>
                      <h3 className="text-lg font-semibold mb-1 text-foreground">Career-Focused Guidance</h3>
                      <p className="text-foreground/70 text-sm">Mentorship extends beyond the syllabus to support your aviation career goals.</p>
                  </div>
