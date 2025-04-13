@@ -6,7 +6,7 @@ import WhyChooseUs from "@/components/home/WhyChooseUs";
 import CoursesSection from "@/components/home/CoursesSection";
 import InstructorsSection from "@/components/home/InstructorsSection";
 import PilotPathway from "@/components/home/PilotPathway";
-import FAQSection from "@/components/home/FAQSection";
+import FAQ from "@/components/shared/FAQ";
 import CTASection from "@/components/home/CTASection";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
@@ -35,7 +35,7 @@ const Index: React.FC = () => {
           <InstructorsSection />
           
           {/* FAQ Section with Accordion Animation */}
-          <FAQSection />
+          <FAQ showAll={false} />
           
           {/* Enhanced CTA Section */}
           <CTASection />
