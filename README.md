@@ -1,8 +1,8 @@
-# Skybound Aviator Academy
+# Aviator Training Center
 
 ## Project Overview
 
-Skybound Aviator Academy is a modern web application for a premier flight training center. The website showcases the academy's courses, instructors, scheduling capabilities, and provides information for aspiring pilots.
+ATC is a modern web application for a premier flight training center. The website showcases the academy's courses, instructors, scheduling capabilities, and provides information for aspiring pilots.
 
 ## Features
 
@@ -133,4 +133,4 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ## Contact
 
-For any inquiries about the Skybound Aviator Academy, please contact us through the form on our website or at info@skyboundaviator.academy.
+For any inquiries about the Aviator Training Center, please contact us through the form on our website or at aviatorstrainingcentre@gmail.com.

@@ -76,7 +76,7 @@ const WhyChooseUs = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
         >
-          <h2 className="text-3xl md:text-4xl font-bold text-aviation-navy dark:text-white mb-4">Why Choose Skybound Aviator</h2>
+          <h2 className="text-3xl md:text-4xl font-bold text-aviation-navy dark:text-white mb-4">Why Choose Aviator Training Center</h2>
           <p className="text-lg text-foreground/70 max-w-3xl mx-auto">
             We pride ourselves on delivering exceptional flight training through experienced instructors,
             state-of-the-art facilities, and a supportive learning environment.

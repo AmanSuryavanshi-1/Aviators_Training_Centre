@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { BookMarked, MicVocal, Plane, User, GraduationCap, CheckSquare, RadioTower, Briefcase, MessageCircle, Users } from 'lucide-react'; // Added/updated icons
+import { BookMarked, MicVocal, Plane, User, GraduationCap, CheckSquare, RadioTower, Briefcase, MessageCircle, Users, Clock } from 'lucide-react'; // Added/updated icons
 import { Link } from 'react-router-dom';
 
 // Placeholder
