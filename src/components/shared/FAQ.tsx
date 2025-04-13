@@ -2,7 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
-import { MessageCircle } from 'lucide-react';
+import { MessageCircle, HelpCircle } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 // Animation Variants
@@ -11,9 +11,19 @@ const sectionVariants = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
 };
 
+const fadeInVariants = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1, transition: { duration: 0.8 } }
+};
+
 const itemVariants = {
   hidden: { opacity: 0, x: -20 },
   visible: { opacity: 1, x: 0, transition: { duration: 0.4 } }
+};
+
+const hoverVariants = {
+  initial: { scale: 1 },
+  hover: { scale: 1.02, transition: { duration: 0.2 } }
 };
 
 const containerVariants = {
@@ -89,7 +99,18 @@ const FAQ: React.FC<FAQProps> = ({
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
           >
-            <h2 className="text-2xl md:text-3xl font-bold text-aviation-primary dark:text-white mb-3">
+            <motion.div 
+              className="flex justify-center mb-4"
+              initial={{ opacity: 0, scale: 0.8 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+            >
+              <div className="bg-aviation-primary/10 dark:bg-aviation-tertiary/20 p-3 rounded-full">
+                <HelpCircle className="h-8 w-8 text-aviation-primary dark:text-aviation-tertiary" />
+              </div>
+            </motion.div>
+            <h2 className="text-2xl md:text-3xl font-bold text-aviation-primary dark:text-aviation-tertiary mb-3">
               Frequently Asked Questions
             </h2>
             <p className="text-base md:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
@@ -112,32 +133,43 @@ const FAQ: React.FC<FAQProps> = ({
                 key={index}
                 variants={itemVariants}
                 transition={{ duration: 0.3 }}
+                whileHover="hover"
+                initial="initial"
               >
-                <AccordionItem 
-                  value={`item-${index}`} 
-                  className="border-b border-border last:border-0 overflow-hidden"
-                >
-                  <AccordionTrigger className="text-left text-sm md:text-base font-medium text-foreground hover:text-primary transition-colors py-4 pr-2">
-                    {faq.question}
-                  </AccordionTrigger>
-                  <AccordionContent className="text-sm text-muted-foreground pb-4 leading-relaxed">
-                    {faq.answer}
-                  </AccordionContent>
-                </AccordionItem>
+                <motion.div variants={hoverVariants}>
+                  <AccordionItem 
+                    value={`item-${index}`} 
+                    className="border-b border-border last:border-0 overflow-hidden bg-white/50 dark:bg-aviation-primary/10 rounded-md my-2 shadow-sm"
+                  >
+                    <AccordionTrigger className="text-left text-sm md:text-base font-medium text-foreground hover:text-aviation-primary dark:hover:text-aviation-tertiary transition-colors py-5 px-4">
+                      {faq.question}
+                    </AccordionTrigger>
+                    <AccordionContent className="text-sm text-muted-foreground px-4 pb-5 leading-relaxed">
+                      {faq.answer}
+                    </AccordionContent>
+                  </AccordionItem>
+                </motion.div>
               </motion.div>
             ))}
           </Accordion>
         </motion.div>
 
         {!showAll && (
-          <div className="mt-10 text-center">
+          <motion.div 
+            className="mt-10 text-center"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+          >
             <Button 
-              className="bg-aviation-secondary hover:bg-[#219099] text-white transform transition-transform duration-300 hover:scale-105"
+              className="bg-aviation-tertiary hover:bg-aviation-secondary text-white transform transition-all duration-300 hover:scale-105 shadow-md hover:shadow-lg"
               asChild
+              size="lg"
             >
               <Link to="/faq">View All FAQs</Link>
             </Button>
-          </div>
+          </motion.div>
         )}
 
         {showAll && showCTA && (
@@ -146,20 +178,43 @@ const FAQ: React.FC<FAQProps> = ({
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.3 }} 
-            className="text-center mt-20 py-12 px-6 bg-secondary/10 rounded-lg"
+            className="text-center mt-20 py-12 px-6 bg-aviation-primary/5 dark:bg-aviation-tertiary/10 rounded-xl shadow-md"
           > 
-            <MessageCircle className="h-12 w-12 text-secondary mx-auto mb-4" />
-            <h2 className="text-3xl font-bold mb-4">Didn't Find Your Answer?</h2>
+            <motion.div
+              initial={{ scale: 0.8, opacity: 0 }}
+              whileInView={{ scale: 1, opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5 }}
+            >
+              <div className="bg-aviation-tertiary/10 dark:bg-aviation-tertiary/20 p-4 rounded-full inline-block mb-4">
+                <MessageCircle className="h-12 w-12 text-aviation-primary dark:text-aviation-tertiary" />
+              </div>
+            </motion.div>
+            <h2 className="text-3xl font-bold mb-4 text-aviation-primary dark:text-aviation-tertiary">Didn't Find Your Answer?</h2>
             <p className="max-w-xl mx-auto text-foreground/70 mb-8">
               Our team is ready to help with any specific questions you have about our programs, enrollment, or support. Reach out today!
             </p>
-            <div className="flex justify-center space-x-4">
-              <a href="https://wa.me/919485687609" target="_blank" rel="noopener noreferrer">
-                <Button size="lg" variant="secondary">Chat on WhatsApp</Button>
-              </a>
-              <Link to="/contact">
-                <Button size="lg" variant="outline">Contact Us Directly</Button>
-              </Link>
+            <div className="flex flex-col sm:flex-row justify-center gap-4">
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                transition={{ type: "spring", stiffness: 400, damping: 10 }}
+              >
+                <a href="https://wa.me/919485687609" target="_blank" rel="noopener noreferrer">
+                  <Button size="lg" className="bg-aviation-tertiary hover:bg-aviation-secondary text-white w-full sm:w-auto shadow-md hover:shadow-lg">
+                    Chat on WhatsApp
+                  </Button>
+                </a>
+              </motion.div>
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                transition={{ type: "spring", stiffness: 400, damping: 10 }}
+              >
+                <Link to="/contact">
+                  <Button size="lg" variant="outline" className="border-aviation-primary dark:border-aviation-tertiary text-aviation-primary dark:text-aviation-tertiary hover:bg-aviation-primary/5 dark:hover:bg-aviation-tertiary/10 w-full sm:w-auto">
+                    Contact Us Directly
+                  </Button>
+                </Link>
+              </motion.div>
             </div>
           </motion.section>
         )}

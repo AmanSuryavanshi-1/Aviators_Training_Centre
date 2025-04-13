@@ -54,12 +54,12 @@ const config = {
           foreground: "hsl(var(--card-foreground))",
         },
         aviation: {
-          primary: "#1E3A8A",    /* Deep navy blue */
-          secondary: "#3B82F6",   /* Bright blue */
-          accent: "#FBBF24",      /* Warm yellow */
-          light: "#E0F2FE",       /* Light blue */
-          gradient: "#60A5FA",    /* Medium blue */
-          text: "#1F2937",        /* Dark grey */
+          primary: "#075E68",    /* Deep teal */
+          secondary: "#0C6E72",  /* Dark teal */
+          tertiary: "#219099",   /* Medium teal */
+          accent: "#56A7B0",     /* Light teal */
+          light: "#73B5BD",      /* Pale teal */
+          text: "#1F2937",       /* Dark grey */
         },
       },
       borderRadius: {

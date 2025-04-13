@@ -10,16 +10,23 @@
     --background: 0 0% 100%;
     --foreground: 215 25% 17%;
     
-    /* Primary - Deep navy blue for trust and professionalism */
-    --primary: 222 47% 33%;
+    /* Aviation color palette - Teal/Blue-Green */
+    --aviation-primary: 187 87% 22%;    /* #075E68 - Deep teal */
+    --aviation-primary-dark: 185 80% 25%;  /* #0C6E72 - Dark teal */
+    --aviation-secondary: 184 63% 36%;  /* #219099 - Medium teal */
+    --aviation-tertiary: 184 35% 51%;   /* #56A7B0 - Light teal */
+    --aviation-light: 184 32% 60%;      /* #73B5BD - Pale teal */
+    
+    /* Primary - Deep teal for trust and professionalism */
+    --primary: 187 87% 22%;
     --primary-foreground: 0 0% 100%;
     
-    /* Secondary - Bright blue for emphasis */
-    --secondary: 217 91% 60%;
+    /* Secondary - Medium teal for emphasis */
+    --secondary: 184 63% 36%;
     --secondary-foreground: 0 0% 100%;
     
-    /* Accent - Warm yellow for calls-to-action */
-    --accent: 43 96% 56%;
+    /* Accent - Light teal for highlights */
+    --accent: 184 35% 51%;
     --accent-foreground: 215 25% 17%;
     
     /* UI Elements */
@@ -28,67 +35,45 @@
     --popover: 0 0% 100%;
     --popover-foreground: 215 25% 17%;
     
-    /* Gradients - Sky-inspired */
-    --gradient-start: 204 100% 94%;
-    --gradient-end: 217 91% 68%;
+    /* Gradients - Teal-inspired */
+    --gradient-start: 187 87% 22%;
+    --gradient-end: 184 32% 60%;
     
     /* Neutral tones */
-    --muted: 210 40% 96%;
+    --muted: 185 30% 95%;
     --muted-foreground: 215 20% 65%;
     
     /* System colors */
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
-    --border: 214 32% 91%;
-    --input: 214 32% 91%;
-    --ring: 222 47% 33%;
+    --border: 185 30% 90%;
+    --input: 185 30% 90%;
+    --ring: 187 87% 22%;
     
     /* Border radius */
-    --radius: 0.5rem;
-    --background: 0 0% 100%;
-    --foreground: 215 25% 17%;
-    --card: 0 0% 100%;
-    --card-foreground: 215 25% 17%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 215 25% 17%;
-    --primary: 222 47% 33%;
-    --primary-foreground: 0 0% 100%;
-    --secondary: 217 91% 60%;
-    --secondary-foreground: 0 0% 100%;
-    --accent: 43 96% 56%;
-    --accent-foreground: 215 25% 17%;
-    --gradient-start: 204 100% 94%;
-    --gradient-end: 217 91% 68%;
-    --muted: 210 40% 96%;
-    --muted-foreground: 215 20% 65%;
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 100%;
-    --border: 214 32% 91%;
-    --input: 214 32% 91%;
-    --ring: 222 47% 33%;
     --radius: 0.5rem;
   }
 
   .dark {
-    --background: 215 25% 17%;
-    --foreground: 210 40% 98%;
-    --card: 215 25% 17%;
-    --card-foreground: 210 40% 98%;
-    --popover: 215 25% 17%;
-    --popover-foreground: 210 40% 98%;
-    --primary: 222 47% 33%;
-    --primary-foreground: 210 40% 98%;
-    --secondary: 217 91% 60%;
-    --secondary-foreground: 210 40% 98%;
-    --accent: 43 96% 56%;
+    --background: 187 30% 15%;
+    --foreground: 185 30% 95%;
+    --card: 187 30% 18%;
+    --card-foreground: 185 30% 95%;
+    --popover: 187 30% 18%;
+    --popover-foreground: 185 30% 95%;
+    --primary: 184 63% 36%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 184 35% 51%;
+    --secondary-foreground: 215 25% 17%;
+    --accent: 184 32% 60%;
     --accent-foreground: 215 25% 17%;
-    --muted: 217 33% 17%;
-    --muted-foreground: 215 20% 65%;
+    --muted: 187 30% 25%;
+    --muted-foreground: 185 20% 80%;
     --destructive: 0 84% 60%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 217 33% 17%;
-    --input: 217 33% 17%;
-    --ring: 222 47% 33%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 187 30% 25%;
+    --input: 187 30% 25%;
+    --ring: 184 63% 36%;
   }
 }
 
