@@ -2,138 +2,136 @@ import React from 'react';
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { motion } from 'framer-motion';
-import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card"; // Added CardDescription
 import { Button } from "@/components/ui/button";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { BookMarked, MicVocal, Plane, UserCheck, GraduationCap, CheckSquare, RadioTower, Briefcase, MessageCircle, Users, Clock, BarChart, Award } from 'lucide-react'; // Added more icons
+import { BookMarked, MicVocal, Plane, UserCheck, GraduationCap, CheckSquare, RadioTower, Briefcase, MessageCircle, Users, Clock, BarChart, Award, Map, CloudSun, Gavel, Wrench, UsersRound, PhoneForwarded } from 'lucide-react'; // Added more specific icons, including PhoneForwarded
 import { Link } from 'react-router-dom';
 import { cn } from "@/lib/utils";
 
 // --- Configuration ---
-// Define aviation colors (ensure these are in your tailwind.config.ts)
-// Example:
-// colors: {
-//   'aviation-primary': '#075E68',
-//   'aviation-secondary': '#0C6E72',
-//   'aviation-accent': '#...', // Add other colors if needed
-// }
+// Ensure these color variables match your tailwind.config.ts
+const aviationPrimary = 'text-teal-700 dark:text-teal-300'; // Example primary color class
+const aviationSecondary = 'text-teal-600 dark:text-teal-400'; // Example secondary color class
+const aviationButtonBg = 'bg-teal-600 hover:bg-teal-700'; // Example button background
+const aviationButtonDarkBg = 'dark:bg-teal-500 dark:hover:bg-teal-600'; // Example dark mode button background
 
 const HERO_VIDEO_URL = "/placeholder-video.mp4"; // Replace with your actual video path in /public
-const CPL_IMAGE = "/Course1.webp"; // Replace with your CPL image path in /public
-const ATPL_IMAGE = "/Course2.webp"; // Replace with your ATPL image path in /public
-const TYPE_RATING_IMAGE = "/Course3.webp"; // Replace with your Type Rating image path in /public
-const RTR_IMAGE = "/rtr.webp"; // Replace with your RTR image path in /public
-const INTERVIEW_PREP_IMAGE = "/public/placeholder.svg"; // Replace if you have one
-const ONE_ON_ONE_IMAGE = "/public/placeholder.svg"; // Replace if you have one
 const FALLBACK_IMAGE = "/placeholder.svg"; // Generic fallback in /public
+
+// Specific Images (ensure these exist in /public or update paths)
+const NAV_IMAGE = "/Navigation.jpg";
+const MET_IMAGE = "/Meteorology.jpg";
+const REGS_IMAGE = "/ICAO regs.jpg";
+const TECH_GEN_IMAGE = "/technical gen.webp";
+const TECH_SPEC_IMAGE = "/Course3.webp"; // Placeholder, use relevant image
+const RTR_IMAGE = "/rtr.webp";
+const TYPE_RATING_IMAGE = "/Course2.webp"; // Placeholder, use relevant image
+const ONE_ON_ONE_IMAGE = "/Hero5.webp"; // Placeholder, use relevant image
+const INTERVIEW_PREP_IMAGE = "/Hero4.webp"; // Placeholder, use relevant image
 
 // --- Animation Variants ---
 const sectionVariants = {
-  hidden: { opacity: 0, y: 40 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: "easeOut", staggerChildren: 0.15 } }
+  hidden: { opacity: 0, y: 50 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut", staggerChildren: 0.1 } }
 };
 
 const itemVariants = {
-  hidden: { opacity: 0, scale: 0.95, y: 20 },
-  visible: { opacity: 1, scale: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } }
+  hidden: { opacity: 0, scale: 0.9, y: 20 },
+  visible: { opacity: 1, scale: 1, y: 0, transition: { duration: 0.4, ease: "easeOut" } }
 };
 
 const cardHoverEffect = {
-  rest: { y: 0, boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)" },
-  hover: { y: -6, boxShadow: "0px 10px 20px rgba(0, 0, 0, 0.15)", transition: { duration: 0.3, ease: "circOut" } }
+  rest: { y: 0, boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.08)" },
+  hover: { y: -5, boxShadow: "0px 10px 20px rgba(0, 0, 0, 0.12)", transition: { duration: 0.3, ease: "circOut" } }
 };
 
-// --- Data ---
-const coursesData = [
-    {
-        title: "Commercial Pilot License (CPL) Ground School",
-        image: CPL_IMAGE,
-        fallbackImage: FALLBACK_IMAGE,
-        descriptionPoints: [
-            "Covers all DGCA syllabus subjects.",
-            "Experienced instructors.",
-            "Regular mock tests & feedback.",
-            "Flexible batch timings.",
-        ],
-        link: "/contact" // Or a specific course page link
-    },
-    {
-        title: "Airline Transport Pilot License (ATPL) Ground School",
-        image: ATPL_IMAGE,
-        fallbackImage: FALLBACK_IMAGE,
-        descriptionPoints: [
-            "Advanced aviation theory.",
-            "Complex aircraft systems.",
-            "Performance and loading.",
-            "Airline-oriented preparation.",
-        ],
-        link: "/contact"
-    },
-    {
-        title: "A320/B737 Type Rating Prep",
-        image: TYPE_RATING_IMAGE,
-        fallbackImage: FALLBACK_IMAGE,
-        descriptionPoints: [
-            "Pre & post type rating support.",
-            "Focus on airline exam patterns.",
-            "Covers AIX, IndiGo, Air India etc.",
-            "Affordable & effective.",
-        ],
-        link: "/contact"
-    },
-     {
+// --- Course Data ---
+// Restructured based on user input
+const groundSchoolSubjects = [
+  {
+    icon: Map,
+    title: "Air Navigation",
+    description: "Mastering flight path calculations, chart reading, and the use of navigational instruments for safe and efficient flight.",
+    image: NAV_IMAGE,
+  },
+  {
+    icon: CloudSun,
+    title: "Meteorology",
+    description: "Understanding atmospheric conditions, weather patterns, forecasts, and their impact on flight operations.",
+    image: MET_IMAGE,
+  },
+  {
+    icon: Gavel,
+    title: "Air Regulations",
+    description: "Comprehensive knowledge of national (DGCA) and international aviation laws, rules, and procedures.",
+    image: REGS_IMAGE,
+  },
+  {
+    icon: Wrench, // Changed icon
+    title: "Technical General",
+    description: "Exploring the fundamental principles of flight, aerodynamics, aircraft structures, engines, and systems.",
+    image: TECH_GEN_IMAGE,
+  },
+  {
+    icon: Plane, // Changed icon
+    title: "Technical Specific",
+    description: "In-depth study focused on the systems, performance, and handling characteristics of particular aircraft types.",
+    image: TECH_SPEC_IMAGE, // Requires specific image per aircraft type if applicable
+  },
+];
+
+const additionalServicesData = [
+   {
+        icon: RadioTower,
         title: "RTR(A) - Radio Telephony",
+        description: "Master aviation communication protocols and phraseology required for the Radio Telephony Restricted (Aeronautical) license exam.",
         image: RTR_IMAGE,
-        fallbackImage: FALLBACK_IMAGE,
-        descriptionPoints: [
-            "Master aviation communication.",
-            "Prepare for RTR(A) license exam.",
-            "Clear and concise delivery.",
-            "Practice sessions included.",
-        ],
-        link: "/contact"
+        link: "/contact", // Or specific page
+        learnMoreText: "Master Communication"
     },
     {
-        title: "One-on-One Classes",
+        icon: Plane, // Consider a more specific icon if available
+        title: "A320 & B737 Type Rating Prep",
+        description: "Affordable pre & post type rating guidance, covering previous exam questions and full preparation for major airline exams (Air India Express, IndiGo, Air India).",
+        image: TYPE_RATING_IMAGE,
+        link: "/contact",
+        learnMoreText: "Prepare for Type Rating"
+    },
+    {
+        icon: UserCheck, // Changed icon
+        title: "One-on-One Online Classes",
+        description: "Feel hesitant in batches? Get personalized online classes for all CPL and ATPL subjects, tailored specifically to your learning pace and needs.",
         image: ONE_ON_ONE_IMAGE,
-        fallbackImage: FALLBACK_IMAGE,
-        descriptionPoints: [
-            "Personalized CPL/ATPL coaching.",
-            "Tailored to your learning pace.",
-            "Address specific weak areas.",
-            "Flexible online scheduling.",
-        ],
-        link: "/contact"
+        link: "/contact",
+        learnMoreText: "Get Personalized Coaching"
     },
     {
-        title: "Airline Interview Preparation",
+        icon: Briefcase, // Changed icon
+        title: "Interview Preparation",
+        description: "Build confidence and prepare effectively for airline interviews with specialized English language practice and confidence-building sessions.",
         image: INTERVIEW_PREP_IMAGE,
-        fallbackImage: FALLBACK_IMAGE,
-        descriptionPoints: [
-            "Build confidence & communication skills.",
-            "Technical & HR interview practice.",
-            "Grooming and etiquette guidance.",
-            "Mock interview sessions.",
-        ],
-        link: "/contact"
+        link: "/contact",
+        learnMoreText: "Ace Your Interview"
     },
 ];
 
+// --- Benefits/Features Data --- (Keeping existing ones, can be modified)
 const atcFeaturesData = [
-    { icon: Award, title: "Guaranteed Passing*", description: "95% Success Rate" },
-    { icon: UserCheck, title: "Airline Instructors", description: "Industry Experts" },
-    { icon: MicVocal, title: "Interview Prep", description: "Ace Your Interviews" },
-    { icon: BookMarked, title: "Comprehensive Mock Tests", description: "Exam Ready" },
-    { icon: MessageCircle, title: "24/7 Doubt Support", description: "Always Available" },
-    { icon: Users, title: "Personalized Attention", description: "Small Batch Sizes" },
+    { icon: Award, title: "High Success Rate", description: "Proven Exam Passing Record" }, // Updated wording
+    { icon: UsersRound, title: "Airline Instructors", description: "Learn from Industry Experts" }, // Changed icon
+    { icon: MicVocal, title: "Interview Prep", description: "Dedicated Guidance" },
+    { icon: CheckSquare, title: "Thorough Mock Tests", description: "Be Exam Ready" }, // Changed icon
+    { icon: MessageCircle, title: "24/7 Doubt Support", description: "Always Here to Help" }, // Updated wording
+    { icon: Users, title: "Personalized Attention", description: "Focused Learning" }, // Updated wording
     { icon: Clock, title: "Flexible Timings", description: "Study On Your Schedule" },
-    { icon: GraduationCap, title: "Proven Track Record", description: "Success Stories" },
+    { icon: GraduationCap, title: "Structured Curriculum", description: "Comprehensive Syllabus Coverage" }, // Updated wording
 ];
 
 const atcBenefitsData = [
     {
         title: "Why Choose Our Ground School?",
-        content: "Our DGCA CPL & ATPL ground school programs offer a blend of experienced instruction, rigorous testing, and personalized support to ensure you master the syllabus and pass your exams with confidence. We focus on conceptual clarity and practical application."
+        content: "Our DGCA CPL & ATPL ground school programs offer a blend of experienced instruction, rigorous testing, and personalized support to ensure you master the syllabus and pass your exams with confidence. We focus on conceptual clarity and practical application across all required subjects."
     },
     {
         title: "The Advantage of Airline-Experienced Instructors",
@@ -141,15 +139,15 @@ const atcBenefitsData = [
     },
     {
         title: "How We Ensure High Success Rates",
-        content: "Our methodology includes structured learning, frequent assessments, detailed performance feedback, doubt-clearing sessions, and targeted preparation for specific airline exams. *'Guaranteed Passing' refers to our commitment to support students until they pass, subject to terms."
+        content: "Our methodology includes structured learning, frequent assessments based on DGCA patterns, detailed performance feedback, dedicated doubt-clearing sessions, and targeted preparation for airline screenings."
     },
-    {
-        title: "Flexible Learning Options",
-        content: "We understand the demanding schedules of aspiring pilots. We offer flexible batch timings, online class options, and recorded sessions (where applicable) to fit your lifestyle."
+     {
+        title: "Comprehensive Support Services",
+        content: "Beyond ground subjects, we offer specialized training for RTR(A), Type Rating preparation, personalized one-on-one classes, and interview coaching to fully support your journey to becoming a professional pilot."
     }
 ];
 
-
+// --- Component ---
 const Courses: React.FC = () => {
 
   // Function to handle image errors and load fallback
@@ -161,35 +159,26 @@ const Courses: React.FC = () => {
     }
   };
 
-
   return (
     <div className="flex flex-col min-h-screen bg-background text-foreground">
       <Header />
 
-      {/* Hero Section with Video Background */}
+      {/* Hero Section - Keeping existing structure */}
       <motion.section
         className="relative h-[50vh] md:h-[60vh] flex items-center justify-center text-center text-white overflow-hidden"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.8 }}
       >
-        {/* Video Background */}
         <video
-            autoPlay
-            loop
-            muted
-            playsInline // Important for mobile playback
+            autoPlay loop muted playsInline
             className="absolute inset-0 w-full h-full object-cover z-0"
             poster={FALLBACK_IMAGE} // Poster image while video loads
         >
            <source src={HERO_VIDEO_URL} type="video/mp4" />
             Your browser does not support the video tag.
         </video>
-
-        {/* Gradient Overlay */}
         <div className="absolute inset-0 bg-gradient-to-r from-[rgba(7,94,104,0.75)] to-[rgba(12,110,114,0.75)] z-10"></div>
-
-        {/* Content */}
         <motion.div
           className="relative z-20 max-w-4xl p-6 md:p-10"
           initial={{ opacity: 0, y: 20 }}
@@ -197,10 +186,10 @@ const Courses: React.FC = () => {
           transition={{ delay: 0.3, duration: 0.8 }}
         >
           <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold leading-tight tracking-tight mb-3">
-            Elevate Your Aviation Career
+            Your Flight Path Starts Here
           </h1>
           <p className="text-lg md:text-xl text-white/90 max-w-2xl mx-auto">
-            Comprehensive ground school, type rating preparation, and career support designed for your success.
+            Comprehensive DGCA Ground School, Type Rating Prep, and Pilot Career Services.
           </p>
         </motion.div>
       </motion.section>
@@ -208,57 +197,151 @@ const Courses: React.FC = () => {
       {/* Main Content */}
       <main className="flex-grow container mx-auto px-4 sm:px-6 py-16 md:py-24 space-y-20 md:space-y-28">
 
-        {/* Course Grid Section */}
+        {/* Complete CPL/ATPL Ground Training Section */}
         <motion.section
            variants={sectionVariants}
            initial="hidden"
            whileInView="visible"
-           viewport={{ once: true, amount: 0.1 }} // Trigger when 10% is visible
+           viewport={{ once: true, amount: 0.1 }}
         >
-            <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-aviation-primary dark:text-sky-300">Explore Our Training Programs</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {coursesData.map((course, index) => (
+          <div className="text-center mb-12 md:mb-16">
+             <motion.h2 variants={itemVariants} className={cn("text-3xl md:text-4xl font-bold mb-3", aviationPrimary)}>Complete CPL/ATPL Ground Training</motion.h2>
+             <motion.p variants={itemVariants} className="text-lg text-foreground/80 max-w-3xl mx-auto">
+                We provide in-depth training for all subjects under the DGCA CPL and ATPL syllabus, ensuring you have the knowledge foundation for a successful aviation career.
+             </motion.p>
+          </div>
+
+          {/* Grid for Ground School Subjects + Placeholder */}
+          {/* Added items-stretch to help cards have same height */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-12 items-stretch">
+            {groundSchoolSubjects.map((subject, index) => (
+              <motion.div key={index} variants={itemVariants} className="flex"> {/* Added flex to make motion div take full height */}
+                <motion.div
+                    className="relative h-full w-full group" // Added w-full
+                    whileHover="hover"
+                    initial="rest"
+                    animate="rest"
+                    variants={cardHoverEffect}
+                >
+                  {/* Ensure Card takes full height */}
+                  <Card className="bg-card w-full h-full flex flex-col overflow-hidden rounded-lg shadow-sm border border-border transition-shadow duration-300 relative z-10">
+                     {/* Image Section - Fixed Height */}
+                     <CardHeader className="p-0 relative">
+                         {/* Fixed height container for the image */}
+                         <div className="h-48 overflow-hidden"> {/* <-- FIXED HEIGHT ADDED HERE */}
+                            <img
+                                src={subject.image} // Use the image path from data
+                                alt={subject.title}
+                                className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" // object-cover is important
+                                onError={handleImageError} // Fallback if image fails
+                                loading="lazy"
+                            />
+                         </div>
+                     </CardHeader>
+                     {/* Content Section - flex-grow pushes content down */}
+                     <CardContent className="p-5 flex-grow flex flex-col"> {/* Adjusted padding back, ensure flex-grow */}
+                        <div className="flex items-center space-x-3 mb-3">
+                            <subject.icon className={cn("w-6 h-6 flex-shrink-0", aviationSecondary)} />
+                            <CardTitle className="text-lg font-semibold text-foreground">{subject.title}</CardTitle>
+                        </div>
+                        <CardDescription className="text-sm text-foreground/80 flex-grow"> {/* flex-grow on description */}
+                          {subject.description}
+                        </CardDescription>
+                     </CardContent>
+                  </Card>
+                </motion.div>
+              </motion.div>
+            ))}
+
+            {/* Placeholder Card to fill the 6th spot */}
+            <motion.div variants={itemVariants} className="flex"> {/* Added flex */}
+                 <motion.div
+                    className="relative h-full w-full group" // Added w-full
+                    whileHover="hover"
+                    initial="rest"
+                    animate="rest"
+                    variants={cardHoverEffect}
+                 >
+                    <Card className="bg-gradient-to-br from-teal-50/50 to-sky-50/50 dark:from-gray-800/60 dark:to-gray-900/60 w-full h-full flex flex-col items-center justify-center text-center overflow-hidden rounded-lg shadow-sm border border-dashed border-border transition-shadow duration-300 relative z-10 p-6">
+                       <div className="mb-4">
+                          <PhoneForwarded className={cn("w-10 h-10", aviationSecondary)} />
+                       </div>
+                       <CardTitle className="text-lg font-semibold text-foreground mb-2">Have Questions?</CardTitle>
+                       <CardDescription className="text-sm text-foreground/80 mb-4">
+                          Contact us for more details about our courses or enrollment process.
+                       </CardDescription>
+                       <Link to="/contact">
+                           <Button variant="outline" className={cn("border-teal-500 text-teal-600 hover:bg-teal-50 dark:border-teal-400 dark:text-teal-300 dark:hover:bg-teal-900/30", "group-hover:border-teal-600 dark:group-hover:border-teal-300")}>
+                               Contact Us
+                           </Button>
+                       </Link>
+                    </Card>
+                 </motion.div>
+            </motion.div>
+
+          </div>
+           <motion.div variants={itemVariants} className="text-center">
+                <h3 className="text-2xl font-semibold mb-4 text-foreground">Ready to Master the Syllabus?</h3>
+                <Link to="/contact">
+                    <Button size="lg" className={cn("min-h-[48px] transition duration-300 ease-in-out transform hover:scale-[1.03]", aviationButtonBg, aviationButtonDarkBg, "text-white")}>
+                        Enroll Now
+                    </Button>
+                </Link>
+            </motion.div>
+        </motion.section>
+
+         {/* Additional Training & Prep Services Section */}
+        <motion.section
+           variants={sectionVariants}
+           initial="hidden"
+           whileInView="visible"
+           viewport={{ once: true, amount: 0.1 }}
+        >
+            <h2 className={cn("text-3xl md:text-4xl font-bold text-center mb-12 md:mb-16", aviationPrimary)}>Additional Training & Prep Services</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-10"> {/* Reduced to 2 columns for better info display */}
+                {additionalServicesData.map((service, index) => (
                     <motion.div key={index} variants={itemVariants}>
                         <motion.div
-                            className="relative h-full"
+                            className="relative h-full group"
                             whileHover="hover"
                             initial="rest"
                             animate="rest"
                             variants={cardHoverEffect}
                         >
-                            {/* Optional: Gradient Border on Hover */}
-                            <div className="absolute -inset-0.5 bg-gradient-to-r from-aviation-primary to-aviation-secondary rounded-lg opacity-0 motion-safe:group-hover:opacity-75 transition duration-300 blur"></div>
-
-                            <Card className="bg-card h-full flex flex-col overflow-hidden rounded-lg shadow-sm border border-border transition-shadow duration-300 relative z-10 group">
-                                <CardHeader className="p-0 relative">
-                                    <div className="aspect-w-16 aspect-h-9"> {/* Maintain aspect ratio */}
-                                        <img
-                                            src={course.image}
-                                            alt={course.title}
-                                            className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                                            onError={handleImageError}
-                                            loading="lazy" // Lazy load images
-                                        />
-                                     </div>
-                                </CardHeader>
-                                <CardContent className="p-5 flex flex-col flex-grow">
-                                    <CardTitle className="text-xl font-semibold text-foreground mb-3">{course.title}</CardTitle>
-                                    <ul className="space-y-1.5 text-sm text-foreground/80 list-disc list-inside mb-4 flex-grow">
-                                        {course.descriptionPoints.map((point, pIndex) => (
-                                            <li key={pIndex}>{point}</li>
-                                        ))}
-                                    </ul>
-                                </CardContent>
-                                <CardFooter className="p-5 pt-0 mt-auto"> {/* Ensure footer is at bottom */}
-                                     <Link to={course.link} className="w-full">
-                                        <Button
-                                            variant="default"
-                                            className="w-full bg-aviation-primary hover:bg-aviation-secondary dark:bg-sky-600 dark:hover:bg-sky-700 text-white min-h-[48px] transition duration-300 ease-in-out transform group-hover:scale-[1.02]" // Ensure min height for touch targets
-                                        >
-                                            Learn More
-                                        </Button>
-                                     </Link>
-                                </CardFooter>
+                            <Card className="bg-card h-full flex flex-col sm:flex-row overflow-hidden rounded-lg shadow-sm border border-border transition-shadow duration-300 relative z-10">
+                                {/* Image on the side (optional, adjust layout) */}
+                                <div className="sm:w-1/3 flex-shrink-0 aspect-video sm:aspect-auto">
+                                    <img
+                                        src={service.image}
+                                        alt={service.title}
+                                        className="w-full h-full object-cover"
+                                        onError={handleImageError}
+                                        loading="lazy"
+                                    />
+                                </div>
+                                <div className="flex flex-col flex-grow p-5">
+                                    <CardHeader className="p-0 mb-2">
+                                        <div className="flex items-center space-x-2 mb-1">
+                                            <service.icon className={cn("w-5 h-5 flex-shrink-0", aviationSecondary)} />
+                                            <CardTitle className="text-xl font-semibold text-foreground">{service.title}</CardTitle>
+                                        </div>
+                                    </CardHeader>
+                                    <CardContent className="p-0 flex-grow mb-4">
+                                        <CardDescription className="text-sm text-foreground/80">
+                                            {service.description}
+                                        </CardDescription>
+                                    </CardContent>
+                                    <CardFooter className="p-0 mt-auto">
+                                        <Link to={service.link} className="w-full sm:w-auto">
+                                            <Button
+                                                variant="outline" // Changed variant for distinction
+                                                className={cn("w-full sm:w-auto min-h-[44px] border-teal-500 text-teal-600 hover:bg-teal-50 dark:border-teal-400 dark:text-teal-300 dark:hover:bg-teal-900/30 transition duration-300", "group-hover:border-teal-600 dark:group-hover:border-teal-300")}
+                                            >
+                                                {service.learnMoreText || 'Learn More'}
+                                            </Button>
+                                        </Link>
+                                    </CardFooter>
+                                </div>
                             </Card>
                         </motion.div>
                     </motion.div>
@@ -266,48 +349,51 @@ const Courses: React.FC = () => {
             </div>
         </motion.section>
 
-        {/* ATC Features Section */}
+
+        {/* ATC Features Section - Keeping existing structure, maybe update text */}
         <motion.section
           variants={sectionVariants}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
-          className="bg-gradient-to-br from-aviation-primary/5 to-aviation-secondary/10 dark:from-gray-800/30 dark:to-gray-900/30 rounded-xl p-8 md:p-12 border border-border/50 shadow-md"
+          viewport={{ once: true, amount: 0.1 }}
+          className="bg-gradient-to-br from-teal-50/30 to-sky-50/30 dark:from-gray-800/40 dark:to-gray-900/40 rounded-xl p-8 md:p-12 border border-border/50 shadow-lg" // Enhanced styling
         >
-            <h2 className="text-3xl md:text-4xl font-bold text-center mb-10 text-aviation-primary dark:text-sky-300">Why Train with ATC?</h2>
+            <h2 className={cn("text-3xl md:text-4xl font-bold text-center mb-10", aviationPrimary)}>Why Train with ATC?</h2>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-x-6 gap-y-8 text-center">
                 {atcFeaturesData.map((feature, index) => (
                     <motion.div
                         key={index}
                         variants={itemVariants}
-                        className="flex flex-col items-center p-3 bg-card/50 dark:bg-card/70 rounded-lg hover:bg-card transition duration-200"
+                        className="flex flex-col items-center p-3 group" // Added group
                     >
-                        <feature.icon className="h-8 w-8 mb-3 text-aviation-secondary dark:text-sky-400" />
+                         <div className="p-3 rounded-full bg-teal-100/70 dark:bg-teal-900/40 mb-3 transition-colors duration-300 group-hover:bg-teal-200/80 dark:group-hover:bg-teal-800/60">
+                            <feature.icon className={cn("h-7 w-7", aviationSecondary)} />
+                        </div>
                         <h4 className="text-sm font-semibold text-foreground mb-1">{feature.title}</h4>
                         <p className="text-xs text-foreground/70">{feature.description}</p>
                     </motion.div>
                 ))}
             </div>
-             <p className="text-xs text-center mt-6 text-foreground/60">*Guarantee subject to terms and conditions regarding attendance and participation.</p>
+            {/* <p className="text-xs text-center mt-6 text-foreground/60">*Success rates based on historical student data. Individual results may vary.</p> */}
         </motion.section>
 
 
-        {/* ATC Benefits Accordion Section */}
+        {/* ATC Benefits Accordion Section - Keeping existing structure */}
         <motion.section
           variants={sectionVariants}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
+          viewport={{ once: true, amount: 0.1 }}
         >
-            <h2 className="text-3xl md:text-4xl font-bold text-center mb-10 text-aviation-primary dark:text-sky-300">Detailed Benefits</h2>
+            <h2 className={cn("text-3xl md:text-4xl font-bold text-center mb-10", aviationPrimary)}>Detailed Benefits</h2>
             <Accordion type="single" collapsible className="w-full max-w-3xl mx-auto">
                  {atcBenefitsData.map((item, index) => (
                      <motion.div key={index} variants={itemVariants}>
-                        <AccordionItem value={`item-${index + 1}`} className="border-b border-border/60">
-                            <AccordionTrigger className="text-left text-lg font-medium hover:text-aviation-secondary dark:hover:text-sky-400 py-4">
+                        <AccordionItem value={`item-${index + 1}`} className="border-b border-border/60 mb-2 rounded-md overflow-hidden bg-card/40 dark:bg-card/60 shadow-sm">
+                            <AccordionTrigger className={cn("text-left text-base sm:text-lg font-medium hover:no-underline px-5 py-4 hover:bg-teal-50/50 dark:hover:bg-teal-900/30 transition-colors", aviationSecondary)}>
                                 {item.title}
                             </AccordionTrigger>
-                            <AccordionContent className="text-base text-foreground/80 pb-4 px-1">
+                            <AccordionContent className="text-sm sm:text-base text-foreground/80 pb-5 px-5 pt-2 bg-card/30 dark:bg-card/50"> {/* Added background for content */}
                                 {item.content}
                             </AccordionContent>
                         </AccordionItem>
