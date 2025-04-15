@@ -2,53 +2,49 @@ import React from 'react';
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { motion } from 'framer-motion';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
-import { Award, BookOpen, Briefcase, UserCheck } from 'lucide-react'; // Added UserCheck
-import { cn } from "@/lib/utils";
+import { Award, BookOpen, Briefcase, UserCheck } from 'lucide-react';
 
-// Placeholders
-const instructorHeaderUrl = "https://images.unsplash.com/photo-1549057357-675a6ea03eae?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxfDB8MXxyYW5kb218MHx8ZmxpZ2h0JTIwaW5zdHJ1Y3RvcnN8fHx8fHwxNjE4NTQ5MzQ1&ixlib=rb-1.2.1&q=80&w=1080";
-const getAvatarUrl = (name: string) => `https://api.dicebear.com/6.x/initials/svg?seed=${encodeURIComponent(name)}&backgroundColor=6366F1&textColor=ffffff&fontSize=36`; // Using secondary color
+// Placeholders & Utilities
+const instructorHeaderUrl = "/Course2.webp";
+// Removed getAvatarUrl function
+const placeholderAvatarUrl = "/placeholder.svg"; // Define the local placeholder path
 
-// Sample Instructor Data (Generic - REPLACE WITH ACTUAL DATA)
+// Updated Instructor Data using the local placeholder
 const instructors = [
   {
     name: "Lead Instructor - ATPL",
-    title: "Experienced Airline Captain",
-    avatar: getAvatarUrl("Lead ATPL"),
-    bio: "Bringing years of airline operational experience to the classroom, focusing on advanced concepts for ATPL candidates. Expert in Navigation and Meteorology.",
-    ratings: ["ATPL", "CFI", "Type Rated"],
-    expertise: ["Advanced Navigation", "Aviation Meteorology", "Airline Operations"]
+    title: "- airline pilot and educator",
+    avatar: placeholderAvatarUrl, // Using local placeholder
+    bio: "A seasoned Airline Captain with extensive operational experience, now dedicated to shaping the next generation of ATPL holders. Provides in-depth instruction on advanced navigation, complex aircraft systems, and meteorology, ensuring candidates are prepared for the rigors of airline operations.",
+    expertise: ["Advanced Navigation", "Aviation Meteorology", "Airline Operations", "Aircraft Systems"]
   },
   {
     name: "Senior Instructor - CPL",
-    title: "Commercial Pilot & Educator",
-    avatar: getAvatarUrl("Senior CPL"),
-    bio: "Specializing in guiding students through the complexities of CPL regulations and technical subjects, ensuring a strong foundation for commercial flying.",
-    ratings: ["CPL", "CFI", "CFII"],
-    expertise: ["Air Regulations", "Technical General", "Flight Instruction"]
+    title: "- airline pilot and educator",
+    avatar: placeholderAvatarUrl, // Using local placeholder
+    bio: "An accomplished Commercial Pilot and dedicated educator, specializing in CPL and technical subjects. Creates a clear pathway for students to master air regulations, aircraft technical knowledge, and flight principles, building a strong foundation for a commercial aviation career.",
+    expertise: ["Air Regulations", "Technical General", "Flight Instruction", "Aerodynamics"]
   },
   {
     name: "RTR(A) Specialist",
     title: "Communications Expert",
-    avatar: getAvatarUrl("RTR Expert"),
-    bio: "Dedicated to mastering radio telephony procedures and ensuring clear, confident communication skills essential for passing the RTR(A) exam.",
-    ratings: ["RTR(A) License Holder"],
-    expertise: ["Radio Telephony", "Aviation English", "Exam Preparation"]
+    avatar: placeholderAvatarUrl, // Using local placeholder
+    bio: "Expert in aviation communication, focusing exclusively on RTR(A) preparation. Delivers targeted training on radio telephony phraseology, procedures, and aviation English, equipping students with the confidence and skills needed to excel in the RTR(A) examination.",
+    expertise: ["Radio Telephony", "Aviation English", "Exam Preparation", "ATC Procedures"]
   },
    {
     name: "Interview Prep Coach",
     title: "Confidence & Career Advisor",
-    avatar: getAvatarUrl("Interview Coach"),
-    bio: "Focuses on building interview confidence, refining communication skills, and preparing candidates for the specific requirements of airline hiring processes.",
-    ratings: ["Professional Coach"],
-    expertise: ["Interview Techniques", "Aviation Career Guidance", "English Proficiency"]
+    avatar: placeholderAvatarUrl, // Using local placeholder
+    bio: "A specialized coach focused on equipping aspiring pilots with the confidence and skills needed for successful airline interviews. Offers tailored guidance on interview techniques, communication strategies, and understanding airline expectations, paving the way for career success.",
+    expertise: ["Interview Techniques", "Aviation Career Guidance", "English Proficiency", "Soft Skills"]
   }
 ];
 
-// Animation Variants
+// Animation Variants (kept as is)
 const sectionVariants = {
   hidden: { opacity: 0, y: 50 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut", staggerChildren: 0.15 } }
@@ -69,20 +65,20 @@ const Instructors: React.FC = () => {
     <div className="flex flex-col min-h-screen bg-background text-foreground">
       <Header />
 
-      {/* Page Header */}
+      {/* Page Header (kept as is) */}
       <motion.section
         className="relative h-[40vh] flex items-center justify-center text-center text-white overflow-hidden"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5 }}
       >
-        <img 
-          src={instructorHeaderUrl} 
-          alt="Group of Aviators Training Centre instructors" 
+        <img
+          src={instructorHeaderUrl}
+          alt="Group of Aviators Training Centre instructors"
           className="absolute inset-0 w-full h-full object-cover z-0"
-          style={{ filter: 'brightness(0.6)' }} 
+          style={{ filter: 'brightness(0.6)' }}
         />
-        <motion.div 
+        <motion.div
           className="relative z-10 max-w-3xl p-8"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -95,39 +91,34 @@ const Instructors: React.FC = () => {
 
       {/* Main Content */}
       <main className="flex-grow container mx-auto px-6 py-16">
-        
+
         <motion.section
            variants={sectionVariants}
            initial="hidden"
            whileInView="visible"
-           viewport={{ once: true, amount: 0.1 }} 
-           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+           viewport={{ once: true, amount: 0.1 }}
+           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" // Grid layout handles alignment
         >
+          {/* Instructor Cards */}
           {instructors.map((instructor, index) => (
-            <motion.div key={index} variants={itemVariants} whileHover="hover" initial="initial">
-              <motion.div variants={cardHoverVariants}>
+            <motion.div key={index} variants={itemVariants} whileHover="hover" initial="initial" className="flex">
+              <motion.div variants={cardHoverVariants} className="w-full">
                 <Card className="flex flex-col h-full bg-card shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden border border-border hover:border-aviation-primary/50 dark:hover:border-aviation-tertiary/50">
                   <CardHeader className="flex flex-col items-center text-center p-6 bg-card/50">
-                    <Avatar className="w-24 h-24 mb-4 border-4 border-aviation-secondary"> 
+                    <Avatar className="w-24 h-24 mb-4 border-4 border-aviation-secondary">
+                      {/* Use local placeholder */}
                       <AvatarImage src={instructor.avatar} alt={instructor.name} />
-                      <AvatarFallback>{instructor.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
+                      {/* Fallback remains initials */}
+                      <AvatarFallback>{instructor.name.match(/(\w)/g)?.join('') || '?'}</AvatarFallback>
                     </Avatar>
-                    <CardTitle className="text-xl text-foreground">{instructor.name}</CardTitle>
+                    <CardTitle className="text-xl text-foreground mb-1">{instructor.name}</CardTitle>
                     <CardDescription className="text-aviation-secondary font-medium">{instructor.title}</CardDescription>
                   </CardHeader>
-                  <CardContent className="p-6 flex-grow">
-                    <p className="text-foreground/70 text-sm mb-4">{instructor.bio}</p>
-                    <div className="mb-3">
-                       <h4 className="text-sm font-semibold text-foreground/90 mb-2">Area Focus / Ratings:</h4>
-                       <div className="flex flex-wrap gap-1">
-                          {instructor.ratings.map(rating => (
-                              <Badge key={rating} variant="secondary">{rating}</Badge>
-                          ))}
-                       </div>
-                    </div>
+                  <CardContent className="p-6 flex-grow flex flex-col">
+                    <p className="text-foreground/70 text-sm mb-6 flex-grow leading-relaxed">{instructor.bio}</p>
                      <div>
-                       <h4 className="text-sm font-semibold text-foreground/90 mb-2">Expertise:</h4>
-                       <div className="flex flex-wrap gap-1">
+                       <h4 className="text-sm font-semibold text-foreground/90 mb-3">Expertise:</h4>
+                       <div className="flex flex-wrap gap-2">
                           {instructor.expertise.map(area => (
                               <Badge key={area} variant="outline">{area}</Badge>
                           ))}
@@ -138,42 +129,43 @@ const Instructors: React.FC = () => {
               </motion.div>
             </motion.div>
           ))}
-             {/* Placeholder for adding more instructors or a general statement */} 
-             <motion.div variants={itemVariants} whileHover="hover" initial="initial">
-                <motion.div variants={cardHoverVariants}>
+
+             {/* Placeholder Card */}
+             <motion.div variants={itemVariants} whileHover="hover" initial="initial" className="flex">
+                <motion.div variants={cardHoverVariants} className="w-full">
                   <Card className="flex flex-col h-full bg-card/50 border border-dashed border-border/60 items-center justify-center text-center p-6 hover:border-aviation-primary/50 dark:hover:border-aviation-tertiary/50 transition-all duration-300">
                     <UserCheck className="h-12 w-12 text-foreground/50 mb-4" />
                     <CardTitle className="text-xl text-foreground/80 mb-2">More Experts Coming Soon</CardTitle>
-                    <CardDescription className="text-foreground/60 text-sm">Our team comprises highly experienced, airline-rated instructors dedicated to your success.</CardDescription>
+                    <CardDescription className="text-foreground/60 text-sm leading-relaxed">Our team comprises highly experienced, airline-rated instructors dedicated to your success.</CardDescription>
                   </Card>
                 </motion.div>
             </motion.div>
         </motion.section>
 
-         {/* The ATC Difference Section */}
-         <motion.section 
+         {/* The ATC Difference Section - Refined Styling */}
+         <motion.section
             variants={sectionVariants}
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, amount: 0.3 }} 
-            className="text-center mt-20 py-12 px-6 bg-card rounded-lg shadow-md border border-border"
-        > 
-            <h2 className="text-3xl font-bold mb-6 text-aviation-primary dark:text-aviation-tertiary">The Aviators Training Centre Difference</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-                 <div className="flex flex-col items-center">
-                     <Award className="h-10 w-10 text-aviation-primary dark:text-aviation-tertiary mb-3"/>
-                     <h3 className="text-lg font-semibold mb-1 text-foreground">Real-World Experience</h3>
-                     <p className="text-foreground/70 text-sm">Learn from instructors with direct airline and operational backgrounds.</p>
+            viewport={{ once: true, amount: 0.2 }}
+            className="text-center mt-24 py-16 px-6 bg-muted/50 rounded-lg shadow-sm border border-border"
+        >
+            <h2 className="text-3xl font-bold mb-10 text-aviation-primary dark:text-aviation-tertiary">The Aviators Training Centre Difference</h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-x-8 gap-y-10 max-w-5xl mx-auto">
+                 <div className="flex flex-col items-center max-w-xs mx-auto">
+                     <Award className="h-10 w-10 text-aviation-primary dark:text-aviation-tertiary mb-4"/>
+                     <h3 className="text-lg font-semibold mb-2 text-foreground">Real-World Experience</h3>
+                     <p className="text-foreground/70 text-sm leading-relaxed">Learn from instructors with direct airline and operational backgrounds.</p>
                  </div>
-                 <div className="flex flex-col items-center">
-                     <BookOpen className="h-10 w-10 text-aviation-primary dark:text-aviation-tertiary mb-3"/>
-                     <h3 className="text-lg font-semibold mb-1 text-foreground">Commitment to Teaching</h3>
-                     <p className="text-foreground/70 text-sm">Passionate educators focused on effective learning and concept mastery.</p>
+                 <div className="flex flex-col items-center max-w-xs mx-auto">
+                     <BookOpen className="h-10 w-10 text-aviation-primary dark:text-aviation-tertiary mb-4"/>
+                     <h3 className="text-lg font-semibold mb-2 text-foreground">Commitment to Teaching</h3>
+                     <p className="text-foreground/70 text-sm leading-relaxed">Passionate educators focused on effective learning and concept mastery.</p>
                  </div>
-                  <div className="flex flex-col items-center">
-                     <Briefcase className="h-10 w-10 text-aviation-primary dark:text-aviation-tertiary mb-3"/>
-                     <h3 className="text-lg font-semibold mb-1 text-foreground">Career-Focused Guidance</h3>
-                     <p className="text-foreground/70 text-sm">Mentorship extends beyond the syllabus to support your aviation career goals.</p>
+                  <div className="flex flex-col items-center max-w-xs mx-auto">
+                     <Briefcase className="h-10 w-10 text-aviation-primary dark:text-aviation-tertiary mb-4"/>
+                     <h3 className="text-lg font-semibold mb-2 text-foreground">Career-Focused Guidance</h3>
+                     <p className="text-foreground/70 text-sm leading-relaxed">Mentorship extends beyond the syllabus to support your aviation career goals.</p>
                  </div>
             </div>
         </motion.section>
