@@ -140,8 +140,9 @@ const PilotPathway: React.FC = () => {
               <div className={cn(
                   "ml-14 w-full", // Default: Right of line
                   "md:ml-0 md:w-1/2", // Medium screens: Half width
-                  "md:pr-8 md:odd:mr-auto", // Odd items: Margin right auto (pushes to left)
-                  "md:pl-8 md:even:ml-auto" // Even items: Margin left auto (pushes to right)
+                  index % 2 === 0 
+                    ? "md:pr-8 md:mr-auto" // Even items (0, 2, 4): Left side of timeline
+                    : "md:pl-8 md:ml-auto" // Odd items (1, 3, 5): Right side of timeline
               )}>
                   <Collapsible>
                     <Card className="bg-card border border-border/80 rounded-lg shadow-sm transition-shadow hover:shadow-md overflow-hidden">

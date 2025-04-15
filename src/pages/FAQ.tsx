@@ -13,7 +13,7 @@ import { PhoneForwarded } from 'lucide-react'; // For contact card
 const aviationPrimary = 'text-teal-700 dark:text-teal-300';
 const aviationSecondary = 'text-teal-600 dark:text-teal-400';
 // Using a relevant image from the project
-const faqHeaderUrl = "/HomePage/Hero4.webp";
+const faqHeaderUrl = "/FAQ.jpg";
 const FALLBACK_IMAGE = "/HomePage/Hero5.webp"; // Consistent fallback
 
 // --- Animation Variants (Matching other pages) ---
@@ -57,7 +57,7 @@ const FAQPage: React.FC = () => {
         <img
           src={faqHeaderUrl}
           alt="ATC aircraft wing detail" // More relevant alt text
-          className="absolute inset-0 w-full h-full object-cover z-0"
+          className="absolute inset-0 w-full h-full z-0"
           onError={handleImageError}
           style={{ filter: 'brightness(0.6)' }} // Adjusted brightness
         />

@@ -47,7 +47,7 @@ const instructors = [
    {
     name: "Interview Prep Coach",
     title: "Confidence & Career Advisor",
-    avatar: "/Instructor/Instructor1.webp", // Reusing instructor image
+    avatar: "/Instructor/Instructor4.webp", // Reusing instructor image
     bio: "A specialized coach...", // Truncated for brevity
     expertise: ["Interview Techniques", "Aviation Career Guidance", "English Proficiency", "Soft Skills"]
   }
