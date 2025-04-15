@@ -1,156 +1,153 @@
-
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { Facebook, Twitter, Linkedin } from 'lucide-react';
+// Consistent Icons
+import { Users, ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
+import { cn } from "@/lib/utils";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
-const InstructorsSection = () => {
-  // Instructor data with images from restructured public folder
-  const instructors = [
-    {
-      name: 'Capt. Michael Reynolds',
-      position: 'Chief Flight Instructor',
-      image: '/Instructor/Instructor1.webp',
-      bio: 'Former airline captain with over 15,000 flight hours. Specialized in Boeing 737 and Airbus A320 type ratings.',
-      social: {
-        facebook: 'https://facebook.com',
-        twitter: 'https://twitter.com',
-        linkedin: 'https://linkedin.com'
-      }
-    },
-    {
-      name: 'Sarah Martinez',
-      position: 'Advanced Training Specialist',
-      image: '/Instructor/Instructor2.webp',
-      bio: 'Commercial pilot with extensive experience in instrument training and aerobatics. FAA certified with 8,000+ flight hours.',
-      social: {
-        facebook: 'https://facebook.com',
-        twitter: 'https://twitter.com',
-        linkedin: 'https://linkedin.com'
-      }
-    },
-    {
-      name: 'David Chen',
-      position: 'Ground School Director',
-      image: '/Instructor/Instructor3.webp',
-      bio: 'Aerospace engineer with a passion for teaching. Specializes in aviation theory, navigation, and flight planning.',
-      social: {
-        facebook: 'https://facebook.com',
-        twitter: 'https://twitter.com',
-        linkedin: 'https://linkedin.com'
-      }
-    }
-  ];
+// --- Configuration (Matching other pages) ---
+const aviationPrimary = 'text-teal-700 dark:text-teal-300';
+const aviationSecondary = 'text-teal-600 dark:text-teal-400';
+const aviationButtonBg = 'bg-teal-600 hover:bg-teal-700';
+const aviationButtonDarkBg = 'dark:bg-teal-500 dark:hover:bg-teal-600';
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.2
-      }
-    }
-  };
+// --- Animation Variants (Define or import) ---
+const sectionVariants = {
+  hidden: { opacity: 0, y: 50 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut", staggerChildren: 0.1 } }
+};
 
-  const itemVariants = {
-    hidden: { opacity: 0, y: 50 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.5
-      }
+const itemVariants = {
+  hidden: { opacity: 0, scale: 0.9, y: 20 },
+  visible: { opacity: 1, scale: 1, y: 0, transition: { duration: 0.4, ease: "easeOut" } }
+};
+
+const cardHoverEffect = {
+  rest: { y: 0, boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.08)" },
+  hover: { y: -5, boxShadow: "0px 10px 20px rgba(0, 0, 0, 0.12)", transition: { duration: 0.3, ease: "circOut" } }
+};
+
+// --- Instructor Data (Simplified, focusing on roles matching course offerings) ---
+const instructors = [
+  {
+    name: 'Lead Instructor - ATPL',
+    title: 'Airline Pilot & Educator',
+    avatar: '/Instructor/Instructor1.webp', // Use consistent avatar path
+    bio: 'Seasoned Airline Captain guiding ATPL candidates through advanced concepts and airline operations knowledge.'
+  },
+  {
+    name: 'Senior Instructor - CPL',
+    title: 'Airline Pilot & Educator',
+    avatar: '/Instructor/Instructor2.webp',
+    bio: 'Dedicated CPL instructor specializing in air regulations, technical subjects, and core flight principles.'
+  },
+  {
+    name: 'RTR(A) Specialist',
+    title: 'Communications Expert',
+    avatar: '/Instructor/Instructor3.webp',
+    bio: 'Expert in aviation communication, focused on preparing students for the RTR(A) examination.'
+  }
+];
+
+const FALLBACK_AVATAR = "/placeholder.svg"; // Fallback for avatars
+
+const InstructorsSection: React.FC = () => {
+
+  const handleAvatarError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+    const target = e.target as HTMLImageElement;
+    if (!target.src.endsWith(FALLBACK_AVATAR)) {
+      target.onerror = null;
+      target.src = FALLBACK_AVATAR;
     }
   };
 
   return (
-    <section id="instructors" className="section-padding bg-[#73B5BD]/10 dark:bg-aviation-primary/20">
-      <div className="container mx-auto">
-        <motion.div 
-          className="text-center mb-16"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
+    <motion.section
+      id="instructors"
+      variants={sectionVariants}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.1 }}
+      className="bg-muted/30 dark:bg-card/5 py-16 md:py-20 rounded-lg border border-border/30 shadow-sm" // Add subtle background
+    >
+      <div className="text-center mb-12 md:mb-16">
+        <motion.h2
+          variants={itemVariants}
+          className={cn("text-3xl md:text-4xl font-bold mb-4", aviationPrimary)}
         >
-          <h2 className="text-3xl md:text-4xl font-bold text-aviation-primary dark:text-white mb-4">Meet Our Expert Instructors</h2>
-          <p className="text-lg text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-            Learn from industry professionals with decades of combined experience in commercial, 
-            military, and private aviation sectors. Fly high with ATC!
-          </p>
-        </motion.div>
-
-        <motion.div 
-          className="grid grid-cols-1 md:grid-cols-3 gap-8"
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
+          Learn From the Best
+        </motion.h2>
+        <motion.p
+          variants={itemVariants}
+          className="text-lg text-foreground/80 max-w-3xl mx-auto leading-relaxed"
         >
-          {instructors.map((instructor, index) => (
-            <motion.div 
-              key={index} 
-              className="bg-white dark:bg-aviation-primary/40 rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-all duration-500"
-              variants={itemVariants}
-              whileHover={{ y: -10 }}
-            >
-              <div className="h-64 overflow-hidden">
-                <img 
-                  src={instructor.image} 
-                  alt={instructor.name} 
-                  className="w-full h-full object-cover object-center transition-transform duration-500 hover:scale-110"
-                  loading="lazy"
-                />
-              </div>
-              <div className="p-6">
-                <h3 className="text-xl font-bold text-aviation-primary dark:text-white">{instructor.name}</h3>
-                <p className="text-aviation-secondary font-medium mb-3">{instructor.position}</p>
-                <p className="text-gray-600 dark:text-gray-300 mb-4">{instructor.bio}</p>
-                <div className="flex space-x-3">
-                  <a 
-                    href={instructor.social.facebook} 
-                    className="text-gray-400 hover:text-aviation-primary dark:hover:text-aviation-secondary transition-colors duration-300"
-                    aria-label={`${instructor.name}'s Facebook`}
-                  >
-                    <Facebook size={18} />
-                  </a>
-                  <a 
-                    href={instructor.social.twitter} 
-                    className="text-gray-400 hover:text-aviation-primary dark:hover:text-aviation-secondary transition-colors duration-300"
-                    aria-label={`${instructor.name}'s Twitter`}
-                  >
-                    <Twitter size={18} />
-                  </a>
-                  <a 
-                    href={instructor.social.linkedin} 
-                    className="text-gray-400 hover:text-aviation-primary dark:hover:text-aviation-secondary transition-colors duration-300"
-                    aria-label={`${instructor.name}'s LinkedIn`}
-                  >
-                    <Linkedin size={18} />
-                  </a>
-                </div>
-              </div>
-            </motion.div>
-          ))}
-        </motion.div>
-
-        <motion.div 
-          className="mt-12 text-center"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.5 }}
-        >
-          <Button 
-            className="bg-aviation-secondary hover:bg-[#219099] text-white transform transition-transform duration-300 hover:scale-105"
-            asChild
-          >
-            <Link to="/instructors">Meet All Instructors</Link>
-          </Button>
-        </motion.div>
+          Our instructors are experienced airline professionals dedicated to providing top-tier ground school education and mentorship.
+        </motion.p>
       </div>
-    </section>
+
+      {/* Grid using standard Card component for instructors */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 items-stretch">
+        {instructors.map((instructor, index) => (
+          <motion.div
+            key={index}
+            variants={itemVariants}
+            className="flex"
+          >
+            <motion.div
+              className="relative h-full w-full group"
+              whileHover="hover"
+              initial="rest"
+              animate="rest"
+              variants={cardHoverEffect}
+            >
+              {/* Using the Instructor Card style from Instructors.tsx */}
+              <Card className="bg-card w-full h-full flex flex-col overflow-hidden rounded-lg shadow-sm border border-border transition-shadow duration-300 relative z-10">
+                <CardHeader className="flex flex-col items-center text-center p-6 bg-muted/30 dark:bg-muted/10 border-b border-border/50">
+                   <Avatar className="w-20 h-20 mb-4 border-4 border-teal-300 dark:border-teal-600 ring-2 ring-teal-500/30">
+                      <AvatarImage
+                          src={instructor.avatar}
+                          alt={instructor.name}
+                          onError={handleAvatarError}
+                      />
+                      <AvatarFallback>{instructor.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
+                   </Avatar>
+                   <CardTitle className={cn("text-lg font-semibold", aviationPrimary)}>{instructor.name}</CardTitle>
+                   <CardDescription className="text-sm text-foreground/70">{instructor.title}</CardDescription>
+                </CardHeader>
+                <CardContent className="p-5 flex-grow">
+                  <CardDescription className="text-sm text-foreground/80 text-center leading-relaxed"> {/* Centered bio */}
+                    {instructor.bio}
+                  </CardDescription>
+                </CardContent>
+                 {/* Optional: Footer can be added if needed, e.g., for a link */}
+                 {/* <CardFooter className="p-4 pt-0"></CardFooter> */}
+              </Card>
+            </motion.div>
+          </motion.div>
+        ))}
+      </div>
+
+      {/* Button to view all instructors */}
+      <motion.div
+        variants={itemVariants}
+        className="mt-12 text-center"
+       >
+        <Button
+          variant="outline"
+          size="lg"
+          className={cn("min-h-[48px] border-teal-500 text-teal-600 hover:bg-teal-50 dark:border-teal-400 dark:text-teal-300 dark:hover:bg-teal-900/30 transition duration-300 ease-in-out transform hover:scale-[1.03] inline-flex items-center gap-2")}
+          asChild
+        >
+          <Link to="/instructors">
+              Meet the Full Team <Users className="h-4 w-4" />
+          </Link>
+        </Button>
+      </motion.div>
+
+    </motion.section>
   );
 };
 

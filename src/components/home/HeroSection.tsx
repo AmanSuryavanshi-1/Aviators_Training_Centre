@@ -1,128 +1,123 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { ArrowRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
+import { cn } from "@/lib/utils";
+
+// --- Configuration ---
+const aviationButtonBg = 'bg-teal-600 hover:bg-teal-700';
+const aviationButtonDarkBg = 'dark:bg-teal-500 dark:hover:bg-teal-600';
+
+// --- Slides Data (Define your hero slides here) ---
+const slides = [
+  {
+    id: 1,
+    image: '/HomePage/Hero1.webp',
+    title: 'Your Pilot Career Starts Here',
+    subtitle: 'Master DGCA exams with expert-led online ground school.',
+    buttonText: 'Explore Courses',
+    buttonLink: '/courses'
+  },
+  {
+    id: 2,
+    image: '/HomePage/Hero2.webp',
+    title: 'Learn from Airline Professionals',
+    subtitle: 'Gain insights from experienced pilots and engineers.',
+    buttonText: 'Meet Our Instructors',
+    buttonLink: '/instructors'
+  },
+  {
+    id: 3,
+    image: '/HomePage/Hero4.webp', // Using Hero4
+    title: 'Flexible Online Ground School',
+    subtitle: 'Study at your own pace with our comprehensive curriculum.',
+    buttonText: 'View Course Structure',
+    buttonLink: '/courses'
+  },
+  {
+    id: 4,
+    image: '/HomePage/Hero5.webp', // Using Hero5
+    title: 'Dedicated Support & Guidance',
+    subtitle: 'Personalized attention and 24/7 doubt clearing.',
+    buttonText: 'Contact Admissions',
+    buttonLink: '/contact'
+  }
+];
+
+const FALLBACK_IMAGE = "/placeholder.svg"; // A generic fallback
+
+// --- Animation Variants ---
+const slideVariants = {
+  enter: (direction: number) => ({
+    x: direction > 0 ? '100%' : '-100%',
+    opacity: 0,
+  }),
+  center: {
+    zIndex: 1,
+    x: 0,
+    opacity: 1,
+  },
+  exit: (direction: number) => ({
+    zIndex: 0,
+    x: direction < 0 ? '100%' : '-100%',
+    opacity: 0,
+  }),
+};
+
+const contentVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      staggerChildren: 0.15, // Stagger text and button animation
+      delayChildren: 0.2, // Delay start of content animation
+      duration: 0.6,
+      ease: "easeOut"
+    }
+  }
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } }
+};
 
 const HeroSection = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [isLoading, setIsLoading] = useState(true);
   const [direction, setDirection] = useState(0);
-  
-  const slides = [
-    {
-      id: 1,
-      image: '/HomePage/Hero1.webp',
-      title: 'Begin Your Journey to the Skies',
-      subtitle: '100% Online Professional Flight Training',
-      buttonText: 'Explore Courses',
-      buttonLink: '/courses'
-    },
-    {
-      id: 2,
-      image: '/HomePage/Hero2.webp',
-      title: 'Learn from Industry Veterans',
-      subtitle: 'Expert Instructors with Thousands of Flight Hours',
-      buttonText: 'Meet Our Team',
-      buttonLink: '/instructors'
-    },
-    {
-      id: 3,
-      image: '/HomePage/Hero5.webp',
-      title: 'Join Our Aviation Community',
-      subtitle: 'Connect with Fellow Aviation Enthusiasts',
-      buttonText: 'Join Now',
-      buttonLink: '/community'
-    },
-    // {
-    //   id: 3,
-    //   image: '/HomePage/Hero3.webp',
-    //   title: 'Advanced Simulator Training',
-    //   subtitle: 'Virtual Cockpit Experience with Modern Technology',
-    //   buttonText: 'View Simulators',
-    //   buttonLink: '/simulators'
-    // },
-    {
-      id: 4,
-      image: '/HomePage/Hero4.webp',
-      title: 'State-of-the-Art Facilities',
-      subtitle: 'World-Class Training Environment',
-      buttonText: 'Tour Our Center',
-      buttonLink: '/facilities'
-    },
-   
-  ];
 
-  // Preload images
-  useEffect(() => {
-    const preloadImages = () => {
-      slides.forEach(slide => {
-        const img = new Image();
-        img.src = slide.image;
-      });
-    };
-    preloadImages();
-    setIsLoading(false);
-  }, []);
+  // Function to handle image errors
+  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+    const target = e.target as HTMLImageElement;
+    if (!target.src.endsWith(FALLBACK_IMAGE)) { // Basic check
+        target.onerror = null;
+        target.src = FALLBACK_IMAGE;
+    }
+  };
 
+  // Auto-advance slides
   useEffect(() => {
     const interval = setInterval(() => {
       setDirection(1);
       setCurrentSlide((prev) => (prev === slides.length - 1 ? 0 : prev + 1));
-    }, 5000);
-    
+    }, 6000); // Increased interval time
+
     return () => clearInterval(interval);
   }, [slides.length]);
 
-  const handleSlideChange = (index: number) => {
+  const handleIndicatorClick = (index: number) => {
     setDirection(index > currentSlide ? 1 : -1);
     setCurrentSlide(index);
   };
 
-  const slideVariants = {
-    enter: (direction: number) => ({
-      x: direction > 0 ? '100%' : '-100%',
-      opacity: 0,
-    }),
-    center: {
-      zIndex: 1,
-      x: 0,
-      opacity: 1,
-    },
-    exit: (direction: number) => ({
-      zIndex: 0,
-      x: direction < 0 ? '100%' : '-100%',
-      opacity: 0,
-    }),
-  };
-
-  const contentVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { 
-      opacity: 1, 
-      y: 0,
-      transition: { 
-        duration: 0.6,
-        delay: 0.3,
-        ease: "easeOut"
-      } 
-    }
-  };
-
-  const buttonHoverVariants = {
-    initial: { scale: 1, boxShadow: "0px 0px 0px rgba(0,0,0,0)" },
-    hover: { 
-      scale: 1.05, 
-      boxShadow: "0px 10px 20px rgba(0,0,0,0.2)",
-      transition: { duration: 0.3 }
-    }
-  };
-
   return (
-    <section className="relative h-screen md:h-[90vh] w-full overflow-hidden">
+    <section className="relative h-[70vh] md:h-[80vh] lg:h-[90vh] w-full overflow-hidden">
+      {/* Carousel Images */} 
       <AnimatePresence initial={false} custom={direction}>
         <motion.div
-          key={currentSlide}
+          key={currentSlide} // Important: key change triggers animation
           custom={direction}
           variants={slideVariants}
           initial="enter"
@@ -130,102 +125,82 @@ const HeroSection = () => {
           exit="exit"
           transition={{
             x: { type: "spring", stiffness: 300, damping: 30 },
-            opacity: { duration: 0.2 }
+            opacity: { duration: 0.3 }
           }}
           className="absolute inset-0 w-full h-full"
         >
-          <div className="relative w-full h-full">
-            <img
-              src={slides[currentSlide].image}
-              alt={slides[currentSlide].title}
-              className="absolute inset-0 w-full h-full object-cover"
-              loading="eager"
-            />
-            <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/60" />
-          </div>
+          <img
+            src={slides[currentSlide].image}
+            alt={slides[currentSlide].title} // Dynamic alt text
+            className="absolute inset-0 w-full h-full object-cover"
+            onError={handleImageError}
+            loading="eager" // Load first image eagerly
+          />
+           {/* REMOVED GRADIENT OVERLAY DIV */}
         </motion.div>
       </AnimatePresence>
 
-      <div className="relative z-10 h-full flex items-center justify-center">
-        <div className="container mx-auto px-4">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={currentSlide}
-              variants={contentVariants}
-              initial="hidden"
-              animate="visible"
-              exit="hidden"
-              className="max-w-4xl mx-auto text-center"
+      {/* Content Overlay */} 
+      <div className="relative z-10 h-full flex items-center justify-center bg-black/30 p-4"> {/* Added subtle dark overlay for text contrast */} 
+        <motion.div
+          key={currentSlide + '-content'} // Change key to force content re-animation
+          variants={contentVariants}
+          initial="hidden"
+          animate="visible"
+          exit="hidden" // Ensure content fades out
+          className="max-w-4xl mx-auto text-center text-white"
+        >
+          <motion.h1
+            variants={itemVariants}
+            className="text-4xl md:text-6xl lg:text-7xl font-bold mb-4 tracking-tight drop-shadow-lg" // Added drop-shadow
+          >
+            {slides[currentSlide].title}
+          </motion.h1>
+
+          <motion.p
+            variants={itemVariants}
+            className="text-xl md:text-2xl mb-8 text-white/95 max-w-3xl mx-auto drop-shadow-md" // Added drop-shadow
+          >
+            {slides[currentSlide].subtitle}
+          </motion.p>
+
+          <motion.div variants={itemVariants} className="flex justify-center gap-4 md:gap-6">
+            <Button
+              asChild
+              size="lg"
+              className={cn(
+                "min-h-[52px] text-lg px-8 transition duration-300 ease-in-out transform hover:scale-[1.03] shadow-lg hover:shadow-xl",
+                aviationButtonBg,
+                aviationButtonDarkBg,
+                "text-white"
+              )}
             >
-              <motion.h1 
-                className="text-4xl md:text-6xl lg:text-7xl font-bold mb-4 text-white tracking-tight"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
+              <Link to={slides[currentSlide].buttonLink}>
+                {slides[currentSlide].buttonText}
+              </Link>
+            </Button>
+            {/* Optional Secondary Button - Keep consistent? */}
+             <Button
+                asChild
+                variant="outline"
+                size="lg"
+                className="min-h-[52px] text-lg px-8 border-white text-white hover:bg-white/10 hover:text-white transition duration-300 ease-in-out transform hover:scale-[1.03] shadow-lg hover:shadow-xl hidden sm:inline-flex" // Hide on small screens if crowded
               >
-                {slides[currentSlide].title}
-              </motion.h1>
-              
-              <motion.p 
-                className="text-xl md:text-2xl mb-8 text-white/90 max-w-3xl mx-auto"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.1 }}
-              >
-                {slides[currentSlide].subtitle}
-              </motion.p>
-              
-              <motion.div
-                className="flex flex-col sm:flex-row justify-center gap-6 mt-10"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.2 }}
-              >
-                <motion.div
-                  variants={buttonHoverVariants}
-                  initial="initial"
-                  whileHover="hover"
-                >
-                  <Button 
-                    className="bg-[#0C6E72] hover:bg-[#219099] text-white text-lg px-8 py-6 w-full sm:w-auto transition-colors duration-300"
-                    asChild
-                  >
-                    <Link to={slides[currentSlide].buttonLink}>
-                      {slides[currentSlide].buttonText}
-                    </Link>
-                  </Button>
-                </motion.div>
-                
-                <motion.div
-                  variants={buttonHoverVariants}
-                  initial="initial"
-                  whileHover="hover"
-                >
-                  <Button 
-                    variant="outline" 
-                    className="border-white text-white hover:bg-white/10 text-lg px-8 py-6 w-full sm:w-auto transition-colors duration-300"
-                    asChild
-                  >
-                    <Link to="/schedule">
-                      Schedule a Free Consultation <ArrowRight className="ml-2 h-5 w-5" />
-                    </Link>
-                  </Button>
-                </motion.div>
-              </motion.div>
-            </motion.div>
-          </AnimatePresence>
-        </div>
+                <Link to="/contact">Contact Us <ArrowRight className="ml-2 h-5 w-5" /></Link>
+              </Button>
+          </motion.div>
+        </motion.div>
       </div>
 
-      {/* Slide indicators */}
-      <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 flex space-x-3 z-20">
+      {/* Slide Indicators */} 
+      <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 z-20 flex space-x-2.5">
         {slides.map((_, index) => (
           <button
             key={index}
-            className={`w-3 h-3 rounded-full transition-all duration-300 ${
-              index === currentSlide ? 'bg-[#0C6E72] w-8' : 'bg-white/50'
+            className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ease-out ${ 
+              index === currentSlide ? 'bg-white scale-125' : 'bg-white/50 hover:bg-white/75'
             }`}
-            onClick={() => handleSlideChange(index)}
+            onClick={() => handleIndicatorClick(index)}
             aria-label={`Go to slide ${index + 1}`}
           />
         ))}
