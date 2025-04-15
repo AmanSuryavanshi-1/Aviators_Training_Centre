@@ -7,38 +7,36 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Award, BookOpen, Briefcase, UserCheck } from 'lucide-react';
 
-// Placeholders & Utilities
-const instructorHeaderUrl = "/Course2.webp";
-// Removed getAvatarUrl function
-const placeholderAvatarUrl = "/placeholder.svg"; // Define the local placeholder path
+// Image paths from restructured public folder
+const instructorHeaderUrl = "/HomePage/Course2.webp";
 
-// Updated Instructor Data using the local placeholder
+// Instructor Data with updated image paths
 const instructors = [
   {
     name: "Lead Instructor - ATPL",
     title: "- airline pilot and educator",
-    avatar: placeholderAvatarUrl, // Using local placeholder
+    avatar: "/Instructor/Instructor1.webp", // Using instructor image from public folder
     bio: "A seasoned Airline Captain with extensive operational experience, now dedicated to shaping the next generation of ATPL holders. Provides in-depth instruction on advanced navigation, complex aircraft systems, and meteorology, ensuring candidates are prepared for the rigors of airline operations.",
     expertise: ["Advanced Navigation", "Aviation Meteorology", "Airline Operations", "Aircraft Systems"]
   },
   {
     name: "Senior Instructor - CPL",
     title: "- airline pilot and educator",
-    avatar: placeholderAvatarUrl, // Using local placeholder
+    avatar: "/Instructor/Instructor2.webp", // Using instructor image from public folder
     bio: "An accomplished Commercial Pilot and dedicated educator, specializing in CPL and technical subjects. Creates a clear pathway for students to master air regulations, aircraft technical knowledge, and flight principles, building a strong foundation for a commercial aviation career.",
     expertise: ["Air Regulations", "Technical General", "Flight Instruction", "Aerodynamics"]
   },
   {
     name: "RTR(A) Specialist",
     title: "Communications Expert",
-    avatar: placeholderAvatarUrl, // Using local placeholder
+    avatar: "/Instructor/Instructor3.webp", // Using instructor image from public folder
     bio: "Expert in aviation communication, focusing exclusively on RTR(A) preparation. Delivers targeted training on radio telephony phraseology, procedures, and aviation English, equipping students with the confidence and skills needed to excel in the RTR(A) examination.",
     expertise: ["Radio Telephony", "Aviation English", "Exam Preparation", "ATC Procedures"]
   },
    {
     name: "Interview Prep Coach",
     title: "Confidence & Career Advisor",
-    avatar: placeholderAvatarUrl, // Using local placeholder
+    avatar: "/Instructor/Instructor1.webp", // Reusing instructor image as placeholder for fourth instructor
     bio: "A specialized coach focused on equipping aspiring pilots with the confidence and skills needed for successful airline interviews. Offers tailored guidance on interview techniques, communication strategies, and understanding airline expectations, paving the way for career success.",
     expertise: ["Interview Techniques", "Aviation Career Guidance", "English Proficiency", "Soft Skills"]
   }

@@ -12,7 +12,7 @@ const HeroSection = () => {
   const slides = [
     {
       id: 1,
-      image: '/Hero1.webp',
+      image: '/HomePage/Hero1.webp',
       title: 'Begin Your Journey to the Skies',
       subtitle: '100% Online Professional Flight Training',
       buttonText: 'Explore Courses',
@@ -20,7 +20,7 @@ const HeroSection = () => {
     },
     {
       id: 2,
-      image: '/Hero2.webp',
+      image: '/HomePage/Hero2.webp',
       title: 'Learn from Industry Veterans',
       subtitle: 'Expert Instructors with Thousands of Flight Hours',
       buttonText: 'Meet Our Team',
@@ -28,7 +28,7 @@ const HeroSection = () => {
     },
     {
       id: 3,
-      image: '/Hero5.webp',
+      image: '/HomePage/Hero5.webp',
       title: 'Join Our Aviation Community',
       subtitle: 'Connect with Fellow Aviation Enthusiasts',
       buttonText: 'Join Now',
@@ -36,7 +36,7 @@ const HeroSection = () => {
     },
     // {
     //   id: 3,
-    //   image: '/Hero3.webp',
+    //   image: '/HomePage/Hero3.webp',
     //   title: 'Advanced Simulator Training',
     //   subtitle: 'Virtual Cockpit Experience with Modern Technology',
     //   buttonText: 'View Simulators',
@@ -44,7 +44,7 @@ const HeroSection = () => {
     // },
     {
       id: 4,
-      image: '/Hero4.webp',
+      image: '/HomePage/Hero4.webp',
       title: 'State-of-the-Art Facilities',
       subtitle: 'World-Class Training Environment',
       buttonText: 'Tour Our Center',

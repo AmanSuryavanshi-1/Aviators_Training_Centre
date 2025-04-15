@@ -6,11 +6,12 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 
 const InstructorsSection = () => {
+  // Instructor data with images from restructured public folder
   const instructors = [
     {
       name: 'Capt. Michael Reynolds',
       position: 'Chief Flight Instructor',
-      image: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80',
+      image: '/Instructor/Instructor1.webp',
       bio: 'Former airline captain with over 15,000 flight hours. Specialized in Boeing 737 and Airbus A320 type ratings.',
       social: {
         facebook: 'https://facebook.com',
@@ -21,7 +22,7 @@ const InstructorsSection = () => {
     {
       name: 'Sarah Martinez',
       position: 'Advanced Training Specialist',
-      image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80',
+      image: '/Instructor/Instructor2.webp',
       bio: 'Commercial pilot with extensive experience in instrument training and aerobatics. FAA certified with 8,000+ flight hours.',
       social: {
         facebook: 'https://facebook.com',
@@ -32,7 +33,7 @@ const InstructorsSection = () => {
     {
       name: 'David Chen',
       position: 'Ground School Director',
-      image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80',
+      image: '/Instructor/Instructor3.webp',
       bio: 'Aerospace engineer with a passion for teaching. Specializes in aviation theory, navigation, and flight planning.',
       social: {
         facebook: 'https://facebook.com',

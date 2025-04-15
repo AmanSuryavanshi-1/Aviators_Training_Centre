@@ -17,18 +17,18 @@ const aviationButtonBg = 'bg-teal-600 hover:bg-teal-700'; // Example button back
 const aviationButtonDarkBg = 'dark:bg-teal-500 dark:hover:bg-teal-600'; // Example dark mode button background
 
 const HERO_VIDEO_URL = "/placeholder-video.mp4"; // Replace with your actual video path in /public
-const FALLBACK_IMAGE = "/placeholder.svg"; // Generic fallback in /public
+const FALLBACK_IMAGE = "/HomePage/Hero5.webp"; // Generic fallback in /public if video doesn't loads
 
-// Specific Images (ensure these exist in /public or update paths)
-const NAV_IMAGE = "/Navigation.jpg";
-const MET_IMAGE = "/Meteorology.jpg";
-const REGS_IMAGE = "/ICAO regs.jpg";
-const TECH_GEN_IMAGE = "/technical gen.webp";
-const TECH_SPEC_IMAGE = "/Course3.webp"; // Placeholder, use relevant image
-const RTR_IMAGE = "/rtr.webp";
-const TYPE_RATING_IMAGE = "/Course2.webp"; // Placeholder, use relevant image
-const ONE_ON_ONE_IMAGE = "/Hero5.webp"; // Placeholder, use relevant image
-const INTERVIEW_PREP_IMAGE = "/Hero4.webp"; // Placeholder, use relevant image
+// Specific Images from public/Courses folder
+const NAV_IMAGE = "/Courses/Navigation.jpg";
+const MET_IMAGE = "/Courses/Meteorology.jpg";
+const REGS_IMAGE = "/Courses/ICAO regs.jpg";
+const TECH_GEN_IMAGE = "/Courses/technical gen.webp";
+const TECH_SPEC_IMAGE = "/HomePage/Course3.webp"; // Using Course3 from HomePage folder
+const RTR_IMAGE = "/Courses/rtr.webp";
+const TYPE_RATING_IMAGE = "/HomePage/Course2.webp"; // Using Course2 from HomePage folder
+const ONE_ON_ONE_IMAGE = "/HomePage/Hero5.webp"; // Using Hero5 from HomePage folder
+const INTERVIEW_PREP_IMAGE = "/HomePage/Hero4.webp"; // Using Hero4 from HomePage folder
 
 // --- Animation Variants ---
 const sectionVariants = {
@@ -178,17 +178,17 @@ const Courses: React.FC = () => {
            <source src={HERO_VIDEO_URL} type="video/mp4" />
             Your browser does not support the video tag.
         </video>
-        <div className="absolute inset-0 bg-gradient-to-r from-[rgba(7,94,104,0.75)] to-[rgba(12,110,114,0.75)] z-10"></div>
+        <div className="absolute inset-0 bg-gradient-to-r from-[rgba(7,94,104,0.35)] to-[rgba(12,110,114,0.65)] z-10"></div>
         <motion.div
           className="relative z-20 max-w-4xl p-6 md:p-10"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3, duration: 0.8 }}
         >
-          <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold leading-tight tracking-tight mb-3">
+          <h1 className="drop-shadow-md text-4xl sm:text-5xl md:text-6xl font-extrabold leading-tight tracking-tight mb-3">
             Your Flight Path Starts Here
           </h1>
-          <p className="text-lg md:text-xl text-white/90 max-w-2xl mx-auto">
+          <p className="text-lg drop-shadow-md md:text-xl text-white/90 max-w-2xl mx-auto">
             Comprehensive DGCA Ground School, Type Rating Prep, and Pilot Career Services.
           </p>
         </motion.div>

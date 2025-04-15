@@ -11,7 +11,7 @@ const CoursesSection = () => {
       description: 'The foundation of your aviation career. Learn to fly solo and carry passengers in good weather conditions.',
       duration: '3-6 months',
       hours: '40-60 flight hours',
-      image: '/Course1.webp',
+      image: '/HomePage/Course1.webp',
       path: '/courses/private-pilot'
     },
     {
@@ -19,7 +19,7 @@ const CoursesSection = () => {
       description: 'Take your skills to the professional level and become eligible for paid flying positions.',
       duration: '6-12 months',
       hours: '200+ flight hours',
-      image: '/Course2.webp',
+      image: '/HomePage/Course2.webp',
       path: '/courses/commercial-pilot'
     },
     {
@@ -27,7 +27,7 @@ const CoursesSection = () => {
       description: 'The highest level of aircraft pilot certification, required for airline captains.',
       duration: '18-24 months',
       hours: '1,500+ flight hours',
-      image: '/Course3.webp',
+      image: '/HomePage/Course3.webp',
       path: '/courses/atpl'
     }
   ];

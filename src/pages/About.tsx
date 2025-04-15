@@ -9,9 +9,9 @@ import { Target, Users, Telescope, Heart, MessageSquare, UserCheck, Clock, Dolla
 import { Link } from 'react-router-dom';
 import { cn } from "@/lib/utils";
 
-// Updated Placeholders with new Unsplash URLs
-const aboutHeroUrl = "https://images.unsplash.com/photo-1484603249447-659936a09819?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1770&q=80"; // Cockpit view
-const storyImageUrl = "https://images.unsplash.com/photo-1559166631-ef208440a05e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1770&q=80"; // Modern classroom/study
+// Image paths from restructured public folder
+const aboutHeroUrl = "/Plane3.jpg"; // Cockpit view
+const storyImageUrl = "/About/About2.avif"; // Modern classroom/study
 
 // Animation Variants (consistent with previous definitions)
 const sectionVariants = {
