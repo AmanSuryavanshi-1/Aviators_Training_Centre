@@ -8,32 +8,51 @@ import Index from "@/pages/Index";
 import ContactPage from "@/pages/ContactPage";
 import Schedule from "@/pages/Schedule";
 import NotFound from "@/pages/NotFound";
-import About from "@/pages/About"; // Import new page
-import Courses from "@/pages/Courses"; // Import new page
-import Instructors from "@/pages/Instructors"; // Import new page
-import FAQ from "@/pages/FAQ"; // Import new page
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import About from "@/pages/About";
+import Courses from "@/pages/Courses";
+import Instructors from "@/pages/Instructors";
+import FAQ from "@/pages/FAQ";
+import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom"; // Removed BrowserRouter import, Added Outlet
+import ScrollToTop from "@/components/shared/ScrollToTop";
 
 const queryClient = new QueryClient();
 
-// Define routes including the new placeholder pages
+// Layout component that includes ScrollToTop and renders child routes
+const RootLayout = () => {
+  return (
+    <>
+      <ScrollToTop />
+      {/* Outlet renders the matched child route component */}
+      <Outlet />
+    </>
+  );
+};
+
+// Define routes using the layout
 const router = createBrowserRouter([
-  { path: "/", element: <Index /> },
-  { path: "/about", element: <About /> },
-  { path: "/courses", element: <Courses /> },
-  { path: "/instructors", element: <Instructors /> },
-  { path: "/faq", element: <FAQ /> },
-  { path: "/contact", element: <ContactPage /> },
-  { path: "/schedule", element: <Schedule /> },
-  { path: "*", element: <NotFound /> },
+  {
+    element: <RootLayout />,
+    children: [
+      { path: "/", element: <Index /> },
+      { path: "/about", element: <About /> },
+      { path: "/courses", element: <Courses /> },
+      { path: "/instructors", element: <Instructors /> },
+      { path: "/faq", element: <FAQ /> },
+      { path: "/contact", element: <ContactPage /> },
+      { path: "/schedule", element: <Schedule /> },
+      { path: "*", element: <NotFound /> }, // 404 route still works here
+    ]
+  }
 ]);
+
 
 const App: React.FC = () => (
   <QueryClientProvider client={queryClient}>
-    <ThemeProvider defaultTheme="system" storageKey="skybound-ui-theme"> {/* Changed to system to respect user preference */} 
+    <ThemeProvider defaultTheme="system" storageKey="skybound-ui-theme">
       <TooltipProvider>
         <Toaster />
         <Sonner />
+        {/* RouterProvider now renders the routes defined above */}
         <RouterProvider router={router} />
       </TooltipProvider>
     </ThemeProvider>

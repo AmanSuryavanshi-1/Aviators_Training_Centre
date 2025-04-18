@@ -14,7 +14,7 @@ const aviationButtonDarkBg = 'dark:bg-teal-500 dark:hover:bg-teal-600';
 const slides = [
   {
     id: 1,
-    image: '/HomePage/Hero1.webp',
+    image: '/HomePage/Hero3.webp',
     title: 'Your Pilot Career Starts Here',
     subtitle: 'Master DGCA exams with expert-led online ground school.',
     buttonText: 'Explore Courses',
@@ -30,7 +30,7 @@ const slides = [
   },
   {
     id: 3,
-    image: '/HomePage/Hero4.webp', // Using Hero4
+    image: '/HomePage/Hero1.webp', 
     title: 'Flexible Online Ground School',
     subtitle: 'Study at your own pace with our comprehensive curriculum.',
     buttonText: 'View Course Structure',
@@ -38,7 +38,7 @@ const slides = [
   },
   {
     id: 4,
-    image: '/HomePage/Hero5.webp', // Using Hero5
+    image: '/HomePage/Hero4.webp', // Using Hero5
     title: 'Dedicated Support & Guidance',
     subtitle: 'Personalized attention and 24/7 doubt clearing.',
     buttonText: 'Contact Admissions',
