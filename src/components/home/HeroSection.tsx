@@ -4,6 +4,7 @@ import { ArrowRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { cn } from "@/lib/utils";
+import { BookDemoButton } from '@/components/shared/BookDemoButton'; // Import the new button
 
 // --- Configuration ---
 const aviationButtonBg = 'bg-teal-600 hover:bg-teal-700';
@@ -164,7 +165,9 @@ const HeroSection = () => {
             {slides[currentSlide].subtitle}
           </motion.p>
 
-          <motion.div variants={itemVariants} className="flex justify-center gap-4 md:gap-6">
+          {/* --- Action Buttons --- */}
+          <motion.div variants={itemVariants} className="flex flex-wrap justify-center items-center gap-4 md:gap-6">
+            {/* Primary Action Button (from slide data) */}
             <Button
               asChild
               size="lg"
@@ -179,16 +182,22 @@ const HeroSection = () => {
                 {slides[currentSlide].buttonText}
               </Link>
             </Button>
-            {/* Optional Secondary Button - Keep consistent? */}
-             <Button
+
+            {/* Book a Demo Button */}
+            <BookDemoButton size="lg" className="min-h-[52px] text-lg px-8 shadow-lg hover:shadow-xl" />
+
+            {/* Optional Secondary/Contact Button (removed ArrowRight icon for space) */}
+             {/* <Button
                 asChild
                 variant="outline"
                 size="lg"
                 className="min-h-[52px] text-lg px-8 border-white text-white hover:bg-white/10 hover:text-white transition duration-300 ease-in-out transform hover:scale-[1.03] shadow-lg hover:shadow-xl hidden sm:inline-flex" // Hide on small screens if crowded
               >
-                <Link to="/contact">Contact Us <ArrowRight className="ml-2 h-5 w-5" /></Link>
-              </Button>
+                <Link to="/contact">Contact Us</Link>
+              </Button> */}
           </motion.div>
+          {/* --- End Action Buttons --- */}
+
         </motion.div>
       </div>
 

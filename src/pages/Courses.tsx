@@ -8,6 +8,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { BookMarked, MicVocal, Plane, UserCheck, GraduationCap, CheckSquare, RadioTower, Briefcase, MessageCircle, Users, Clock, BarChart, Award, Map, CloudSun, Gavel, Wrench, UsersRound, PhoneForwarded } from 'lucide-react'; // Added more specific icons, including PhoneForwarded
 import { Link } from 'react-router-dom';
 import { cn } from "@/lib/utils";
+import { BookDemoButton } from '@/components/shared/BookDemoButton'; // Import the BookDemoButton
 
 // --- Configuration ---
 // Ensure these color variables match your tailwind.config.ts
@@ -96,7 +97,7 @@ const additionalServicesData = [
         description: "Affordable pre & post type rating guidance, covering previous exam questions and full preparation for major airline exams (Air India Express, IndiGo, Air India).",
         image: TYPE_RATING_IMAGE,
         link: "/contact",
-        learnMoreText: "Prepare for Type Rating"
+        learnMoreText: "Prep for Type Rating" // Updated text
     },
     {
         icon: UserCheck, // Changed icon
@@ -248,6 +249,10 @@ const Courses: React.FC = () => {
                           {subject.description}
                         </CardDescription>
                      </CardContent>
+                      {/* Footer for Ground School Cards - Added Book Demo here too */}
+                      <CardFooter className="p-5 mt-auto border-t border-border/30 pt-4 flex justify-end gap-3">
+                          <BookDemoButton size="sm" />
+                       </CardFooter>
                   </Card>
                 </motion.div>
               </motion.div>
@@ -280,14 +285,15 @@ const Courses: React.FC = () => {
             </motion.div>
 
           </div>
-           <motion.div variants={itemVariants} className="text-center">
+           {/* Commented out the general Enroll Now button, as each card has a demo button */}
+           {/* <motion.div variants={itemVariants} className="text-center">
                 <h3 className="text-2xl font-semibold mb-4 text-foreground">Ready to Master the Syllabus?</h3>
                 <Link to="/contact">
                     <Button size="lg" className={cn("min-h-[48px] transition duration-300 ease-in-out transform hover:scale-[1.03]", aviationButtonBg, aviationButtonDarkBg, "text-white")}>
                         Enroll Now
                     </Button>
                 </Link>
-            </motion.div>
+            </motion.div> */}
         </motion.section>
 
          {/* Additional Training & Prep Services Section */}
@@ -331,16 +337,24 @@ const Courses: React.FC = () => {
                                             {service.description}
                                         </CardDescription>
                                     </CardContent>
-                                    <CardFooter className="p-0 mt-auto">
-                                        <Link to={service.link} className="w-full sm:w-auto">
+                                    {/* --- Card Footer with Buttons --- */}
+                                    <CardFooter className="p-0 mt-auto flex flex-wrap gap-3"> {/* Use flex-wrap and gap */}
+                                        {/* Learn More Button */}
+                                        <Link to={service.link} className="flex-grow sm:flex-grow-0"> {/* Allow grow on small screens */}
                                             <Button
-                                                variant="outline" // Changed variant for distinction
-                                                className={cn("w-full sm:w-auto min-h-[44px] border-teal-500 text-teal-600 hover:bg-teal-50 dark:border-teal-400 dark:text-teal-300 dark:hover:bg-teal-900/30 transition duration-300", "group-hover:border-teal-600 dark:group-hover:border-teal-300")}
+                                                variant="outline"
+                                                size="sm" // Standardize size
+                                                className={cn("w-full sm:w-auto min-h-[40px] border-teal-500 text-teal-600 hover:bg-teal-50 dark:border-teal-400 dark:text-teal-300 dark:hover:bg-teal-900/30 transition duration-300", "group-hover:border-teal-600 dark:group-hover:border-teal-300")}
                                             >
                                                 {service.learnMoreText || 'Learn More'}
                                             </Button>
                                         </Link>
+                                        {/* Book Demo Button */}
+                                        <div className="flex-grow sm:flex-grow-0"> {/* Allow grow on small screens */}
+                                            <BookDemoButton size="sm" className="w-full sm:w-auto min-h-[40px]" />
+                                        </div>
                                     </CardFooter>
+                                    {/* --- End Card Footer --- */}
                                 </div>
                             </Card>
                         </motion.div>
