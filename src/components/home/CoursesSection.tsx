@@ -1,19 +1,19 @@
 import React from 'react';
-import { Button } from '@/components/ui/button';
-// Consistent icons
+// Removed import { Button } from '@/components/ui/button';
+// Consistent icons - Keeping ChevronRight and LinkIcon
 import { GraduationCap, RadioTower, PlaneTakeoff, ChevronRight, Link as LinkIcon } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom'; // Keep Link import (might be used elsewhere, though not directly for replaced buttons)
 import { cn } from '@/lib/utils';
 import { motion } from 'framer-motion';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { SolidButton } from '@/components/shared/SolidButton'; // Import SolidButton
+import { TransparentButton } from '@/components/shared/TransparentButton'; // Import TransparentButton
 
-// --- Configuration (Matching other pages) ---
+// --- Configuration (Removed button style variables) ---
 const aviationPrimary = 'text-teal-700 dark:text-teal-300';
 const aviationSecondary = 'text-teal-600 dark:text-teal-400';
-const aviationButtonBg = 'bg-teal-600 hover:bg-teal-700';
-const aviationButtonDarkBg = 'dark:bg-teal-500 dark:hover:bg-teal-600';
 
-// --- Animation Variants (Define or import) ---
+// --- Animation Variants (Unchanged) ---
 const sectionVariants = {
   hidden: { opacity: 0, y: 50 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut", staggerChildren: 0.1 } }
@@ -29,7 +29,7 @@ const cardHoverEffect = {
   hover: { y: -5, boxShadow: "0px 10px 20px rgba(0, 0, 0, 0.12)", transition: { duration: 0.3, ease: "circOut" } }
 };
 
-// --- Course Data (Updated to match actual offerings) ---
+// --- Course Data (Unchanged) ---
 const courses = [
   {
     icon: GraduationCap,
@@ -53,18 +53,17 @@ const courses = [
     path: '/courses'
   }
 ];
-
-const FALLBACK_IMAGE = "/HomePage/Hero5.webp"; // Fallback for course images
+const FALLBACK_IMAGE = "/HomePage/Hero5.webp";
 
 const CoursesSection: React.FC = () => {
 
   const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
-    const target = e.target as HTMLImageElement;
-    if (!target.src.endsWith(FALLBACK_IMAGE)) {
-        target.onerror = null;
-        target.src = FALLBACK_IMAGE;
-    }
-  };
+        const target = e.target as HTMLImageElement;
+        if (!target.src.endsWith(FALLBACK_IMAGE)) {
+            target.onerror = null;
+            target.src = FALLBACK_IMAGE;
+        }
+    };
 
   return (
     <motion.section
@@ -73,7 +72,6 @@ const CoursesSection: React.FC = () => {
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, amount: 0.1 }}
-      // Use standard section structure, padding/spacing from parent
     >
       <div className="text-center mb-12 md:mb-16">
         <motion.h2
@@ -96,7 +94,7 @@ const CoursesSection: React.FC = () => {
           <motion.div
             key={index}
             variants={itemVariants}
-            className="flex" // Ensure motion.div fills height for cardHoverEffect
+            className="flex"
           >
             <motion.div
               className="relative h-full w-full group"
@@ -127,21 +125,19 @@ const CoursesSection: React.FC = () => {
                       <CardTitle className="text-lg font-semibold text-foreground">{course.title}</CardTitle>
                   </div>
                   {/* Description */} 
-                  <CardDescription className="text-sm text-foreground/80 flex-grow mb-4"> {/* Use CardDescription, add flex-grow */} 
+                  <CardDescription className="text-sm text-foreground/80 flex-grow mb-4">
                     {course.description}
                   </CardDescription>
                 </CardContent>
-                <CardFooter className="p-5 pt-0 mt-auto"> {/* Footer takes remaining space */}
-                  <Button
-                    variant="outline"
-                    className={cn("w-full min-h-[44px] border-teal-500 text-teal-600 hover:bg-teal-50 dark:border-teal-400 dark:text-teal-300 dark:hover:bg-teal-900/30 transition duration-300", "group-hover:border-teal-600 dark:group-hover:border-teal-300")}
-                    asChild
-                  >
-                    <Link to={course.path} className="flex items-center justify-center gap-2">
-                      Learn More
-                      <ChevronRight className="h-4 w-4" />
-                    </Link>
-                  </Button>
+                <CardFooter className="p-5 pt-0 mt-auto">
+                  {/* Replaced Button with TransparentButton */}
+                  <TransparentButton
+                    href={course.path}
+                    icon={ChevronRight} // Using the same icon
+                    label="Learn More"
+                    // Add className if specific sizing needed, e.g., "w-full min-h-[44px]"
+                    className="w-full"
+                  />
                 </CardFooter>
               </Card>
             </motion.div>
@@ -149,25 +145,17 @@ const CoursesSection: React.FC = () => {
         ))}
       </div>
 
-      {/* Optional: Button to view all courses page */}
+      {/* Button to view all courses page - Updated */} 
       <motion.div
         variants={itemVariants}
         className="mt-12 text-center"
        >
-        <Button
-          size="lg"
-          className={cn(
-              "min-h-[48px] transition duration-300 ease-in-out transform hover:scale-[1.03]",
-              aviationButtonBg,
-              aviationButtonDarkBg,
-              "text-white inline-flex items-center gap-2"
-          )}
-          asChild
-        >
-          <Link to="/courses">
-              View All Course Details <LinkIcon className="h-4 w-4"/>
-          </Link>
-        </Button>
+        {/* Replaced Button with SolidButton */}
+        <SolidButton
+           href="/courses"
+           icon={LinkIcon} // Using the same icon
+           label="View All Course Details"
+         />
       </motion.div>
 
     </motion.section>

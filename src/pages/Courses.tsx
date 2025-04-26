@@ -3,21 +3,22 @@ import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { motion } from 'framer-motion';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+// Removed Button import if no longer directly needed, or kept if still used elsewhere
+// import { Button } from "@/components/ui/button";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { MicVocal, Plane, UserCheck, GraduationCap, CheckSquare, RadioTower, Briefcase, MessageCircle, Users, Clock, Award, Map, CloudSun, Gavel, Wrench, UsersRound, PhoneForwarded } from 'lucide-react';
+// Added ArrowRight and Info icons (ArrowRight is already imported)
+import { MicVocal, Plane, UserCheck, GraduationCap, CheckSquare, RadioTower, Briefcase, MessageCircle, Users, Clock, Award, Map, CloudSun, Gavel, Wrench, UsersRound, PhoneForwarded, ArrowRight, Info } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { cn } from "@/lib/utils";
 import { BookDemoButton } from '@/components/shared/BookDemoButton';
-import { UrgencyCTA } from '@/components/shared/UrgencyCTA'; // Import the new CTA component
+import { UrgencyCTA } from '@/components/shared/UrgencyCTA';
+import { TransparentButton } from '@/components/shared/TransparentButton'; // Import TransparentButton
 
-// --- Configuration ---
+// --- Configuration (Removed button style variables) ---
 const aviationPrimary = 'text-teal-700 dark:text-teal-300';
 const aviationSecondary = 'text-teal-600 dark:text-teal-400';
-const aviationButtonBg = 'bg-teal-600 hover:bg-teal-700';
-const aviationButtonDarkBg = 'dark:bg-teal-500 dark:hover:bg-teal-600';
 
-const HERO_VIDEO_URL = "/placeholder-video.mp4";
+const HERO_VIDEO_URL = "/placeholder-video.mp4"; // Replace with actual video URL if available
 const FALLBACK_IMAGE = "/HomePage/Hero5.webp";
 
 // Specific Images from public/Courses folder
@@ -31,7 +32,7 @@ const TYPE_RATING_IMAGE = "/HomePage/Course2.webp";
 const ONE_ON_ONE_IMAGE = "/HomePage/Hero5.webp";
 const INTERVIEW_PREP_IMAGE = "/HomePage/Hero4.webp";
 
-// --- Animation Variants ---
+// --- Animation Variants (Unchanged) ---
 const sectionVariants = {
   hidden: { opacity: 0, y: 50 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut", staggerChildren: 0.1 } }
@@ -47,7 +48,8 @@ const cardHoverEffect = {
   hover: { y: -5, boxShadow: "0px 10px 20px rgba(0, 0, 0, 0.12)", transition: { duration: 0.3, ease: "circOut" } }
 };
 
-// --- Course Data ---
+
+// --- Course Data (Unchanged) ---
 const groundSchoolSubjects = [
   { icon: Map, title: "Air Navigation", description: "Mastering flight path calculations, chart reading, and navigational instruments.", image: NAV_IMAGE },
   { icon: CloudSun, title: "Meteorology", description: "Understanding atmospheric conditions, weather patterns, and forecasts.", image: MET_IMAGE },
@@ -63,7 +65,6 @@ const additionalServicesData = [
    { icon: Briefcase, title: "Interview Preparation", description: "Build confidence and skills for airline interviews with specialized practice.", image: INTERVIEW_PREP_IMAGE, link: "/contact", learnMoreText: "Ace Your Interview" },
 ];
 
-// --- Benefits/Features Data ---
 const atcFeaturesData = [
     { icon: Award, title: "High Success Rate", description: "Proven Exam Passing Record" },
     { icon: UsersRound, title: "Airline Instructors", description: "Learn from Industry Experts" },
@@ -82,28 +83,28 @@ const atcBenefitsData = [
     { title: "Comprehensive Support Services", content: "Beyond ground subjects, we offer specialized RTR(A), Type Rating prep, one-on-one classes, and interview coaching." }
 ];
 
+
 // --- Component ---
 const Courses: React.FC = () => {
 
-  // Function to handle image errors
   const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
-    const target = e.target as HTMLImageElement;
-    if (target.src !== FALLBACK_IMAGE) {
-        target.onerror = null;
-        target.src = FALLBACK_IMAGE;
-    }
-  };
+        const target = e.target as HTMLImageElement;
+        if (target.src !== FALLBACK_IMAGE) {
+            target.onerror = null;
+            target.src = FALLBACK_IMAGE;
+        }
+    };
 
-  // --- Urgency Data Calculation (Example) ---
+
   const offerEndDate = new Date();
-  offerEndDate.setDate(offerEndDate.getDate() + 14); // Offer ends in 14 days
+  offerEndDate.setDate(offerEndDate.getDate() + 14);
   const formattedEndDate = offerEndDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
 
   return (
     <div className="flex flex-col min-h-screen bg-background text-foreground">
       <Header />
 
-      {/* Hero Section */}
+      {/* Hero Section (Unchanged) */}
       <motion.section
         className="relative h-[50vh] md:h-[60vh] flex items-center justify-center text-center text-white overflow-hidden"
         initial={{ opacity: 0 }}
@@ -151,20 +152,13 @@ const Courses: React.FC = () => {
              </motion.p>
           </div>
 
-          {/* Grid for Ground School Subjects */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-12 items-stretch">
             {groundSchoolSubjects.map((subject, index) => (
               <motion.div key={index} variants={itemVariants} className="flex">
-                <motion.div
-                    className="relative h-full w-full group"
-                    whileHover="hover"
-                    initial="rest"
-                    animate="rest"
-                    variants={cardHoverEffect}
-                >
-                  <Card className="bg-card w-full h-full flex flex-col overflow-hidden rounded-lg shadow-sm border border-border transition-shadow duration-300 relative z-10">
-                     <CardHeader className="p-0 relative">
-                         <div className="h-48 overflow-hidden">
+                 <motion.div className="relative h-full w-full group" whileHover="hover" initial="rest" animate="rest" variants={cardHoverEffect} >
+                   <Card className="bg-card w-full h-full flex flex-col overflow-hidden rounded-lg shadow-sm border border-border transition-shadow duration-300 relative z-10">
+                      <CardHeader className="p-0 relative">
+                          <div className="h-48 overflow-hidden">
                             <img
                                 src={subject.image}
                                 alt={subject.title}
@@ -184,26 +178,19 @@ const Courses: React.FC = () => {
                         </CardDescription>
                      </CardContent>
                       <CardFooter className="p-5 mt-auto border-t border-border/30 pt-4 flex justify-end gap-3">
-                           {/* Pass course name to demo button state */}
                           <BookDemoButton
                              size="sm"
                              state={{ subject: `Demo Request: ${subject.title}`, courseName: subject.title }}
                            />
                        </CardFooter>
-                  </Card>
-                </motion.div>
-              </motion.div>
+                   </Card>
+                 </motion.div>
+               </motion.div>
             ))}
 
-            {/* Placeholder Contact Card */}
+            {/* Placeholder Contact Card - Updated Button */}
             <motion.div variants={itemVariants} className="flex">
-                 <motion.div
-                    className="relative h-full w-full group"
-                    whileHover="hover"
-                    initial="rest"
-                    animate="rest"
-                    variants={cardHoverEffect}
-                 >
+                 <motion.div className="relative h-full w-full group" whileHover="hover" initial="rest" animate="rest" variants={cardHoverEffect} >
                     <Card className="bg-gradient-to-br from-teal-50/50 to-sky-50/50 dark:from-gray-800/60 dark:to-gray-900/60 w-full h-full flex flex-col items-center justify-center text-center overflow-hidden rounded-lg shadow-sm border border-dashed border-border transition-shadow duration-300 relative z-10 p-6">
                        <div className="mb-4">
                           <PhoneForwarded className={cn("w-10 h-10", aviationSecondary)} />
@@ -212,11 +199,12 @@ const Courses: React.FC = () => {
                        <CardDescription className="text-sm text-foreground/80 mb-4">
                           Contact us for details about courses or enrollment.
                        </CardDescription>
-                       <Link to="/contact">
-                           <Button variant="outline" className={cn("border-teal-500 text-teal-600 hover:bg-teal-50 dark:border-teal-400 dark:text-teal-300 dark:hover:bg-teal-900/30", "group-hover:border-teal-600 dark:group-hover:border-teal-300")}>
-                               Contact Us
-                           </Button>
-                       </Link>
+                       {/* Replaced Button with TransparentButton */}
+                       <TransparentButton
+                          href="/contact"
+                          icon={PhoneForwarded} // Or MessageCircle
+                          label="Contact Us"
+                        />
                     </Card>
                  </motion.div>
             </motion.div>
@@ -224,7 +212,7 @@ const Courses: React.FC = () => {
           </div>
         </motion.section>
 
-         {/* Additional Training & Prep Services Section */}
+         {/* Additional Training & Prep Services Section - Updated Button */}
         <motion.section
            variants={sectionVariants}
            initial="hidden"
@@ -235,13 +223,7 @@ const Courses: React.FC = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-10">
                 {additionalServicesData.map((service, index) => (
                     <motion.div key={index} variants={itemVariants}>
-                        <motion.div
-                            className="relative h-full group"
-                            whileHover="hover"
-                            initial="rest"
-                            animate="rest"
-                            variants={cardHoverEffect}
-                        >
+                        <motion.div className="relative h-full group" whileHover="hover" initial="rest" animate="rest" variants={cardHoverEffect} >
                             <Card className="bg-card h-full flex flex-col sm:flex-row overflow-hidden rounded-lg shadow-sm border border-border transition-shadow duration-300 relative z-10">
                                 <div className="sm:w-1/3 flex-shrink-0 aspect-video sm:aspect-auto">
                                     <img
@@ -265,18 +247,15 @@ const Courses: React.FC = () => {
                                         </CardDescription>
                                     </CardContent>
                                     <CardFooter className="p-0 mt-auto flex flex-wrap gap-3">
-                                        <Link to={service.link} className="flex-grow sm:flex-grow-0">
-                                            <Button
-                                                variant="outline"
-                                                size="sm"
-                                                className={cn("w-full sm:w-auto min-h-[40px] border-teal-500 text-teal-600 hover:bg-teal-50 dark:border-teal-400 dark:text-teal-300 dark:hover:bg-teal-900/30 transition duration-300", "group-hover:border-teal-600 dark:group-hover:border-teal-300")}
-                                            >
-                                                {service.learnMoreText || 'Learn More'}
-                                            </Button>
-                                        </Link>
+                                        {/* Replaced Button with TransparentButton */}
+                                        <TransparentButton
+                                            href={service.link}
+                                            icon={ArrowRight} // Or Info icon
+                                            label={service.learnMoreText || 'Learn More'}
+                                            // Adjust size/padding if needed via className prop, but relying on defaults
+                                        />
                                         <div className="flex-grow sm:flex-grow-0">
-                                             {/* Pass service name to demo button state */}
-                                            <BookDemoButton
+                                             <BookDemoButton
                                                size="sm"
                                                className="w-full sm:w-auto min-h-[40px]"
                                                state={{ subject: `Demo Request: ${service.title}`, courseName: service.title }}
@@ -291,10 +270,10 @@ const Courses: React.FC = () => {
             </div>
         </motion.section>
 
-        {/* --- Urgency CTA Section --- */}
+        {/* Urgency CTA Section (Unchanged) */}
         <UrgencyCTA offerEndDate={offerEndDate} formattedEndDate={formattedEndDate} />
 
-        {/* ATC Features Section */}
+        {/* ATC Features Section (Unchanged) */}
         <motion.section
           variants={sectionVariants}
           initial="hidden"
@@ -320,7 +299,7 @@ const Courses: React.FC = () => {
             </div>
         </motion.section>
 
-        {/* ATC Benefits Accordion Section */}
+        {/* ATC Benefits Accordion Section (Unchanged) */}
         <motion.section
           variants={sectionVariants}
           initial="hidden"

@@ -49,25 +49,10 @@ const Index: React.FC = () => {
         {/* Instructors Section */}
         <InstructorsSection />
 
-        {/* FAQ Section - Wrapped in standard section structure */}
-        <motion.section
-          variants={sectionVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.1 }}
-          className="max-w-4xl mx-auto" // Center FAQ
-        >
-          <motion.h2
-            variants={itemVariants}
-            className={cn("text-3xl md:text-4xl font-bold text-center mb-12 md:mb-16", aviationPrimary)} // Consistent heading
-          >
-            Frequently Asked Questions
-          </motion.h2>
-          <motion.div variants={itemVariants}>
-            {/* Assuming FAQ component uses appropriate internal styling */}
-            <FAQ showAll={false} showHeader={false} />
-          </motion.div>
-        </motion.section>
+        {/* FAQ Section - Use the updated component */}
+        {/* We let the FAQ component handle its own header and styling */}
+        {/* Pass showAll={false} to limit FAQs and show the "View All" button */}
+        <FAQ showAll={false} />
 
         {/* CTA Section */}
         <CTASection />

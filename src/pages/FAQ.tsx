@@ -103,7 +103,8 @@ const FAQPage: React.FC = () => {
             </motion.div>
         </motion.section>
 
-        {/* Contact Prompt Section */}
+        {/* Contact Prompt Section - REMOVED */}
+        {/*
         <motion.section
             variants={sectionVariants}
             initial="hidden"
@@ -122,7 +123,7 @@ const FAQPage: React.FC = () => {
                    animate="rest"
                    variants={cardHoverEffect}
                >
-                   {/* Styled like the placeholder card from Courses.tsx */}
+
                    <Card className="bg-gradient-to-br from-teal-50/50 to-sky-50/50 dark:from-gray-800/60 dark:to-gray-900/60 w-full h-full flex flex-col items-center justify-center text-center overflow-hidden rounded-lg shadow-sm border border-dashed border-border transition-shadow duration-300 relative z-10 p-8 md:p-10">
                        <div className="mb-4">
                           <PhoneForwarded className={cn("w-10 h-10", aviationSecondary)} />
@@ -140,6 +141,7 @@ const FAQPage: React.FC = () => {
                </motion.div>
            </motion.div>
         </motion.section>
+        */}
 
       </main>
 

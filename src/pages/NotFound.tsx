@@ -3,21 +3,20 @@ import { useLocation } from "react-router-dom";
 import { useEffect } from "react";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
-import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
-import { Home, Compass } from "lucide-react"; // Using Compass icon
+// Removed Button import
+import { Link } from "react-router-dom"; // Keep Link if used elsewhere
+import { Home, Compass } from "lucide-react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
+import { SolidButton } from '@/components/shared/SolidButton'; // Import SolidButton
 
-// --- Configuration ---
+// --- Configuration (Removed button style variables) ---
 const aviationPrimary = 'text-teal-700 dark:text-teal-300';
 const aviationSecondary = 'text-teal-600 dark:text-teal-400';
-const aviationButtonBg = 'bg-teal-600 hover:bg-teal-700';
-const aviationButtonDarkBg = 'dark:bg-teal-500 dark:hover:bg-teal-600';
-const graphicUrl = "/public/Plane2.webp"; // Example graphic
-const FALLBACK_IMAGE = "/placeholder.svg"; // Fallback for graphic
+const graphicUrl = "/public/Plane2.webp";
+const FALLBACK_IMAGE = "/placeholder.svg";
 
-// --- Animation Variants ---
+// --- Animation Variants (Unchanged) ---
 const containerVariants = {
   hidden: { opacity: 0 },
   visible: {
@@ -44,24 +43,22 @@ const graphicVariants = {
     }
 };
 
+
 const NotFound: React.FC = () => {
   const location = useLocation();
 
   useEffect(() => {
-    // Keep the console error for debugging
-    console.error(
-      "404 Error: User attempted to access non-existent route:",
-      location.pathname
-    );
+    console.error("404 Error: User attempted to access non-existent route:", location.pathname);
   }, [location.pathname]);
 
   const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
-    const target = e.target as HTMLImageElement;
-    if (target.src !== FALLBACK_IMAGE) {
-        target.onerror = null;
-        target.src = FALLBACK_IMAGE;
-    }
-  };
+        const target = e.target as HTMLImageElement;
+        if (target.src !== FALLBACK_IMAGE) {
+            target.onerror = null;
+            target.src = FALLBACK_IMAGE;
+        }
+    };
+
 
   return (
     <div className="flex flex-col min-h-screen bg-gradient-to-br from-sky-50 via-background to-teal-50/30 dark:from-gray-900 dark:via-gray-950 dark:to-teal-900/20">
@@ -75,7 +72,7 @@ const NotFound: React.FC = () => {
             animate="visible"
             className="max-w-lg mx-auto"
           >
-            {/* Graphic */}
+            {/* Graphic (Unchanged) */}
             <motion.div variants={graphicVariants} className="mb-8">
               <img
                 src={graphicUrl}
@@ -85,7 +82,7 @@ const NotFound: React.FC = () => {
               />
             </motion.div>
 
-            {/* Error Code */}
+            {/* Error Code (Unchanged) */}
             <motion.h1
               variants={itemVariants}
               className={cn(
@@ -98,7 +95,7 @@ const NotFound: React.FC = () => {
               404
             </motion.h1>
 
-            {/* Title */}
+            {/* Title (Unchanged) */}
             <motion.h2
               variants={itemVariants}
               className="text-2xl md:text-4xl font-semibold text-foreground mb-4"
@@ -106,7 +103,7 @@ const NotFound: React.FC = () => {
               Oops! Off the Radar.
             </motion.h2>
 
-            {/* Description */}
+            {/* Description (Unchanged) */}
             <motion.p
               variants={itemVariants}
               className="text-base md:text-lg text-foreground/70 mb-10"
@@ -114,22 +111,14 @@ const NotFound: React.FC = () => {
               It seems you have navigated to an uncharted territory. The page you are looking for could not be found.
             </motion.p>
 
-            {/* Home Button */}
+            {/* Home Button - Updated */} 
             <motion.div variants={itemVariants}>
-              <Button
-                size="lg"
-                className={cn(
-                  "min-h-[52px] text-lg px-8 transition duration-300 ease-in-out transform hover:scale-[1.03] shadow-lg hover:shadow-xl",
-                  aviationButtonBg,
-                  aviationButtonDarkBg,
-                  "text-white"
-                )}
-                asChild
-              >
-                <Link to="/" className="inline-flex items-center">
-                  <Compass className="mr-2 h-5 w-5" /> Back to Base
-                </Link>
-              </Button>
+               {/* Replaced Button with SolidButton */}
+               <SolidButton
+                  href="/"
+                  icon={Compass} // Using Compass icon as before
+                  label="Back to Base"
+                />
             </motion.div>
 
           </motion.div>

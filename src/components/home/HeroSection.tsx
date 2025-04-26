@@ -1,16 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { Button } from '@/components/ui/button';
-import { ArrowRight } from 'lucide-react';
+// Removed import { Button } from '@/components/ui/button';
+import { ArrowRight, CalendarCheck, Phone } from 'lucide-react'; // Added Phone icon
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { cn } from "@/lib/utils";
-import { BookDemoButton } from '@/components/shared/BookDemoButton'; // Import the new button
+import { BookDemoButton } from '@/components/shared/BookDemoButton';
+import { SolidButton } from '@/components/shared/SolidButton'; // Import the new SolidButton
+import { TransparentButton } from '../shared/TransparentButton';
+// Optional: import { TransparentButton } from '@/components/shared/TransparentButton'; // Import if needed for secondary button
 
 // --- Configuration ---
-const aviationButtonBg = 'bg-teal-600 hover:bg-teal-700';
-const aviationButtonDarkBg = 'dark:bg-teal-500 dark:hover:bg-teal-600';
+// Removed aviationButtonBg and aviationButtonDarkBg as styling is now in SolidButton
 
-// --- Slides Data (Define your hero slides here) ---
+// --- Slides Data ---
 const slides = [
   {
     id: 1,
@@ -30,7 +32,7 @@ const slides = [
   },
   {
     id: 3,
-    image: '/HomePage/Hero1.webp', 
+    image: '/HomePage/Hero1.webp',
     title: 'Flexible Online Ground School',
     subtitle: 'Study at your own pace with our comprehensive curriculum.',
     buttonText: 'View Course Structure',
@@ -38,7 +40,7 @@ const slides = [
   },
   {
     id: 4,
-    image: '/HomePage/Hero4.webp', // Using Hero5
+    image: '/HomePage/Hero4.webp',
     title: 'Dedicated Support & Guidance',
     subtitle: 'Personalized attention and 24/7 doubt clearing.',
     buttonText: 'Contact Admissions',
@@ -46,40 +48,18 @@ const slides = [
   }
 ];
 
-const FALLBACK_IMAGE = "/placeholder.svg"; // A generic fallback
+const FALLBACK_IMAGE = "/placeholder.svg";
 
-// --- Animation Variants ---
+// --- Animation Variants (unchanged) ---
 const slideVariants = {
-  enter: (direction: number) => ({
-    x: direction > 0 ? '100%' : '-100%',
-    opacity: 0,
-  }),
-  center: {
-    zIndex: 1,
-    x: 0,
-    opacity: 1,
-  },
-  exit: (direction: number) => ({
-    zIndex: 0,
-    x: direction < 0 ? '100%' : '-100%',
-    opacity: 0,
-  }),
+  enter: (direction: number) => ({ x: direction > 0 ? '100%' : '-100%', opacity: 0 }),
+  center: { zIndex: 1, x: 0, opacity: 1 },
+  exit: (direction: number) => ({ zIndex: 0, x: direction < 0 ? '100%' : '-100%', opacity: 0 }),
 };
-
 const contentVariants = {
   hidden: { opacity: 0, y: 20 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      staggerChildren: 0.15, // Stagger text and button animation
-      delayChildren: 0.2, // Delay start of content animation
-      duration: 0.6,
-      ease: "easeOut"
-    }
-  }
+  visible: { opacity: 1, y: 0, transition: { staggerChildren: 0.15, delayChildren: 0.2, duration: 0.6, ease: "easeOut" } }
 };
-
 const itemVariants = {
   hidden: { opacity: 0, y: 20 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } }
@@ -89,22 +69,19 @@ const HeroSection = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [direction, setDirection] = useState(0);
 
-  // Function to handle image errors
   const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
     const target = e.target as HTMLImageElement;
-    if (!target.src.endsWith(FALLBACK_IMAGE)) { // Basic check
+    if (!target.src.endsWith(FALLBACK_IMAGE)) {
         target.onerror = null;
         target.src = FALLBACK_IMAGE;
     }
   };
 
-  // Auto-advance slides
   useEffect(() => {
     const interval = setInterval(() => {
       setDirection(1);
       setCurrentSlide((prev) => (prev === slides.length - 1 ? 0 : prev + 1));
-    }, 6000); // Increased interval time
-
+    }, 6000);
     return () => clearInterval(interval);
   }, [slides.length]);
 
@@ -115,93 +92,79 @@ const HeroSection = () => {
 
   return (
     <section className="relative h-[70vh] md:h-[80vh] lg:h-[90vh] w-full overflow-hidden">
-      {/* Carousel Images */} 
       <AnimatePresence initial={false} custom={direction}>
         <motion.div
-          key={currentSlide} // Important: key change triggers animation
+          key={currentSlide}
           custom={direction}
           variants={slideVariants}
           initial="enter"
           animate="center"
           exit="exit"
-          transition={{
-            x: { type: "spring", stiffness: 300, damping: 30 },
-            opacity: { duration: 0.3 }
-          }}
+          transition={{ x: { type: "spring", stiffness: 300, damping: 30 }, opacity: { duration: 0.3 } }}
           className="absolute inset-0 w-full h-full"
         >
           <img
             src={slides[currentSlide].image}
-            alt={slides[currentSlide].title} // Dynamic alt text
+            alt={slides[currentSlide].title}
             className="absolute inset-0 w-full h-full object-cover"
             onError={handleImageError}
-            loading="eager" // Load first image eagerly
+            loading="eager"
           />
-           {/* REMOVED GRADIENT OVERLAY DIV */}
         </motion.div>
       </AnimatePresence>
 
-      {/* Content Overlay */} 
-      <div className="relative z-10 h-full flex items-center justify-center bg-black/30 p-4"> {/* Added subtle dark overlay for text contrast */} 
+      <div className="relative z-10 h-full flex items-center justify-center bg-black/30 p-4">
         <motion.div
-          key={currentSlide + '-content'} // Change key to force content re-animation
+          key={currentSlide + '-content'}
           variants={contentVariants}
           initial="hidden"
           animate="visible"
-          exit="hidden" // Ensure content fades out
+          exit="hidden"
           className="max-w-4xl mx-auto text-center text-white"
         >
-          <motion.h1
-            variants={itemVariants}
-            className="text-4xl md:text-6xl lg:text-7xl font-bold mb-4 tracking-tight drop-shadow-lg" // Added drop-shadow
-          >
+          <motion.h1 variants={itemVariants} className="text-4xl md:text-6xl lg:text-7xl font-bold mb-4 tracking-tight drop-shadow-lg">
             {slides[currentSlide].title}
           </motion.h1>
-
-          <motion.p
-            variants={itemVariants}
-            className="text-xl md:text-2xl mb-8 text-white/95 max-w-3xl mx-auto drop-shadow-md" // Added drop-shadow
-          >
+          <motion.p variants={itemVariants} className="text-xl md:text-2xl mb-8 text-white/95 max-w-3xl mx-auto drop-shadow-md">
             {slides[currentSlide].subtitle}
           </motion.p>
 
           {/* --- Action Buttons --- */}
           <motion.div variants={itemVariants} className="flex flex-wrap justify-center items-center gap-4 md:gap-6">
-            {/* Primary Action Button (from slide data) */}
-            <Button
-              asChild
-              size="lg"
-              className={cn(
-                "min-h-[52px] text-lg px-8 transition duration-300 ease-in-out transform hover:scale-[1.03] shadow-lg hover:shadow-xl",
-                aviationButtonBg,
-                aviationButtonDarkBg,
-                "text-white"
-              )}
-            >
-              <Link to={slides[currentSlide].buttonLink}>
-                {slides[currentSlide].buttonText}
-              </Link>
-            </Button>
+            {/* Primary Action Button (Replaced with SolidButton) */}
+            <SolidButton
+              href={slides[currentSlide].buttonLink}
+              icon={ArrowRight} // Using ArrowRight icon
+              label={slides[currentSlide].buttonText}
+            />
 
-            {/* Book a Demo Button */}
-            <BookDemoButton size="lg" className="min-h-[52px] text-lg px-8 shadow-lg hover:shadow-xl" />
-
-            {/* Optional Secondary/Contact Button (removed ArrowRight icon for space) */}
-             {/* <Button
-                asChild
-                variant="outline"
-                size="lg"
-                className="min-h-[52px] text-lg px-8 border-white text-white hover:bg-white/10 hover:text-white transition duration-300 ease-in-out transform hover:scale-[1.03] shadow-lg hover:shadow-xl hidden sm:inline-flex" // Hide on small screens if crowded
-              >
-                <Link to="/contact">Contact Us</Link>
-              </Button> */}
+            {/* Book a Demo Button (Assuming it might use new buttons internally or has its own style) */}
+            {/* Pass props if needed, but base component likely handles styling */}
+            {/* <BookDemoButton /> */}
+            <TransparentButton
+            href="/contact"
+            icon={CalendarCheck}
+            label="Book a Demo"
+            textColorClassName="text-white" // <-- Use the new prop for white text
+            // Optional: Still override border if needed, separate from text color
+            className="border-white bg-transparent/30 dark:border-white"
+          />
+            {/* Optional Secondary/Contact Button (Using TransparentButton if uncommented) */}
+             {/*
+             <TransparentButton
+                href="/contact"
+                icon={Phone} // Example: Using Phone icon
+                label="Contact Us"
+                // Removed custom classes, relying on component's styling
+             />
+             */}
           </motion.div>
           {/* --- End Action Buttons --- */}
 
         </motion.div>
       </div>
 
-      {/* Slide Indicators */} 
+      {/* Slide Indicators (unchanged) */}
       <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 z-20 flex space-x-2.5">
         {slides.map((_, index) => (
           <button

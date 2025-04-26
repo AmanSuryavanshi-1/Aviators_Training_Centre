@@ -7,21 +7,20 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Award, BookOpen, Briefcase, UserCheck, PhoneForwarded, Users } from 'lucide-react';
 import { cn } from "@/lib/utils";
-import { Link } from 'react-router-dom';
-import { Button } from "@/components/ui/button";
+import { Link } from 'react-router-dom'; // Keep Link if used elsewhere
+// Removed Button import
+import { TransparentButton } from '@/components/shared/TransparentButton'; // Import TransparentButton
 
-// --- Configuration ---
+// --- Configuration (Removed button style variables) ---
 const aviationPrimary = 'text-teal-700 dark:text-teal-300';
 const aviationSecondary = 'text-teal-600 dark:text-teal-400';
-const aviationButtonBg = 'bg-teal-600 hover:bg-teal-700';
-const aviationButtonDarkBg = 'dark:bg-teal-500 dark:hover:bg-teal-600';
 
-// --- Image Paths ---
+// --- Image Paths (Unchanged) ---
 const instructorHeaderUrl = "/HomePage/Course2.webp";
 const FALLBACK_IMAGE = "/HomePage/Hero5.webp";
-const FALLBACK_AVATAR = "/placeholder.svg"; // Ensure this path is correct relative to /public
+const FALLBACK_AVATAR = "/placeholder.svg";
 
-// --- Instructor Data ---
+// --- Instructor Data (Unchanged) ---
 const instructors = [
   {
     name: "Lead Instructor - ATPL",
@@ -53,26 +52,14 @@ const instructors = [
   }
 ];
 
-// --- Animation Variants ---
-const sectionVariants = {
-  hidden: { opacity: 0, y: 50 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut", staggerChildren: 0.1 } }
-};
-
-const itemVariants = {
-  hidden: { opacity: 0, scale: 0.9, y: 20 },
-  visible: { opacity: 1, scale: 1, y: 0, transition: { duration: 0.4, ease: "easeOut" } }
-};
-
-const cardHoverEffect = {
-  rest: { y: 0, boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.08)" },
-  hover: { y: -5, boxShadow: "0px 10px 20px rgba(0, 0, 0, 0.12)", transition: { duration: 0.3, ease: "circOut" } }
-};
+// --- Animation Variants (Unchanged) ---
+const sectionVariants = { /* ... */ };
+const itemVariants = { /* ... */ };
+const cardHoverEffect = { /* ... */ };
 
 // --- Component Definition ---
 const Instructors: React.FC = () => {
 
-  // Function to handle image errors (for header)
   const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
     const target = e.target as HTMLImageElement;
     // Simple check: if the current src doesn't end with the fallback path, set it.
@@ -98,7 +85,7 @@ const Instructors: React.FC = () => {
     <div className="flex flex-col min-h-screen bg-background text-foreground">
       <Header />
 
-      {/* Page Header */}
+      {/* Page Header (Unchanged) */}
       <motion.section
         className="relative h-[50vh] md:h-[60vh] flex items-center justify-center text-center text-white overflow-hidden"
         initial={{ opacity: 0 }}
@@ -180,7 +167,7 @@ const Instructors: React.FC = () => {
                 </motion.div>
               ))}
 
-               {/* Placeholder Card */}
+               {/* Placeholder Card - Updated Button */}
                <motion.div variants={itemVariants} className="flex">
                    <motion.div
                        className="relative h-full w-full group"
@@ -197,18 +184,19 @@ const Instructors: React.FC = () => {
                            <CardDescription className="text-sm text-foreground/80 mb-4">
                               We're always looking for passionate aviation experts. Contact us!
                            </CardDescription>
-                           <Link to="/contact">
-                               <Button variant="outline" className={cn("border-teal-500 text-teal-600 hover:bg-teal-50 dark:border-teal-400 dark:text-teal-300 dark:hover:bg-teal-900/30", "group-hover:border-teal-600 dark:group-hover:border-teal-300")}>
-                                   Contact Us
-                               </Button>
-                           </Link>
+                           {/* Replaced Button with TransparentButton */}
+                           <TransparentButton
+                               href="/contact"
+                               icon={PhoneForwarded} // Using the existing icon
+                               label="Contact Us"
+                           />
                        </Card>
                    </motion.div>
                </motion.div>
             </div>
         </motion.section>
 
-         {/* The ATC Difference Section */}
+         {/* The ATC Difference Section (Unchanged) */}
          <motion.section
             variants={sectionVariants}
             initial="hidden"

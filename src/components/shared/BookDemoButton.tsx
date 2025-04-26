@@ -19,7 +19,7 @@ export const BookDemoButton: React.FC<{ className?: string; size?: 'default' | '
         <Button
           size={size}
           className={cn(
-            'bg-gradient-to-r from-[#075E68] to-[#219099] text-white hover:from-[#219099] hover:to-[#075E68] transition duration-300 ease-in-out transform focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500',
+            'bg-gradient-to-r from-[#075E68] to-[#219099] text-white rounded-full px-6 py-3 overflow-hidden  hover:from-[#219099] hover:to-[#075E68] transition duration-300 ease-in-out transform focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500',
             'border-0', // Override default border if any
             className
           )}
