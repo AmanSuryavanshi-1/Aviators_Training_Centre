@@ -14,6 +14,7 @@ import Instructors from "@/pages/Instructors";
 import FAQ from "@/pages/FAQ";
 import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom"; // Removed BrowserRouter import, Added Outlet
 import ScrollToTop from "@/components/shared/ScrollToTop";
+import { Analytics } from "@vercel/analytics/react"; // Import Analytics
 
 const queryClient = new QueryClient();
 
@@ -54,6 +55,7 @@ const App: React.FC = () => (
         <Sonner />
         {/* RouterProvider now renders the routes defined above */}
         <RouterProvider router={router} />
+        <Analytics /> {/* Add Analytics component here */}
       </TooltipProvider>
     </ThemeProvider>
   </QueryClientProvider>
