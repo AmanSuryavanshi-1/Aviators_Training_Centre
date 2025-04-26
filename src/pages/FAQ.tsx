@@ -91,7 +91,7 @@ const FAQPage: React.FC = () => {
             {/* Added consistent section heading */}
             <motion.h2
                 variants={itemVariants}
-                className={cn("text-3xl md:text-4xl font-bold text-center mb-12 md:mb-16", aviationPrimary)}
+                className={cn("text-3xl md:text-4xl font-bold text-center", aviationPrimary)}
             >
                 Find Your Answers
             </motion.h2>
@@ -102,46 +102,6 @@ const FAQPage: React.FC = () => {
                <FAQ showAll={true} showHeader={false} />
             </motion.div>
         </motion.section>
-
-        {/* Contact Prompt Section - REMOVED */}
-        {/*
-        <motion.section
-            variants={sectionVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.1 }}
-            className="flex justify-center" // Center the card
-        >
-           <motion.div
-               variants={itemVariants} // Animate the card itself
-               className="w-full max-w-2xl" // Control card width
-           >
-               <motion.div
-                   className="relative h-full w-full group"
-                   whileHover="hover"
-                   initial="rest"
-                   animate="rest"
-                   variants={cardHoverEffect}
-               >
-
-                   <Card className="bg-gradient-to-br from-teal-50/50 to-sky-50/50 dark:from-gray-800/60 dark:to-gray-900/60 w-full h-full flex flex-col items-center justify-center text-center overflow-hidden rounded-lg shadow-sm border border-dashed border-border transition-shadow duration-300 relative z-10 p-8 md:p-10">
-                       <div className="mb-4">
-                          <PhoneForwarded className={cn("w-10 h-10", aviationSecondary)} />
-                       </div>
-                       <CardTitle className="text-xl font-semibold text-foreground mb-3">Still Have Questions?</CardTitle>
-                       <CardDescription className="text-base text-foreground/80 mb-6 max-w-md mx-auto">
-                          Can't find the answer you're looking for? Feel free to reach out to our team directly.
-                       </CardDescription>
-                       <Link to="/contact">
-                           <Button size="lg" variant="outline" className={cn("min-h-[48px] border-teal-500 text-teal-600 hover:bg-teal-50 dark:border-teal-400 dark:text-teal-300 dark:hover:bg-teal-900/30 transition duration-300 ease-in-out transform hover:scale-[1.03]", "group-hover:border-teal-600 dark:group-hover:border-teal-300")}>
-                               Contact Us
-                           </Button>
-                       </Link>
-                   </Card>
-               </motion.div>
-           </motion.div>
-        </motion.section>
-        */}
 
       </main>
 

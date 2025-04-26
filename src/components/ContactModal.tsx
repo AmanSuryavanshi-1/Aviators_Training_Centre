@@ -170,7 +170,7 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
                   transition={{ type: "spring", stiffness: 400, damping: 10 }}
                 >
                   <Phone className="h-4 w-4 text-[#73B5BD] flex-shrink-0" />
-                  <span>+91 97737 20998</span>
+                  <span>+91 7842401155</span>
                 </motion.a>
                 <motion.a 
                   href={whatsappLink} 

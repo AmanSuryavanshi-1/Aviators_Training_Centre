@@ -53,7 +53,7 @@ const pathwaySteps = [
     title: "Eligibility & Enrollment",
     description: "Meet basic requirements and enroll in our comprehensive ground school program.",
     details: [
-      "**Age:** Minimum 16 years (for PPL/CPL Student Pilot License), 18 years (for CPL).",
+      "**Age:** Minimum 17 years for SPL (Student Pilot License), 18 years (for CPL).",
       "**Education:** Passed Class 10+2 with Physics & Mathematics from a recognized board.",
       "**Medical:** Valid DGCA Class 2 Medical Certificate (minimum). Class 1 needed for CPL/ATPL issuance.",
       "**English Proficiency:** Ability to read, speak, write, and understand English.",
@@ -64,7 +64,7 @@ const pathwaySteps = [
     title: "Ground School Mastery",
     description: "Complete our structured online classes covering all DGCA subjects.",
     details: [
-        "**Subjects:** Air Navigation, Meteorology, Air Regulation, Technical General, Technical Specific.",
+        "**Subjects:** Air Navigation, Meteorology, Air Regulation, Technical General, Technical Specific, RTR(A).",
         "**Format:** Online live classes, recorded sessions, comprehensive study materials.",
         "**Assessments:** Regular topic tests and mock exams simulating DGCA pattern.",
         "**Support:** 24/7 doubt-clearing via dedicated channels."
@@ -72,7 +72,7 @@ const pathwaySteps = [
   },
   {
     icon: FileCheck2,
-    title: "DGCA Exams Cleared",
+    title: "DGCA Exams",
     description: "Successfully pass all CPL/ATPL theoretical knowledge examinations.",
     details: [
         "**Exam Structure:** Multiple Choice Questions (MCQs) covering the syllabus.",

@@ -26,7 +26,7 @@ const slides = [
     id: 2,
     image: '/HomePage/Hero2.webp',
     title: 'Learn from Airline Professionals',
-    subtitle: 'Gain insights from experienced pilots and engineers.',
+    subtitle: 'Gain insights from experienced pilots.',
     buttonText: 'Meet Our Instructors',
     buttonLink: '/instructors'
   },

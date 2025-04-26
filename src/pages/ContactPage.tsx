@@ -2,33 +2,50 @@ import React, { useState, useEffect } from 'react';
 import { useLocation, Link } from 'react-router-dom';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
-import { Button } from '@/components/ui/button'; // Keep Button for submit
+import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"; // Import Select components
 import { Phone, Mail, MapPin, Send, Clock, Facebook, Instagram, Twitter } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { motion } from 'framer-motion';
 import { cn } from "@/lib/utils";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-// Removed unused SolidButton/TransparentButton imports if they were added previously
 
-// --- Configuration (Removed button style variables) ---
+// --- Configuration ---
 const aviationPrimary = 'text-teal-700 dark:text-teal-300';
 const aviationSecondary = 'text-teal-600 dark:text-teal-400';
 const contactHeaderUrl = "/About/AboutHeader.webp";
 const FALLBACK_IMAGE = "/HomePage/Hero5.webp";
 
-// --- Animation Variants (Unchanged) ---
+// --- Animation Variants ---
 const sectionVariants = { /* ... */ };
 const itemVariants = { /* ... */ };
-// Removed cardHoverEffect if not used on this page specifically
+
+// --- Subjects List ---
+const inquirySubjects = [
+  "General Inquiry",
+  "CPL Ground Classes (All Subjects)",
+  "ATPL Ground Classes (All Subjects)",
+  "Air Navigation Course",
+  "Aviation Meteorology Course",
+  "Air Regulations Course",
+  "Technical General Course",
+  "Technical Specific Course",
+  "RTR(A) Training",
+  "A320/B737 Type Rating Prep",
+  "Airline Interview Preparation",
+  "One-on-One Classes Inquiry",
+  "Batch Schedule Inquiry",
+  "Fee Structure Inquiry",
+  "Other"
+];
 
 interface LocationState {
   isDemoBooking?: boolean;
   subject?: string;
   courseName?: string;
-  // Add other potential state fields if needed (e.g., name, email, phone, message)
   name?: string;
   email?: string;
   phone?: string;
@@ -44,60 +61,63 @@ const ContactPage: React.FC = () => {
 
   const defaultDemoMessage = `I would like to book a demo${courseName ? ` for the ${courseName} course` : ''}. Please contact me to schedule a time.`;
 
-  // Initialize state using values from location state if available
+  // State Initialization
   const [name, setName] = useState(state?.name || '');
   const [email, setEmail] = useState(state?.email || '');
   const [phone, setPhone] = useState(state?.phone || '');
-  const [subject, setSubject] = useState(''); // Will be set by effect
-  const [message, setMessage] = useState(''); // Will be set by effect
+  const [subject, setSubject] = useState('');
+  const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
 
-  // Effect to pre-fill subject/message based on state or clear if general contact
+  // Effect to set initial subject/message
   useEffect(() => {
     if (isDemoBooking) {
       setSubject(initialSubject || 'Book a Demo');
-      setMessage(state?.message || defaultDemoMessage); // Use message from state if available
+      setMessage(state?.message || defaultDemoMessage);
     } else {
-      // Only set subject/message if they were passed in state (e.g., from UrgencyCTA)
-      // Otherwise, leave them as empty strings for general contact
-      setSubject(state?.subject || '');
+      // Set initial subject if passed, otherwise default to empty (placeholder will show)
+      setSubject(state?.subject || ''); 
       setMessage(state?.message || '');
     }
-    // No need to clear name/email/phone here as they are initialized from state above
-    // Users can clear them manually if needed
-  }, [location.state, isDemoBooking, initialSubject, defaultDemoMessage]); // Rerun when state changes
+  }, [location.state, isDemoBooking, initialSubject, defaultDemoMessage]);
 
-
-  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => { /* ... */ };
+  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+    const target = e.target as HTMLImageElement;
+    if (!target.src.endsWith(FALLBACK_IMAGE)) {
+      target.onerror = null;
+      target.src = FALLBACK_IMAGE;
+    }
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    // Basic validation for Select
+    if (!isDemoBooking && !subject) {
+        toast({
+            title: "Subject Required",
+            description: "Please select a subject for your inquiry.",
+            variant: "destructive",
+        });
+        return;
+    }
     setLoading(true);
     // Simulate API call
     setTimeout(() => {
       setLoading(false);
-      if (isDemoBooking) {
-        toast({
-          title: "Demo Request Received!",
-          description: `We have received your demo request and will contact you shortly to schedule it.`,
-          variant: "default",
-        });
-      } else {
-         toast({
-           title: "Message Sent Successfully!",
-           description: `We will get back to you as soon as possible.`,
-           variant: "default",
-         });
-      }
-      // Clear form after submission
+      toast({
+        title: isDemoBooking ? "Demo Request Received!" : "Message Sent Successfully!",
+        description: isDemoBooking
+          ? `We have received your demo request and will contact you shortly.`
+          : `Thank you for reaching out! We will get back to you soon.`,
+        variant: "default",
+      });
+      // Clear form
       setName('');
       setEmail('');
       setPhone('');
       setSubject('');
       setMessage('');
-      // Clear location state? Optional, might cause issues if user goes back
-      // history.replace(location.pathname, undefined);
     }, 1500);
   };
 
@@ -105,7 +125,7 @@ const ContactPage: React.FC = () => {
     <div className="flex flex-col min-h-screen bg-background text-foreground">
       <Header />
 
-      {/* Page Header (Unchanged) */}
+      {/* Page Header */}
       <motion.section
         className="relative h-[50vh] md:h-[60vh] flex items-center justify-center text-center text-white overflow-hidden"
         initial={{ opacity: 0 }}
@@ -132,7 +152,7 @@ const ContactPage: React.FC = () => {
           <p className="text-lg drop-shadow-md md:text-xl text-white/90 max-w-2xl mx-auto">
            {isDemoBooking
              ? `Fill in your details below, and we will schedule your personalized demo.`
-             : `Have questions? We are here to help you navigate your path to the cockpit.`
+             : `Have questions? Select a subject or let us know how we can help.`
            }
           </p>
         </motion.div>
@@ -148,7 +168,7 @@ const ContactPage: React.FC = () => {
            viewport={{ once: true, amount: 0.05 }}
         >
             <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-12 items-start">
-              {/* Contact Information Card (Unchanged, social buttons are ghost) */} 
+              {/* Contact Information Card */} 
               <motion.div variants={itemVariants} className="lg:col-span-2">
                  <Card className="bg-card h-full rounded-lg shadow-sm border border-border p-6 md:p-8">
                      <CardHeader className="p-0 mb-6">
@@ -158,14 +178,14 @@ const ContactPage: React.FC = () => {
                          </CardDescription>
                      </CardHeader>
                      <CardContent className="p-0 space-y-5">
-                         {/* Location */}
+                         {/* Location */} 
                          <div className="flex items-start space-x-3">
                            <div className={cn("flex-shrink-0 mt-1 p-2 rounded-full bg-teal-100/70 dark:bg-teal-900/40", aviationSecondary)}>
                              <MapPin className="h-5 w-5" />
                            </div>
                            <div>
                              <h4 className="text-sm font-semibold text-foreground mb-1">Location</h4>
-                             <p className="text-sm text-foreground/80">456 Aerocity Avenue<br />New Delhi, Delhi 110037, India</p>
+                             <p className="text-sm text-foreground/80">Ramphal Chowk Rd, Sector 7 Dwarka,<br />Dwarka, Delhi, 110075, India</p>
                            </div>
                          </div>
                          {/* Phone */}
@@ -176,10 +196,10 @@ const ContactPage: React.FC = () => {
                            <div>
                              <h4 className="text-sm font-semibold text-foreground mb-1">Phone</h4>
                              <p className="text-sm text-foreground/80">+91 94856 87609</p>
-                             <p className="text-sm text-foreground/80">+91 97737 20998</p>
+                             <p className="text-sm text-foreground/80">+91 7842401155</p>
                            </div>
                          </div>
-                         {/* Email */}
+                         {/* Email */} 
                          <div className="flex items-start space-x-3">
                              <div className={cn("flex-shrink-0 mt-1 p-2 rounded-full bg-teal-100/70 dark:bg-teal-900/40", aviationSecondary)}>
                                <Mail className="h-5 w-5" />
@@ -191,7 +211,7 @@ const ContactPage: React.FC = () => {
                              <Link to="mailto:info@aviatorstrainingcentre.in" className="text-sm text-foreground/80 hover:text-foreground underline-offset-2 hover:underline break-all">info@aviatorstrainingcentre.in</Link>
                            </div>
                          </div>
-                          {/* Operating Hours */}
+                          {/* Operating Hours */} 
                          <div className="flex items-start space-x-3">
                               <div className={cn("flex-shrink-0 mt-1 p-2 rounded-full bg-teal-100/70 dark:bg-teal-900/40", aviationSecondary)}>
                                 <Clock className="h-5 w-5" />
@@ -282,18 +302,33 @@ const ContactPage: React.FC = () => {
                                    </div>
                                    <div className="space-y-1.5">
                                       <Label htmlFor="subject" className="text-sm font-medium">Subject</Label>
-                                      <Input
-                                          id="subject"
-                                          value={subject} // Controlled by state
-                                          onChange={(e) => setSubject(e.target.value)}
-                                          placeholder={isDemoBooking ? "" : "e.g. CPL Course Inquiry"} // No placeholder if demo booking
-                                          required={!isDemoBooking} // Required only for general contact
-                                          readOnly={isDemoBooking} // Read-only if demo booking
-                                          className={cn(
-                                              "focus-visible:ring-teal-500",
-                                              isDemoBooking && "bg-muted/50 cursor-not-allowed" // Style read-only field
-                                          )}
-                                      />
+                                      {isDemoBooking ? (
+                                          <Input
+                                              id="subject-input"
+                                              value={subject} // Controlled by state
+                                              readOnly
+                                              className={cn(
+                                                  "focus-visible:ring-teal-500",
+                                                  "bg-muted/50 cursor-not-allowed" // Style read-only field
+                                              )}
+                                          />
+                                      ) : (
+                                          <Select
+                                              value={subject} // Bind to state
+                                              onValueChange={setSubject} // Update state on change
+                                          >
+                                              <SelectTrigger id="subject-select" className="focus:ring-teal-500">
+                                                  <SelectValue placeholder="Select a subject..." />
+                                              </SelectTrigger>
+                                              <SelectContent>
+                                                  {inquirySubjects.map((subj) => (
+                                                      <SelectItem key={subj} value={subj}>
+                                                          {subj}
+                                                      </SelectItem>
+                                                  ))}
+                                              </SelectContent>
+                                          </Select>
+                                      )}
                                   </div>
                               </div>
 
@@ -304,7 +339,7 @@ const ContactPage: React.FC = () => {
                                       id="message"
                                       value={message} // Controlled by state
                                       onChange={(e) => setMessage(e.target.value)}
-                                      placeholder={isDemoBooking ? "" : "Please provide details about your question or request..."}
+                                      placeholder={isDemoBooking ? "Add any specific questions here..." : "Please provide details about your question or request..."}
                                       rows={5}
                                       required={!isDemoBooking} // Required only for general contact
                                       readOnly={isDemoBooking} // Read-only if demo booking
@@ -315,18 +350,16 @@ const ContactPage: React.FC = () => {
                                   />
                               </div>
                               
-                              {/* Submit Button - Updated Styling */} 
+                              {/* Submit Button */} 
                               <div>
                                   <Button
                                       type="submit"
-                                      size="lg" // Use lg for padding/font consistent with SolidButton
-                                      // Apply SolidButton-like styling
+                                      size="lg"
                                       className={cn(
-                                          'w-full flex items-center justify-center gap-2', // Keep layout classes
-                                          'group relative rounded-full overflow-hidden bg-teal-600 text-white shadow-md transition-all duration-300 ease-out hover:bg-teal-700 hover:shadow-lg dark:bg-teal-500 dark:hover:bg-teal-600', // Core SolidButton styles
-                                          'focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500', // Focus styles
-                                          'disabled:opacity-50 disabled:cursor-not-allowed' // Disabled state styles
-                                          // Removed old aviationButtonBg/DarkBg classes
+                                          'w-full flex items-center justify-center gap-2',
+                                          'group relative rounded-full overflow-hidden bg-teal-600 text-white shadow-md transition-all duration-300 ease-out hover:bg-teal-700 hover:shadow-lg dark:bg-teal-500 dark:hover:bg-teal-600',
+                                          'focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500',
+                                          'disabled:opacity-50 disabled:cursor-not-allowed'
                                       )}
                                       disabled={loading}
                                   >
@@ -354,7 +387,7 @@ const ContactPage: React.FC = () => {
             </div>
         </motion.section>
 
-        {/* Map Section (Unchanged) */} 
+        {/* Map Section */} 
         <motion.section
             variants={sectionVariants}
             initial="hidden"
@@ -371,7 +404,7 @@ const ContactPage: React.FC = () => {
                  variants={itemVariants}
                  className="text-center text-foreground/80 max-w-2xl mx-auto mb-10"
              >
-                Visit our training centre in Aerocity, New Delhi, to discuss your training needs in person.
+                Visit our training centre in Dwarka, New Delhi, to discuss your training needs in person.
             </motion.p>
             
             <motion.div
@@ -380,14 +413,14 @@ const ContactPage: React.FC = () => {
             >
                  <div className="aspect-video">
                     <iframe
-                      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3503.1902582044795!2d77.09761827617668!3d28.5870361746613!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390d1b42a0a0a0a5%3A0x82b1e5c0a4a0a0a5!2sAerocity%2C%20New%20Delhi%2C%20Delhi%20110037!5e0!3m2!1sen!2sin!4v1681308898111!5m2!1sen!2sin"
+                      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3502.014408488279!2d77.0489654150817!3d28.60868878241755!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390d055725848f4f%3A0x76e37572262f1b3c!2sRamphal%20Chowk%20Rd%2C%20Sector%207%20Dwarka%2C%20Dwarka%2C%20Delhi%2C%20110075!5e0!3m2!1sen!2sin!4v1725999999999!5m2!1sen!2sin" 
                       width="100%"
                       height="100%"
                       style={{ border: 0 }}
                       allowFullScreen={true}
                       loading="lazy"
                       referrerPolicy="no-referrer-when-downgrade"
-                      title="Aviators Training Centre Location - Delhi"
+                      title="Aviators Training Centre Location - Ramphal Chowk, Dwarka, Delhi"
                     ></iframe>
                 </div>
             </motion.div>

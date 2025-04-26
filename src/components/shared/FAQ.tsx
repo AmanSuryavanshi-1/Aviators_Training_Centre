@@ -38,41 +38,62 @@ const containerVariants = {
     }
 };
 
-// --- FAQ Data ---
+// --- FAQ Data (Expanded & SEO Optimized) ---
 export const faqData = [
     {
         question: "What courses does Aviators Training Centre specialize in?",
-        answer: "We specialize in ground school classes for DGCA CPL and ATPL examinations, covering all required subjects: Navigation, Meteorology, Regulations, Technical General, and Technical Specific. We also offer RTR(A) training, A320/B737 type rating preparation, and Interview Preparation."
+        answer: "We specialize in comprehensive online ground school classes for DGCA CPL and ATPL examinations in India. Our courses cover all required subjects: Air Navigation, Aviation Meteorology, Air Regulations, Technical General (Aircraft & Engines), and Technical Specific. Additionally, we offer RTR(A) training, A320/B737 type rating preparation (technical knowledge), and airline interview preparation."
     },
     {
         question: "Are the classes online or in person?",
-        answer: "Our primary mode of instruction is online, allowing for flexibility and accessibility. This eliminates travel hassles and rental costs associated with traditional ground schools."
+        answer: "Our primary mode of instruction is online, providing flexibility and accessibility for aspiring pilots across India. This modern approach eliminates travel hassles and accommodation costs often associated with traditional ground schools, allowing you to focus solely on your DGCA exam preparation."
+    },
+     {
+        question: "What subjects are covered in the DGCA CPL/ATPL Ground Classes?",
+        answer: "Our DGCA-focused ground classes cover the complete syllabus required for CPL and ATPL exams: Air Navigation, Aviation Meteorology, Air Regulations, Technical General (Aircraft & Engines), and Technical Specific (relevant to your chosen aircraft type). We aim for thorough preparation for all DGCA papers."
     },
     {
-        question: "How flexible are the class timings?",
-        answer: "Highly flexible! We understand the demanding schedules of pilots. Timings can be adjusted as per your flight schedule, business commitments, or other jobs, especially for ATPL/CPL candidates."
+        question: "How flexible are the class timings for DGCA online classes?",
+        answer: "Highly flexible! We understand the demanding schedules pilots and aspiring pilots face. Our online class timings can often be adjusted to accommodate flight schedules, business commitments, or other jobs, particularly beneficial for ATPL candidates and working professionals pursuing CPL."
     },
     {
-        question: "What if I feel hesitant asking questions in a group batch?",
-        answer: "No problem! We offer One-on-One Online Classes for all CPL and ATPL subjects. This personalized coaching ensures you get the individual attention you need to learn comfortably and effectively."
+        question: "What if I need personalized attention or feel hesitant in group classes?",
+        answer: "No problem! We offer One-on-One Online Classes for all DGCA CPL and ATPL subjects. This personalized coaching ensures you receive dedicated attention, allowing you to learn at your own pace and clarify doubts comfortably and effectively."
     },
     {
-        question: "What kind of support do you offer outside of class hours?",
-        answer: "We provide 24/7 support to clear your doubts. Our dedicated team is available round-the-clock via WhatsApp to assist you whenever you're stuck on a concept."
+        question: "What kind of support is available outside of online class hours?",
+        answer: "We pride ourselves on offering 24/7 support for doubt clarification. Our dedicated team is available round-the-clock via WhatsApp to assist you whenever you encounter difficulties with DGCA subject concepts, ensuring continuous learning."
     },
     {
-        question: "How does the Type Rating Prep work?",
-        answer: "Our affordable pre and post type rating training for A320 & B737 includes study materials based on previous exam questions and comprehensive preparation tailored for exams conducted by major airlines like Air India Express, IndiGo, and Air India."
+        question: "How does the A320/B737 Type Rating Prep work?",
+        answer: "Our affordable pre and post type rating preparation focuses on the technical knowledge required for A320 & B737 aircraft. This includes study materials, question banks based on previous airline exam questions (e.g., IndiGo, Air India Express, Air India), and preparation tailored for the technical exams conducted by major Indian airlines during their recruitment process."
     },
     {
-        question: "Do you help with interview preparation?",
-        answer: "Yes, we offer specialized preparation focusing on English language proficiency and building confidence specifically for airline interviews."
+        question: "Do you help with airline interview preparation?",
+        answer: "Yes, cracking the interview is crucial. We offer specialized preparation focusing on enhancing English language proficiency, technical knowledge revision, HR questions, and building the confidence needed to succeed in demanding airline interviews in India."
+    },
+     {
+        question: "Why choose Aviators Training Centre for online DGCA classes?",
+        answer: "Choose us for experienced instructors (often current airline pilots), flexible online scheduling, personalized one-on-one options, 24/7 doubt support, comprehensive study materials, mock tests simulating DGCA exams, and proven strategies focused on helping you clear your CPL and ATPL papers efficiently."
     },
     {
-        question: "How often do new batches start?",
-        answer: "We have frequent batches starting for all subjects. Please contact us for the latest schedule and availability."
+        question: "What study materials are provided for DGCA exam preparation?",
+        answer: "We provide updated and curated study materials specifically designed for DGCA CPL/ATPL exams. This includes detailed notes, extensive question banks (often including past DGCA questions), topic-wise tests, full mock exams, and performance analysis tools to track your progress."
+    },
+     {
+        question: "What is involved in the RTR(A) (Radio Telephony Restricted - Aeronautical) training?",
+        answer: "Our RTR(A) course prepares candidates for both Part 1 (Practical Transmission) and Part 2 (Oral Viva) of the WPC (Wireless Planning & Coordination Wing) examination. We focus on mastering standard aviation phraseology, efficient communication procedures, and handling simulated Air Traffic Control (ATC) scenarios."
+    },
+    {
+        question: "How often do new online batches for DGCA subjects start?",
+        answer: "We commence new online batches frequently for all DGCA subjects (Navigation, Meteorology, Regulations, Technical) and RTR(A). Please contact us directly via WhatsApp or our contact form for the latest batch schedules and seat availability."
+    },
+    {
+        question: "Are there prerequisites for joining CPL or ATPL ground classes?",
+        answer: "Generally, for CPL ground classes, you should meet the eligibility criteria for a Student Pilot License (SPL) as per DGCA guidelines (age, medicals, etc.). For ATPL classes, holding a valid CPL is typically required. We recommend contacting us to discuss your specific situation and the latest DGCA requirements."
     }
 ];
+
 
 // --- Component Props ---
 interface FAQProps {
@@ -91,7 +112,7 @@ const FAQ: React.FC<FAQProps> = ({
     className = "",
     // headerImage is unused in this component's current state
 }) => {
-    const displayFaqs = showAll ? faqData : faqData.slice(0, 5);
+    const displayFaqs = showAll ? faqData : faqData.slice(0, 5); // Show first 5 on homepage, all on FAQ page
 
     return (
         <section className={`section-padding ${showAll ? '' : 'py-16 my-8'} ${className}`}>
@@ -106,11 +127,11 @@ const FAQ: React.FC<FAQProps> = ({
                         transition={{ duration: 0.5 }}
                     >
                         <h2 className="text-2xl md:text-3xl font-bold text-aviation-primary dark:text-aviation-tertiary mb-3">
-                            Frequently Asked Questions
+                            Frequently Asked Questions (DGCA Prep & More)
                         </h2>
                         <p className="text-base md:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-                            Find answers to common questions about our online flight training, requirements,
-                            and the path to becoming a certified pilot.
+                            Find answers to common questions about our online DGCA CPL/ATPL ground classes, RTR(A), type rating prep,
+                            and the path to becoming a certified pilot in India.
                         </p>
                     </motion.div>
                 )}
@@ -133,15 +154,27 @@ const FAQ: React.FC<FAQProps> = ({
                                 initial="initial"
                             >
                                 <motion.div variants={hoverVariants}>
+                                    {/* Schema.org Microdata for SEO */}
                                     <AccordionItem
+                                        itemScope // Mark item for microdata
+                                        itemProp="mainEntity" // Part of FAQPage schema
+                                        itemType="https://schema.org/Question" // Define type as Question
                                         value={`item-${index}`}
                                         className="border-b border-border last:border-0 overflow-hidden bg-white/50 dark:bg-aviation-primary/10 rounded-md my-2 shadow-sm"
                                     >
-                                        <AccordionTrigger className="text-left text-sm md:text-base font-medium text-foreground hover:text-aviation-primary dark:hover:text-aviation-tertiary transition-colors py-5 px-4">
+                                        <AccordionTrigger
+                                            itemProp="name" // Question text
+                                            className="text-left text-sm md:text-base font-medium text-foreground hover:text-aviation-primary dark:hover:text-aviation-tertiary transition-colors py-5 px-4"
+                                        >
                                             {faq.question}
                                         </AccordionTrigger>
-                                        <AccordionContent className="text-sm text-muted-foreground px-4 pb-5 leading-relaxed">
-                                            {faq.answer}
+                                        <AccordionContent
+                                            itemScope // Mark item for microdata
+                                            itemProp="acceptedAnswer" // Links answer to question
+                                            itemType="https://schema.org/Answer" // Define type as Answer
+                                            className="text-sm text-muted-foreground px-4 pb-5 leading-relaxed"
+                                        >
+                                            <div itemProp="text">{faq.answer}</div> {/* Answer text */}
                                         </AccordionContent>
                                     </AccordionItem>
                                 </motion.div>
@@ -170,7 +203,7 @@ const FAQ: React.FC<FAQProps> = ({
 
                 {/* "Didn't Find Your Answer?" CTA (only shown when showAll and showCTA are true) */}
                 {showAll && showCTA && (
-                    <motion.section
+                     <motion.section
                         variants={sectionVariants}
                         initial="hidden"
                         whileInView="visible"
@@ -187,9 +220,9 @@ const FAQ: React.FC<FAQProps> = ({
                                 <MessageCircle className="h-12 w-12 text-aviation-primary dark:text-aviation-tertiary" />
                             </div>
                         </motion.div>
-                        <h2 className="text-3xl font-bold mb-4 text-aviation-primary dark:text-aviation-tertiary">Didn't Find Your Answer?</h2>
+                        <h2 className="text-3xl font-bold mb-4 text-aviation-primary dark:text-aviation-tertiary">Still Have Questions?</h2>
                         <p className="max-w-xl mx-auto text-foreground/70 mb-8">
-                            Our team is ready to help with any specific questions you have about our programs, enrollment, or support. Reach out today!
+                            Our team is ready to help with any specific questions about our DGCA ground classes, online training programs, enrollment, or pilot career guidance. Reach out today!
                         </p>
                         <div className="flex flex-col sm:flex-row justify-center gap-4">
                             {/* WhatsApp Button */}
@@ -199,9 +232,9 @@ const FAQ: React.FC<FAQProps> = ({
                             >
                                 <SolidButton
                                     label="Chat on WhatsApp"
-                                    href="https://wa.me/919485687609"
+                                    href="https://wa.me/919485687609" // Replace with actual number if different
                                     icon={Smartphone}
-                                    className="w-full sm:w-auto" // Keep class for layout if needed
+                                    className="w-full sm:w-auto"
                                     external // Mark as external link
                                 />
                             </motion.div>
@@ -215,7 +248,7 @@ const FAQ: React.FC<FAQProps> = ({
                                     label="Contact Us Directly"
                                     href="/contact"
                                     icon={Phone}
-                                    className="w-full sm:w-auto" // Keep class for layout if needed
+                                    className="w-full sm:w-auto"
                                 />
                             </motion.div>
                         </div>
