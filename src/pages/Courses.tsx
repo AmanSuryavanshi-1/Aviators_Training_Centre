@@ -19,17 +19,18 @@ const aviationPrimary = 'text-teal-700 dark:text-teal-300';
 const aviationSecondary = 'text-teal-600 dark:text-teal-400';
 
 const HERO_VIDEO_URL = "/placeholder-video.mp4"; // Replace with actual video URL if available
-const FALLBACK_IMAGE = "/HomePage/Hero5.webp";
+// const HERO_IMAGE_URL = "/Plane.webp";
+const HERO_FALLBACK_IMAGE = "/Plane4.png";
 
 // Specific Images from public/Courses folder
 const NAV_IMAGE = "/Courses/Navigation.jpg";
 const MET_IMAGE = "/Courses/Meteorology.jpg";
 const REGS_IMAGE = "/Courses/ICAO regs.jpg";
 const TECH_GEN_IMAGE = "/Courses/technical gen.webp";
-const TECH_SPEC_IMAGE = "/HomePage/Course3.webp";
+const TECH_SPEC_IMAGE = "/Courses/technical specific.webp";
 const RTR_IMAGE = "/Courses/rtr.webp";
 const TYPE_RATING_IMAGE = "/HomePage/Course2.webp";
-const ONE_ON_ONE_IMAGE = "/HomePage/Hero5.webp";
+const ONE_ON_ONE_IMAGE = "/Courses/one-on-one-classes.webp";
 const INTERVIEW_PREP_IMAGE = "/HomePage/Hero4.webp";
 
 // --- Animation Variants (Unchanged) ---
@@ -89,9 +90,9 @@ const Courses: React.FC = () => {
 
   const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
         const target = e.target as HTMLImageElement;
-        if (target.src !== FALLBACK_IMAGE) {
+        if (target.src !== HERO_FALLBACK_IMAGE) {
             target.onerror = null;
-            target.src = FALLBACK_IMAGE;
+            target.src = HERO_FALLBACK_IMAGE;
         }
     };
 
@@ -114,7 +115,7 @@ const Courses: React.FC = () => {
         <video
             autoPlay loop muted playsInline
             className="absolute inset-0 w-full h-full object-cover z-0"
-            poster={FALLBACK_IMAGE}
+            poster={HERO_FALLBACK_IMAGE}
         >
            <source src={HERO_VIDEO_URL} type="video/mp4" />
             Your browser does not support the video tag.
