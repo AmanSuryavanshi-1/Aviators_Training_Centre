@@ -1,28 +1,33 @@
+// Using "use client" because motion(Link) involves client-side interaction
+"use client";
+
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
-import { Link } from 'react-router-dom'; // Changed from 'next/link'
+import Link from 'next/link'; // Changed import to next/link
 import { LucideIcon } from 'lucide-react';
-import React from 'react'; // Added React import
+import React from 'react';
 
 interface SolidButtonProps {
   href: string;
   icon: LucideIcon;
   label: string;
   external?: boolean;
+  className?: string; // Added className prop
 }
 
 export function SolidButton({
   href,
   icon: Icon,
   label,
-  external
+  external,
+  className = "", // Default to empty string
 }: SolidButtonProps) {
   // Use standard anchor tag for external links, Link component for internal
   const ButtonWrapper = external ? motion.a : motion(Link);
   const commonProps = {
-    whileHover: { scale: 1.05 }, // Simplified animation slightly
+    whileHover: { scale: 1.05 },
     whileTap: { scale: 0.95 },
-    transition: { type: "spring", stiffness: 400, damping: 17 } // Adjusted spring
+    transition: { type: "spring", stiffness: 400, damping: 17 }
   };
   const linkProps = external ? {
     href,
@@ -30,7 +35,7 @@ export function SolidButton({
     rel: "noopener noreferrer",
     ...commonProps
   } : {
-    to: href, // Use 'to' for react-router-dom Link
+    href: href, // Use 'href' for Next.js Link
     ...commonProps
   };
 
@@ -38,20 +43,11 @@ export function SolidButton({
     <Button
       asChild
       size="lg"
-      // Adapted to teal theme, using existing button styles as base
-      className="group relative rounded-full px-6 py-3 overflow-hidden bg-teal-600 text-white shadow-md transition-all duration-300 ease-out hover:bg-teal-700 hover:shadow-lg dark:bg-teal-500 dark:hover:bg-teal-600"
+      // Combine base classes with incoming className
+      className={`group relative rounded-full px-6 py-3 overflow-hidden bg-teal-600 text-white shadow-md transition-all duration-300 ease-out hover:bg-teal-700 hover:shadow-lg dark:bg-teal-500 dark:hover:bg-teal-600 ${className}`}
     >
       <ButtonWrapper {...linkProps}>
-         {/* Optional: Add subtle background animation if desired
-         <motion.span
-           className="absolute inset-0 bg-teal-700 dark:bg-teal-600"
-           initial={{ y: "100%" }}
-           animate={{ y: "100%" }} // Keep it hidden initially
-           whileHover={{ y: 0 }}
-           transition={{ type: "tween", ease: "easeInOut", duration: 0.3 }}
-         />
-         */}
-        <span className="relative z-10 flex items-center">
+        <span className="relative z-10 flex items-center justify-center"> {/* Added justify-center */} 
           <Icon className="w-5 h-5 mr-2" />
           <span>{label}</span>
         </span>

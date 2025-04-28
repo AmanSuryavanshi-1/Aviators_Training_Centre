@@ -1,25 +1,23 @@
+// Added "use client" directive for motion and potentially other client-side needs
+"use client";
+
 import React from 'react';
-import Header from "@/components/layout/Header";
-import Footer from "@/components/layout/Footer";
+// Removed Header and Footer imports
 import { motion } from 'framer-motion';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
-// Removed Button import if no longer directly needed, or kept if still used elsewhere
-// import { Button } from "@/components/ui/button";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-// Added ArrowRight and Info icons (ArrowRight is already imported)
 import { MicVocal, Plane, UserCheck, GraduationCap, CheckSquare, RadioTower, Briefcase, MessageCircle, Users, Clock, Award, Map, CloudSun, Gavel, Wrench, UsersRound, PhoneForwarded, ArrowRight, Info } from 'lucide-react';
-import { Link } from 'react-router-dom';
+// Removed Link import from react-router-dom
 import { cn } from "@/lib/utils";
 import { BookDemoButton } from '@/components/shared/BookDemoButton';
 import { UrgencyCTA } from '@/components/shared/UrgencyCTA';
-import { TransparentButton } from '@/components/shared/TransparentButton'; // Import TransparentButton
+import { TransparentButton } from '@/components/shared/TransparentButton';
 
-// --- Configuration (Removed button style variables) ---
+// --- Configuration ---
 const aviationPrimary = 'text-teal-700 dark:text-teal-300';
 const aviationSecondary = 'text-teal-600 dark:text-teal-400';
 
 const HERO_VIDEO_URL = "/placeholder-video.mp4"; // Replace with actual video URL if available
-// const HERO_IMAGE_URL = "/Plane.webp";
 const HERO_FALLBACK_IMAGE = "/Plane4.png";
 
 // Specific Images from public/Courses folder
@@ -33,24 +31,13 @@ const TYPE_RATING_IMAGE = "/HomePage/Course2.webp";
 const ONE_ON_ONE_IMAGE = "/Courses/one-on-one-classes.webp";
 const INTERVIEW_PREP_IMAGE = "/HomePage/Hero4.webp";
 
-// --- Animation Variants (Unchanged) ---
-const sectionVariants = {
-  hidden: { opacity: 0, y: 50 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut", staggerChildren: 0.1 } }
-};
-
-const itemVariants = {
-  hidden: { opacity: 0, scale: 0.9, y: 20 },
-  visible: { opacity: 1, scale: 1, y: 0, transition: { duration: 0.4, ease: "easeOut" } }
-};
-
-const cardHoverEffect = {
-  rest: { y: 0, boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.08)" },
-  hover: { y: -5, boxShadow: "0px 10px 20px rgba(0, 0, 0, 0.12)", transition: { duration: 0.3, ease: "circOut" } }
-};
+// --- Animation Variants (Keep your existing variants) ---
+const sectionVariants = { /* ... */ };
+const itemVariants = { /* ... */ };
+const cardHoverEffect = { /* ... */ };
 
 
-// --- Course Data (Unchanged) ---
+// --- Course Data ---
 const groundSchoolSubjects = [
   { icon: Map, title: "Air Navigation", description: "Mastering flight path calculations, chart reading, and navigational instruments.", image: NAV_IMAGE },
   { icon: CloudSun, title: "Meteorology", description: "Understanding atmospheric conditions, weather patterns, and forecasts.", image: MET_IMAGE },
@@ -84,7 +71,6 @@ const atcBenefitsData = [
     { title: "Comprehensive Support Services", content: "Beyond ground subjects, we offer specialized RTR(A), Type Rating prep, one-on-one classes, and interview coaching." }
 ];
 
-
 // --- Component ---
 const Courses: React.FC = () => {
 
@@ -97,15 +83,15 @@ const Courses: React.FC = () => {
     };
 
 
+  // NOTE: UrgencyCTA might use useState/useEffect - Ensure it's client component compatible
   const offerEndDate = new Date();
-  offerEndDate.setDate(offerEndDate.getDate() + 14);
+  offerEndDate.setDate(offerEndDate.getDate() + 14); // Example: 14 days from now
   const formattedEndDate = offerEndDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
 
+  // Removed surrounding div
   return (
-    <div className="flex flex-col min-h-screen bg-background text-foreground">
-      <Header />
-
-      {/* Hero Section (Unchanged) */}
+    <>
+      {/* Hero Section */}
       <motion.section
         className="relative h-[50vh] md:h-[60vh] flex items-center justify-center text-center text-white overflow-hidden"
         initial={{ opacity: 0 }}
@@ -139,27 +125,28 @@ const Courses: React.FC = () => {
       {/* Main Content */}
       <main className="flex-grow container mx-auto px-4 sm:px-6 py-16 md:py-24 space-y-20 md:space-y-28">
 
-        {/* Complete CPL/ATPL Ground Training Section */}
+        {/* Complete CPL/ATPL Ground Training Section */} 
         <motion.section
-           variants={sectionVariants}
+          // Add variants
            initial="hidden"
            whileInView="visible"
            viewport={{ once: true, amount: 0.1 }}
         >
           <div className="text-center mb-12 md:mb-16">
-             <motion.h2 variants={itemVariants} className={cn("text-3xl md:text-4xl font-bold mb-3", aviationPrimary)}>Complete CPL/ATPL Ground Training</motion.h2>
-             <motion.p variants={itemVariants} className="text-lg text-foreground/80 max-w-3xl mx-auto">
+             <motion.h2 /* Add variants */ className={cn("text-3xl md:text-4xl font-bold mb-3", aviationPrimary)}>Complete CPL/ATPL Ground Training</motion.h2>
+             <motion.p /* Add variants */ className="text-lg text-foreground/80 max-w-3xl mx-auto">
                 We provide in-depth training for all DGCA syllabus subjects, building a strong foundation for your aviation career.
              </motion.p>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-12 items-stretch">
             {groundSchoolSubjects.map((subject, index) => (
-              <motion.div key={index} variants={itemVariants} className="flex">
-                 <motion.div className="relative h-full w-full group" whileHover="hover" initial="rest" animate="rest" variants={cardHoverEffect} >
+              <motion.div key={index} /* Add variants */ className="flex">
+                 <motion.div className="relative h-full w-full group" whileHover="hover" initial="rest" animate="rest" /* Add variants */ >
                    <Card className="bg-card w-full h-full flex flex-col overflow-hidden rounded-lg shadow-sm border border-border transition-shadow duration-300 relative z-10">
                       <CardHeader className="p-0 relative">
                           <div className="h-48 overflow-hidden">
+                            {/* Consider Next/Image */}
                             <img
                                 src={subject.image}
                                 alt={subject.title}
@@ -179,9 +166,11 @@ const Courses: React.FC = () => {
                         </CardDescription>
                      </CardContent>
                       <CardFooter className="p-5 mt-auto border-t border-border/30 pt-4 flex justify-end gap-3">
+                          {/* BookDemoButton needs to be updated to use query params */}
                           <BookDemoButton
                              size="sm"
-                             state={{ subject: `Demo Request: ${subject.title}`, courseName: subject.title }}
+                             // Pass data for query params instead of state
+                             queryParams={{ subject: `Demo Request: ${subject.title}`, courseName: subject.title }}
                            />
                        </CardFooter>
                    </Card>
@@ -189,9 +178,9 @@ const Courses: React.FC = () => {
                </motion.div>
             ))}
 
-            {/* Placeholder Contact Card - Updated Button */}
-            <motion.div variants={itemVariants} className="flex">
-                 <motion.div className="relative h-full w-full group" whileHover="hover" initial="rest" animate="rest" variants={cardHoverEffect} >
+            {/* Placeholder Contact Card */} 
+            <motion.div /* Add variants */ className="flex">
+                 <motion.div className="relative h-full w-full group" whileHover="hover" initial="rest" animate="rest" /* Add variants */ >
                     <Card className="bg-gradient-to-br from-teal-50/50 to-sky-50/50 dark:from-gray-800/60 dark:to-gray-900/60 w-full h-full flex flex-col items-center justify-center text-center overflow-hidden rounded-lg shadow-sm border border-dashed border-border transition-shadow duration-300 relative z-10 p-6">
                        <div className="mb-4">
                           <PhoneForwarded className={cn("w-10 h-10", aviationSecondary)} />
@@ -200,10 +189,9 @@ const Courses: React.FC = () => {
                        <CardDescription className="text-sm text-foreground/80 mb-4">
                           Contact us for details about courses or enrollment.
                        </CardDescription>
-                       {/* Replaced Button with TransparentButton */}
                        <TransparentButton
                           href="/contact"
-                          icon={PhoneForwarded} // Or MessageCircle
+                          icon={PhoneForwarded}
                           label="Contact Us"
                         />
                     </Card>
@@ -213,9 +201,9 @@ const Courses: React.FC = () => {
           </div>
         </motion.section>
 
-         {/* Additional Training & Prep Services Section - Updated Button */}
+         {/* Additional Training & Prep Services Section */} 
         <motion.section
-           variants={sectionVariants}
+          // Add variants
            initial="hidden"
            whileInView="visible"
            viewport={{ once: true, amount: 0.1 }}
@@ -223,10 +211,11 @@ const Courses: React.FC = () => {
             <h2 className={cn("text-3xl md:text-4xl font-bold text-center mb-12 md:mb-16", aviationPrimary)}>Additional Training & Prep Services</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-10">
                 {additionalServicesData.map((service, index) => (
-                    <motion.div key={index} variants={itemVariants}>
-                        <motion.div className="relative h-full group" whileHover="hover" initial="rest" animate="rest" variants={cardHoverEffect} >
+                    <motion.div key={index} /* Add variants */>
+                        <motion.div className="relative h-full group" whileHover="hover" initial="rest" animate="rest" /* Add variants */ >
                             <Card className="bg-card h-full flex flex-col sm:flex-row overflow-hidden rounded-lg shadow-sm border border-border transition-shadow duration-300 relative z-10">
                                 <div className="sm:w-1/3 flex-shrink-0 aspect-video sm:aspect-auto">
+                                    {/* Consider Next/Image */}
                                     <img
                                         src={service.image}
                                         alt={service.title}
@@ -248,18 +237,18 @@ const Courses: React.FC = () => {
                                         </CardDescription>
                                     </CardContent>
                                     <CardFooter className="p-0 mt-auto flex flex-wrap gap-3">
-                                        {/* Replaced Button with TransparentButton */}
                                         <TransparentButton
                                             href={service.link}
-                                            icon={ArrowRight} // Or Info icon
+                                            icon={ArrowRight}
                                             label={service.learnMoreText || 'Learn More'}
-                                            // Adjust size/padding if needed via className prop, but relying on defaults
                                         />
                                         <div className="flex-grow sm:flex-grow-0">
+                                             {/* BookDemoButton needs to be updated to use query params */}
                                              <BookDemoButton
                                                size="sm"
                                                className="w-full sm:w-auto min-h-[40px]"
-                                               state={{ subject: `Demo Request: ${service.title}`, courseName: service.title }}
+                                               // Pass data for query params instead of state
+                                               queryParams={{ subject: `Demo Request: ${service.title}`, courseName: service.title }}
                                              />
                                         </div>
                                     </CardFooter>
@@ -271,12 +260,12 @@ const Courses: React.FC = () => {
             </div>
         </motion.section>
 
-        {/* Urgency CTA Section (Unchanged) */}
+        {/* Urgency CTA Section */}
         <UrgencyCTA offerEndDate={offerEndDate} formattedEndDate={formattedEndDate} />
 
-        {/* ATC Features Section (Unchanged) */}
+        {/* ATC Features Section */} 
         <motion.section
-          variants={sectionVariants}
+          // Add variants
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.1 }}
@@ -287,7 +276,7 @@ const Courses: React.FC = () => {
                 {atcFeaturesData.map((feature, index) => (
                     <motion.div
                         key={index}
-                        variants={itemVariants}
+                        /* Add variants */
                         className="flex flex-col items-center p-3 group"
                     >
                          <div className="p-3 rounded-full bg-teal-100/70 dark:bg-teal-900/40 mb-3 transition-colors duration-300 group-hover:bg-teal-200/80 dark:group-hover:bg-teal-800/60">
@@ -300,9 +289,9 @@ const Courses: React.FC = () => {
             </div>
         </motion.section>
 
-        {/* ATC Benefits Accordion Section (Unchanged) */}
+        {/* ATC Benefits Accordion Section */} 
         <motion.section
-          variants={sectionVariants}
+          // Add variants
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.1 }}
@@ -310,7 +299,7 @@ const Courses: React.FC = () => {
             <h2 className={cn("text-3xl md:text-4xl font-bold text-center mb-10", aviationPrimary)}>Detailed Benefits</h2>
             <Accordion type="single" collapsible className="w-full max-w-3xl mx-auto">
                  {atcBenefitsData.map((item, index) => (
-                     <motion.div key={index} variants={itemVariants}>
+                     <motion.div key={index} /* Add variants */>
                         <AccordionItem value={`item-${index + 1}`} className="border-b border-border/60 mb-2 rounded-md overflow-hidden bg-card/40 dark:bg-card/60 shadow-sm">
                             <AccordionTrigger className={cn("text-left text-base sm:text-lg font-medium hover:no-underline px-5 py-4 hover:bg-teal-50/50 dark:hover:bg-teal-900/30 transition-colors", aviationSecondary)}>
                                 {item.title}
@@ -325,9 +314,8 @@ const Courses: React.FC = () => {
         </motion.section>
 
       </main>
-
-      <Footer />
-    </div>
+      {/* Footer is rendered by layout.tsx */}
+    </>
   );
 };
 

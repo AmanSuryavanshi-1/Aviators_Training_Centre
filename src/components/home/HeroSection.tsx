@@ -1,16 +1,17 @@
+// Added "use client" because it uses hooks, motion, and event handlers
+"use client";
+
 import React, { useState, useEffect } from 'react';
-// Removed import { Button } from '@/components/ui/button';
-import { ArrowRight, CalendarCheck, Phone } from 'lucide-react'; // Added Phone icon
+import { ArrowRight, CalendarCheck } from 'lucide-react'; // Removed Phone icon as it wasn't used
 import { motion, AnimatePresence } from 'framer-motion';
-import { Link } from 'react-router-dom';
+// Removed Link import from react-router-dom
 import { cn } from "@/lib/utils";
-import { BookDemoButton } from '@/components/shared/BookDemoButton';
-import { SolidButton } from '@/components/shared/SolidButton'; // Import the new SolidButton
+// Removed BookDemoButton import as TransparentButton is used instead
+import { SolidButton } from '@/components/shared/SolidButton';
 import { TransparentButton } from '../shared/TransparentButton';
-// Optional: import { TransparentButton } from '@/components/shared/TransparentButton'; // Import if needed for secondary button
 
 // --- Configuration ---
-// Removed aviationButtonBg and aviationButtonDarkBg as styling is now in SolidButton
+// Removed color constants
 
 // --- Slides Data ---
 const slides = [
@@ -48,9 +49,9 @@ const slides = [
   }
 ];
 
-const FALLBACK_IMAGE = "/placeholder.svg";
+const FALLBACK_IMAGE = "/placeholder.svg"; // Ensure this exists in /public
 
-// --- Animation Variants (unchanged) ---
+// --- Animation Variants ---
 const slideVariants = {
   enter: (direction: number) => ({ x: direction > 0 ? '100%' : '-100%', opacity: 0 }),
   center: { zIndex: 1, x: 0, opacity: 1 },
@@ -71,9 +72,11 @@ const HeroSection = () => {
 
   const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
     const target = e.target as HTMLImageElement;
-    if (!target.src.endsWith(FALLBACK_IMAGE)) {
+    // Ensure path comparison is correct if /public prefix is inconsistent
+    const fallbackSrc = FALLBACK_IMAGE.startsWith('/public') ? FALLBACK_IMAGE.replace('/public','') : FALLBACK_IMAGE;
+    if (!target.src.endsWith(fallbackSrc)) {
         target.onerror = null;
-        target.src = FALLBACK_IMAGE;
+        target.src = fallbackSrc;
     }
   };
 
@@ -83,7 +86,7 @@ const HeroSection = () => {
       setCurrentSlide((prev) => (prev === slides.length - 1 ? 0 : prev + 1));
     }, 6000);
     return () => clearInterval(interval);
-  }, [slides.length]);
+  }, []); // Removed slides.length dependency as it's constant
 
   const handleIndicatorClick = (index: number) => {
     setDirection(index > currentSlide ? 1 : -1);
@@ -103,8 +106,9 @@ const HeroSection = () => {
           transition={{ x: { type: "spring", stiffness: 300, damping: 30 }, opacity: { duration: 0.3 } }}
           className="absolute inset-0 w-full h-full"
         >
+          {/* Consider Next/Image */}
           <img
-            src={slides[currentSlide].image}
+            src={slides[currentSlide].image.startsWith('/public') ? slides[currentSlide].image.replace('/public', '') : slides[currentSlide].image}
             alt={slides[currentSlide].title}
             className="absolute inset-0 w-full h-full object-cover"
             onError={handleImageError}
@@ -113,13 +117,14 @@ const HeroSection = () => {
         </motion.div>
       </AnimatePresence>
 
-      <div className="relative z-10 h-full flex items-center justify-center bg-black/30 p-4">
+      {/* Overlay and Content */}
+      <div className="absolute inset-0 z-10 h-full flex items-center justify-center bg-gradient-to-t from-black/60 via-black/30 to-transparent p-4">
         <motion.div
-          key={currentSlide + '-content'}
+          key={currentSlide + '-content'} // Ensure key changes for animation
           variants={contentVariants}
           initial="hidden"
           animate="visible"
-          exit="hidden"
+          exit="hidden" // Add exit animation if needed
           className="max-w-4xl mx-auto text-center text-white"
         >
           <motion.h1 variants={itemVariants} className="text-4xl md:text-6xl lg:text-7xl font-bold mb-4 tracking-tight drop-shadow-lg">
@@ -129,42 +134,26 @@ const HeroSection = () => {
             {slides[currentSlide].subtitle}
           </motion.p>
 
-          {/* --- Action Buttons --- */}
           <motion.div variants={itemVariants} className="flex flex-wrap justify-center items-center gap-4 md:gap-6">
-            {/* Primary Action Button (Replaced with SolidButton) */}
+            {/* Primary Action Button uses next/link internally */}
             <SolidButton
               href={slides[currentSlide].buttonLink}
-              icon={ArrowRight} // Using ArrowRight icon
+              icon={ArrowRight}
               label={slides[currentSlide].buttonText}
             />
-
-            {/* Book a Demo Button (Assuming it might use new buttons internally or has its own style) */}
-            {/* Pass props if needed, but base component likely handles styling */}
-            {/* <BookDemoButton /> */}
+            {/* Book Demo Button uses next/link internally */}
             <TransparentButton
-            href="/contact"
-            icon={CalendarCheck}
-            label="Book a Demo"
-            textColorClassName="text-white" // <-- Use the new prop for white text
-            // Optional: Still override border if needed, separate from text color
-            className="border-white bg-transparent/30 dark:border-white"
-          />
-            {/* Optional Secondary/Contact Button (Using TransparentButton if uncommented) */}
-             {/*
-             <TransparentButton
-                href="/contact"
-                icon={Phone} // Example: Using Phone icon
-                label="Contact Us"
-                // Removed custom classes, relying on component's styling
-             />
-             */}
+              href="/contact?demo=true&subject=Book%20a%20Demo" // Pass demo info via query params
+              icon={CalendarCheck}
+              label="Book a Demo"
+              textColorClassName="text-white"
+              className="border-white hover:bg-white/10 dark:border-white"
+            />
           </motion.div>
-          {/* --- End Action Buttons --- */}
-
         </motion.div>
       </div>
 
-      {/* Slide Indicators (unchanged) */}
+      {/* Slide Indicators */}
       <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 z-20 flex space-x-2.5">
         {slides.map((_, index) => (
           <button

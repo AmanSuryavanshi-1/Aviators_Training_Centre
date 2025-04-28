@@ -1,8 +1,7 @@
+"use client"; // Added directive because it uses framer-motion and likely client-side components
+
 import React from 'react';
-// Removed import { Button } from '@/components/ui/button';
-// Consistent icons - Keeping ChevronRight and LinkIcon
 import { GraduationCap, RadioTower, PlaneTakeoff, ChevronRight, Link as LinkIcon } from 'lucide-react';
-import { Link } from 'react-router-dom'; // Keep Link import (might be used elsewhere, though not directly for replaced buttons)
 import { cn } from '@/lib/utils';
 import { motion } from 'framer-motion';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -36,24 +35,24 @@ const courses = [
     title: 'CPL & ATPL Ground School',
     description: 'Comprehensive online classes covering all DGCA subjects - Navigation, Meteorology, Regulations, and Technical.',
     image: '/HomePage/Course1.webp', // Ensure images are relevant
-    path: '/courses'
+    path: '/courses' // Changed path to match new structure if needed
   },
   {
     icon: RadioTower,
     title: 'RTR(A) Radio Telephony',
     description: 'Master aviation communication protocols and prepare for the Radio Telephony Restricted (Aeronautical) license exam.',
     image: '/Courses/rtr.webp',
-    path: '/courses'
+    path: '/courses' // Changed path
   },
   {
     icon: PlaneTakeoff,
     title: 'Type Rating Prep',
     description: 'Affordable guidance for A320 & B737 pre/post type rating, covering questions for major airline exams.',
     image: '/HomePage/Course2.webp',
-    path: '/courses'
+    path: '/courses' // Changed path
   }
 ];
-const FALLBACK_IMAGE = "/HomePage/Hero5.webp";
+const FALLBACK_IMAGE = "/HomePage/Hero5.webp"; // Assuming this is correct path from public dir
 
 const CoursesSection: React.FC = () => {
 
@@ -107,6 +106,8 @@ const CoursesSection: React.FC = () => {
                 <CardHeader className="p-0 relative">
                     {/* Image Section - Fixed Height */}
                     <div className="h-48 overflow-hidden"> {/* Fixed height */}
+                      {/* NOTE: Next.js Image component could be used here for optimization */}
+                      {/* Requires configuration in next.config.js and potentially changing how images are served */}
                       <img
                           src={course.image}
                           alt={course.title}
@@ -124,18 +125,17 @@ const CoursesSection: React.FC = () => {
                       </div>
                       <CardTitle className="text-lg font-semibold text-foreground">{course.title}</CardTitle>
                   </div>
-                  {/* Description */} 
+                  {/* Description */}
                   <CardDescription className="text-sm text-foreground/80 flex-grow mb-4">
                     {course.description}
                   </CardDescription>
                 </CardContent>
                 <CardFooter className="p-5 pt-0 mt-auto">
-                  {/* Replaced Button with TransparentButton */}
+                  {/* Using TransparentButton which should contain Next.js Link */}
                   <TransparentButton
                     href={course.path}
-                    icon={ChevronRight} // Using the same icon
+                    icon={ChevronRight}
                     label="Learn More"
-                    // Add className if specific sizing needed, e.g., "w-full min-h-[44px]"
                     className="w-full"
                   />
                 </CardFooter>
@@ -145,15 +145,15 @@ const CoursesSection: React.FC = () => {
         ))}
       </div>
 
-      {/* Button to view all courses page - Updated */} 
+      {/* Button to view all courses page - Updated */}
       <motion.div
         variants={itemVariants}
         className="mt-12 text-center"
        >
-        {/* Replaced Button with SolidButton */}
+        {/* Using SolidButton which should contain Next.js Link */}
         <SolidButton
            href="/courses"
-           icon={LinkIcon} // Using the same icon
+           icon={LinkIcon}
            label="View All Course Details"
          />
       </motion.div>

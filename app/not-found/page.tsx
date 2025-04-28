@@ -1,22 +1,21 @@
+// Added "use client" because motion is used
+"use client";
+
 import React from 'react';
-import { useLocation } from "react-router-dom";
-import { useEffect } from "react";
-import Header from "@/components/layout/Header";
-import Footer from "@/components/layout/Footer";
-// Removed Button import
-import { Link } from "react-router-dom"; // Keep Link if used elsewhere
-import { Home, Compass } from "lucide-react";
+// Removed useLocation and useEffect imports
+// Removed Header and Footer imports
+import { Compass } from "lucide-react"; // Only Compass needed from lucide
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
-import { SolidButton } from '@/components/shared/SolidButton'; // Import SolidButton
+import { SolidButton } from '@/components/shared/SolidButton';
 
-// --- Configuration (Removed button style variables) ---
+// --- Configuration ---
 const aviationPrimary = 'text-teal-700 dark:text-teal-300';
-const aviationSecondary = 'text-teal-600 dark:text-teal-400';
-const graphicUrl = "/public/Plane2.webp";
-const FALLBACK_IMAGE = "/placeholder.svg";
+// const aviationSecondary = 'text-teal-600 dark:text-teal-400'; // Unused
+const graphicUrl = "/Plane2.webp"; // Confirm path is correct relative to public dir
+const FALLBACK_IMAGE = "/placeholder.svg"; // Confirm path is correct relative to public dir
 
-// --- Animation Variants (Unchanged) ---
+// --- Animation Variants ---
 const containerVariants = {
   hidden: { opacity: 0 },
   visible: {
@@ -43,28 +42,24 @@ const graphicVariants = {
     }
 };
 
-
 const NotFound: React.FC = () => {
-  const location = useLocation();
 
-  useEffect(() => {
-    console.error("404 Error: User attempted to access non-existent route:", location.pathname);
-  }, [location.pathname]);
+  // Removed useEffect/useLocation logic
 
   const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
         const target = e.target as HTMLImageElement;
-        if (target.src !== FALLBACK_IMAGE) {
+        if (!target.src.endsWith(FALLBACK_IMAGE)) { // Check against the correct fallback path
             target.onerror = null;
             target.src = FALLBACK_IMAGE;
         }
     };
 
-
+  // Removed surrounding div
   return (
-    <div className="flex flex-col min-h-screen bg-gradient-to-br from-sky-50 via-background to-teal-50/30 dark:from-gray-900 dark:via-gray-950 dark:to-teal-900/20">
-      <Header />
-
-      <main className="flex-grow flex items-center justify-center py-20 md:py-24">
+    // This component will be rendered by Next.js layout when a 404 occurs
+    <>
+      {/* Centering the content within the main layout area */}
+      <main className="flex-grow flex items-center justify-center py-20 md:py-24 bg-gradient-to-br from-sky-50 via-background to-teal-50/30 dark:from-gray-900 dark:via-gray-950 dark:to-teal-900/20">
         <div className="container mx-auto px-4 text-center">
           <motion.div
             variants={containerVariants}
@@ -72,17 +67,19 @@ const NotFound: React.FC = () => {
             animate="visible"
             className="max-w-lg mx-auto"
           >
-            {/* Graphic (Unchanged) */}
+            {/* Graphic */}
             <motion.div variants={graphicVariants} className="mb-8">
+              {/* Consider Next/Image */}
               <img
                 src={graphicUrl}
                 alt="Lost plane graphic"
                 className="w-48 h-48 md:w-64 md:h-64 mx-auto object-contain opacity-80 dark:opacity-70 mix-blend-multiply dark:mix-blend-luminosity"
                 onError={handleImageError}
+                loading="lazy"
               />
             </motion.div>
 
-            {/* Error Code (Unchanged) */}
+            {/* Error Code */}
             <motion.h1
               variants={itemVariants}
               className={cn(
@@ -90,12 +87,12 @@ const NotFound: React.FC = () => {
                 aviationPrimary,
                 "bg-clip-text text-transparent bg-gradient-to-r from-teal-600 to-sky-500 dark:from-teal-300 dark:to-sky-400"
               )}
-              style={{ lineHeight: '1' }} // Adjust line height for large text
+              style={{ lineHeight: '1' }}
             >
               404
             </motion.h1>
 
-            {/* Title (Unchanged) */}
+            {/* Title */}
             <motion.h2
               variants={itemVariants}
               className="text-2xl md:text-4xl font-semibold text-foreground mb-4"
@@ -103,7 +100,7 @@ const NotFound: React.FC = () => {
               Oops! Off the Radar.
             </motion.h2>
 
-            {/* Description (Unchanged) */}
+            {/* Description */}
             <motion.p
               variants={itemVariants}
               className="text-base md:text-lg text-foreground/70 mb-10"
@@ -111,12 +108,11 @@ const NotFound: React.FC = () => {
               It seems you have navigated to an uncharted territory. The page you are looking for could not be found.
             </motion.p>
 
-            {/* Home Button - Updated */} 
+            {/* Home Button */}
             <motion.div variants={itemVariants}>
-               {/* Replaced Button with SolidButton */}
                <SolidButton
                   href="/"
-                  icon={Compass} // Using Compass icon as before
+                  icon={Compass}
                   label="Back to Base"
                 />
             </motion.div>
@@ -124,9 +120,8 @@ const NotFound: React.FC = () => {
           </motion.div>
         </div>
       </main>
-
-      <Footer />
-    </div>
+      {/* Footer rendered by layout.tsx */}
+    </>
   );
 };
 

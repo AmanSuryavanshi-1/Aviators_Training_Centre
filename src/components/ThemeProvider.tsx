@@ -1,3 +1,5 @@
+// Added "use client" directive as this component interacts with browser APIs (localStorage, matchMedia)
+"use client";
 
 import { createContext, useContext, useEffect, useState } from "react";
 
@@ -24,36 +26,50 @@ const ThemeProviderContext = createContext<ThemeProviderState>(initialState);
 export function ThemeProvider({
   children,
   defaultTheme = "system",
-  storageKey = "vite-ui-theme",
+  storageKey = "atc-ui-theme", // Updated storage key for Next.js app
   ...props
 }: ThemeProviderProps) {
   const [theme, setTheme] = useState<Theme>(
-    () => (localStorage.getItem(storageKey) as Theme) || defaultTheme
+    // Need to check if window is defined before accessing localStorage
+    () => {
+      if (typeof window !== 'undefined') {
+        return (localStorage.getItem(storageKey) as Theme) || defaultTheme;
+      }
+      return defaultTheme; // Return default if window is not available (SSR)
+    }
   );
 
   useEffect(() => {
+    // Ensure window is defined before proceeding (though this runs client-side)
+    if (typeof window === 'undefined') return;
+
     const root = window.document.documentElement;
 
     root.classList.remove("light", "dark");
 
+    let effectiveTheme = theme;
     if (theme === "system") {
-      const systemTheme = window.matchMedia("(prefers-color-scheme: dark)")
-        .matches
+      effectiveTheme = window.matchMedia("(prefers-color-scheme: dark)").matches
         ? "dark"
         : "light";
-
-      root.classList.add(systemTheme);
-      return;
     }
 
-    root.classList.add(theme);
+    root.classList.add(effectiveTheme);
+
+    // Save the resolved theme (light/dark) or the explicit choice (light/dark)
+    // Don't save "system" itself back to local storage, save the resolved theme
+    // unless the user explicitly chose "system". The initial state handles reading.
+    // However, the original logic only saves when setTheme is called, which is fine.
+
   }, [theme]);
 
   const value = {
     theme,
-    setTheme: (theme: Theme) => {
-      localStorage.setItem(storageKey, theme);
-      setTheme(theme);
+    setTheme: (newTheme: Theme) => {
+      if (typeof window !== 'undefined') {
+        localStorage.setItem(storageKey, newTheme);
+      }
+      setTheme(newTheme);
     },
   };
 

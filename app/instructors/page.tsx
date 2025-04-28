@@ -1,58 +1,59 @@
+// Added "use client" for motion and error handlers
+"use client";
+
 import React from 'react';
-import Header from "@/components/layout/Header";
-import Footer from "@/components/layout/Footer";
+// Removed Header and Footer imports
 import { motion } from 'framer-motion';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Award, BookOpen, Briefcase, UserCheck, PhoneForwarded, Users } from 'lucide-react';
 import { cn } from "@/lib/utils";
-import { Link } from 'react-router-dom'; // Keep Link if used elsewhere
-// Removed Button import
-import { TransparentButton } from '@/components/shared/TransparentButton'; // Import TransparentButton
+// Removed unused Link import
+import { TransparentButton } from '@/components/shared/TransparentButton';
 
-// --- Configuration (Removed button style variables) ---
+// --- Configuration ---
 const aviationPrimary = 'text-teal-700 dark:text-teal-300';
 const aviationSecondary = 'text-teal-600 dark:text-teal-400';
 
-// --- Image Paths (Unchanged) ---
+// --- Image Paths ---
 const instructorHeaderUrl = "/HomePage/Course2.webp";
 const FALLBACK_IMAGE = "/HomePage/Hero5.webp";
 const FALLBACK_AVATAR = "/placeholder.svg";
 
-// --- Instructor Data (Unchanged) ---
+// --- Instructor Data ---
 const instructors = [
   {
     name: "Lead Instructor - ATPL",
     title: "- airline pilot and educator",
     avatar: "/Instructor/Instructor1.webp",
-    bio: "A seasoned Airline Captain...", // Truncated for brevity
-    expertise: ["Advanced Navigation", "Aviation Meteorology", "Airline Operations", "Aircraft Systems"]
+    bio: "A seasoned Airline Captain with thousands of flight hours and extensive training experience. Focuses on advanced concepts and practical application for ATPL success.",
+    expertise: ["Advanced Navigation", "Aviation Meteorology", "Airline Operations", "Aircraft Systems", "ATPL Syllabus"]
   },
   {
     name: "Senior Instructor - CPL",
     title: "- airline pilot and educator",
     avatar: "/Instructor/Instructor2.webp",
-    bio: "An accomplished Commercial Pilot...", // Truncated for brevity
-    expertise: ["Air Regulations", "Technical General", "Flight Instruction", "Aerodynamics"]
+    bio: "An accomplished Commercial Pilot and dedicated instructor, specializing in CPL subjects and foundational pilot knowledge. Ensures thorough understanding and exam readiness.",
+    expertise: ["Air Regulations", "Technical General", "Flight Instruction Theory", "Aerodynamics", "CPL Syllabus"]
   },
   {
     name: "RTR(A) Specialist",
     title: "Communications Expert",
     avatar: "/Instructor/Instructor3.webp",
-    bio: "Expert in aviation communication...", // Truncated for brevity
-    expertise: ["Radio Telephony", "Aviation English", "Exam Preparation", "ATC Procedures"]
+    bio: "Expert in aviation communication protocols and procedures. Provides targeted training to master the RTR(A) exam and ensure clear, confident radio communication.",
+    expertise: ["Radio Telephony", "Aviation English", "Exam Preparation", "ATC Procedures", "Mock Tests"]
   },
    {
     name: "Interview Prep Coach",
     title: "Confidence & Career Advisor",
-    avatar: "/Instructor/Instructor4.webp", // Reusing instructor image
-    bio: "A specialized coach...", // Truncated for brevity
-    expertise: ["Interview Techniques", "Aviation Career Guidance", "English Proficiency", "Soft Skills"]
+    avatar: "/Instructor/Instructor4.webp",
+    bio: "A specialized coach focusing on airline interview preparation, soft skills, and building confidence. Helps students present their best selves to potential employers.",
+    expertise: ["Interview Techniques", "Aviation Career Guidance", "English Proficiency", "Soft Skills", "Airline Screening Prep"]
   }
 ];
 
-// --- Animation Variants (Unchanged) ---
+// --- Animation Variants (Keep your existing variants) ---
 const sectionVariants = { /* ... */ };
 const itemVariants = { /* ... */ };
 const cardHoverEffect = { /* ... */ };
@@ -62,42 +63,38 @@ const Instructors: React.FC = () => {
 
   const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
     const target = e.target as HTMLImageElement;
-    // Simple check: if the current src doesn't end with the fallback path, set it.
     if (!target.src.endsWith(FALLBACK_IMAGE)) {
-        target.onerror = null; // Prevent infinite loop
+        target.onerror = null;
         target.src = FALLBACK_IMAGE;
     }
   };
 
-   // Function to handle avatar errors
   const handleAvatarError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
     const target = e.target as HTMLImageElement;
-    // Simple check: if the current src doesn't end with the fallback path, set it.
     if (!target.src.endsWith(FALLBACK_AVATAR)) {
-      target.onerror = null; // Prevent infinite loop
+      target.onerror = null;
       target.src = FALLBACK_AVATAR;
     }
   };
 
-  // Ensure clean separation before return
-
+  // Removed surrounding div
   return (
-    <div className="flex flex-col min-h-screen bg-background text-foreground">
-      <Header />
-
-      {/* Page Header (Unchanged) */}
+    <>
+      {/* Page Header */}
       <motion.section
         className="relative h-[50vh] md:h-[60vh] flex items-center justify-center text-center text-white overflow-hidden"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.8 }}
       >
+        {/* Consider Next/Image */}
         <img
           src={instructorHeaderUrl}
           alt="Group of Aviators Training Centre instructors"
           className="absolute inset-0 w-full h-full object-cover z-0"
           onError={handleImageError}
           style={{ filter: 'brightness(0.6)' }}
+          loading="lazy"
         />
          <div className="absolute inset-0 bg-gradient-to-r from-[rgba(7,94,104,0.25)] to-[rgba(12,110,114,0.55)] z-10"></div>
         <motion.div
@@ -118,9 +115,9 @@ const Instructors: React.FC = () => {
       {/* Main Content */}
       <main className="flex-grow container mx-auto px-4 sm:px-6 py-16 md:py-24 space-y-20 md:space-y-28">
 
-        {/* Instructor Cards Section */}
+        {/* Instructor Cards Section */} 
         <motion.section
-           variants={sectionVariants}
+           // Add variants
            initial="hidden"
            whileInView="visible"
            viewport={{ once: true, amount: 0.1 }}
@@ -130,17 +127,18 @@ const Instructors: React.FC = () => {
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 items-stretch">
               {instructors.map((instructor, index) => (
-                <motion.div key={index} variants={itemVariants} className="flex">
+                <motion.div key={index} /* Add variants */ className="flex">
                   <motion.div
                       className="relative h-full w-full group"
                       whileHover="hover"
                       initial="rest"
                       animate="rest"
-                      variants={cardHoverEffect}
+                      // Add variants
                   >
                     <Card className="bg-card w-full h-full flex flex-col overflow-hidden rounded-lg shadow-sm border border-border transition-shadow duration-300 relative z-10">
                       <CardHeader className="flex flex-col items-center text-center p-6 bg-muted/30 dark:bg-muted/10 border-b border-border/50">
                         <Avatar className="w-20 h-20 mb-4 border-4 border-teal-300 dark:border-teal-600 ring-2 ring-teal-500/30">
+                          {/* Consider Next/Image */}
                           <AvatarImage
                               src={instructor.avatar}
                               alt={instructor.name}
@@ -167,14 +165,14 @@ const Instructors: React.FC = () => {
                 </motion.div>
               ))}
 
-               {/* Placeholder Card - Updated Button */}
-               <motion.div variants={itemVariants} className="flex">
+               {/* Placeholder Card */} 
+               <motion.div /* Add variants */ className="flex">
                    <motion.div
                        className="relative h-full w-full group"
                        whileHover="hover"
                        initial="rest"
                        animate="rest"
-                       variants={cardHoverEffect}
+                       // Add variants
                    >
                        <Card className="bg-gradient-to-br from-teal-50/50 to-sky-50/50 dark:from-gray-800/60 dark:to-gray-900/60 w-full h-full flex flex-col items-center justify-center text-center overflow-hidden rounded-lg shadow-sm border border-dashed border-border transition-shadow duration-300 relative z-10 p-6">
                            <div className="mb-4">
@@ -184,10 +182,9 @@ const Instructors: React.FC = () => {
                            <CardDescription className="text-sm text-foreground/80 mb-4">
                               We're always looking for passionate aviation experts. Contact us!
                            </CardDescription>
-                           {/* Replaced Button with TransparentButton */}
                            <TransparentButton
                                href="/contact"
-                               icon={PhoneForwarded} // Using the existing icon
+                               icon={PhoneForwarded}
                                label="Contact Us"
                            />
                        </Card>
@@ -196,9 +193,9 @@ const Instructors: React.FC = () => {
             </div>
         </motion.section>
 
-         {/* The ATC Difference Section (Unchanged) */}
+         {/* The ATC Difference Section */} 
          <motion.section
-            variants={sectionVariants}
+            // Add variants
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.1 }}
@@ -216,7 +213,7 @@ const Instructors: React.FC = () => {
                 ].map((feature, index) => (
                     <motion.div
                         key={index}
-                        variants={itemVariants}
+                        // Add variants
                         className="flex flex-col items-center p-3 group"
                     >
                          <div className="p-3 rounded-full bg-teal-100/70 dark:bg-teal-900/40 mb-3 transition-colors duration-300 group-hover:bg-teal-200/80 dark:group-hover:bg-teal-800/60">
@@ -230,9 +227,8 @@ const Instructors: React.FC = () => {
         </motion.section>
 
       </main>
-
-      <Footer />
-    </div>
+      {/* Footer is rendered by layout.tsx */}
+    </>
   );
 };
 

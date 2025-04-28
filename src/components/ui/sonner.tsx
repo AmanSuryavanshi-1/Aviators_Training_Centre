@@ -1,13 +1,19 @@
-import { useTheme } from "next-themes"
-import { Toaster as Sonner } from "sonner"
+// Added "use client" directive as this component uses the useTheme hook
+"use client";
 
-type ToasterProps = React.ComponentProps<typeof Sonner>
+// Import useTheme from the local ThemeProvider, not next-themes
+import { useTheme } from "@/components/ThemeProvider"; 
+import { Toaster as Sonner } from "sonner";
+
+type ToasterProps = React.ComponentProps<typeof Sonner>;
 
 const Toaster = ({ ...props }: ToasterProps) => {
-  const { theme = "system" } = useTheme()
+  // Now correctly uses the theme state from our custom provider
+  const { theme = "system" } = useTheme();
 
   return (
     <Sonner
+      // Cast theme to the expected type for Sonner component
       theme={theme as ToasterProps["theme"]}
       className="toaster group"
       toastOptions={{
@@ -23,7 +29,7 @@ const Toaster = ({ ...props }: ToasterProps) => {
       }}
       {...props}
     />
-  )
-}
+  );
+};
 
-export { Toaster }
+export { Toaster };

@@ -4,10 +4,11 @@ import { fontFamily } from "tailwindcss/defaultTheme"
 const config = {
   darkMode: ["class"],
   content: [
-    './pages/**/*.{ts,tsx}',
-    './components/**/*.{ts,tsx}',
-    './app/**/*.{ts,tsx}',
-    './src/**/*.{ts,tsx}',
+    './pages/**/*.{ts,tsx}', // Keep for potential future use or migration remnants
+    './components/**/*.{ts,tsx}', // Keep for shared components
+    './app/**/*.{ts,tsx}', // Add app dir
+    './src/components/**/*.{ts,tsx}', // Update path if components remain in src
+    './src/pages/**/*.{ts,tsx}', // Update path if pages remain in src (during migration)
 	],
   prefix: "",
   theme: {
@@ -87,7 +88,7 @@ const config = {
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [require("tailwindcss-animate"), require("@tailwindcss/typography")], // Added typography plugin
 } satisfies Config
 
 export default config
