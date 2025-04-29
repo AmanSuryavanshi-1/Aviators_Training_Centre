@@ -55,11 +55,6 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
             />
           <DialogContent 
             className="fixed inset-y-0 right-0 h-full w-full shadow-xl bg-[#075E68] text-white border-l border-white/10 z-50 flex flex-col overflow-y-auto p-4 sm:p-6" 
-            as={motion.div} 
-            variants={modalVariants}
-            initial="hidden"
-            animate="visible"
-            exit="exit"
             style={{ maxWidth: 'min(450px, 85vw)' }} // Better mobile responsiveness
             onEscapeKeyDown={onClose} 
             onInteractOutside={(e) => e.preventDefault()} 

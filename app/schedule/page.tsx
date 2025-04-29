@@ -2,6 +2,7 @@
 "use client";
 
 import React, { useState } from 'react';
+import { Textarea } from '@/components/ui/textarea';
 import { format } from 'date-fns';
 // Removed Header and Footer imports
 import { Button } from '@/components/ui/button';

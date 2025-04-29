@@ -20,7 +20,7 @@ const Header: React.FC = () => {
     { href: '/faq', label: 'FAQ' },
     // { href: '/schedule', label: 'Schedule' }, // Consider if scheduling page is needed, maybe link to contact?
     { href: '/contact', label: 'Contact' },
-    { href: '/blog', label: 'Blog' }, // Added Blog Link
+    // { href: '/blog', label: 'Blog' }, // Added Blog Link
   ];
 
   return (
