@@ -7,7 +7,8 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Target, Users, Telescope, Heart, MessageSquare, UserCheck, Clock, DollarSign, UserX, MessageCircleQuestion, MapPin, Home, BadgeDollarSign, ArrowRight, Archive, PhoneForwarded } from 'lucide-react';
 import { cn } from "@/components/ui/utils";
 import { SolidButton } from '@/components/shared/SolidButton';
-import  { TransparentButton } from '@/components/shared/TransparentButton';
+import { TransparentButton } from '@/components/shared/TransparentButton';
+import AboutSection from "@/components/about/AboutSection";
 
 // --- Configuration (Removed button style variables) ---
 const aviationPrimary = 'text-teal-700 dark:text-teal-300';
@@ -50,6 +51,20 @@ const atcAdvantages = [
     { icon: DollarSign, title: "Affordable Courses", description: "Receive premium ground school education at competitive prices." },
     { icon: Heart, title: "Dedicated Support", description: "We are fully committed to your success, every step of the way." },
 ];
+
+const whoWeAreContent = `
+  Aviators Training Centre (ATC) is a premier ground school specializing in comprehensive preparation for the DGCA CPL and ATPL examinations. Founded by experienced aviation professionals, we recognized the need for a more focused, efficient, and student-centric approach to ground training.
+  
+  Our core mission is to deliver top-tier, professional pilot training programs that build a rock-solid foundation of theoretical knowledge, essential for a safe and successful career in the skies. We're passionate about helping you transform your aviation dreams into reality.
+`;
+
+const ourMissionContent = `
+  Our mission is to bridge the gap between aspiration and achievement in the aviation world. We understand that every individual who dreams of the skies has unique challenges and ambitions. That's why we've tailored our approach to be as personalized as it is comprehensive. Our team of experts is dedicated to guiding you through every step, from foundational knowledge to advanced techniques. We strive to create an environment that's not only conducive to learning but also inspires growth, creativity, and collaboration. It's not just about passing exams; it's about fostering a lifelong passion for flight and equipping you with the skills and confidence to navigate your aviation career.
+`;
+
+const ourVisionContent = `
+  We envision a future where the world of aviation is open to all, regardless of background or prior experience. We see ATC as a beacon of inclusivity, where diverse individuals can come together to share their passion for the skies. Our vision extends beyond the classroom; we aim to build a global network of aviation enthusiasts, professionals, and innovators. By fostering this community, we hope to contribute to a future where the wonders of flight are more accessible and the industry thrives on the collective strength of diverse perspectives.
+`;
 
 
 export default function About() {
@@ -136,84 +151,18 @@ export default function About() {
           </div>
         </div>
       </section>
-      <section className="bg-gray-100 py-16 px-4 md:px-16">
-        <div className="container mx-auto grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
-
-        
-        <motion.section
-          variants={sectionVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.1 }}
-          className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 items-center"
-        >
-          <motion.div variants={itemVariants} className="space-y-5">
-            <h2 className={cn("text-3xl md:text-4xl font-bold mb-4 text-left", aviationPrimary)}>
-              Who We Are
-            </h2>
-            <p className="text-foreground/80 leading-relaxed text-base">
-              Aviators Training Centre (ATC) is a premier ground school specializing in comprehensive preparation for the DGCA CPL and ATPL examinations. Founded by experienced aviation professionals, we recognized the need for a more focused, efficient, and student-centric approach to ground training.
-            </p>
-             <p className="text-foreground/80 leading-relaxed text-base">
-               Our core mission is to deliver top-tier, professional pilot training programs that build a rock-solid foundation of theoretical knowledge, essential for a safe and successful career in the skies. We're passionate about helping you transform your aviation dreams into reality.
-            </p>
-             {/* Replaced Button with SolidButton */}
-             <div className="mt-6"> {/* Added margin top */}
-                 <SolidButton
-                    href="/contact"
-                    icon={ArrowRight} // Keeping ArrowRight as in original
-                    label="Contact Us"
-                 />
-             </div>
-          </motion.div>
-          <motion.div variants={itemVariants} className="flex justify-center">
-             <motion.div className="relative group w-full max-w-md" whileHover="hover" initial="rest" animate="rest" variants={cardHoverEffect} >
-                 <Card className="overflow-hidden rounded-lg shadow-sm border border-border transition-shadow duration-300 relative z-10">
-                    <img
-                        src={storyImageUrl}
-                        alt="Modern aviation training classroom environment"
-                        className="w-full h-auto object-cover transition-transform duration-300 group-hover:scale-105"
-                        onError={handleImageError}
-                        loading="lazy"
-                    />
-                 </Card>
-             </motion.div>
-          </motion.div>
-        </motion.section>
-
-          <div>
-            <h2 className="text-3xl font-bold mb-4">Our Mission</h2>
-            <p className="text-gray-700 mb-6">
-              Our mission is to bridge the gap between aspiration and
-              achievement in the aviation world. We understand that every
-              individual who dreams of the skies has unique challenges and
-              ambitions. That's why we've tailored our approach to be as
-              personalized as it is comprehensive. Our team of experts is
-              dedicated to guiding you through every step, from foundational
-              knowledge to advanced techniques. We strive to create an
-              environment that's not only conducive to learning but also inspires
-              growth, creativity, and collaboration. It's not just about passing
-              exams; it's about fostering a lifelong passion for flight and
-              equipping you with the skills and confidence to navigate your
-              aviation career.
-            </p>
+        <section className="bg-gray-100 py-16 px-4 md:px-16">
+          <div className="container mx-auto grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+            <div className="md:order-2">
+              <motion.div className="relative group w-full max-w-md" whileHover="hover" initial="rest" animate="rest" variants={cardHoverEffect} >
+                  <Card className="overflow-hidden rounded-lg shadow-sm border border-border transition-shadow duration-300 relative z-10">
+                     <Image src={storyImageUrl} alt="Modern aviation training classroom environment" className="w-full h-auto object-cover transition-transform duration-300 group-hover:scale-105" onError={handleImageError} loading="lazy" width={600} height={400} />
+                  </Card>
+              </motion.div>
+            </div>
+             <AboutSection whoWeAre={whoWeAreContent} ourMission={ourMissionContent} ourVision={ourVisionContent}/>
           </div>
-          <div>
-            <h2 className="text-3xl font-bold mb-4">Our Vision</h2>
-            <p className="text-gray-700 mb-6">
-              We envision a future where the world of aviation is open to all,
-              regardless of background or prior experience. We see ATC as a
-              beacon of inclusivity, where diverse individuals can come together
-              to share their passion for the skies. Our vision extends beyond the
-              classroom; we aim to build a global network of aviation
-              enthusiasts, professionals, and innovators. By fostering this
-              community, we hope to contribute to a future where the wonders of
-              flight are more accessible and the industry thrives on the
-              collective strength of diverse perspectives.
-            </p>
-          </div>
-        </div>
-      </section>
+        </section>
 
         {/* Why Choose Us Section (The ATC Advantage) - Refactored with Cards */}
         <motion.section
