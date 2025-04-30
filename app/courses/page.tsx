@@ -200,7 +200,7 @@ const Courses: React.FC = () => {
                        </CardDescription>
                        {/* Replaced Button with TransparentButton */}
                        <TransparentButton
-                          href="/contact"
+                          href="/contact#contact-form"
                           icon={PhoneForwarded} // Or MessageCircle
                           label="Contact Us"
                         />

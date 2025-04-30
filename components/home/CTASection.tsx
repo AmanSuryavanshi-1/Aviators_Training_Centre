@@ -62,7 +62,7 @@ const CTASection: React.FC = () => {
 
           {/* Secondary CTA (TransparentButton) - Using new prop */}
           <TransparentButton
-            href="/contact"
+            href="/contact#contact-form"
             icon={ArrowRight}
             label="Contact Admissions"
             textColorClassName="text-white" // <-- Use the new prop for white text

@@ -1,10 +1,10 @@
 "use client"
 import React, { useState, useEffect } from 'react';
-import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { Button } from '@/components/ui/button';
+import { BookDemoButton } from '@/components/shared/BookDemoButton';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
@@ -13,7 +13,7 @@ import { Phone, Mail, MapPin, Send, Clock, Facebook, Instagram, Twitter } from '
 import { useToast } from '@/hooks/use-toast';
 import { motion } from 'framer-motion';
 import { cn } from "@/components/ui/utils";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"; // Import Select components
 
 // --- Configuration ---
 const aviationPrimary = 'text-teal-700 dark:text-teal-300';
@@ -61,35 +61,38 @@ interface LocationState {
 }
 
 const ContactPage: React.FC = () => {
-  const searchParams = useSearchParams();
-    const isDemoBooking = searchParams?.get('isDemoBooking') === 'true';
-    const initialSubject = searchParams?.get('subject') || '';
-    const courseName = searchParams?.get('courseName');
-    const initialName = searchParams?.get('name') || '';
-    const initialEmail = searchParams?.get('email') || '';
-    const initialPhone = searchParams?.get('phone') || '';
-    const initialMessage = searchParams?.get('message') || '';
+    const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
+    const [phone, setPhone] = useState('');
+    const [subject, setSubject] = useState('');
+    const [message, setMessage] = useState('');
+    const [loading, setLoading] = useState(false);
+    const { toast } = useToast();
+    const [isDemoBooking, setIsDemoBooking] = useState(false);
+    const defaultDemoMessage = `I would like to book a demo. Please contact me to schedule a time.`;
+    
+    useEffect(() => {
+         if (window.location.hash === "#contact-form") {
+            window.location.hash = "";
+            window.location.hash = "#contact-form";
+          }
+      const params = new URLSearchParams(window.location.search);
+      const subjectFromUrl = params.get('subject');
+      const courseName = params.get('courseName');
+        const nameFromUrl = params.get('name');
+      const messageFromUrl = params.get('message');
+      
+        if (nameFromUrl) {
+            setName(nameFromUrl);
+        }
+      if (subjectFromUrl) {
+        setSubject(subjectFromUrl);
+        setMessage(isDemoBooking ? `I would like to book a demo${courseName ? ` for the ${courseName} course` : ''}. Please contact me to schedule a time.` : String(messageFromUrl || ''));
+        setIsDemoBooking(true);
+      }
+  }, [isDemoBooking, defaultDemoMessage]);
 
-    const defaultDemoMessage = `I would like to book a demo${courseName ? ` for the ${courseName} course` : ''}. Please contact me to schedule a time.`;
-    const [name, setName] = useState(initialName);
-    const [email, setEmail] = useState(initialEmail);
-    const [phone, setPhone] = useState(initialPhone);
-  const [subject, setSubject] = useState('');
-  const [message, setMessage] = useState('');
-  const [loading, setLoading] = useState(false);
-  const { toast } = useToast();
-  
-  // Effect to set initial subject/message
-  useEffect(() => {
-    if (isDemoBooking) {
-      setSubject(String(initialSubject || 'Book a Demo') || '');
-      setMessage(String(searchParams?.get('message') || defaultDemoMessage));
-    } else {
-      // Set initial subject if passed, otherwise default to empty (placeholder will show)
-      setSubject(String(searchParams?.get('subject') || '') || '');
-      setMessage(String(searchParams?.get('message') || '') || '');
-    }
-  }, [initialMessage, initialSubject, isDemoBooking, defaultDemoMessage, searchParams]);
+
 
   const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
     const target = e.target as HTMLImageElement;
@@ -97,6 +100,7 @@ const ContactPage: React.FC = () => {
       target.onerror = null;
       target.src = FALLBACK_IMAGE;
     }
+
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -168,7 +172,7 @@ const ContactPage: React.FC = () => {
       </motion.section>
 
       {/* Main Content */}
-      <main className="flex-grow container mx-auto px-4 sm:px-6 py-16 md:py-24 space-y-20 md:space-y-28">
+      <main id="contact-form" className="flex-grow container mx-auto px-4 sm:px-6 py-16 md:py-24 space-y-20 md:space-y-28">
         {/* Contact Info & Form Section */} 
         <motion.section
            variants={sectionVariants}
@@ -188,7 +192,7 @@ const ContactPage: React.FC = () => {
                      </CardHeader>
                      <CardContent className="p-0 space-y-5">
                          {/* Location */} 
-                         <div className="flex items-start space-x-3">
+                         <div className="flex items-start space-x-3"> 
                            <div className={cn("flex-shrink-0 mt-1 p-2 rounded-full bg-teal-100/70 dark:bg-teal-900/40", aviationSecondary)}>
                              <MapPin className="h-5 w-5" />
                            </div>
@@ -313,14 +317,18 @@ const ContactPage: React.FC = () => {
                                       <Label htmlFor="subject" className="text-sm font-medium">Subject</Label>
                                       {isDemoBooking ? (
                                           <Input
-                                              id="subject-input"
-                                              value={subject} // Controlled by state
-                                              readOnly
+                                          
+                                              id="subject"
+                                              value={subject} 
+                                              onChange={(e)=>setSubject(e.target.value)}// Controlled by state
+                                              
                                               className={cn(
+                                                  "cursor-text",
                                                   "focus-visible:ring-teal-500",
                                                   "bg-muted/50 cursor-not-allowed" // Style read-only field
                                               )}
                                           />
+
                                       ) : (
                                           <Select
                                               value={subject} // Bind to state
@@ -347,13 +355,12 @@ const ContactPage: React.FC = () => {
                                   <Textarea
                                       id="message"
                                       value={message} // Controlled by state
-                                      key={"message"}
                                       onChange={(e) => setMessage(e.target.value)}
                                       placeholder={isDemoBooking ? "Add any specific questions here..." : "Please provide details about your question or request..."}
                                       rows={5}
                                       required={!isDemoBooking} // Required only for general contact
                                       readOnly={isDemoBooking} // Read-only if demo booking
-                                      className={cn(
+                                      className={cn("cursor-text",
                                           "focus-visible:ring-teal-500",
                                           isDemoBooking && "bg-muted/50 cursor-not-allowed" // Style read-only field
                                       )}

@@ -245,7 +245,7 @@ const FAQ: React.FC<FAQProps> = ({
                             >
                                 <TransparentButton
                                     label="Contact Us Directly"
-                                    href="/contact"
+                                    href="/contact#contact-form"
                                     icon={Phone}
                                     className="w-full sm:w-auto"
                                 />

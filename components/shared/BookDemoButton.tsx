@@ -29,7 +29,7 @@ interface BookDemoButtonProps extends VariantProps<typeof buttonVariants> {
 }
 
 export const BookDemoButton: React.FC<BookDemoButtonProps> = ({ className, size, state }) => {
-  const href = `/contact${state ? `?subject=${encodeURIComponent(state.subject)}&courseName=${encodeURIComponent(state.courseName)}` : ''}`;
+  const href = `/contact${state ? `?subject=${encodeURIComponent(state.subject)}&courseName=${encodeURIComponent(state.courseName)}` : ''}#contact-form` ;
 
   return (
     <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} transition={{ type: 'spring', stiffness: 400, damping: 17 }}>

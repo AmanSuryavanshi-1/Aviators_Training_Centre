@@ -44,7 +44,7 @@ const slides = [
     title: 'Dedicated Support & Guidance',
     subtitle: 'Personalized attention and 24/7 doubt clearing.',
     buttonText: 'Contact Admissions',
-    buttonLink: '/contact'
+    buttonLink: '/contact#contact-form'
   }
 ];
 
@@ -142,7 +142,7 @@ const HeroSection = () => {
             {/* Pass props if needed, but base component likely handles styling */}
             {/* <BookDemoButton /> */}
             <TransparentButton
-            href="/contact"
+            href="/contact#contact-form"
             icon={CalendarCheck}
             label="Book a Demo"
             textColorClassName="text-white" // <-- Use the new prop for white text
