@@ -15,7 +15,6 @@ type ToasterToast = {
 };
 
 type Toast = Omit<ToasterToast, "id">
-export type { Toast };
 
 let count = 0;
 
@@ -56,8 +55,6 @@ export function useToast() {
     updateToast: (toast: ToasterToast) => dispatch({ type: "UPDATE_TOAST", toast })
   };
 }
-
-export type { Toast };
 
 
 
