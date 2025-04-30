@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import NextLink from 'next/link'
+import NextLink from 'next/link';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import Link from "next/link";
-import { Menu, Plane } from 'lucide-react';
+import { Mail, Menu, Plane } from 'lucide-react';
+
 import { ThemeToggle } from '@/components/ThemeToggle';
 
 const Header: React.FC = () => {
@@ -17,7 +18,6 @@ const Header: React.FC = () => {
     { href: '/instructors', label: 'Instructors' },
     { href: '/faq', label: 'FAQ' },
     // { href: '/schedule', label: 'Schedule' }, // Consider if scheduling page is needed, maybe link to contact?
-    { href: '/contact', label: 'Contact' },
   ];
 
   return (
@@ -32,20 +32,25 @@ const Header: React.FC = () => {
 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center space-x-6 text-sm font-medium">
+          
+          
           {navLinks.map((link) => (
               <NextLink key={link.href} href={link.href} className="text-foreground/70 hover:text-primary transition-colors">
-                
                 {link.label}
-              
               </NextLink>
             ))}
-          
+           
+          <Button
+            asChild
+            className="flex rounded-full px-4 py-1 items-center bg-gradient-to-r from-[#00ff95] to-[#0073e6] text-white hover:text-white hover:from-[#00ff95]/80 hover:to-[#0073e6]/80"
+          >
+            <Link href="/contact"><Mail className="h-4 w-4" /><span>Contact</span></Link>
+          </Button>
           <ThemeToggle />
         </nav>
 
         {/* Mobile Navigation */}
         <div className="md:hidden flex items-center">
-           <ThemeToggle />
            <Sheet open={isOpen} onOpenChange={setIsOpen}>
             <SheetTrigger asChild>
               <Button variant="ghost" size="icon">
@@ -69,6 +74,13 @@ const Header: React.FC = () => {
                       {link.label}
                     </NextLink>
                 ))}
+                 <Button
+                    asChild
+                    className="flex items-center space-x-2 bg-gradient-to-r from-[#00ff95] to-[#0073e6] text-white hover:text-white hover:from-[#00ff95]/80 hover:to-[#0073e6]/80"
+                  >
+                    <Link href="/contact" onClick={() => setIsOpen(false)}><Mail className="h-4 w-4" /><span>Contact</span></Link>
+                  </Button>
+              <ThemeToggle />
               </div>
             </SheetContent>
           </Sheet>
