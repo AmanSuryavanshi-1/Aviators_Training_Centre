@@ -39,7 +39,7 @@ const Header: React.FC = () => {
   const navLinks = [
     { href: '/', label: 'Home' },
     { href: '/about', label: 'About Us' },
-    { href: '/courses', label: 'Training Programs' }, // Changed label
+    { href: '/courses', label: 'Training Programs' }, 
     { href: '/instructors', label: 'Instructors' },
     { href: '/faq', label: 'FAQ' },
     // { href: '/schedule', label: 'Schedule' }, // Consider if scheduling page is needed, maybe link to contact?
@@ -49,19 +49,19 @@ const Header: React.FC = () => {
     <header className={cn(
       "sticky top-0 z-50 w-full transition-all duration-300",
       scrolled 
-        ? "border-b shadow-sm backdrop-blur border-border/40 bg-background/95 supports-[backdrop-filter]:bg-background/60" 
-        : "backdrop-blur bg-background/80 supports-[backdrop-filter]:bg-background/60"
+        ? "border-b shadow-sm backdrop-blur-xl border-border/40 bg-background/60 supports-[backdrop-filter]:bg-background/40"
+        : "backdrop-blur-xl bg-background/60 supports-[backdrop-filter]:bg-background/40"
     )}>
-      <div className="container flex justify-between items-center max-w-screen-2xl h-20">
+      <div className="container flex justify-between items-center max-w-screen-2xl h-16">
         {/* Logo with Image */}
         <NextLink href="/" className="group">
-          <div className="overflow-hidden relative w-12 h-12">
+          <div className="overflow-hidden relative w-15 h-15">
             <Image 
               src="/AVIATORS_TRAINING_CENTRE-LOGO.webp" 
               alt="Aviators Training Centre Logo" 
-              width={48} 
-              height={48} 
-              className="object-contain transition-transform duration-500 transform group-hover:scale-105" 
+              width={120}
+              height={60}
+              className="object-contain transition-transform duration-500 transform group-hover:scale-105"
             />
           </div>
         </NextLink>
@@ -106,17 +106,17 @@ const Header: React.FC = () => {
             <SheetContent side="right" className="p-6 w-full max-w-xs bg-background">
               <div className="flex flex-col space-y-4">
                 {/* Updated Logo in Mobile Menu */}
-                <NextLink href="/" className="mb-6" onClick={() => setIsOpen(false)}>
+                {/* <NextLink href="/" className="mb-6" onClick={() => setIsOpen(false)}>
                   <div className="overflow-hidden relative w-10 h-10">
                     <Image 
                       src="/AVIATORS_TRAINING_CENTRE-LOGO.webp" 
                       alt="Aviators Training Centre Logo" 
-                      width={40} 
-                      height={40} 
+                      width={80} 
+                      height={80}
                       className="object-contain" 
-                    />
+                    /> 
                   </div>
-                </NextLink>
+                </NextLink> */}
                 {navLinks.map((link) => (
                     <NextLink
                       key={link.href}

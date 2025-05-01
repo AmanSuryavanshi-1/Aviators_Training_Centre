@@ -51,7 +51,9 @@ const Footer: React.FC = () => {
             <ul className="space-y-3">
               <li><NextLink href="/" className="flex items-center text-sm text-gray-200 transition-colors hover:text-white"><span className="mr-2">›</span>Home</NextLink></li>
               <li><NextLink href="/about" className="flex items-center text-sm text-gray-200 transition-colors hover:text-white"><span className="mr-2">›</span>About Us</NextLink></li>
-              <li><NextLink href="/courses" className="flex items-center text-sm text-gray-200 transition-colors hover:text-white"><span className="mr-2">›</span>Courses</NextLink></li>
+              <li><NextLink href="/courses" className="flex items-center text-sm text-gray-200 transition-colors hover:text-white"><span className="mr-2">›</span>Training Programs</NextLink></li>
+              <li><NextLink href="/instructors" className="flex items-center text-sm text-gray-200 transition-colors hover:text-white"><span className="mr-2">›</span>Instructors</NextLink></li>
+               <li><NextLink href="/faq" className="flex items-center text-sm text-gray-200 transition-colors hover:text-white"><span className="mr-2">›</span>FAQ</NextLink></li>
               <li><NextLink href="/contact" className="flex items-center text-sm text-gray-200 transition-colors hover:text-white"><span className="mr-2">›</span>Contact</NextLink></li>
             </ul>
           </div>
@@ -60,10 +62,15 @@ const Footer: React.FC = () => {
           <div className="md:col-span-1">
             <h3 className="pb-2 mb-6 text-lg font-semibold border-b border-teal-600">Our Courses</h3>
             <ul className="space-y-3">
-              <li><NextLink href="/courses" className="flex items-center text-sm text-gray-200 transition-colors hover:text-white"><span className="mr-2">›</span>Private Pilot License</NextLink></li>
-              <li><NextLink href="/courses" className="flex items-center text-sm text-gray-200 transition-colors hover:text-white"><span className="mr-2">›</span>Commercial Pilot License</NextLink></li>
-              <li><NextLink href="/courses" className="flex items-center text-sm text-gray-200 transition-colors hover:text-white"><span className="mr-2">›</span>Instrument Rating</NextLink></li>
-              <li><NextLink href="/courses" className="flex items-center text-sm text-gray-200 transition-colors hover:text-white"><span className="mr-2">›</span>Multi-Engine Rating</NextLink></li>
+              <li><NextLink href="/courses" className="flex items-center text-sm text-gray-200 transition-colors hover:text-white"><span className="mr-2">›</span>Air Navigation</NextLink></li>
+              <li><NextLink href="/courses" className="flex items-center text-sm text-gray-200 transition-colors hover:text-white"><span className="mr-2">›</span>Meteorology</NextLink></li>
+              <li><NextLink href="/courses" className="flex items-center text-sm text-gray-200 transition-colors hover:text-white"><span className="mr-2">›</span>Air Regulations</NextLink></li>
+              <li><NextLink href="/courses" className="flex items-center text-sm text-gray-200 transition-colors hover:text-white"><span className="mr-2">›</span>Technical General</NextLink></li>
+              <li><NextLink href="/courses" className="flex items-center text-sm text-gray-200 transition-colors hover:text-white"><span className="mr-2">›</span>Technical Specific</NextLink></li>
+              <li><NextLink href="/courses" className="flex items-center text-sm text-gray-200 transition-colors hover:text-white"><span className="mr-2">›</span>RTR(A)</NextLink></li>
+              <li><NextLink href="/courses" className="flex items-center text-sm text-gray-200 transition-colors hover:text-white"><span className="mr-2">›</span>A320 & B737 Type Rating Prep</NextLink></li>
+              <li><NextLink href="/courses" className="flex items-center text-sm text-gray-200 transition-colors hover:text-white"><span className="mr-2">›</span>One-on-One Online Classes</NextLink></li>
+              <li><NextLink href="/courses" className="flex items-center text-sm text-gray-200 transition-colors hover:text-white"><span className="mr-2">›</span>Interview Preparation</NextLink></li>
             </ul>
           </div>
 
@@ -86,7 +93,6 @@ const Footer: React.FC = () => {
                 <Mail className="flex-shrink-0 w-5 h-5 text-teal-300" />
                 <div className="flex flex-col">
                   <a href="mailto:aviatorstrainingcentre@gmail.com" className="break-all transition-colors hover:text-white">aviatorstrainingcentre@gmail.com</a>
-                  <a href="mailto:info@aviatorstrainingcentre.in" className="break-all transition-colors hover:text-white">info@aviatorstrainingcentre.in</a>
                 </div>
               </li>
               <li className="flex items-center space-x-3 text-sm text-gray-200">
