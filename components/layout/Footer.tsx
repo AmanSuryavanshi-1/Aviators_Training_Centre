@@ -10,13 +10,13 @@ const Footer: React.FC = () => {
   return (
     <footer className="py-8 text-white bg-teal-800">
       {/* Main Footer Content */}
-      <div className="container px-6 mx-auto">
+      <div className="container px-6 py-8 mx-auto">
         <div className="grid grid-cols-1 gap-10 md:grid-cols-4">
           {/* Column 1: Aviators Training Centre */}
           <div className="md:col-span-1">
             <div className="flex flex-col space-y-4">
               <NextLink href="/" className="mb-3">
-                <div className="relative w-64 h-32 p-4 overflow-hidden bg-white shadow-lg shadow-teal-950 rounded-2xl">
+                <div className="relative h-24 p-4 overflow-hidden bg-white shadow-lg w-52 shadow-teal-950 rounded-2xl">
                   <Image 
                     src="/AVIATORS_TRAINING_CENTRE-LOGO.webp" 
                     alt="Aviators Training Centre Logo" 

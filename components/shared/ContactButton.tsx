@@ -75,9 +75,9 @@ export function ContactButton({
         )}
       >
         <Link href={href} onClick={onClick}>
-          <Mail className="mr-2 w-4 h-4 text-teal-500 transition-colors duration-300 group-hover:text-blue-500" />
+          <Mail className="w-4 h-4 mr-2 text-teal-500 transition-colors duration-300 group-hover:text-blue-500" />
           <span className="font-medium">{label}</span>
-          <ChevronRight className="ml-1 w-4 h-4 text-blue-500 transition-colors transition-transform duration-300 transform group-hover:text-teal-500 group-hover:translate-x-1" />
+          <ChevronRight className="w-4 h-4 ml-1 text-blue-500 transition-colors transition-transform duration-300 transform group-hover:text-teal-500 group-hover:translate-x-1" />
         </Link>
       </Button>
     </motion.div>

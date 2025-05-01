@@ -46,38 +46,39 @@ const Header: React.FC = () => {
     <header className={cn(
       "sticky top-0 z-50 w-full transition-all duration-300",
       scrolled 
-        ? "border-b shadow-sm backdrop-blur-xl border-border/40 bg-background/60 supports-[backdrop-filter]:bg-background/40"
-        : "backdrop-blur-xl bg-background/60 supports-[backdrop-filter]:bg-background/40"
+        ? "border-b shadow-sm backdrop-blur-xl border-border/40 bg-background/60 supports-[backdrop-filter]:bg-background/40 dark:bg-background/80 dark:supports-[backdrop-filter]:bg-background/60"
+        : "backdrop-blur-xl bg-background/60 supports-[backdrop-filter]:bg-background/40 dark:bg-background/80 dark:supports-[backdrop-filter]:bg-background/60"
     )}>
-      <div className="container flex justify-between items-center max-w-screen-2xl h-16">
+      <div className="container flex items-center justify-between px-4 max-w-screen-2xl sm:px-6 lg:px-8">
         {/* Logo with Image */}
-        <NextLink href="/" className="group">
-          <div className="overflow-hidden relative w-15 h-15">
+        <NextLink href="/" className="flex items-center group">
+          <div className="relative h-16 overflow-hidden w-60">
             <Image 
               src="/AVIATORS_TRAINING_CENTRE-LOGO.webp" 
               alt="Aviators Training Centre Logo" 
-              width={120}
-              height={60}
+              width={128}
+              height={64}
               className="object-contain transition-transform duration-500 transform group-hover:scale-105"
+              priority
             />
           </div>
         </NextLink>
 
         {/* Desktop Navigation - Hidden on mobile */}
-        <nav className="hidden items-center space-x-4 text-sm font-medium md:flex">
+        <nav className="items-center hidden space-x-8 text-sm font-medium md:flex">
           {navLinks.map((link) => (
             <NextLink 
               key={link.href} 
               href={link.href} 
               className={cn(
-                "relative py-1 text-sm transition-colors",
-                pathname === link.href // Use pathname for comparison
+                "relative py-2 px-1 text-sm transition-colors hover:text-primary",
+                pathname === link.href
                   ? "text-primary font-semibold" 
-                  : "text-foreground/70 hover:text-primary"
+                  : "text-foreground/80"
               )}
             >
               {link.label}
-              {pathname === link.href && ( // Use pathname for comparison
+              {pathname === link.href && (
                 <motion.div 
                   className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-teal-500 to-blue-500 rounded-full"
                   layoutId="navIndicator"
@@ -86,56 +87,49 @@ const Header: React.FC = () => {
               )}
             </NextLink>
           ))}
-           
-          <ContactButton href="/contact" />
-          <ThemeToggle />
         </nav>
+
+        {/* Right side buttons */}
+        <div className="flex items-center space-x-4">
+          <ThemeToggle />
+          <ContactButton href="/contact" />
+        </div>
 
         {/* Mobile Navigation Trigger - Shown only on mobile */}
         <div className="flex items-center md:hidden">
-           <Sheet open={isOpen} onOpenChange={setIsOpen}>
+          <Sheet open={isOpen} onOpenChange={setIsOpen}>
             <SheetTrigger asChild>
-              <Button variant="ghost" size="icon">
+              <Button variant="ghost" size="icon" className="w-10 h-10">
                 <Menu className="w-6 h-6 text-foreground" />
                 <span className="sr-only">Toggle Menu</span>
               </Button>
             </SheetTrigger>
-            <SheetContent side="right" className="p-6 w-full max-w-xs bg-background">
-              <div className="flex flex-col space-y-4">
-                {/* Updated Logo in Mobile Menu */}
-                {/* <NextLink href="/" className="mb-6" onClick={() => setIsOpen(false)}>
-                  <div className="overflow-hidden relative w-10 h-10">
-                    <Image 
-                      src="/AVIATORS_TRAINING_CENTRE-LOGO.webp" 
-                      alt="Aviators Training Centre Logo" 
-                      width={80} 
-                      height={80}
-                      className="object-contain" 
-                    /> 
-                  </div>
-                </NextLink> */}
+            <SheetContent side="right" className="w-full max-w-xs p-6 bg-background">
+              <div className="flex flex-col space-y-6">
                 {navLinks.map((link) => (
-                    <NextLink
-                      key={link.href}
-                      href={link.href}
-                      className={cn( // Apply active styles in mobile too
-                        "text-lg transition-colors",
-                        pathname === link.href
-                          ? "text-primary font-semibold"
-                          : "text-foreground/80 hover:text-primary"
-                      )}
-                      onClick={() => setIsOpen(false)}>
-                      {link.label}
-                    </NextLink>
+                  <NextLink
+                    key={link.href}
+                    href={link.href}
+                    className={cn(
+                      "text-lg transition-colors py-2",
+                      pathname === link.href
+                        ? "text-primary font-semibold"
+                        : "text-foreground/80 hover:text-primary"
+                    )}
+                    onClick={() => setIsOpen(false)}>
+                    {link.label}
+                  </NextLink>
                 ))}
-                 <div className="mt-2">
-                    <ContactButton 
-                      href="/contact" 
-                      onClick={() => setIsOpen(false)} 
-                      fullWidth 
-                    />
+                <div className="flex flex-col mt-4 space-y-4">
+                  <div className="flex justify-center">
+                    <ThemeToggle />
                   </div>
-              <ThemeToggle />
+                  <ContactButton 
+                    href="/contact" 
+                    onClick={() => setIsOpen(false)} 
+                    fullWidth 
+                  />
+                </div>
               </div>
             </SheetContent>
           </Sheet>
