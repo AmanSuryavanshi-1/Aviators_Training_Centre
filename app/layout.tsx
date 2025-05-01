@@ -13,16 +13,22 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-    title: "Aviators Training Centre | Aviation Training for Pilots",
-    description: "Expert-led aviation training for CPL/ATPL exams, Type Rating preparation, and pilot career services. Join India's premier pilot training institute.",
-    keywords: "aviation training, pilot training, DGCA ground school, CPL training, ATPL training, type rating preparation, RTR(A), pilot career",
+    title: "Aviators Training Centre (ATC) | Premier Pilot Training Institute | Aviation Training for Pilots",
+    description: "India's leading aviation training center offering CPL/ATPL exam preparation, Type Rating courses, and comprehensive pilot training programs. Expert instructors, modern facilities, and career guidance.",
+    keywords: "ATC, Aviators Training Centre, pilot training, aviation training, DGCA ground school, CPL training, ATPL training, type rating preparation, RTR(A), pilot career, flight school, aviation academy, pilot license, commercial pilot training",
     robots: "index, follow",
+    alternates: {
+        canonical: "https://aviatorstrainingcentre.com",
+        languages: {
+            'en': 'https://aviatorstrainingcentre.com',
+        },
+    },
     openGraph: {
         type: "website",
         locale: "en_IE",
         url: "https://aviatorstrainingcentre.com",
-        title: "Aviators Training Centre | Aviation Training for Pilots",
-        description: "Expert-led aviation training for CPL/ATPL exams, Type Rating preparation, and pilot career services.",
+        title: "Aviators Training Centre (ATC) | Premier Pilot Training Institute | Aviation Training for Pilots",
+        description: "India's leading aviation training center offering CPL/ATPL exam preparation, Type Rating courses, and comprehensive pilot training programs.",
         siteName: "Aviators Training Centre",
         images: [{
             url: "/AVIATORS_TRAINING_CENTRE-LOGO.webp",
@@ -33,9 +39,12 @@ export const metadata: Metadata = {
     },
     twitter: {
         card: "summary_large_image",
-        title: "Aviators Training Centre | Aviation Training for Pilots",
-        description: "Expert-led aviation training for CPL/ATPL exams, Type Rating preparation, and pilot career services.",
+        title: "Aviators Training Centre (ATC) | Premier Pilot Training Institute",
+        description: "India's leading aviation training center offering CPL/ATPL exam preparation, Type Rating courses, and comprehensive pilot training programs.",
         images: ["/AVIATORS_TRAINING_CENTRE-LOGO.webp"]
+    },
+    verification: {
+        google: "google04cf4c380ddcb85b.html",
     }
 };
 
