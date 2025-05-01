@@ -30,7 +30,7 @@ const REGS_IMAGE = "/Courses/ICAO regs.jpg";
 const TECH_GEN_IMAGE = "/Courses/technical gen.webp";
 const TECH_SPEC_IMAGE = "/Courses/technical specific.webp";
 const RTR_IMAGE = "/Courses/rtr.webp";
-const TYPE_RATING_IMAGE = "/HomePage/Course2.webp";
+const TYPE_RATING_IMAGE = "/Courses/TypeRatingPrep.webp";
 const ONE_ON_ONE_IMAGE = "/Courses/one-on-one-classes.webp";
 const INTERVIEW_PREP_IMAGE = "/HomePage/Hero4.webp";
 
