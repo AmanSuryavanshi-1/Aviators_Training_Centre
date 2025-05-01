@@ -1,7 +1,5 @@
 "use client"
 import React from 'react';
-import Header from "@/components/layout/Header";
-import Footer from "@/components/layout/Footer";
 import HeroSection from "@/components/home/HeroSection";
 import WhyChooseUs from "@/components/home/WhyChooseUs";
 import CoursesSection from "@/components/home/CoursesSection";
@@ -26,15 +24,14 @@ const itemVariants = {
 // Define primary color for consistent heading usage
 const aviationPrimary = 'text-teal-700 dark:text-teal-300';
 
-const Index: React.FC = () => {
+export default function Home() {
   return (
     <div className="flex flex-col min-h-screen bg-background text-foreground">
-      <Header />
 
       <HeroSection />
 
       <main>
-          <div className="container mx-auto px-4 sm:px-6 py-16 md:py-24 space-y-20 md:space-y-28">
+          <div className="container px-4 py-16 mx-auto space-y-20 sm:px-6 md:py-24 md:space-y-28">
           {/* Hero Section remains outside the main container */}
 
           {/* Main Content Area with standard padding and spacing */}
@@ -62,10 +59,6 @@ const Index: React.FC = () => {
           </div>
 
       </main>
-
-      <Footer />
     </div>
   );
-};
-
-export default Index;
+}

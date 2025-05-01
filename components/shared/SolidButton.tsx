@@ -44,7 +44,7 @@ export function SolidButton({
       asChild
       size="lg"
       // Combine base classes with incoming className
-      className={`group relative rounded-full px-6 py-3 overflow-hidden bg-teal-600 text-white shadow-md transition-all duration-300 ease-out hover:bg-teal-700 hover:shadow-lg dark:bg-teal-500 dark:hover:bg-teal-600 ${className}`}
+      className={`group relative rounded-full px-6 py-3 overflow-hidden bg-teal-600 text-white shadow-md transition-all duration-300 ease-out hover:bg-teal-700 hover:shadow-lg dark:bg-teal-500 dark:hover:bg-teal-600 min-h-[48px] ${className}`}
     >
       <ButtonWrapper {...linkProps}>
         <span className="relative z-10 flex items-center justify-center"> {/* Added justify-center */} 

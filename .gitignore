@@ -23,4 +23,16 @@ dist-ssr
 *.sln
 *.sw?
 
+# Next.js
 .next/
+/out
+
+# Cache
+.cache/
+.temp/
+.tmp/
+
+# System Files
+Thumbs.db
+ehthumbs.db
+Desktop.ini

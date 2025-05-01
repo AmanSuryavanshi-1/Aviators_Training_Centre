@@ -1,0 +1,46 @@
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What courses does Aviators Training Centre offer?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Aviators Training Centre offers comprehensive DGCA Ground School for CPL/ATPL exams, RTR(A) preparation, Type Rating preparation for A320 & B737, one-on-one online classes, and interview preparation for airline jobs."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Are your instructors experienced in the aviation industry?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, our instructors are experienced airline professionals with real-world experience in major airlines. They bring practical insights and industry knowledge to help students succeed in exams and interviews."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How can I enroll in your courses?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "You can enroll by visiting our contact page and filling out the enrollment form. Alternatively, you can book a demo session to experience our teaching methodology before committing to a full course."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Do you offer online classes?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, we offer flexible online classes for all our courses. Our online platform allows you to study at your own pace with 24/7 doubt support from our expert faculty."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is your success rate for DGCA exams?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "We maintain a high success rate for DGCA exams through our structured curriculum, thorough mock tests, and personalized attention. Our methodology focuses on conceptual clarity and practical application of knowledge."
+      }
+    }
+  ]
+}

@@ -106,31 +106,31 @@ const HeroSection = () => {
           <img
             src={slides[currentSlide].image}
             alt={slides[currentSlide].title}
-            className="absolute inset-0 w-full h-full object-cover"
+            className="object-cover absolute inset-0 w-full h-full"
             onError={handleImageError}
             loading="eager"
           />
         </motion.div>
       </AnimatePresence>
 
-      <div className="relative z-10 h-full flex items-center justify-center bg-black/30 p-4">
+      <div className="flex relative z-10 justify-center items-center p-4 h-full bg-black/30 sm:p-8">
         <motion.div
           key={currentSlide + '-content'}
           variants={contentVariants}
           initial="hidden"
           animate="visible"
           exit="hidden"
-          className="max-w-4xl mx-auto text-center text-white"
+          className="mx-auto max-w-4xl text-center text-white"
         >
-          <motion.h1 variants={itemVariants} className="text-4xl md:text-6xl lg:text-7xl font-bold mb-4 tracking-tight drop-shadow-lg">
+          <motion.h1 variants={itemVariants} className="mb-4 text-2xl font-bold tracking-tight drop-shadow-lg sm:text-4xl md:text-6xl lg:text-7xl">
             {slides[currentSlide].title}
           </motion.h1>
-          <motion.p variants={itemVariants} className="text-xl md:text-2xl mb-8 text-white/95 max-w-3xl mx-auto drop-shadow-md">
+          <motion.p variants={itemVariants} className="mx-auto mb-8 max-w-3xl text-lg drop-shadow-md sm:text-xl md:text-2xl text-white/95">
             {slides[currentSlide].subtitle}
           </motion.p>
 
           {/* --- Action Buttons --- */}
-          <motion.div variants={itemVariants} className="flex flex-wrap justify-center items-center gap-4 md:gap-6">
+          <motion.div variants={itemVariants} className="flex flex-wrap gap-4 justify-center items-center md:gap-6">
             {/* Primary Action Button (Replaced with SolidButton) */}
             <SolidButton
               href={slides[currentSlide].buttonLink}

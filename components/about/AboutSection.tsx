@@ -8,10 +8,13 @@ import { FileSignature, Lightbulb, Rocket, BookOpenCheck, ArrowRight } from 'luc
 import { SolidButton } from '../shared/SolidButton';
 
 interface AboutSectionProps {
-    whoWeAre: string;
+    title: string;
+    content: string;
+    image: string;
+    reverse?: boolean;
 }
 
-const AboutSection: React.FC<AboutSectionProps> = ({ whoWeAre }) => {
+const AboutSection: React.FC<AboutSectionProps> = ({ title, content, image, reverse = false }) => {
     // Animation variants
     const sectionVariants = {
         hidden: { opacity: 0, y: 50 },
@@ -61,41 +64,41 @@ const AboutSection: React.FC<AboutSectionProps> = ({ whoWeAre }) => {
                 className="px-4 py-16 md:py-24 md:px-8 bg-background"
             >
                 <div className="container mx-auto">
-                    <div className="flex flex-col gap-8 items-center lg:flex-row md:gap-12">
+                    <div className="flex flex-col items-center gap-8 lg:flex-row md:gap-12">
                         {/* Left side - Text content */}
                         <motion.div 
                             variants={itemVariants} 
                             className="space-y-6 lg:w-1/2"
                         >
                             <div className="inline-flex items-center px-3 py-1 mb-2 text-sm font-medium text-teal-700 rounded-full bg-teal-100/50 dark:bg-teal-900/30 dark:text-teal-300">
-                                <FileSignature className="mr-2 w-4 h-4" />
-                                <span>Who We Are</span>
+                                <FileSignature className="w-4 h-4 mr-2" />
+                                <span>{title}</span>
                             </div>
                             
                             <h1 className="text-3xl font-bold leading-tight text-teal-700 md:text-3xl lg:text-4xl">
-                                Aviators Training Centre
+                                {title}
                             </h1>
                             
                             <p className="text-lg leading-relaxed text-foreground/80">
-                                {whoWeAre}
+                                {content}
                             </p>
                             
                             <SolidButton
                                 href="/contact"
-                                icon={ArrowRight} // Using the same icon
+                                icon={ArrowRight}
                                 label="Get in Touch"
                                 />
                         </motion.div>
                         
-                        {/* Right side - Image */}
+                        {/* Image */}
                         <motion.div 
                             variants={itemVariants} 
                             className="lg:w-1/2"
                         >
                             <div className="relative h-[300px] md:h-[350px] lg:h-[400px] w-full rounded-xl overflow-hidden shadow-lg">
                                 <Image
-                                    src="/Plane2.webp" // Using available image
-                                    alt="Aviators Training Centre"
+                                    src={image}
+                                    alt={title}
                                     className="object-cover"
                                     fill
                                     priority
@@ -119,7 +122,7 @@ const AboutSection: React.FC<AboutSectionProps> = ({ whoWeAre }) => {
                         <h2 className="mb-4 text-3xl font-bold text-teal-700 md:text-4xl dark:text-teal-300">
                             Our Aviation Journey
                         </h2>
-                        <p className="mx-auto max-w-3xl text-lg text-foreground/80">
+                        <p className="max-w-3xl mx-auto text-lg text-foreground/80">
                             Discover our story, mission, and vision that drive us to provide exceptional aviation training.
                         </p>
                     </motion.div>
@@ -138,7 +141,7 @@ const AboutSection: React.FC<AboutSectionProps> = ({ whoWeAre }) => {
                                     animate="rest"
                                     variants={cardHoverEffect}
                                 >
-                                    <Card className="flex overflow-hidden flex-col h-full rounded-xl border shadow-md bg-card border-border">
+                                    <Card className="flex flex-col h-full overflow-hidden border shadow-md rounded-xl bg-card border-border">
                                         <CardHeader className="relative flex-shrink-0 p-0">
                                             <div className="relative w-full h-56">
                                                 <Image
@@ -149,7 +152,7 @@ const AboutSection: React.FC<AboutSectionProps> = ({ whoWeAre }) => {
                                                     loading="lazy"
                                                 />
                                                 <div className="absolute inset-0 bg-gradient-to-t to-transparent from-black/60"></div>
-                                                <div className="flex absolute bottom-4 left-4 items-center">
+                                                <div className="absolute flex items-center bottom-4 left-4">
                                                     <div className="p-2 mr-3 rounded-full bg-white/90 dark:bg-black/70">
                                                         <card.icon className="w-5 h-5 text-teal-600 dark:text-teal-400" />
                                                     </div>

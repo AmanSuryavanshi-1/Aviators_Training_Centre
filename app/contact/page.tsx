@@ -1,8 +1,6 @@
 "use client"
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import Header from '@/components/layout/Header';
-import Footer from '@/components/layout/Footer';
 import { Button } from '@/components/ui/button';
 import { BookDemoButton } from '@/components/shared/BookDemoButton';
 import { Input } from '@/components/ui/input';
@@ -136,9 +134,6 @@ const ContactPage: React.FC = () => {
 
   return (
     <div className="flex flex-col min-h-screen bg-background text-foreground">
-      <Header />
-
-      {/* Page Header */}
       <motion.section
         className="relative h-[50vh] md:h-[60vh] flex items-center justify-center text-center text-white overflow-hidden"
         initial={{ opacity: 0 }}
@@ -148,7 +143,7 @@ const ContactPage: React.FC = () => {
          <img
           src={contactHeaderUrl}
           alt="Contact ATC background"
-          className="absolute inset-0 w-full h-full object-cover z-0"
+          className="absolute inset-0 z-0 object-cover w-full h-full"
           onError={handleImageError}
           style={{ filter: 'brightness(0.6)' }}
         />
@@ -159,10 +154,10 @@ const ContactPage: React.FC = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3, duration: 0.8 }}
         >
-          <h1 className="drop-shadow-md text-4xl sm:text-5xl md:text-6xl font-extrabold leading-tight tracking-tight mb-3">
+          <h1 className="mb-3 text-4xl font-extrabold leading-tight tracking-tight drop-shadow-md sm:text-5xl md:text-6xl">
              {isDemoBooking ? 'Book Your Demo' : 'Get In Touch'}
           </h1>
-          <p className="text-lg drop-shadow-md md:text-xl text-white/90 max-w-2xl mx-auto">
+          <p className="max-w-2xl mx-auto text-lg drop-shadow-md md:text-xl text-white/90">
            {isDemoBooking
              ? `Fill in your details below, and we will schedule your personalized demo.`
              : `Have questions? Select a subject or let us know how we can help.`
@@ -172,7 +167,7 @@ const ContactPage: React.FC = () => {
       </motion.section>
 
       {/* Main Content */}
-      <main id="contact-form" className="flex-grow container mx-auto px-4 sm:px-6 py-16 md:py-24 space-y-20 md:space-y-28">
+      <main id="contact-form" className="container flex-grow px-4 py-16 mx-auto space-y-20 sm:px-6 md:py-24 md:space-y-28">
         {/* Contact Info & Form Section */} 
         <motion.section
            variants={sectionVariants}
@@ -180,57 +175,57 @@ const ContactPage: React.FC = () => {
            whileInView="visible"
            viewport={{ once: true, amount: 0.05 }}
         >
-            <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-12 items-start">
+            <div className="grid items-start grid-cols-1 gap-8 lg:grid-cols-5 lg:gap-12">
               {/* Contact Information Card */} 
               <motion.div variants={itemVariants} className="lg:col-span-2">
-                 <Card className="bg-card h-full rounded-lg shadow-sm border border-border p-6 md:p-8">
+                 <Card className="h-full p-6 border rounded-lg shadow-sm bg-card border-border md:p-8">
                      <CardHeader className="p-0 mb-6">
                          <CardTitle className={cn("text-2xl font-semibold", aviationPrimary)}>Contact Details</CardTitle>
-                         <CardDescription className="text-foreground/70 mt-1">
+                         <CardDescription className="mt-1 text-foreground/70">
                              Reach out via phone, email, or visit us.
                          </CardDescription>
                      </CardHeader>
                      <CardContent className="p-0 space-y-5">
                          {/* Location */} 
                          <div className="flex items-start space-x-3"> 
-                           <div className={cn("flex-shrink-0 mt-1 p-2 rounded-full bg-teal-100/70 dark:bg-teal-900/40", aviationSecondary)}>
-                             <MapPin className="h-5 w-5" />
+                           <div className={cn("flex-shrink-0 p-2 mt-1 rounded-full bg-teal-100/70 dark:bg-teal-900/40", aviationSecondary)}>
+                             <MapPin className="w-5 h-5" />
                            </div>
                            <div>
-                             <h4 className="text-sm font-semibold text-foreground mb-1">Location</h4>
+                             <h4 className="mb-1 text-sm font-semibold text-foreground">Location</h4>
                              <p className="text-sm text-foreground/80">Ramphal Chowk Rd, Sector 7 Dwarka,<br />Dwarka, Delhi, 110075, India</p>
                            </div>
                          </div>
                          {/* Phone */}
                          <div className="flex items-start space-x-3">
-                           <div className={cn("flex-shrink-0 mt-1 p-2 rounded-full bg-teal-100/70 dark:bg-teal-900/40", aviationSecondary)}>
-                            <Phone className="h-5 w-5" />
+                           <div className={cn("flex-shrink-0 p-2 mt-1 rounded-full bg-teal-100/70 dark:bg-teal-900/40", aviationSecondary)}>
+                            <Phone className="w-5 h-5" />
                            </div>
                            <div>
-                             <h4 className="text-sm font-semibold text-foreground mb-1">Phone</h4>
+                             <h4 className="mb-1 text-sm font-semibold text-foreground">Phone</h4>
                              <p className="text-sm text-foreground/80">+91 94856 87609</p>
                              <p className="text-sm text-foreground/80">+91 7842401155</p>
                            </div>
                          </div>
                          {/* Email */} 
                          <div className="flex items-start space-x-3">
-                             <div className={cn("flex-shrink-0 mt-1 p-2 rounded-full bg-teal-100/70 dark:bg-teal-900/40", aviationSecondary)}>
-                               <Mail className="h-5 w-5" />
+                             <div className={cn("flex-shrink-0 p-2 mt-1 rounded-full bg-teal-100/70 dark:bg-teal-900/40", aviationSecondary)}>
+                               <Mail className="w-5 h-5" />
                               </div>
                            <div>
-                             <h4 className="text-sm font-semibold text-foreground mb-1">Email</h4>
-                             <Link href="mailto:aviatorstrainingcentre@gmail.com" className="text-sm text-foreground/80 hover:text-foreground underline-offset-2 hover:underline break-all">aviatorstrainingcentre@gmail.com</Link>
+                             <h4 className="mb-1 text-sm font-semibold text-foreground">Email</h4>
+                             <Link href="mailto:aviatorstrainingcentre@gmail.com" className="text-sm break-all text-foreground/80 hover:text-foreground underline-offset-2 hover:underline">aviatorstrainingcentre@gmail.com</Link>
                              <br/>
-                             <Link href="mailto:info@aviatorstrainingcentre.in" className="text-sm text-foreground/80 hover:text-foreground underline-offset-2 hover:underline break-all">info@aviatorstrainingcentre.in</Link>
+                             <Link href="mailto:info@aviatorstrainingcentre.in" className="text-sm break-all text-foreground/80 hover:text-foreground underline-offset-2 hover:underline">info@aviatorstrainingcentre.in</Link>
                            </div>
                          </div>
                           {/* Operating Hours */} 
                          <div className="flex items-start space-x-3">
-                              <div className={cn("flex-shrink-0 mt-1 p-2 rounded-full bg-teal-100/70 dark:bg-teal-900/40", aviationSecondary)}>
-                                <Clock className="h-5 w-5" />
+                              <div className={cn("flex-shrink-0 p-2 mt-1 rounded-full bg-teal-100/70 dark:bg-teal-900/40", aviationSecondary)}>
+                                <Clock className="w-5 h-5" />
                                </div>
                             <div>
-                                <h4 className="text-sm font-semibold text-foreground mb-1">Operating Hours</h4>
+                                <h4 className="mb-1 text-sm font-semibold text-foreground">Operating Hours</h4>
                                 <dl className="text-sm text-foreground/80">
                                     <div className="flex justify-between"><dt>Mon - Fri:</dt><dd className="pl-2">8:00 AM - 7:00 PM</dd></div>
                                     <div className="flex justify-between"><dt>Saturday:</dt><dd className="pl-2">9:00 AM - 5:00 PM</dd></div>
@@ -240,7 +235,7 @@ const ContactPage: React.FC = () => {
                          </div>
                          {/* Social Links */}
                          <div className="pt-4 border-t border-border/50">
-                              <h4 className="text-sm font-semibold text-foreground mb-2">Follow Us</h4>
+                              <h4 className="mb-2 text-sm font-semibold text-foreground">Follow Us</h4>
                               <div className="flex space-x-2">
                                   <Button variant="ghost" size="icon" asChild className={cn("text-foreground/70 hover:text-foreground", aviationSecondary)}>
                                      <Link href="#" aria-label="Facebook"><Facebook size={20}/></Link>
@@ -259,12 +254,12 @@ const ContactPage: React.FC = () => {
 
               {/* Contact Form Card */} 
               <motion.div variants={itemVariants} className="lg:col-span-3">
-                 <Card className="bg-card rounded-lg shadow-sm border border-border p-6 md:p-8">
+                 <Card className="p-6 border rounded-lg shadow-sm bg-card border-border md:p-8">
                      <CardHeader className="p-0 mb-6">
                          <CardTitle className={cn("text-2xl font-semibold", aviationPrimary)}>
                              {isDemoBooking ? 'Demo Request Form' : 'Send Us a Message'}
                          </CardTitle>
-                         <CardDescription className="text-foreground/70 mt-1">
+                         <CardDescription className="mt-1 text-foreground/70">
                             {isDemoBooking 
                                 ? `Confirm your details and the pre-filled request.`
                                 : `Fill out the form below and we will get back to you shortly.`
@@ -274,8 +269,8 @@ const ContactPage: React.FC = () => {
                      <CardContent className="p-0">
                           {/* --- FORM START --- */}
                           <form onSubmit={handleSubmit} className="space-y-5">
-                              {/* Name and Email */} 
-                              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                              {/* Name and Email - Stack vertically on mobile */}
+                              <div className="grid grid-cols-1 gap-5">
                                   <div className="space-y-1.5">
                                       <Label htmlFor="name" className="text-sm font-medium">Full Name</Label>
                                       <Input
@@ -300,20 +295,19 @@ const ContactPage: React.FC = () => {
                                       />
                                   </div>
                               </div>
-
-                              {/* Phone and Subject */} 
-                              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                                   <div className="space-y-1.5">
-                                       <Label htmlFor="phone" className="text-sm font-medium">Phone Number <span className="text-foreground/50">(Optional)</span></Label>
-                                       <Input
-                                           id="phone"
-                                           value={phone}
-                                           onChange={(e) => setPhone(e.target.value)}
-                                           placeholder="e.g. +91 12345 67890"
-                                           className="focus-visible:ring-teal-500"
-                                       />
-                                   </div>
-                                   <div className="space-y-1.5">
+                              {/* Phone and Subject - Stack vertically on mobile */}
+                              <div className="grid grid-cols-1 gap-5">
+                                  <div className="space-y-1.5">
+                                      <Label htmlFor="phone" className="text-sm font-medium">Phone Number <span className="text-foreground/50">(Optional)</span></Label>
+                                      <Input
+                                          id="phone"
+                                          value={phone}
+                                          onChange={(e) => setPhone(e.target.value)}
+                                          placeholder="e.g. +91 12345 67890"
+                                          className="focus-visible:ring-teal-500"
+                                      />
+                                  </div>
+                                  <div className="space-y-1.5">
                                       <Label htmlFor="subject" className="text-sm font-medium">Subject</Label>
                                       {isDemoBooking ? (
                                           <Input
@@ -325,7 +319,7 @@ const ContactPage: React.FC = () => {
                                               className={cn(
                                                   "cursor-text",
                                                   "focus-visible:ring-teal-500",
-                                                  "bg-muted/50 cursor-not-allowed" // Style read-only field
+                                                  "cursor-not-allowed bg-muted/50" // Style read-only field
                                               )}
                                           />
 
@@ -373,8 +367,8 @@ const ContactPage: React.FC = () => {
                                       type="submit"
                                       size="lg"
                                       className={cn(
-                                          'w-full flex items-center justify-center gap-2',
-                                          'group relative rounded-full overflow-hidden bg-teal-600 text-white shadow-md transition-all duration-300 ease-out hover:bg-teal-700 hover:shadow-lg dark:bg-teal-500 dark:hover:bg-teal-600',
+                                          'flex gap-2 justify-center items-center w-full',
+                                          'overflow-hidden relative text-white bg-teal-600 rounded-full shadow-md transition-all duration-300 ease-out group hover:bg-teal-700 hover:shadow-lg dark:bg-teal-500 dark:hover:bg-teal-600',
                                           'focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500',
                                           'disabled:opacity-50 disabled:cursor-not-allowed'
                                       )}
@@ -383,7 +377,7 @@ const ContactPage: React.FC = () => {
                                       {loading ? (
                                           <>
                                               <motion.div
-                                                  className="h-5 w-5 border-2 border-white border-t-transparent rounded-full"
+                                                  className="w-5 h-5 border-2 border-white rounded-full border-t-transparent"
                                                   animate={{ rotate: 360 }}
                                                   transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
                                               />
@@ -391,7 +385,7 @@ const ContactPage: React.FC = () => {
                                           </>
                                       ) : (
                                           <>
-                                              {isDemoBooking ? 'Confirm Demo Request' : 'Send Message'} <Send className="ml-2 h-4 w-4" />
+                                              {isDemoBooking ? 'Confirm Demo Request' : 'Send Message'} <Send className="w-4 h-4 ml-2" />
                                           </>
                                       )}
                                   </Button>
@@ -413,20 +407,20 @@ const ContactPage: React.FC = () => {
         >
            <motion.h2 
                variants={itemVariants}
-               className={cn("text-3xl md:text-4xl font-bold text-center mb-6", aviationPrimary)}
+               className={cn("mb-6 text-3xl font-bold text-center md:text-4xl", aviationPrimary)}
             >
                Find Our Location
             </motion.h2>
              <motion.p
                  variants={itemVariants}
-                 className="text-center text-foreground/80 max-w-2xl mx-auto mb-10"
+                 className="max-w-2xl mx-auto mb-10 text-center text-foreground/80"
              >
                 Visit our training centre in Dwarka, New Delhi, to discuss your training needs in person.
             </motion.p>
             
             <motion.div
                 variants={itemVariants}
-                className="rounded-lg overflow-hidden shadow-md border border-border"
+                className="overflow-hidden border rounded-lg shadow-md border-border"
             >
                  <div className="aspect-video">
                     <iframe
@@ -444,8 +438,6 @@ const ContactPage: React.FC = () => {
         </motion.section>
 
       </main>
-
-      <Footer />
     </div>
   );
 };

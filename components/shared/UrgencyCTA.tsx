@@ -20,9 +20,23 @@ interface UrgencyCTAProps {
     offerEndDate: Date;
     formattedEndDate: string;
     className?: string;
+    title?: string;
+    description?: string;
+    buttonLabel?: string;
+    buttonIcon?: React.ComponentType<{ className?: string }>;
+    buttonClassName?: string;
 }
 
-export const UrgencyCTA: React.FC<UrgencyCTAProps> = ({ offerEndDate, formattedEndDate, className }) => {
+export const UrgencyCTA: React.FC<UrgencyCTAProps> = ({ 
+    offerEndDate, 
+    formattedEndDate, 
+    className,
+    title = "Limited Time Offer!",
+    description = `Enroll in any of our ground school batches by ${formattedEndDate} and secure a 20% discount on your course fees. Start your journey today!`,
+    buttonLabel = `Enroll by ${formattedEndDate} for 20% Off`,
+    buttonIcon: Icon = CalendarClock,
+    buttonClassName
+}) => {
 
   return (
     <motion.div
@@ -36,9 +50,9 @@ export const UrgencyCTA: React.FC<UrgencyCTAProps> = ({ offerEndDate, formattedE
         )}
     >
        {/* Adjusted primary text color reference if needed, or remove if not used */}
-       <h3 className={cn("text-2xl font-semibold mb-3", 'text-teal-700 dark:text-teal-300')}>Limited Time Offer!</h3>
-       <p className="text-foreground/80 mb-6">
-           Enroll in any of our ground school batches by <strong className="text-foreground">{formattedEndDate}</strong> and secure a <strong className="text-foreground">20% discount</strong> on your course fees. Start your journey today!
+       <h3 className={cn("text-2xl font-semibold mb-3", 'text-teal-700 dark:text-teal-300')}>{title}</h3>
+       <p className="mb-6 text-foreground/80">
+           {description}
        </p>
 
        {/* Gradient Button - Adapted inner button style */}

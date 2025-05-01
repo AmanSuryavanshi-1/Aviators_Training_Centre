@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import NextLink from 'next/link';
@@ -7,6 +9,7 @@ import { Menu } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { cn } from '@/components/ui/utils';
 import Image from 'next/image';
+import { usePathname } from 'next/navigation'; // Import usePathname
 
 import { ThemeToggle } from '@/components/ThemeToggle';
 import { ContactButton } from '@/components/shared/ContactButton';
@@ -14,7 +17,7 @@ import { ContactButton } from '@/components/shared/ContactButton';
 const Header: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [activeLink, setActiveLink] = useState('/');
+  const pathname = usePathname(); // Use usePathname hook
 
   // Handle scroll effect
   useEffect(() => {
@@ -22,13 +25,7 @@ const Header: React.FC = () => {
       setScrolled(window.scrollY > 20);
     };
 
-    // Set active link based on current path
-    const setActivePath = () => {
-      setActiveLink(window.location.pathname);
-    };
-
     window.addEventListener('scroll', handleScroll);
-    setActivePath();
     
     return () => {
       window.removeEventListener('scroll', handleScroll);
@@ -66,7 +63,7 @@ const Header: React.FC = () => {
           </div>
         </NextLink>
 
-        {/* Desktop Navigation */}
+        {/* Desktop Navigation - Hidden on mobile */}
         <nav className="hidden items-center space-x-4 text-sm font-medium md:flex">
           {navLinks.map((link) => (
             <NextLink 
@@ -74,13 +71,13 @@ const Header: React.FC = () => {
               href={link.href} 
               className={cn(
                 "relative py-1 text-sm transition-colors",
-                activeLink === link.href 
+                pathname === link.href // Use pathname for comparison
                   ? "text-primary font-semibold" 
                   : "text-foreground/70 hover:text-primary"
               )}
             >
               {link.label}
-              {activeLink === link.href && (
+              {pathname === link.href && ( // Use pathname for comparison
                 <motion.div 
                   className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-teal-500 to-blue-500 rounded-full"
                   layoutId="navIndicator"
@@ -94,7 +91,7 @@ const Header: React.FC = () => {
           <ThemeToggle />
         </nav>
 
-        {/* Mobile Navigation */}
+        {/* Mobile Navigation Trigger - Shown only on mobile */}
         <div className="flex items-center md:hidden">
            <Sheet open={isOpen} onOpenChange={setIsOpen}>
             <SheetTrigger asChild>
@@ -121,7 +118,12 @@ const Header: React.FC = () => {
                     <NextLink
                       key={link.href}
                       href={link.href}
-                      className="text-lg transition-colors text-foreground/80 hover:text-primary"
+                      className={cn( // Apply active styles in mobile too
+                        "text-lg transition-colors",
+                        pathname === link.href
+                          ? "text-primary font-semibold"
+                          : "text-foreground/80 hover:text-primary"
+                      )}
                       onClick={() => setIsOpen(false)}>
                       {link.label}
                     </NextLink>

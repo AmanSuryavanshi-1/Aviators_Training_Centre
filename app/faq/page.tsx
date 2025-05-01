@@ -1,7 +1,8 @@
 "use client"
 import React from 'react';
-import Header from "@/components/layout/Header";
-import Footer from "@/components/layout/Footer";
+import faqSchema from './schema.json';
+
+// Note: Metadata must be in a separate metadata.ts file for client components
 import { motion } from 'framer-motion';
 import FAQ from '@/components/shared/FAQ'; // Existing shared FAQ component
 import { cn } from "@/components/ui/utils";
@@ -40,11 +41,19 @@ const FAQPage: React.FC = () => {
     }
   };
 
+  // Create JSON-LD for FAQ schema
+  const faqJsonLd = {
+    __html: JSON.stringify(faqSchema)
+  };
+
   return (
     <div className="flex flex-col min-h-screen bg-background text-foreground">
-      <Header />
+      {/* Add JSON-LD structured data for FAQs */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={faqJsonLd}
+      />
 
-      {/* Page Header - Adjusted height, brightness, text shadow, gradient */}
       <motion.section
         className="relative h-[50vh] md:h-[60vh] flex items-center justify-center text-center text-white overflow-hidden" // Matched height
         initial={{ opacity: 0 }}
@@ -60,15 +69,15 @@ const FAQPage: React.FC = () => {
         />
          <div className="absolute inset-0 bg-gradient-to-r from-[rgba(7,94,104,0.25)] to-[rgba(12,110,114,0.55)] z-10"></div> {/* Added gradient overlay */}
         <motion.div
-          className="relative z-20 p-6 max-w-4xl md:p-10" // Matched padding
+          className="relative z-20 max-w-4xl p-6 md:p-10" // Matched padding
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3, duration: 0.8 }}
         >
-          <h1 className="mb-3 text-4xl font-extrabold tracking-tight leading-tight drop-shadow-md sm:text-5xl md:text-6xl"> {/* Matched text styles */}
+          <h1 className="mb-3 text-4xl font-extrabold leading-tight tracking-tight drop-shadow-md sm:text-5xl md:text-6xl"> {/* Matched text styles */}
             Frequently Asked Questions
           </h1>
-          <p className="mx-auto max-w-2xl text-lg drop-shadow-md md:text-xl text-white/90"> {/* Matched text styles */}
+          <p className="max-w-2xl mx-auto text-lg drop-shadow-md md:text-xl text-white/90"> {/* Matched text styles */}
             Your questions about Aviators Training Centre, answered.
           </p>
         </motion.div>
@@ -83,7 +92,7 @@ const FAQPage: React.FC = () => {
            initial="hidden"
            whileInView="visible"
            viewport={{ once: true, amount: 0.1 }}
-           className="mx-auto max-w-4xl" // Center the FAQ component
+           className="max-w-4xl mx-auto" // Center the FAQ component
         >
             {/* Added consistent section heading */}
             <motion.h2
@@ -101,8 +110,6 @@ const FAQPage: React.FC = () => {
         </motion.section>
 
       </main>
-
-      <Footer />
     </div>
   );
 };

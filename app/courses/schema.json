@@ -1,0 +1,164 @@
+{
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "name": "Aviation Training Courses",
+  "description": "Comprehensive DGCA Ground School, Type Rating Prep, and Pilot Career Services offered by Aviators Training Centre.",
+  "url": "https://aviatorstrainingcentre.com/courses",
+  "numberOfItems": 7,
+  "itemListElement": [
+    {
+      "@type": "Course",
+      "@id": "https://aviatorstrainingcentre.com/courses/air-navigation",
+      "name": "Air Navigation",
+      "description": "Mastering flight path calculations, chart reading, and navigational instruments.",
+      "courseCode": "ATC-AN-001",
+      "hasCourseInstance": {
+        "@type": "CourseInstance",
+        "courseMode": ["ONLINE", "ONSITE"],
+        "duration": "P4W",
+        "inLanguage": "en"
+      },
+      "provider": {
+        "@type": "Organization",
+        "name": "Aviators Training Centre",
+        "sameAs": "https://aviatorstrainingcentre.com"
+      },
+      "educationalLevel": "Beginner to Advanced",
+      "learningResourceType": "Course",
+      "teaches": ["Flight path calculations", "Chart reading", "Navigational instruments"],
+      "timeRequired": "PT40H"
+    },
+    {
+      "@type": "Course",
+      "@id": "https://aviatorstrainingcentre.com/courses/meteorology",
+      "name": "Meteorology",
+      "description": "Understanding atmospheric conditions, weather patterns, and forecasts.",
+      "courseCode": "ATC-MET-002",
+      "hasCourseInstance": {
+        "@type": "CourseInstance",
+        "courseMode": ["ONLINE", "ONSITE"],
+        "duration": "P4W",
+        "inLanguage": "en"
+      },
+      "provider": {
+        "@type": "Organization",
+        "name": "Aviators Training Centre",
+        "sameAs": "https://aviatorstrainingcentre.com"
+      },
+      "educationalLevel": "Beginner to Advanced",
+      "learningResourceType": "Course",
+      "teaches": ["Atmospheric conditions", "Weather patterns", "Weather forecasts"],
+      "timeRequired": "PT36H"
+    },
+    {
+      "@type": "Course",
+      "@id": "https://aviatorstrainingcentre.com/courses/air-regulations",
+      "name": "Air Regulations",
+      "description": "Knowledge of national (DGCA) and international aviation laws and procedures.",
+      "courseCode": "ATC-AR-003",
+      "hasCourseInstance": {
+        "@type": "CourseInstance",
+        "courseMode": ["ONLINE", "ONSITE"],
+        "duration": "P5W",
+        "inLanguage": "en"
+      },
+      "provider": {
+        "@type": "Organization",
+        "name": "Aviators Training Centre",
+        "sameAs": "https://aviatorstrainingcentre.com"
+      },
+      "educationalLevel": "Intermediate to Advanced",
+      "learningResourceType": "Course",
+      "teaches": ["DGCA regulations", "International aviation laws", "Aviation procedures"],
+      "timeRequired": "PT45H"
+    },
+    {
+      "@type": "Course",
+      "@id": "https://aviatorstrainingcentre.com/courses/technical-general",
+      "name": "Technical General",
+      "description": "Fundamental principles of flight, aerodynamics, aircraft structures, and systems.",
+      "courseCode": "ATC-TG-004",
+      "hasCourseInstance": {
+        "@type": "CourseInstance",
+        "courseMode": ["ONLINE", "ONSITE"],
+        "duration": "P6W",
+        "inLanguage": "en"
+      },
+      "provider": {
+        "@type": "Organization",
+        "name": "Aviators Training Centre",
+        "sameAs": "https://aviatorstrainingcentre.com"
+      },
+      "educationalLevel": "Beginner to Intermediate",
+      "learningResourceType": "Course",
+      "teaches": ["Principles of flight", "Aerodynamics", "Aircraft structures", "Aircraft systems"],
+      "timeRequired": "PT50H"
+    },
+    {
+      "@type": "Course",
+      "@id": "https://aviatorstrainingcentre.com/courses/technical-specific",
+      "name": "Technical Specific",
+      "description": "In-depth study of specific aircraft types systems and performance.",
+      "courseCode": "ATC-TS-005",
+      "hasCourseInstance": {
+        "@type": "CourseInstance",
+        "courseMode": ["ONLINE", "ONSITE"],
+        "duration": "P6W",
+        "inLanguage": "en"
+      },
+      "provider": {
+        "@type": "Organization",
+        "name": "Aviators Training Centre",
+        "sameAs": "https://aviatorstrainingcentre.com"
+      },
+      "educationalLevel": "Advanced",
+      "learningResourceType": "Course",
+      "teaches": ["Aircraft type systems", "Aircraft performance", "Type-specific operations"],
+      "timeRequired": "PT48H"
+    },
+    {
+      "@type": "Course",
+      "@id": "https://aviatorstrainingcentre.com/courses/rtr-a",
+      "name": "RTR(A) - Radio Telephony",
+      "description": "Specialized training to enhance communication skills for the RTR(A) license exam.",
+      "courseCode": "ATC-RTR-006",
+      "hasCourseInstance": {
+        "@type": "CourseInstance",
+        "courseMode": ["ONLINE", "ONSITE"],
+        "duration": "P3W",
+        "inLanguage": "en"
+      },
+      "provider": {
+        "@type": "Organization",
+        "name": "Aviators Training Centre",
+        "sameAs": "https://aviatorstrainingcentre.com"
+      },
+      "educationalLevel": "All Levels",
+      "learningResourceType": "Course",
+      "teaches": ["Radio communication", "Aviation phraseology", "Emergency procedures"],
+      "timeRequired": "PT30H"
+    },
+    {
+      "@type": "Course",
+      "@id": "https://aviatorstrainingcentre.com/courses/type-rating-prep",
+      "name": "A320 & B737 Type Rating Prep",
+      "description": "Intensive preparation for type rating exams, including major airlines like IndiGo.",
+      "courseCode": "ATC-TRP-007",
+      "hasCourseInstance": {
+        "@type": "CourseInstance",
+        "courseMode": ["ONLINE", "ONSITE"],
+        "duration": "P8W",
+        "inLanguage": "en"
+      },
+      "provider": {
+        "@type": "Organization",
+        "name": "Aviators Training Centre",
+        "sameAs": "https://aviatorstrainingcentre.com"
+      },
+      "educationalLevel": "Advanced",
+      "learningResourceType": "Course",
+      "teaches": ["A320 systems", "B737 systems", "Type rating procedures", "Airline interview preparation"],
+      "timeRequired": "PT60H"
+    }
+  ]
+}

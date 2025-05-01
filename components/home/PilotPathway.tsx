@@ -140,35 +140,35 @@ const AnimatedTimelineItem: React.FC<{ step: typeof pathwaySteps[0]; index: numb
     >
       {/* Dot on the Line */}
       <div className={cn(
-          "absolute left-6 top-5 md:left-1/2 w-5 h-5 rounded-full border-4 border-background bg-teal-500 dark:bg-teal-400 transform -translate-x-1/2 -translate-y-1/2 z-10", // Ensure dot is above line
+          "absolute top-5 left-6 z-10 w-5 h-5 bg-teal-500 rounded-full border-4 transform -translate-x-1/2 -translate-y-1/2 md:left-1/2 border-background dark:bg-teal-400", // Ensure dot is above line
           "transition-all duration-300 group-hover:scale-110 group-hover:bg-teal-600 dark:group-hover:bg-teal-300"
       )}/>
 
-      {/* Content Card Container */}
+      {/* Content Card Container - Stacked on mobile, alternating on md+ */}
       <div className={cn(
-          "ml-14 w-full",
-          "md:ml-0 md:w-1/2",
+          "ml-14 w-full", // Mobile: full width, margin left for line
+          "md:ml-0 md:w-1/2", // Medium+: half width, no margin
           index % 2 === 0
-            ? "md:pr-8 md:mr-auto"
-            : "md:pl-8 md:ml-auto"
+            ? "md:pr-8 md:mr-auto" // Even items on left for md+
+            : "md:pl-8 md:ml-auto" // Odd items on right for md+
       )}>
         <Collapsible>
-          <Card className="bg-card border border-border/80 rounded-lg shadow-sm transition-shadow hover:shadow-md overflow-hidden">
-            <div className="p-4 flex items-start justify-between gap-2"> {/* Adjusted for better trigger placement */}
-              <div className="flex items-center gap-3 flex-grow">
+          <Card className="overflow-hidden transition-shadow border rounded-lg shadow-sm bg-card border-border/80 hover:shadow-md">
+            <div className="flex items-start justify-between gap-2 p-4"> {/* Adjusted for better trigger placement */}
+              <div className="flex items-center flex-grow gap-3">
                   <div className={cn("flex-shrink-0 p-2 rounded-md bg-teal-100/70 dark:bg-teal-900/40", aviationSecondary)}>
-                    <step.icon className="h-5 w-5" />
+                    <step.icon className="w-5 h-5" />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-base text-foreground">{step.title}</h3>
-                    <p className="text-sm text-foreground/70 mt-1"> {/* Description moved below title */}
+                    <h3 className="text-base font-semibold text-foreground">{step.title}</h3>
+                    <p className="mt-1 text-sm text-foreground/70"> {/* Description moved below title */}
                       {step.description}
                     </p>
                   </div>
               </div>
                {/* Collapsible Trigger Button */}
                <CollapsibleTrigger asChild>
-                   <Button variant="ghost" size="sm" className="p-1 h-auto flex-shrink-0 text-teal-600 dark:text-teal-400 hover:bg-teal-100/50 dark:hover:bg-teal-900/30">
+                   <Button variant="ghost" size="sm" className="flex-shrink-0 h-auto p-1 text-teal-600 dark:text-teal-400 hover:bg-teal-100/50 dark:hover:bg-teal-900/30">
                       <span className="sr-only">Toggle details</span>
                       <ChevronDown className="h-4 w-4 transition-transform duration-200 group-data-[state=open]:rotate-180" />
                    </Button>
@@ -177,10 +177,10 @@ const AnimatedTimelineItem: React.FC<{ step: typeof pathwaySteps[0]; index: numb
 
             {/* Collapsible Content Area */}
             <CollapsibleContent>
-               <div className="bg-muted/30 dark:bg-muted/10 px-4 py-3 border-t border-border/50">
+               <div className="px-4 py-3 border-t bg-muted/30 dark:bg-muted/10 border-border/50">
                   <ul className="space-y-1.5 pl-4"> {/* Slightly reduced indent */}
                     {step.details.map((detail, i) => (
-                      <li key={i} className="text-xs text-foreground/80 flex items-start">
+                      <li key={i} className="flex items-start text-xs text-foreground/80">
                         <span className="mr-2 mt-0.5">•</span>
                         <span dangerouslySetInnerHTML={{ __html: detail.replace(/\*\*(.*?)\*\*/g, '<strong class="font-medium text-foreground/90">$1</strong>') }} />
                       </li>
@@ -199,102 +199,61 @@ const PilotPathway: React.FC = () => {
     // --- Urgency Data (Example) ---
     // In a real app, this date would come from Firebase or a config
     const offerEndDate = new Date();
-    offerEndDate.setDate(offerEndDate.getDate() + 14); // Offer ends in 14 days
+    offerEndDate.setDate(offerEndDate.getDate() + 7); // Example: 7 days from now
     const formattedEndDate = offerEndDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-
 
   return (
     <motion.section
-      id="pathway"
+      id="pilot-pathway"
       variants={sectionVariants}
       initial="hidden"
       whileInView="visible"
-      viewport={{ once: true, amount: 0.05 }} // Trigger when section starts entering view
+      viewport={{ once: true, amount: 0.05 }} // Lower amount for earlier trigger
       className="py-16 md:py-24"
     >
-      <div className="container mx-auto px-4">
-          <div className="text-center mb-12 md:mb-16">
-            <motion.h2
-              variants={itemVariants}
-              className={cn("text-3xl md:text-4xl font-bold mb-4", aviationPrimary)}
-            >
-              Your Pathway to the Cockpit
-            </motion.h2>
-            <motion.p
-              variants={itemVariants}
-              className="text-lg text-foreground/80 max-w-3xl mx-auto leading-relaxed"
-            >
-              We guide you through each essential step, from foundational knowledge to specialized training, preparing you for a successful aviation career.
-            </motion.p>
-          </div>
+      <div className="mb-12 text-center md:mb-16">
+        <motion.h2
+          variants={itemVariants}
+          className={cn("mb-4 text-3xl font-bold md:text-4xl", aviationPrimary)}
+        >
+          Your Pathway to the Cockpit
+        </motion.h2>
+        <motion.p
+          variants={itemVariants}
+          className="max-w-3xl mx-auto text-lg leading-relaxed text-foreground/80"
+        >
+          Follow our structured roadmap from enrollment to becoming an airline-ready pilot, covering DGCA exams and essential skills.
+        </motion.p>
+      </div>
 
-          {/* Timeline Visualization */}
-          <div className="relative max-w-4xl mx-auto px-4 md:px-0">
-            {/* Vertical Line - Removed -z-10 */}
-            <div className="absolute left-6 md:left-1/2 top-0 bottom-0 w-0.5 bg-teal-200 dark:bg-teal-800/60 transform md:-translate-x-1/2"></div>
+      {/* Timeline Container */}
+      <div className="relative max-w-3xl mx-auto">
+        {/* Vertical Line */}
+        <div className="absolute left-6 md:left-1/2 top-0 bottom-0 w-0.5 bg-border transform -translate-x-1/2" aria-hidden="true" />
 
-            <div className="space-y-12 md:space-y-16">
-              {pathwaySteps.map((step, index) => (
-                 <AnimatedTimelineItem key={index} step={step} index={index} />
-              ))}
-            </div>
-          </div>
-          <div className="mt-16"> {/* Add margin top to space it from timeline */}
-             <UrgencyCTA offerEndDate={offerEndDate} formattedEndDate={formattedEndDate} />
-          </div>
-        </div> 
+        {/* Timeline Items */}
+        <div className="space-y-10 md:space-y-12">
+          {pathwaySteps.map((step, index) => (
+            <AnimatedTimelineItem key={index} step={step} index={index} />
+          ))}
+        </div>
+      </div>
+
+      {/* Urgency CTA Section */}
+      <motion.div variants={itemVariants} className="max-w-4xl mx-auto mt-16 md:mt-20">
+         <UrgencyCTA
+            title="Limited Time Offer: Enroll Now!"
+            description={`Special discount available for the next batch starting soon. Secure your spot before ${formattedEndDate}.`}
+            buttonLabel="Book a Free Demo Class"
+            buttonIcon={CalendarClock}
+            offerEndDate={offerEndDate}
+            formattedEndDate={formattedEndDate}
+            buttonClassName="min-h-[48px]" // Ensure button height
+         />
+      </motion.div>
+
     </motion.section>
   );
 };
 
 export default PilotPathway;
-
-// --- Placeholder CountdownTimer Component (if not already created) ---
-// You should replace this with a proper implementation using Firebase Timestamp
-// or a library like react-countdown.
-/*
-import React, { useState, useEffect } from 'react';
-
-interface CountdownTimerProps {
-    targetDate: Date;
-}
-
-export const CountdownTimer: React.FC<CountdownTimerProps> = ({ targetDate }) => {
-    const calculateTimeLeft = () => {
-        const difference = +targetDate - +new Date();
-        let timeLeft = { days: 0, hours: 0, minutes: 0, seconds: 0 };
-
-        if (difference > 0) {
-            timeLeft = {
-                days: Math.floor(difference / (1000 * 60 * 60 * 24)),
-                hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
-                minutes: Math.floor((difference / 1000 / 60) % 60),
-                seconds: Math.floor((difference / 1000) % 60),
-            };
-        }
-        return timeLeft;
-    };
-
-    const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
-
-    useEffect(() => {
-        const timer = setTimeout(() => {
-            setTimeLeft(calculateTimeLeft());
-        }, 1000);
-
-        return () => clearTimeout(timer);
-    });
-
-    return (
-        <div className="flex justify-center space-x-4 text-lg font-medium text-foreground/80">
-            <span>{timeLeft.days}d</span>
-            <span>:</span>
-            <span>{String(timeLeft.hours).padStart(2, '0')}h</span>
-            <span>:</span>
-            <span>{String(timeLeft.minutes).padStart(2, '0')}m</span>
-            <span>:</span>
-            <span>{String(timeLeft.seconds).padStart(2, '0')}s</span>
-        </div>
-    );
-};
-*/

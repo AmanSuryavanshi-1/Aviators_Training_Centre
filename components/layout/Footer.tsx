@@ -1,26 +1,27 @@
 import React from 'react';
 import { Plane, Mail, Phone, Instagram, MessageCircle, Facebook, Twitter, Linkedin, MapPin } from 'lucide-react';
 import NextLink from "next/link";
+import Image from 'next/image';
 
 const Footer: React.FC = () => {
   const currentYear = new Date().getFullYear();
   const whatsappLink = "https://wa.me/919485687609"; // Example WhatsApp link
 
   return (
-    <footer className="py-16 text-white bg-teal-800">
+    <footer className="py-8 text-white bg-teal-800">
       {/* Main Footer Content */}
       <div className="container px-6 mx-auto">
         <div className="grid grid-cols-1 gap-10 md:grid-cols-4">
           {/* Column 1: Aviators Training Centre */}
           <div className="md:col-span-1">
             <div className="flex flex-col space-y-4">
-              <NextLink href="/" className="mb-2">
-                <div className="overflow-hidden relative p-1 w-16 h-16 bg-white rounded-md">
-                  <img 
+              <NextLink href="/" className="mb-3">
+                <div className="relative w-64 h-32 p-4 overflow-hidden bg-white shadow-lg shadow-teal-950 rounded-2xl">
+                  <Image 
                     src="/AVIATORS_TRAINING_CENTRE-LOGO.webp" 
                     alt="Aviators Training Centre Logo" 
-                    width={64} 
-                    height={64} 
+                    width={100} 
+                    height={50} 
                     className="object-contain w-full h-full"
                   />
                 </div>
@@ -29,16 +30,16 @@ const Footer: React.FC = () => {
                 Providing world-class aviation training for aspiring pilots and aviation professionals since 2005.
               </p>
               <div className="flex mt-4 space-x-3">
-                <a href="#" className="p-2 bg-teal-700 rounded-full transition-colors duration-300 hover:bg-teal-600">
+                <a href="#" className="p-3 transition-colors duration-300 bg-teal-700 rounded-full hover:bg-teal-600">
                   <Facebook className="w-5 h-5" />
                 </a>
-                <a href="#" className="p-2 bg-teal-700 rounded-full transition-colors duration-300 hover:bg-teal-600">
+                <a href="#" className="p-3 transition-colors duration-300 bg-teal-700 rounded-full hover:bg-teal-600">
                   <Twitter className="w-5 h-5" />
                 </a>
-                <a href="https://www.instagram.com/aviatorstrainingcentre" target="_blank" rel="noopener noreferrer" className="p-2 bg-teal-700 rounded-full transition-colors duration-300 hover:bg-teal-600">
+                <a href="https://www.instagram.com/aviatorstrainingcentre" target="_blank" rel="noopener noreferrer" className="p-3 transition-colors duration-300 bg-teal-700 rounded-full hover:bg-teal-600">
                   <Instagram className="w-5 h-5" />
                 </a>
-                <a href="#" className="p-2 bg-teal-700 rounded-full transition-colors duration-300 hover:bg-teal-600">
+                <a href="#" className="p-3 transition-colors duration-300 bg-teal-700 rounded-full hover:bg-teal-600">
                   <Linkedin className="w-5 h-5" />
                 </a>
               </div>
