@@ -46,8 +46,8 @@ const Header: React.FC = () => {
     <header className={cn(
       "sticky top-0 z-50 w-full transition-all duration-300",
       scrolled 
-        ? "border-b shadow-sm backdrop-blur-xl border-border/40 bg-background/60 supports-[backdrop-filter]:bg-background/40 dark:bg-background/80 dark:supports-[backdrop-filter]:bg-background/60"
-        : "backdrop-blur-xl bg-background/60 supports-[backdrop-filter]:bg-background/40 dark:bg-background/80 dark:supports-[backdrop-filter]:bg-background/60"
+        ? "border-b shadow-sm backdrop-blur-xl border-border/40 bg-background/60 supports-[backdrop-filter]:bg-background/40 dark:bg-teal-900/80 dark:supports-[backdrop-filter]:bg-teal-900/60"
+        : "backdrop-blur-xl bg-background/60 supports-[backdrop-filter]:bg-background/40 dark:bg-teal-950"
     )}>
       <div className="container flex items-center justify-between px-4 max-w-screen-2xl sm:px-6 lg:px-8">
         {/* Logo with Image */}
