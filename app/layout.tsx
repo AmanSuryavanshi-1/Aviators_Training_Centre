@@ -44,10 +44,13 @@ export const metadata: Metadata = {
         images: ["/AVIATORS_TRAINING_CENTRE-LOGO.webp"]
     },
     verification: {
-        google: "google04cf4c380ddcb85b.html",
+        google: "aE_FqlD0SbJberIaVs7Xe0flcsZF9gojWQg0BCQhiBc",
         other: {
-            "google-site-verification": "google04cf4c380ddcb85b.html"
+            "google-site-verification": "aE_FqlD0SbJberIaVs7Xe0flcsZF9gojWQg0BCQhiBc"
         }
+    },
+    other: {
+        "google-site-verification": "google04cf4c380ddcb85b.html"
     }
 };
 
