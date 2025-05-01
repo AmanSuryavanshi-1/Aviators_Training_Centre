@@ -45,6 +45,9 @@ export const metadata: Metadata = {
     },
     verification: {
         google: "google04cf4c380ddcb85b.html",
+        other: {
+            "google-site-verification": "google04cf4c380ddcb85b.html"
+        }
     }
 };
 
