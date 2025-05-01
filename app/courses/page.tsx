@@ -60,10 +60,10 @@ const groundSchoolSubjects = [
 ];
 
 const additionalServicesData = [
-  { icon: RadioTower, title: "RTR(A) - Radio Telephony", description: "Master aviation communication protocols for the RTR(A) license exam.", image: RTR_IMAGE, link: "/contact", learnMoreText: "Master Communication" },
-  { icon: Plane, title: "A320 & B737 Type Rating Prep", description: "Guidance and preparation for major airline type rating exams (IndiGo, Air India, etc.).", image: TYPE_RATING_IMAGE, link: "/contact", learnMoreText: "Prep for Type Rating" },
-  { icon: UserCheck, title: "One-on-One Online Classes", description: "Personalized online classes for all CPL/ATPL subjects tailored to your pace.", image: ONE_ON_ONE_IMAGE, link: "/contact", learnMoreText: "Get Personalized Coaching" },
-  { icon: Briefcase, title: "Interview Preparation", description: "Build confidence and skills for airline interviews with specialized practice.", image: INTERVIEW_PREP_IMAGE, link: "/contact", learnMoreText: "Ace Your Interview" },
+  { icon: RadioTower, title: "RTR(A) - Radio Telephony", description: "Specialized training to enhance communication skills for the RTR(A) license exam.", image: RTR_IMAGE, link: "/contact", learnMoreText: "Ace Communication" },
+  { icon: Plane, title: "A320 & B737 Type Rating Prep", description: "Intensive preparation for type rating exams, including major airlines like IndiGo.", image: TYPE_RATING_IMAGE, link: "/contact", learnMoreText: "Prep for Type Rating" },
+  { icon: UserCheck, title: "One-on-One Online Classes", description: "Personalized tutoring for CPL/ATPL subjects, tailored to your learning pace.", image: ONE_ON_ONE_IMAGE, link: "/contact", learnMoreText: "Get Personalised Coaching" },
+  { icon: Briefcase, title: "Interview Preparation", description: "Targeted practice sessions to develop confidence for airline interviews.", image: INTERVIEW_PREP_IMAGE, link: "/contact", learnMoreText: "Ace Your Interview" },
 ];
 
 const atcFeaturesData = [
@@ -219,7 +219,7 @@ const Courses: React.FC = () => {
            viewport={{ once: true, amount: 0.1 }}
         >
             <h2 className={clsx("mb-12 text-3xl font-bold text-center md:text-4xl md:mb-16", aviationPrimary)}>Additional Training & Prep Services</h2>
-            <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:gap-10">
+            <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:gap-10 ">
                 {additionalServicesData.map((service, index) => (
                     <motion.div key={index} variants={itemVariants}>
                         <motion.div className="relative h-full group" whileHover="hover" initial="rest" animate="rest" variants={cardHoverEffect} >
@@ -233,30 +233,32 @@ const Courses: React.FC = () => {
                                         loading="lazy"
                                     />
                                 </div>
-                                <div className="flex flex-col flex-grow p-5">
+                                <div className="flex flex-col flex-grow p-5 sm:p-6 ">
                                     <CardHeader className="p-0 mb-2">
-                                        <div className="flex items-center mb-1 space-x-2">
+                                        <div className="flex items-center mb-2 space-x-2">
                                             <service.icon className={clsx("flex-shrink-0 w-5 h-5", aviationSecondary)} />
                                             <CardTitle className="text-xl font-semibold text-foreground">{service.title}</CardTitle>
                                         </div>
-                                    </CardHeader>
-                                    <CardContent className="flex-grow p-0 mb-4">
+                                    </CardHeader>    
+                                    <CardContent className="flex-grow p-0 mb-4 ">
                                         <CardDescription className="text-sm text-foreground/80">
                                             {service.description}
                                         </CardDescription>
                                     </CardContent>
-                                    <CardFooter className="flex flex-wrap gap-3 p-0 mt-auto">
-                                        {/* Replaced Button with TransparentButton */}
-                                        <TransparentButton
-                                            href={service.link}
-                                            icon={ArrowRight} // Or Info icon
-                                            label={service.learnMoreText || 'Learn More'}
-                                            // Adjust size/padding if needed via className prop, but relying on defaults
-                                        />
-                                        <div className="flex-grow sm:flex-grow-0">
+                                    <CardFooter className="flex flex-col sm:flex-row sm:gap-3 p-0 mt-auto">
+                                        <div className="flex-grow sm:flex-grow-0"> {/* This div is the fix */}
+                                            {/* Replaced Button with TransparentButton */}
+                                            <TransparentButton
+                                                href={service.link}
+                                                icon={ArrowRight} // Or Info icon
+                                                label={service.learnMoreText}
+                                                className="min-h-[40px] w-full sm:w-auto "
+                                            />
+                                        </div>
+                                        <div className="flex-grow sm:flex-grow-0"> {/* This div is the fix */}
                                              <BookDemoButton
                                                size="sm"
-                                               className="w-full sm:w-auto min-h-[40px]"
+                                               className="min-h-[40px] w-full sm:w-auto"
                                                state={{ subject: `Demo Request: ${service.title}`, courseName: service.title }}
                                              />
                                         </div>
