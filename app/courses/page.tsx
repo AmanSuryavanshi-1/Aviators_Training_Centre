@@ -21,7 +21,7 @@ const aviationSecondary = 'text-teal-600 dark:text-teal-400';
 
 const HERO_VIDEO_URL = "/placeholder-video.mp4"; // Replace with actual video URL if available
 // const HERO_IMAGE_URL = "/Plane.webp";
-const HERO_FALLBACK_IMAGE = "/Plane4.png";
+const HERO_FALLBACK_IMAGE = "/Course-Img.webp";
 
 // Specific Images from public/Courses folder
 const NAV_IMAGE = "/Courses/Navigation.jpg";
@@ -112,7 +112,7 @@ const Courses: React.FC = () => {
       >
         <video
             autoPlay loop muted playsInline
-            className="absolute inset-0 w-full h-full object-cover z-0"
+            className="object-cover absolute inset-0 z-0 w-full h-full"
             poster={HERO_FALLBACK_IMAGE}
         >
            <source src={HERO_VIDEO_URL} type="video/mp4" />
@@ -120,22 +120,22 @@ const Courses: React.FC = () => {
         </video>
         <div className="absolute inset-0 bg-gradient-to-r from-[rgba(7,94,104,0.35)] to-[rgba(12,110,114,0.65)] z-10"></div>
         <motion.div
-          className="relative z-20 max-w-4xl p-6 md:p-10"
+          className="relative z-20 p-6 max-w-4xl md:p-10"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3, duration: 0.8 }}
         >
-          <h1 className="drop-shadow-md text-4xl sm:text-5xl md:text-6xl font-extrabold leading-tight tracking-tight mb-3">
+          <h1 className="mb-3 text-4xl font-extrabold tracking-tight leading-tight drop-shadow-md sm:text-5xl md:text-6xl">
             Your Flight Path Starts Here
           </h1>
-          <p className="text-lg drop-shadow-md md:text-xl text-white/90 max-w-2xl mx-auto">
+          <p className="mx-auto max-w-2xl text-lg drop-shadow-md md:text-xl text-white/90">
             Comprehensive DGCA Ground School, Type Rating Prep, and Pilot Career Services.
           </p>
         </motion.div>
       </motion.section>
 
       {/* Main Content */}
-      <main className="flex-grow container mx-auto px-4 sm:px-6 py-16 md:py-24 space-y-20 md:space-y-28">
+      <main className="container flex-grow px-4 py-16 mx-auto space-y-20 sm:px-6 md:py-24 md:space-y-28">
 
         {/* Complete CPL/ATPL Ground Training Section */}
         <motion.section
@@ -144,39 +144,39 @@ const Courses: React.FC = () => {
            whileInView="visible"
            viewport={{ once: true, amount: 0.1 }}
         >
-          <div className="text-center mb-12 md:mb-16">
-             <motion.h2 variants={itemVariants} className={clsx("text-3xl md:text-4xl font-bold mb-3", aviationPrimary)}>Complete CPL/ATPL Ground Training</motion.h2>
-             <motion.p variants={itemVariants} className="text-lg text-foreground/80 max-w-3xl mx-auto">
+          <div className="mb-12 text-center md:mb-16">
+             <motion.h2 variants={itemVariants} className={clsx("mb-3 text-3xl font-bold md:text-4xl", aviationPrimary)}>Complete CPL/ATPL Ground Training</motion.h2>
+             <motion.p variants={itemVariants} className="mx-auto max-w-3xl text-lg text-foreground/80">
                 We provide in-depth training for all DGCA syllabus subjects, building a strong foundation for your aviation career.
              </motion.p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-12 items-stretch">  
+          <div className="grid grid-cols-1 gap-8 items-stretch mb-12 sm:grid-cols-2 lg:grid-cols-3">  
             {groundSchoolSubjects.map((subject, index) => (
               <motion.div key={index} variants={itemVariants} className="flex">
-                 <motion.div className="relative h-full w-full group" whileHover="hover" initial="rest" animate="rest" variants={cardHoverEffect} >
-                   <Card className="bg-card w-full h-full flex flex-col overflow-hidden rounded-lg shadow-sm border border-border transition-shadow duration-300 relative z-10">
-                      <CardHeader className="p-0 relative">
-                          <div className="h-48 overflow-hidden">
+                 <motion.div className="relative w-full h-full group" whileHover="hover" initial="rest" animate="rest" variants={cardHoverEffect} >
+                   <Card className="flex overflow-hidden relative z-10 flex-col w-full h-full rounded-lg border shadow-sm transition-shadow duration-300 bg-card border-border">
+                      <CardHeader className="relative p-0">
+                          <div className="overflow-hidden h-48">
                             <img
                                 src={subject.image}
                                 alt={subject.title}
-                                className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                                className="object-cover w-full h-full transition-transform duration-300 group-hover:scale-105"
                                 onError={handleImageError}
                                 loading="lazy"
                             />
                          </div>
                      </CardHeader>
-                     <CardContent className="p-5 flex-grow flex flex-col">
-                        <div className="flex items-center space-x-3 mb-3">
-                            <subject.icon className={clsx("w-6 h-6 flex-shrink-0", aviationSecondary)} />
+                     <CardContent className="flex flex-col flex-grow p-5">
+                        <div className="flex items-center mb-3 space-x-3">
+                            <subject.icon className={clsx("flex-shrink-0 w-6 h-6", aviationSecondary)} />
                             <CardTitle className="text-lg font-semibold text-foreground">{subject.title}</CardTitle>
                         </div>
-                        <CardDescription className="text-sm text-foreground/80 flex-grow">
+                        <CardDescription className="flex-grow text-sm text-foreground/80">
                           {subject.description}
                         </CardDescription>
                      </CardContent>
-                      <CardFooter className="p-5 mt-auto border-t border-border/30 pt-4 flex justify-end gap-3">
+                      <CardFooter className="flex gap-3 justify-end p-5 pt-4 mt-auto border-t border-border/30">
                           <BookDemoButton
                              size="sm"
                              state={{ subject: `Demo Request: ${subject.title}`, courseName: subject.title }}
@@ -189,13 +189,13 @@ const Courses: React.FC = () => {
 
             {/* Placeholder Contact Card - Updated Button */}
             <motion.div variants={itemVariants} className="flex">
-                 <motion.div className="relative h-full w-full group" whileHover="hover" initial="rest" animate="rest" variants={cardHoverEffect} >
-                    <Card className="bg-gradient-to-br from-teal-50/50 to-sky-50/50 dark:from-gray-800/60 dark:to-gray-900/60 w-full h-full flex flex-col items-center justify-center text-center overflow-hidden rounded-lg shadow-sm border border-dashed border-border transition-shadow duration-300 relative z-10 p-6">
+                 <motion.div className="relative w-full h-full group" whileHover="hover" initial="rest" animate="rest" variants={cardHoverEffect} >
+                    <Card className="flex overflow-hidden relative z-10 flex-col justify-center items-center p-6 w-full h-full text-center bg-gradient-to-br rounded-lg border border-dashed shadow-sm transition-shadow duration-300 from-teal-50/50 to-sky-50/50 dark:from-gray-800/60 dark:to-gray-900/60 border-border">
                        <div className="mb-4">
                           <PhoneForwarded className={clsx("w-10 h-10", aviationSecondary)} />
                        </div>
-                       <CardTitle className="text-lg font-semibold text-foreground mb-2">Have Questions?</CardTitle>
-                       <CardDescription className="text-sm text-foreground/80 mb-4">
+                       <CardTitle className="mb-2 text-lg font-semibold text-foreground">Have Questions?</CardTitle>
+                       <CardDescription className="mb-4 text-sm text-foreground/80">
                           Contact us for details about courses or enrollment.
                        </CardDescription>
                        {/* Replaced Button with TransparentButton */}
@@ -218,34 +218,34 @@ const Courses: React.FC = () => {
            whileInView="visible"
            viewport={{ once: true, amount: 0.1 }}
         >
-            <h2 className={clsx("text-3xl md:text-4xl font-bold text-center mb-12 md:mb-16", aviationPrimary)}>Additional Training & Prep Services</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-10">
+            <h2 className={clsx("mb-12 text-3xl font-bold text-center md:text-4xl md:mb-16", aviationPrimary)}>Additional Training & Prep Services</h2>
+            <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:gap-10">
                 {additionalServicesData.map((service, index) => (
                     <motion.div key={index} variants={itemVariants}>
                         <motion.div className="relative h-full group" whileHover="hover" initial="rest" animate="rest" variants={cardHoverEffect} >
-                            <Card className="bg-card h-full flex flex-col sm:flex-row overflow-hidden rounded-lg shadow-sm border border-border transition-shadow duration-300 relative z-10">
-                                <div className="sm:w-1/3 flex-shrink-0 aspect-video sm:aspect-auto">
+                            <Card className="flex overflow-hidden relative z-10 flex-col h-full rounded-lg border shadow-sm transition-shadow duration-300 bg-card sm:flex-row border-border">
+                                <div className="flex-shrink-0 sm:w-1/3 aspect-video sm:aspect-auto">
                                     <img
                                         src={service.image}
                                         alt={service.title}
-                                        className="w-full h-full object-cover"
+                                        className="object-cover w-full h-full"
                                         onError={handleImageError}
                                         loading="lazy"
                                     />
                                 </div>
                                 <div className="flex flex-col flex-grow p-5">
                                     <CardHeader className="p-0 mb-2">
-                                        <div className="flex items-center space-x-2 mb-1">
-                                            <service.icon className={clsx("w-5 h-5 flex-shrink-0", aviationSecondary)} />
+                                        <div className="flex items-center mb-1 space-x-2">
+                                            <service.icon className={clsx("flex-shrink-0 w-5 h-5", aviationSecondary)} />
                                             <CardTitle className="text-xl font-semibold text-foreground">{service.title}</CardTitle>
                                         </div>
                                     </CardHeader>
-                                    <CardContent className="p-0 flex-grow mb-4">
+                                    <CardContent className="flex-grow p-0 mb-4">
                                         <CardDescription className="text-sm text-foreground/80">
                                             {service.description}
                                         </CardDescription>
                                     </CardContent>
-                                    <CardFooter className="p-0 mt-auto flex flex-wrap gap-3">
+                                    <CardFooter className="flex flex-wrap gap-3 p-0 mt-auto">
                                         {/* Replaced Button with TransparentButton */}
                                         <TransparentButton
                                             href={service.link}
@@ -278,20 +278,20 @@ const Courses: React.FC = () => {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.1 }}
-          className="bg-gradient-to-br from-teal-50/30 to-sky-50/30 dark:from-gray-800/40 dark:to-gray-900/40 rounded-xl p-8 md:p-12 border border-border/50 shadow-lg"
+          className="p-8 bg-gradient-to-br rounded-xl border shadow-lg from-teal-50/30 to-sky-50/30 dark:from-gray-800/40 dark:to-gray-900/40 md:p-12 border-border/50"
         >
-            <h2 className={clsx("text-3xl md:text-4xl font-bold text-center mb-10", aviationPrimary)}>Why Train with ATC?</h2>
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-x-6 gap-y-8 text-center">
+            <h2 className={clsx("mb-10 text-3xl font-bold text-center md:text-4xl", aviationPrimary)}>Why Train with ATC?</h2>
+            <div className="grid grid-cols-2 gap-x-6 gap-y-8 text-center sm:grid-cols-3 md:grid-cols-4">
                 {atcFeaturesData.map((feature, index) => (
                     <motion.div
                         key={index}
                         variants={itemVariants}
                         className="flex flex-col items-center p-3 group" 
                     >
-                         <div className="p-3 rounded-full bg-teal-100/70 dark:bg-teal-900/40 mb-3 transition-colors duration-300 group-hover:bg-teal-200/80 dark:group-hover:bg-teal-800/60">
-                            <feature.icon className={clsx("h-7 w-7", aviationSecondary)} />
+                         <div className="p-3 mb-3 rounded-full transition-colors duration-300 bg-teal-100/70 dark:bg-teal-900/40 group-hover:bg-teal-200/80 dark:group-hover:bg-teal-800/60">
+                            <feature.icon className={clsx("w-7 h-7", aviationSecondary)} />
                         </div>
-                        <h4 className="text-sm font-semibold text-foreground mb-1">{feature.title}</h4>
+                        <h4 className="mb-1 text-sm font-semibold text-foreground">{feature.title}</h4>
                         <p className="text-xs text-foreground/70">{feature.description}</p>
                     </motion.div>
                 ))}
@@ -305,15 +305,15 @@ const Courses: React.FC = () => {
           whileInView="visible"
           viewport={{ once: true, amount: 0.1 }}
         >
-            <h2 className={clsx("text-3xl md:text-4xl font-bold text-center mb-10", aviationPrimary)}>Detailed Benefits</h2>
-            <Accordion type="single" collapsible className="w-full max-w-3xl mx-auto">
+            <h2 className={clsx("mb-10 text-3xl font-bold text-center md:text-4xl", aviationPrimary)}>Detailed Benefits</h2>
+            <Accordion type="single" collapsible className="mx-auto w-full max-w-3xl">
                  {atcBenefitsData.map((item, index) => (
                     <motion.div key={index} variants={itemVariants}>
-                        <AccordionItem value={`item-${index + 1}`} className="border-b border-border/60 mb-2 rounded-md overflow-hidden bg-card/40 dark:bg-card/60 shadow-sm">
-                            <AccordionTrigger className={cn("text-left text-base sm:text-lg font-medium hover:no-underline px-5 py-4 hover:bg-teal-50/50 dark:hover:bg-teal-900/30 transition-colors", aviationSecondary)}>
+                        <AccordionItem value={`item-${index + 1}`} className="overflow-hidden mb-2 rounded-md border-b shadow-sm border-border/60 bg-card/40 dark:bg-card/60">
+                            <AccordionTrigger className={cn("px-5 py-4 text-base font-medium text-left transition-colors sm:text-lg hover:no-underline hover:bg-teal-50/50 dark:hover:bg-teal-900/30", aviationSecondary)}>
                                 {item.title}
                             </AccordionTrigger>
-                            <AccordionContent className="text-sm sm:text-base text-foreground/80 pb-5 px-5 pt-2 bg-card/30 dark:bg-card/50">
+                            <AccordionContent className="px-5 pt-2 pb-5 text-sm sm:text-base text-foreground/80 bg-card/30 dark:bg-card/50">
                                 {item.content}
                             </AccordionContent>
                         </AccordionItem>

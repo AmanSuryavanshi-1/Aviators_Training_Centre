@@ -10,8 +10,8 @@ import { cn } from "@/components/ui/utils";
 const aviationPrimary = 'text-teal-700 dark:text-teal-300';
 const aviationSecondary = 'text-teal-600 dark:text-teal-400';
 // Using a relevant image from the project
-const faqHeaderUrl = "/FAQ.jpg";
-const FALLBACK_IMAGE = "/HomePage/Hero5.webp"; // Consistent fallback
+const faqHeaderUrl = "/FAQ.webp";
+const FALLBACK_IMAGE = "/HomePage/Hero4.webp"; // Consistent fallback
 
 // --- Animation Variants (Matching other pages) ---
 const sectionVariants = {
@@ -54,28 +54,28 @@ const FAQPage: React.FC = () => {
         <img
           src={faqHeaderUrl}
           alt="ATC aircraft wing detail" // More relevant alt text
-          className="absolute inset-0 w-full h-full z-0"
+          className="absolute inset-0 z-0 w-full h-full"
           onError={handleImageError}
           style={{ filter: 'brightness(0.6)' }} // Adjusted brightness
         />
          <div className="absolute inset-0 bg-gradient-to-r from-[rgba(7,94,104,0.25)] to-[rgba(12,110,114,0.55)] z-10"></div> {/* Added gradient overlay */}
         <motion.div
-          className="relative z-20 max-w-4xl p-6 md:p-10" // Matched padding
+          className="relative z-20 p-6 max-w-4xl md:p-10" // Matched padding
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3, duration: 0.8 }}
         >
-          <h1 className="drop-shadow-md text-4xl sm:text-5xl md:text-6xl font-extrabold leading-tight tracking-tight mb-3"> {/* Matched text styles */}
+          <h1 className="mb-3 text-4xl font-extrabold tracking-tight leading-tight drop-shadow-md sm:text-5xl md:text-6xl"> {/* Matched text styles */}
             Frequently Asked Questions
           </h1>
-          <p className="text-lg drop-shadow-md md:text-xl text-white/90 max-w-2xl mx-auto"> {/* Matched text styles */}
+          <p className="mx-auto max-w-2xl text-lg drop-shadow-md md:text-xl text-white/90"> {/* Matched text styles */}
             Your questions about Aviators Training Centre, answered.
           </p>
         </motion.div>
       </motion.section>
 
       {/* Main Content - Adjusted container padding/spacing */}
-      <main className="flex-grow container mx-auto px-4 sm:px-6 py-16 md:py-24 space-y-20 md:space-y-28">
+      <main className="container flex-grow px-4 py-16 mx-auto space-y-20 sm:px-6 md:py-24 md:space-y-28">
 
         {/* FAQ Section */}
         <motion.section
@@ -83,12 +83,12 @@ const FAQPage: React.FC = () => {
            initial="hidden"
            whileInView="visible"
            viewport={{ once: true, amount: 0.1 }}
-           className="max-w-4xl mx-auto" // Center the FAQ component
+           className="mx-auto max-w-4xl" // Center the FAQ component
         >
             {/* Added consistent section heading */}
             <motion.h2
                 variants={itemVariants}
-                className={cn("text-3xl md:text-4xl font-bold text-center", aviationPrimary)}
+                className={cn("text-3xl font-bold text-center md:text-4xl", aviationPrimary)}
             >
                 Find Your Answers
             </motion.h2>

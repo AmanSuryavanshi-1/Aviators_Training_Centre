@@ -4,6 +4,9 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Import custom animations */
+@import './animations.css';
+
 @layer base {
   :root {
     /* Base colors */
@@ -82,11 +85,11 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground antialiased;
+    @apply antialiased bg-background text-foreground;
     font-family: var(--body-font, 'Roboto'), system-ui, sans-serif;
   }
   h1, h2, h3, h4, h5, h6 {
-    @apply font-heading font-semibold tracking-tight;
+    @apply font-semibold tracking-tight font-heading;
     font-family: var(--heading-font, 'Montserrat'), system-ui, sans-serif;
   }
   h1 { @apply text-4xl md:text-5xl lg:text-6xl; }
@@ -99,30 +102,54 @@
 
 @layer components {
   .section-padding {
-    @apply py-16 md:py-24 px-4 md:px-8 lg:px-12;
+    @apply px-4 py-16 md:py-24 md:px-8 lg:px-12;
   }
   
   .container {
-    @apply mx-auto max-w-7xl px-4 sm:px-6 lg:px-8;
+    @apply px-4 mx-auto max-w-7xl sm:px-6 lg:px-8;
   }
   
   .gradient-bg {
     @apply bg-gradient-to-br from-[hsl(var(--gradient-start))] to-[hsl(var(--gradient-end))];
   }
   
+  /* Animation for gradient borders */
+  .animate-gradient-xy {
+    animation: gradient-xy 3s linear infinite;
+    background-size: 200% 200%;
+  }
+  
   /* .heading-xl {
-    @apply text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight;
+    @apply text-3xl font-bold tracking-tight md:text-4xl lg:text-5xl;
   }
   
   .heading-lg {
-    @apply text-2xl md:text-3xl lg:text-4xl font-bold tracking-tight;
+    @apply text-2xl font-bold tracking-tight md:text-3xl lg:text-4xl;
   }
   
   .heading-md {
-    @apply text-xl md:text-2xl lg:text-3xl font-semibold tracking-tight;
+    @apply text-xl font-semibold tracking-tight md:text-2xl lg:text-3xl;
   } */
   
   .text-balance {
     text-wrap: balance;
+  }
+}
+
+@keyframes gradient-xy {
+  0% {
+    background-position: 0% 0%;
+  }
+  25% {
+    background-position: 100% 0%;
+  }
+  50% {
+    background-position: 100% 100%;
+  }
+  75% {
+    background-position: 0% 100%;
+  }
+  100% {
+    background-position: 0% 0%;
   }
 }

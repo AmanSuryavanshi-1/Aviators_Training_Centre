@@ -35,7 +35,7 @@ const courses = [
     icon: GraduationCap,
     title: 'CPL & ATPL Ground School',
     description: 'Comprehensive online classes covering all DGCA subjects - Navigation, Meteorology, Regulations, and Technical.',
-    image: '/HomePage/Course1.webp', // Ensure images are relevant
+    image: '/Course-Img.webp', // Ensure images are relevant
     path: '/courses'
   },
   {
@@ -49,7 +49,7 @@ const courses = [
     icon: PlaneTakeoff,
     title: 'Type Rating Prep',
     description: 'Affordable guidance for A320 & B737 pre/post type rating, covering questions for major airline exams.',
-    image: '/HomePage/Course2.webp',
+    image: '/Courses/TypeRatingPrep.webp',
     path: '/courses'
   }
 ];
@@ -73,23 +73,23 @@ const CoursesSection: React.FC = () => {
       whileInView="visible"
       viewport={{ once: true, amount: 0.1 }}
     >
-      <div className="text-center mb-12 md:mb-16">
+      <div className="mb-12 text-center md:mb-16">
         <motion.h2
           variants={itemVariants}
-          className={cn("text-3xl md:text-4xl font-bold mb-4", aviationPrimary)}
+          className={cn("mb-4 text-3xl font-bold md:text-4xl", aviationPrimary)}
         >
           Our Core Training Programs
         </motion.h2>
         <motion.p
           variants={itemVariants}
-          className="text-lg text-foreground/80 max-w-3xl mx-auto leading-relaxed"
+          className="mx-auto max-w-3xl text-lg leading-relaxed text-foreground/80"
         >
           Expert-led online ground school and specialized preparation courses designed for your success in DGCA exams and beyond.
         </motion.p>
       </div>
 
       {/* Grid using standard Card component */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 items-stretch">
+      <div className="grid grid-cols-1 gap-8 items-stretch md:grid-cols-2 lg:grid-cols-3">
         {courses.map((course, index) => (
           <motion.div
             key={index}
@@ -97,35 +97,35 @@ const CoursesSection: React.FC = () => {
             className="flex"
           >
             <motion.div
-              className="relative h-full w-full group"
+              className="relative w-full h-full group"
               whileHover="hover"
               initial="rest"
               animate="rest"
               variants={cardHoverEffect}
             >
-              <Card className="bg-card w-full h-full flex flex-col overflow-hidden rounded-lg shadow-sm border border-border transition-shadow duration-300 relative z-10">
-                <CardHeader className="p-0 relative">
+              <Card className="flex overflow-hidden relative z-10 flex-col w-full h-full rounded-lg border shadow-sm transition-shadow duration-300 bg-card border-border">
+                <CardHeader className="relative p-0">
                     {/* Image Section - Fixed Height */}
-                    <div className="h-48 overflow-hidden"> {/* Fixed height */}
+                    <div className="overflow-hidden h-48"> {/* Fixed height */}
                       <img
                           src={course.image}
                           alt={course.title}
-                          className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                          className="object-cover w-full h-full transition-transform duration-300 group-hover:scale-105"
                           onError={handleImageError}
                           loading="lazy"
                       />
                     </div>
                 </CardHeader>
-                <CardContent className="p-5 flex-grow flex flex-col">
+                <CardContent className="flex flex-col flex-grow p-5">
                   {/* Title and Icon */}
-                  <div className="flex items-center space-x-3 mb-3">
+                  <div className="flex items-center mb-3 space-x-3">
                       <div className={cn("flex-shrink-0 p-1.5 rounded-md bg-teal-100/70 dark:bg-teal-900/40", aviationSecondary)}>
-                          <course.icon className="h-5 w-5" />
+                          <course.icon className="w-5 h-5" />
                       </div>
                       <CardTitle className="text-lg font-semibold text-foreground">{course.title}</CardTitle>
                   </div>
                   {/* Description */} 
-                  <CardDescription className="text-sm text-foreground/80 flex-grow mb-4">
+                  <CardDescription className="flex-grow mb-4 text-sm text-foreground/80">
                     {course.description}
                   </CardDescription>
                 </CardContent>

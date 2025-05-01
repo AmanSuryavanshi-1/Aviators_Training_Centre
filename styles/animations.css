@@ -1,0 +1,19 @@
+/* Global animation keyframes for the website */
+
+@keyframes glow {
+  0% { opacity: 0.5; filter: blur(3px); }
+  50% { opacity: 0.9; filter: blur(4px); }
+  100% { opacity: 0.5; filter: blur(3px); }
+}
+
+@keyframes pulse-glow {
+  0% { transform: scale(0.99); opacity: 0.6; }
+  50% { transform: scale(1.01); opacity: 0.8; }
+  100% { transform: scale(0.99); opacity: 0.6; }
+}
+
+@keyframes gradient-xy {
+  0% { background-position: 0% 0%; }
+  50% { background-position: 100% 100%; }
+  100% { background-position: 0% 0%; }
+}

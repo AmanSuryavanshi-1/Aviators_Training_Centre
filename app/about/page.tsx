@@ -13,9 +13,9 @@ const aviationPrimary = 'text-teal-700 dark:text-teal-300';
 const aviationSecondary = 'text-teal-600 dark:text-teal-400';
 
 // Image paths (Unchanged)
-const aboutHeroUrl = "/Plane3.jpg";
+const aboutHeroUrl = "/About-Img.webp";
 // const storyImageUrl = "/About/About2.avif"; // Keep for reference if needed, but image is now passed to AboutSection
-const FALLBACK_IMAGE = "/HomePage/Hero5.webp";
+const FALLBACK_IMAGE = "/HomePage/Hero4.webp";
 
 // --- Animation Variants (Unchanged) ---
 const sectionVariants = {

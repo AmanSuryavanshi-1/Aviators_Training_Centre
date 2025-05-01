@@ -1,14 +1,39 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import NextLink from 'next/link';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import Link from "next/link";
-import { Mail, Menu, Plane } from 'lucide-react';
+import { Menu } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { cn } from '@/components/ui/utils';
+import Image from 'next/image';
 
 import { ThemeToggle } from '@/components/ThemeToggle';
+import { ContactButton } from '@/components/shared/ContactButton';
 
 const Header: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const [activeLink, setActiveLink] = useState('/');
+
+  // Handle scroll effect
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+    };
+
+    // Set active link based on current path
+    const setActivePath = () => {
+      setActiveLink(window.location.pathname);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    setActivePath();
+    
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
 
   // Updated Nav Links for ATC structure
   const navLinks = [
@@ -21,65 +46,93 @@ const Header: React.FC = () => {
   ];
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container flex h-16 max-w-screen-2xl items-center justify-between">
-        {/* Updated Logo Text */}
-        <NextLink href="/" className="flex items-center space-x-2 text-primary hover:text-primary/80 transition-colors">
-          <Plane className="h-6 w-6" />
-          {/* <img src="/ATC-Logo.webp" alt="" className='h-16 w-40'/> */}
-          <span className="font-bold text-xl text-foreground">Aviators Training Centre</span>
+    <header className={cn(
+      "sticky top-0 z-50 w-full transition-all duration-300",
+      scrolled 
+        ? "border-b shadow-sm backdrop-blur border-border/40 bg-background/95 supports-[backdrop-filter]:bg-background/60" 
+        : "backdrop-blur bg-background/80 supports-[backdrop-filter]:bg-background/60"
+    )}>
+      <div className="container flex justify-between items-center max-w-screen-2xl h-20">
+        {/* Logo with Image */}
+        <NextLink href="/" className="group">
+          <div className="overflow-hidden relative w-12 h-12">
+            <Image 
+              src="/AVIATORS_TRAINING_CENTRE-LOGO.webp" 
+              alt="Aviators Training Centre Logo" 
+              width={48} 
+              height={48} 
+              className="object-contain transition-transform duration-500 transform group-hover:scale-105" 
+            />
+          </div>
         </NextLink>
 
         {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center space-x-6 text-sm font-medium">
-          
-          
+        <nav className="hidden items-center space-x-4 text-sm font-medium md:flex">
           {navLinks.map((link) => (
-              <NextLink key={link.href} href={link.href} className="text-foreground/70 hover:text-primary transition-colors">
-                {link.label}
-              </NextLink>
-            ))}
+            <NextLink 
+              key={link.href} 
+              href={link.href} 
+              className={cn(
+                "relative py-1 text-sm transition-colors",
+                activeLink === link.href 
+                  ? "text-primary font-semibold" 
+                  : "text-foreground/70 hover:text-primary"
+              )}
+            >
+              {link.label}
+              {activeLink === link.href && (
+                <motion.div 
+                  className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-teal-500 to-blue-500 rounded-full"
+                  layoutId="navIndicator"
+                  transition={{ type: "spring", duration: 0.5 }}
+                />
+              )}
+            </NextLink>
+          ))}
            
-          <Button
-            asChild
-            className="flex rounded-full px-4 py-1 items-center bg-gradient-to-r from-[#00ff95] to-[#0073e6] text-white hover:text-white hover:from-[#00ff95]/80 hover:to-[#0073e6]/80"
-          >
-            <Link href="/contact"><Mail className="h-4 w-4" /><span>Contact</span></Link>
-          </Button>
+          <ContactButton href="/contact" />
           <ThemeToggle />
         </nav>
 
         {/* Mobile Navigation */}
-        <div className="md:hidden flex items-center">
+        <div className="flex items-center md:hidden">
            <Sheet open={isOpen} onOpenChange={setIsOpen}>
             <SheetTrigger asChild>
               <Button variant="ghost" size="icon">
-                <Menu className="h-6 w-6 text-foreground" />
+                <Menu className="w-6 h-6 text-foreground" />
                 <span className="sr-only">Toggle Menu</span>
               </Button>
             </SheetTrigger>
-            <SheetContent side="right" className="w-full max-w-xs bg-background p-6">
+            <SheetContent side="right" className="p-6 w-full max-w-xs bg-background">
               <div className="flex flex-col space-y-4">
-                {/* Updated Logo Text in Mobile Menu */}
-                <NextLink href="/" className="flex items-center space-x-2 text-primary mb-6" onClick={() => setIsOpen(false)}>
-                  <Plane className="h-6 w-6" />
-                  <span className="font-bold text-lg text-foreground">Aviators Training Centre</span>
+                {/* Updated Logo in Mobile Menu */}
+                <NextLink href="/" className="mb-6" onClick={() => setIsOpen(false)}>
+                  <div className="overflow-hidden relative w-10 h-10">
+                    <Image 
+                      src="/AVIATORS_TRAINING_CENTRE-LOGO.webp" 
+                      alt="Aviators Training Centre Logo" 
+                      width={40} 
+                      height={40} 
+                      className="object-contain" 
+                    />
+                  </div>
                 </NextLink>
                 {navLinks.map((link) => (
                     <NextLink
                       key={link.href}
                       href={link.href}
-                      className="text-foreground/80 hover:text-primary transition-colors text-lg"
+                      className="text-lg transition-colors text-foreground/80 hover:text-primary"
                       onClick={() => setIsOpen(false)}>
                       {link.label}
                     </NextLink>
                 ))}
-                 <Button
-                    asChild
-                    className="flex items-center space-x-2 bg-gradient-to-r from-[#00ff95] to-[#0073e6] text-white hover:text-white hover:from-[#00ff95]/80 hover:to-[#0073e6]/80"
-                  >
-                    <Link href="/contact" onClick={() => setIsOpen(false)}><Mail className="h-4 w-4" /><span>Contact</span></Link>
-                  </Button>
+                 <div className="mt-2">
+                    <ContactButton 
+                      href="/contact" 
+                      onClick={() => setIsOpen(false)} 
+                      fullWidth 
+                    />
+                  </div>
               <ThemeToggle />
               </div>
             </SheetContent>

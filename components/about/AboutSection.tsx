@@ -72,7 +72,7 @@ const AboutSection: React.FC<AboutSectionProps> = ({ whoWeAre }) => {
                                 <span>Who We Are</span>
                             </div>
                             
-                            <h1 className="text-3xl font-bold leading-tight md:text-4xl lg:text-5xl text-foreground">
+                            <h1 className="text-3xl font-bold leading-tight text-teal-700 md:text-3xl lg:text-4xl">
                                 Aviators Training Centre
                             </h1>
                             
@@ -92,9 +92,9 @@ const AboutSection: React.FC<AboutSectionProps> = ({ whoWeAre }) => {
                             variants={itemVariants} 
                             className="lg:w-1/2"
                         >
-                            <div className="relative h-[300px] md:h-[400px] lg:h-[500px] w-full rounded-xl overflow-hidden shadow-lg">
+                            <div className="relative h-[300px] md:h-[350px] lg:h-[400px] w-full rounded-xl overflow-hidden shadow-lg">
                                 <Image
-                                    src="/HomePage/Hero1.webp" // Using available image
+                                    src="/Plane2.webp" // Using available image
                                     alt="Aviators Training Centre"
                                     className="object-cover"
                                     fill
