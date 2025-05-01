@@ -6,8 +6,6 @@ import { motion } from 'framer-motion';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Target, Users, Telescope, Heart, MessageSquare, UserCheck, Clock, DollarSign, UserX, MessageCircleQuestion, MapPin, Home, BadgeDollarSign, ArrowRight, Archive, PhoneForwarded } from 'lucide-react';
 import { cn } from "@/components/ui/utils";
-import { SolidButton } from '@/components/shared/SolidButton';
-import { TransparentButton } from '@/components/shared/TransparentButton';
 import AboutSection from "@/components/about/AboutSection";
 
 // --- Configuration (Removed button style variables) ---
@@ -16,7 +14,7 @@ const aviationSecondary = 'text-teal-600 dark:text-teal-400';
 
 // Image paths (Unchanged)
 const aboutHeroUrl = "/Plane3.jpg";
-const storyImageUrl = "/About/About2.avif";
+// const storyImageUrl = "/About/About2.avif"; // Keep for reference if needed, but image is now passed to AboutSection
 const FALLBACK_IMAGE = "/HomePage/Hero5.webp";
 
 // --- Animation Variants (Unchanged) ---
@@ -86,83 +84,36 @@ export default function About() {
         <img
           src={aboutHeroUrl}
           alt="View from an aircraft cockpit"
-          className="absolute inset-0 w-full h-full object-cover z-0"
+          className="object-cover absolute inset-0 z-0 w-full h-full"
           onError={handleImageError}
           style={{ filter: 'brightness(0.6)' }} // Adjusted brightness
         />
          <div className="absolute inset-0 bg-gradient-to-r from-[rgba(7,94,104,0.25)] to-[rgba(12,110,114,0.55)] z-10"></div> {/* Added gradient overlay */}
         <motion.div
-          className="relative z-20 max-w-4xl p-6 md:p-10" // Matched padding
+          className="relative z-20 p-6 max-w-4xl md:p-10" // Matched padding
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3, duration: 0.8 }}
         >
-          <h1 className="drop-shadow-md text-4xl sm:text-5xl md:text-6xl font-extrabold leading-tight tracking-tight mb-3"> {/* Matched text styles */}
+          <h1 className="mb-3 text-4xl font-extrabold tracking-tight leading-tight drop-shadow-md sm:text-5xl md:text-6xl"> {/* Matched text styles */}
             About Aviators Training Centre
           </h1>
-          <p className="text-white mb-8">
+          <p className="mb-8 text-white">
             Join us at Aviator Training Center and begin your journey towards the
             skies. Whether you're taking your first steps in aviation or looking
             to advance your career, we're here to support your flight.
           </p>
-          {/* <TransparentButton
-            href="/courses"
-            icon={PhoneForwarded}
-            label="Empowering aspiring pilots with focused ground training to conquer DGCA exams and launch successful aviation careers."
-            textColorClassName="text-white"
-            className="border-white bg-transparent/30 dark:border-white"
-          /> */}
-        
+          {/* Removed Button */}
         </motion.div>
       </motion.section>
 
       {/* Main Content */}
-      <main className="flex-grow container mx-auto px-4 sm:px-6 py-16 md:py-24 space-y-20 md:space-y-28">
+      <main className="container flex-grow px-4 py-16 mx-auto space-y-20 sm:px-6 md:py-24 md:space-y-28">
 
-        {/* Our Story / Mission Section - Updated Button */}
-        <section className="py-16 px-4 md:px-16">
-        <div className="container mx-auto grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
-          <div className="md:order-2">
-            <Image
-              src="/About/About2.avif"
-              alt="Image 1"
-              width={600}
-              height={400}
-              className="rounded-lg shadow-lg w-full h-auto"
-            />
-          </div>
-          <div className="md:order-1">
-            <h2 className="text-3xl font-bold mb-4">Our Story</h2>
-            <p className="text-gray-700 mb-6">
-              Welcome to the Aviator Training Center. ATC, an organisation born
-              out of passion and dedication to the aviation industry. Our
-              journey began with a vision to redefine aviation training, making
-              it more accessible, engaging, and effective. We noticed a gap in
-              the way aviation knowledge was imparted, often dry and
-              uninspiring. Our founders, experienced aviators themselves, decided
-              it was time for a change. They set out to create a center where
-              learning would be immersive, where the thrill of flight would
-              infuse every lesson. ATC is more than just a training center; it's
-              a community where aviation enthusiasts, from aspiring pilots to
-              seasoned professionals, come together to share their love for
-              flight. We are proud to be a part of their journey, empowering
-              them to reach new heights.
-            </p>
-          </div>
-        </div>
-      </section>
-        <section className="bg-gray-100 py-16 px-4 md:px-16">
-          <div className="container mx-auto grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
-            <div className="md:order-2">
-              <motion.div className="relative group w-full max-w-md" whileHover="hover" initial="rest" animate="rest" variants={cardHoverEffect} >
-                  <Card className="overflow-hidden rounded-lg shadow-sm border border-border transition-shadow duration-300 relative z-10">
-                     <Image src={storyImageUrl} alt="Modern aviation training classroom environment" className="w-full h-auto object-cover transition-transform duration-300 group-hover:scale-105" onError={handleImageError} loading="lazy" width={600} height={400} />
-                  </Card>
-              </motion.div>
-            </div>
-             <AboutSection whoWeAre={whoWeAreContent} ourMission={ourMissionContent} ourVision={ourVisionContent}/>
-          </div>
-        </section>
+        {/* Combined Story, Who We Are, Mission, Vision Section */}
+        <AboutSection
+          whoWeAre={whoWeAreContent}
+        />
 
         {/* Why Choose Us Section (The ATC Advantage) - Refactored with Cards */}
         <motion.section
@@ -171,30 +122,30 @@ export default function About() {
           whileInView="visible"
           viewport={{ once: true, amount: 0.1 }}
         >
-            <h2 className={cn("text-3xl md:text-4xl font-bold text-center mb-12 md:mb-16", aviationPrimary)}> {/* Updated heading style */}
+            <h2 className={cn("mb-12 text-3xl font-bold text-center md:text-4xl md:mb-16", aviationPrimary)}> {/* Updated heading style */}
               The ATC Advantage
             </h2>
             {/* Added items-stretch */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 items-stretch">
+            <div className="grid grid-cols-1 gap-8 items-stretch sm:grid-cols-2 lg:grid-cols-3">
                 {atcAdvantages.map((item, index) => (
                   <motion.div key={index} variants={itemVariants} className="flex"> {/* Added flex */}
                     <motion.div
-                        className="relative h-full w-full group"
+                        className="relative w-full h-full group"
                         whileHover="hover"
                         initial="rest"
                         animate="rest"
                         variants={cardHoverEffect}
                     >
                        {/* Ensure Card takes full height */}
-                       <Card className="bg-card w-full h-full flex flex-col text-center overflow-hidden rounded-lg shadow-sm border border-border transition-shadow duration-300 relative z-10 p-6">
-                           <CardHeader className="p-0 mb-4 flex-shrink-0"> {/* Adjusted padding */}
-                               <div className="mx-auto p-3 rounded-full bg-teal-100/70 dark:bg-teal-900/40 w-fit mb-3 transition-colors duration-300 group-hover:bg-teal-200/80 dark:group-hover:bg-teal-800/60"> {/* Icon style from Courses */}
-                                   <item.icon className={cn("h-7 w-7", aviationSecondary)} /> {/* Adjusted icon size */}
+                       <Card className="flex overflow-hidden relative z-10 flex-col p-6 w-full h-full text-center rounded-lg border shadow-sm transition-shadow duration-300 bg-card border-border">
+                           <CardHeader className="flex-shrink-0 p-0 mb-4"> {/* Adjusted padding */}
+                               <div className="p-3 mx-auto mb-3 rounded-full transition-colors duration-300 bg-teal-100/70 dark:bg-teal-900/40 w-fit group-hover:bg-teal-200/80 dark:group-hover:bg-teal-800/60"> {/* Icon style from Courses */}
+                                   <item.icon className={cn("w-7 h-7", aviationSecondary)} /> {/* Adjusted icon size */}
                                </div>
-                               <CardTitle className="text-foreground text-lg font-semibold">{item.title}</CardTitle> {/* Adjusted text size */}
+                               <CardTitle className="text-lg font-semibold text-foreground">{item.title}</CardTitle> {/* Adjusted text size */}
                            </CardHeader>
-                           <CardContent className="p-0 flex-grow">
-                               <CardDescription className="text-foreground/80 text-sm leading-relaxed"> {/* Use CardDescription */}
+                           <CardContent className="flex-grow p-0">
+                               <CardDescription className="text-sm leading-relaxed text-foreground/80"> {/* Use CardDescription */}
                                  {item.description}
                                 </CardDescription>
                            </CardContent>
@@ -211,27 +162,27 @@ export default function About() {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.1 }}
-          className="bg-gradient-to-br from-red-50/30 to-rose-50/30 dark:from-gray-800/40 dark:to-gray-900/40 rounded-xl p-8 md:p-12 border border-border/50 shadow-lg"
+          className="p-8 bg-gradient-to-br rounded-xl border shadow-lg from-red-50/30 to-rose-50/30 dark:from-gray-800/40 dark:to-gray-900/40 md:p-12 border-border/50"
         >
-            <h2 className={cn("text-3xl md:text-4xl font-bold text-center mb-12 md:mb-16", 'text-red-700 dark:text-red-400')}> {/* Adjusted heading color */}
+            <h2 className={cn("mb-12 text-3xl font-bold text-center md:text-4xl md:mb-16", 'text-red-700 dark:text-red-400')}> {/* Adjusted heading color */}
                 Say Goodbye To Traditional Hassles
             </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 items-stretch max-w-5xl mx-auto"> {/* Added items-stretch, gap-8 */}
+            <div className="grid grid-cols-1 gap-8 items-stretch mx-auto max-w-5xl sm:grid-cols-2 lg:grid-cols-3"> {/* Added items-stretch, gap-8 */}
                {traditionalHassles.map((hassle, index) => (
                    <motion.div key={index} variants={itemVariants} className="flex"> {/* Added flex */}
                        <motion.div
-                           className="relative h-full w-full group"
+                           className="relative w-full h-full group"
                            whileHover="hover"
                            initial="rest"
                            animate="rest"
                            variants={cardHoverEffect}
                        >
-                           <Card className="flex flex-col items-center text-center p-6 h-full bg-card rounded-lg shadow-sm border border-border transition-shadow duration-300 relative z-10"> {/* Applied consistent card styling */}
-                              <div className="p-3 rounded-full bg-red-100/70 dark:bg-red-900/40 mb-3 transition-colors duration-300 group-hover:bg-red-200/80 dark:group-hover:bg-red-800/60"> {/* Consistent icon style */}
-                                <hassle.icon className="h-7 w-7 text-red-600 dark:text-red-400" /> {/* Adjusted colors */}
+                           <Card className="flex relative z-10 flex-col items-center p-6 h-full text-center rounded-lg border shadow-sm transition-shadow duration-300 bg-card border-border"> {/* Applied consistent card styling */}
+                              <div className="p-3 mb-3 rounded-full transition-colors duration-300 bg-red-100/70 dark:bg-red-900/40 group-hover:bg-red-200/80 dark:group-hover:bg-red-800/60"> {/* Consistent icon style */}
+                                <hassle.icon className="w-7 h-7 text-red-600 dark:text-red-400" /> {/* Adjusted colors */}
                               </div>
-                              <CardContent className="p-0 flex-grow flex items-center"> {/* Use CardContent, center text vertically */}
-                                <CardDescription className="text-foreground/80 font-medium text-sm leading-snug">{hassle.text}</CardDescription> {/* Use CardDescription */}
+                              <CardContent className="flex flex-grow items-center p-0"> {/* Use CardContent, center text vertically */}
+                                <CardDescription className="text-sm font-medium leading-snug text-foreground/80">{hassle.text}</CardDescription> {/* Use CardDescription */}
                               </CardContent>
                            </Card>
                        </motion.div>
@@ -240,7 +191,7 @@ export default function About() {
             </div>
             <motion.div
               variants={itemVariants} // Add animation
-              className="text-center mt-12 md:mt-16"
+              className="mt-12 text-center md:mt-16"
             >
                 <p className={cn("text-lg font-semibold", aviationPrimary)}> {/* Use primary color */}
                   Focus purely on mastering your ground subjects with ATC!
