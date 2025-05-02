@@ -46,13 +46,13 @@ const Header: React.FC = () => {
     <header className={cn(
       "sticky top-0 z-50 w-full transition-all duration-300",
       scrolled 
-        ? "border-b shadow-sm backdrop-blur-xl border-border/40 bg-background/60 supports-[backdrop-filter]:bg-background/40 dark:bg-background/80 dark:supports-[backdrop-filter]:bg-background/60"
-        : "backdrop-blur-xl bg-background/60 supports-[backdrop-filter]:bg-background/40 dark:bg-background/80 dark:supports-[backdrop-filter]:bg-background/60"
+        ? "border-b shadow-sm backdrop-blur-xl border-border/40 bg-background/60 supports-[backdrop-filter]:bg-background/40 dark:bg-teal-900/80 dark:supports-[backdrop-filter]:bg-teal-900/60"
+        : "backdrop-blur-xl bg-background/60 supports-[backdrop-filter]:bg-background/40 dark:bg-teal-950"
     )}>
-      <div className="container flex items-center justify-between px-4 max-w-screen-2xl sm:px-6 lg:px-8">
+      <div className="container flex items-center justify-between px-3 mx-auto h-14 sm:h-16 sm:px-4 md:px-6 lg:px-8">
         {/* Logo with Image */}
         <NextLink href="/" className="flex items-center group">
-          <div className="relative h-16 overflow-hidden w-60">
+          <div className="relative h-8 overflow-hidden sm:h-12 md:h-14 lg:h-16 w-28 sm:w-40 md:w-48 lg:w-60">
             <Image 
               src="/AVIATORS_TRAINING_CENTRE-LOGO.webp" 
               alt="Aviators Training Centre Logo" 
@@ -65,13 +65,13 @@ const Header: React.FC = () => {
         </NextLink>
 
         {/* Desktop Navigation - Hidden on mobile */}
-        <nav className="items-center hidden space-x-8 text-sm font-medium md:flex">
+        <nav className="items-center hidden space-x-3 text-sm font-medium md:space-x-4 lg:space-x-8 md:flex">
           {navLinks.map((link) => (
             <NextLink 
               key={link.href} 
               href={link.href} 
               className={cn(
-                "relative py-2 px-1 text-sm transition-colors hover:text-primary",
+                "relative py-2 px-1 text-sm transition-colors hover:text-primary whitespace-nowrap",
                 pathname === link.href
                   ? "text-primary font-semibold" 
                   : "text-foreground/80"
@@ -90,22 +90,26 @@ const Header: React.FC = () => {
         </nav>
 
         {/* Right side buttons */}
-        <div className="flex items-center space-x-4">
+        <div className="flex items-center gap-1 sm:gap-2 md:gap-3 lg:gap-4">
           <ThemeToggle />
-          <ContactButton href="/contact" />
+          <ContactButton href="/contact" className="scale-75 sm:scale-85 md:scale-90 lg:scale-100" />
         </div>
 
         {/* Mobile Navigation Trigger - Shown only on mobile */}
         <div className="flex items-center md:hidden">
           <Sheet open={isOpen} onOpenChange={setIsOpen}>
             <SheetTrigger asChild>
-              <Button variant="ghost" size="icon" className="w-10 h-10">
-                <Menu className="w-6 h-6 text-foreground" />
+              <Button variant="ghost" size="icon" className="w-8 h-8 sm:w-9 sm:h-9">
+                <Menu className="w-5 h-5 sm:w-5 sm:h-5 text-foreground" />
                 <span className="sr-only">Toggle Menu</span>
               </Button>
             </SheetTrigger>
-            <SheetContent side="right" className="w-full max-w-xs p-6 bg-background">
-              <div className="flex flex-col space-y-6">
+            <SheetContent 
+              side="right" 
+              className="w-full max-w-xs p-6 border-l bg-background"
+              onOpenAutoFocus={(e) => e.preventDefault()}
+            >
+              <div className="flex flex-col space-y-6 overflow-y-auto">
                 {navLinks.map((link) => (
                   <NextLink
                     key={link.href}
@@ -120,16 +124,6 @@ const Header: React.FC = () => {
                     {link.label}
                   </NextLink>
                 ))}
-                <div className="flex flex-col mt-4 space-y-4">
-                  <div className="flex justify-center">
-                    <ThemeToggle />
-                  </div>
-                  <ContactButton 
-                    href="/contact" 
-                    onClick={() => setIsOpen(false)} 
-                    fullWidth 
-                  />
-                </div>
               </div>
             </SheetContent>
           </Sheet>
