@@ -2,7 +2,6 @@
 import React from 'react';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
-import Link from 'next/link';
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { cn } from '@/components/ui/utils';
@@ -36,26 +35,23 @@ const cardHoverEffect = {
 const instructors = [
   {
     name: 'Dhruv Shirkoli',
-    title: 'Senior Instructor - CPL',
-    image: '/Instructor/Dhruv in cockpit.webp',
-    bio: 'An accomplished Commercial Pilot with a deep understanding of aviation regulations and technical knowledge. Passionate about nurturing the next generation of pilots.',
-    expertise: ["Air Regulations", "Technical General", "Flight Instruction", "Aerodynamics"]
+    // title: 'Senior Instructor - CPL', // Added title
+    image: '/Instructor/Dhruv-Shirkoli.webp',
+    bio: 'A320 type-rated airline pilot with 10+ years of cockpit experience, specializing in Commercial Pilot License (CPL) training. Committed to sharing real-world aviation insights, cockpit best practices, and safety protocols to transform aspiring aviators into skilled professionals. Focus on personalized mentorship for DGCA exam success.'
   },
   {
     name: 'Ankit Kumar',
-    title: 'Lead Instructor - ATPL',
-    image: '/Instructor/ankit.webp',
-    bio: 'A seasoned Airline Captain and Educator, bringing real-world airline experience to the classroom. Dedicated to guiding aspiring pilots through the intricacies of ATPL.',
-    expertise: ["Advanced Navigation", "Aviation Meteorology", "Airline Operations", "Aircraft Systems"]
+    // title: 'Lead Instructor - ATPL', // Added title
+    image: '/Instructor/AK.png',
+    bio: 'Airline Captain and ATPL specialist with 15,000+ flight hours on Airbus fleets. Expert in advanced navigation, airline operations, and DGCA exam preparation. Dedicated to mentoring pilots through Airline Transport Pilot License requirements with industry-aligned training methodologies.'
   },
   {
-    name: "Saksham Khandelwal",
-    title: "RTR(A) Specialist",
-    image: "/Instructor/saksham engine.webp",
-    bio: "Expert in aviation communication, specializing in Radio Telephony. Committed to ensuring clear and efficient communication practices in aviation.",
-    expertise: ["Radio Telephony", "Aviation English", "Exam Preparation", "ATC Procedures"]
+    name: 'Saksham Khandelwal',
+    // title: 'RTR(A) & Type Rating Specialist', // Added title
+    image: '/Instructor/SakshamEngine.webp',
+    bio: 'B737 type-rated pilot and Radio Telephony (RTR(A)) expert. Bridging cockpit experience with classroom instruction to teach precise aviation communication, ATC procedures, and exam strategies. Focused on building confidence in aviation English for global airspace readiness.'
   }
-];
+]
 
 const InstructorsPage: React.FC = () => {
 
@@ -78,10 +74,10 @@ const InstructorsPage: React.FC = () => {
         "@type": "Person",
         "@id": `https://aviatorstrainingcentre.com/instructors#${instructor.name.toLowerCase().replace(/\s+/g, '-')}-${index}`,
         "name": instructor.name,
-        "jobTitle": instructor.title,
+        // "jobTitle": instructor.title,
         "image": `https://aviatorstrainingcentre.com${instructor.image}`, // Add image URL
         "description": instructor.bio,
-        "knowsAbout": instructor.expertise,
+        // "knowsAbout": instructor.expertise,
         "worksFor": {
           "@type": "Organization",
           "name": "Aviators Training Centre",
@@ -101,7 +97,7 @@ const InstructorsPage: React.FC = () => {
 
       {/* Hero Section - Styled like other pages */}
       <motion.section
-        className="relative h-[50vh] md:h-[60vh] flex items-center justify-center text-center text-white overflow-hidden"
+        className="relative h-[50vh] md:h-[70vh] flex items-center justify-center text-center text-white overflow-hidden"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.8 }}
@@ -111,21 +107,21 @@ const InstructorsPage: React.FC = () => {
             alt="Aviators Training Centre Instructors"
             fill
             priority
-            className="absolute inset-0 z-0 object-cover w-full h-full"
+            className="object-cover absolute inset-0 z-0 w-full h-full"
             onError={handleImageError}
             style={{ filter: 'brightness(0.6)' }} // Adjusted brightness
          />
         <div className="absolute inset-0 bg-gradient-to-r from-[rgba(7,94,104,0.25)] to-[rgba(12,110,114,0.55)] z-10"></div> {/* Consistent gradient overlay */}
         <motion.div
-          className="relative z-20 max-w-4xl p-6 md:p-10"
+          className="relative z-20 p-6 max-w-4xl md:p-10"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3, duration: 0.8 }}
         >
-          <h1 className="mb-3 text-4xl font-extrabold leading-tight tracking-tight drop-shadow-md sm:text-5xl md:text-6xl"> {/* Consistent text styles */}
+          <h1 className="mb-3 text-4xl font-extrabold tracking-tight leading-tight drop-shadow-md sm:text-5xl md:text-6xl"> {/* Consistent text styles */}
             Meet Our Expert Instructors
           </h1>
-          <p className="max-w-2xl mx-auto text-lg drop-shadow-md md:text-xl text-white/90"> {/* Consistent text styles */}
+          <p className="mx-auto max-w-2xl text-lg drop-shadow-md md:text-xl text-white/90"> {/* Consistent text styles */}
             Learn from seasoned professionals dedicated to your success in aviation.
           </p>
         </motion.div>
@@ -144,12 +140,12 @@ const InstructorsPage: React.FC = () => {
             {/* Optional Section Header */}
             <div className="mb-12 text-center md:mb-16">
                 <motion.h2 variants={itemVariants} className={cn("mb-3 text-3xl font-bold md:text-4xl", aviationPrimary)}>Guidance from the Best</motion.h2>
-                <motion.p variants={itemVariants} className="max-w-3xl mx-auto text-lg text-foreground/80">
+                <motion.p variants={itemVariants} className="mx-auto max-w-3xl text-lg text-foreground/80">
                     Our instructors bring a wealth of real-world experience and a passion for teaching to help you achieve your aviation goals.
                 </motion.p>
             </div>
 
-            <div className="grid items-stretch grid-cols-1 gap-6 sm:gap-8 md:grid-cols-2 lg:grid-cols-3">
+            <div className="grid grid-cols-1 gap-6 items-stretch mx-8 sm:gap-8 md:grid-cols-2 lg:grid-cols-3">
               {instructors.map((instructor, index) => (
                 <motion.div
                     key={index}
@@ -163,9 +159,9 @@ const InstructorsPage: React.FC = () => {
                     animate="rest"
                     variants={cardHoverEffect}
                   >
-                    <Card className="relative z-10 flex flex-col w-full h-full overflow-hidden transition-shadow duration-300 border rounded-lg shadow-sm bg-card border-border">
+                    <Card className="flex overflow-hidden relative z-10 flex-col w-full h-full rounded-lg border shadow-sm transition-shadow duration-300 bg-card border-border group-hover:border-teal-600/50 dark:group-hover:border-teal-400/50"> {/* Added hover border */} 
                       <CardHeader className="relative p-0">
-                        <div className="relative w-full h-64 sm:h-72"> {/* Adjusted image height */}
+                        <div className="relative w-full h-64 sm:h-96"> {/* Adjusted image height */} 
                           <Image
                             src={instructor.image}
                             alt={`Photo of ${instructor.name}`}
@@ -177,20 +173,20 @@ const InstructorsPage: React.FC = () => {
                           />
                         </div>
                       </CardHeader>
-                      <CardContent className="flex flex-col flex-grow p-5 sm:p-6"> {/* Use CardContent for main body */}
+                      <CardContent className="flex flex-col flex-grow p-5 sm:p-6"> {/* Use CardContent for main body */} 
                         <CardTitle className={cn("mb-1 text-xl font-semibold", aviationSecondary)}>{instructor.name}</CardTitle>
-                        <CardDescription className="mb-3 text-sm font-medium text-foreground/70">{instructor.title}</CardDescription>
-                        <p className="flex-grow mb-4 text-sm text-foreground/90">{instructor.bio}</p>
-                        <div>
+                        {/* <CardDescription className="mb-3 text-sm font-medium text-foreground/70">{instructor.title || 'Specialist Instructor'}</CardDescription> */}{/* Uncommented and added fallback */} 
+                        <p className="flex-grow text-sm leading-relaxed text-foreground/80">{instructor.bio}</p> {/* Adjusted text style */} 
+                        {/* <div>
                           <h4 className="mb-2 text-xs font-semibold tracking-wider uppercase text-foreground/60">Areas of Expertise:</h4>
                           <div className="flex flex-wrap gap-1.5">
                             {instructor.expertise.map(area => (
                               <span key={area} className="px-2.5 py-1 text-xs rounded-full bg-teal-100/70 text-teal-800 dark:bg-teal-900/40 dark:text-teal-200 border border-teal-200 dark:border-teal-800">{area}</span>
                             ))}
                           </div>
-                        </div>
+                        </div> */}
                       </CardContent>
-                      <CardFooter className="flex justify-center p-4 mt-auto bg-muted/30"> {/* Consistent Footer Style */}
+                      <CardFooter className="flex justify-center p-4 mt-auto border-t bg-muted/30 border-border/50"> {/* Consistent Footer Style with border */} 
                         {/* Using BookDemoButton or a similar styled link */}
                         <BookDemoButton
                             size="sm"
@@ -211,19 +207,19 @@ const InstructorsPage: React.FC = () => {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.1 }}
-            className="p-8 text-center rounded-lg bg-gradient-to-br from-teal-50 to-blue-50 dark:from-teal-900/30 dark:to-blue-900/30 md:p-12"
+            className="p-8 text-center bg-gradient-to-br from-teal-50 to-blue-50 rounded-lg dark:from-teal-900/30 dark:to-blue-900/30 md:p-12"
           >
             <motion.h2 variants={itemVariants} className={cn("mb-4 text-3xl font-bold md:text-4xl", aviationPrimary)}>The ATC Advantage</motion.h2>
-            <motion.p variants={itemVariants} className="max-w-3xl mx-auto mb-8 text-lg text-foreground/80">
+            <motion.p variants={itemVariants} className="mx-auto mb-8 max-w-3xl text-lg text-foreground/80">
               Our instructors are the cornerstone of our success, providing unparalleled expertise and dedicated support.
             </motion.p>
-            <div className="grid max-w-4xl grid-cols-1 gap-6 mx-auto mb-10 sm:grid-cols-2 lg:grid-cols-3 md:gap-8">
+            <div className="grid grid-cols-1 gap-6 mx-auto mb-10 max-w-4xl sm:grid-cols-2 lg:grid-cols-3 md:gap-8">
                 {[ // Example features - adapt as needed
                     { icon: Award, text: "Airline Experienced Faculty" },
                     { icon: UsersRound, text: "Personalized Mentorship" },
                     { icon: CheckSquare, text: "Proven Success Record" },
                 ].map((feature, index) => (
-                    <motion.div key={index} variants={itemVariants} className="flex items-center p-4 space-x-3 border rounded-md shadow-sm bg-background/50 border-border/50">
+                    <motion.div key={index} variants={itemVariants} className="flex items-center p-4 space-x-3 rounded-md border shadow-sm bg-background/50 border-border/50">
                         <feature.icon className={cn("w-6 h-6", aviationSecondary)} />
                         <span className="font-medium text-foreground/90">{feature.text}</span>
                     </motion.div>
