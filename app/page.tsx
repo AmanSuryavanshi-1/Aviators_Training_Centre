@@ -1,7 +1,7 @@
 "use client"
 import React from 'react';
 import HeroSection from "@/components/home/HeroSection";
-import WhyChooseUs from "@/components/home/whychooseus";
+import WhyChooseUs from "@/components/home/WhyChooseUs";
 import CoursesSection from "@/components/home/CoursesSection";
 import PilotPathway from "@/components/home/PilotPathway";
 import FAQ from "@/components/shared/FAQ";
