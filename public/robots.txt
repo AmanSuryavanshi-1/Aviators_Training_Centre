@@ -1,11 +1,13 @@
 # *
 User-agent: *
 Allow: /
+Disallow: /404
+Disallow: /500
+Disallow: /_not-found
 
-# Sitemap locations
-Sitemap: https://aviatorstrainingcentre.com/sitemap.xml
-Sitemap: https://aviators-training-centre.vercel.app/sitemap.xml
-
-# Host directive
+# Host
 Host: https://aviatorstrainingcentre.com
 
+# Sitemaps
+Sitemap: https://aviatorstrainingcentre.com/sitemap.xml
+Sitemap: https://aviatorstrainingcentre.com/server-sitemap.xml
