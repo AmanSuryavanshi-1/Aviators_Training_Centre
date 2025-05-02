@@ -1,9 +1,8 @@
 "use client"
 import React from 'react';
 import HeroSection from "@/components/home/HeroSection";
-import WhyChooseUs from "@/components/home/WhyChooseUs";
+import WhyChooseUs from "@/components/home/whychooseus";
 import CoursesSection from "@/components/home/CoursesSection";
-import InstructorsSection from "@/components/home/InstructorsSection";
 import PilotPathway from "@/components/home/PilotPathway";
 import FAQ from "@/components/shared/FAQ";
 import CTASection from "@/components/home/CTASection";
@@ -45,9 +44,6 @@ export default function Home() {
 
             {/* Courses Section */}
             <CoursesSection />
-
-            {/* Instructors Section */}
-            <InstructorsSection />
 
             {/* FAQ Section - Use the updated component */}
             {/* We let the FAQ component handle its own header and styling */}
