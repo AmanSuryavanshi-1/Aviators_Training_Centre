@@ -37,11 +37,22 @@ const ContactFormCard: React.FC<ContactFormCardProps> = ({inquirySubjects}) => {
         if (nameFromUrl) {
             setName(nameFromUrl);
         }
+        // Set Subject
         if (subjectFromUrl) {
             setSubject(subjectFromUrl);
-            setMessage(isDemo ? `I would like to book a demo${courseName ? ` for the ${courseName} course` : ''}. Please contact me to schedule a time.` : String(messageFromUrl || ''));
         }
-    }, []); // Removed dependencies to avoid re-running unnecessarily on state changes
+
+        // Set Message based on priority: messageFromUrl (if not demo) > Demo > default
+        if (messageFromUrl && !isDemo) {
+            // If a message is provided in the URL and it's NOT a demo booking, use it
+            setMessage(messageFromUrl);
+        } else if (isDemo) {
+            // If it IS a demo booking, set the specific demo message (this takes precedence if somehow both messageFromUrl and isDemo are true)
+            setMessage(`I would like to book a demo${courseName ? ` for the ${courseName} course` : ''}. Please contact me to schedule a time.`);
+        }
+        // If neither condition is met (no messageFromUrl or it's a demo without a message param), message remains the initial empty string
+
+    }, []); // Empty dependency array to run only once on component mount
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -87,9 +98,17 @@ const ContactFormCard: React.FC<ContactFormCardProps> = ({inquirySubjects}) => {
                 setName('');
                 setEmail('');
                 setPhone('');
-                // Keep subject if it was from URL for demo booking?
-                // setSubject('');
-                setMessage(isDemoBooking ? `I would like to book a demo${new URLSearchParams(window.location.search).get('courseName') ? ` for the ${new URLSearchParams(window.location.search).get('courseName')} course` : ''}. Please contact me to schedule a time.` : '');
+                
+                // Handle form reset based on whether it was a demo booking
+                if (isDemoBooking) {
+                    // For demo bookings, keep the subject and reset message to default demo message
+                    const courseName = new URLSearchParams(window.location.search).get('courseName');
+                    setMessage(`I would like to book a demo${courseName ? ` for the ${courseName} course` : ''}. Please contact me to schedule a time.`);
+                } else {
+                    // For regular inquiries, reset both subject and message
+                    setSubject('');
+                    setMessage('');
+                }
             } else {
                 toast({
                     title: "Submission Failed",
@@ -161,16 +180,16 @@ const ContactFormCard: React.FC<ContactFormCardProps> = ({inquirySubjects}) => {
             </div>
             <div className="space-y-1.5">
               <Label htmlFor="subject" className="text-sm font-medium">Subject</Label>
-              {isDemoBooking ? (
+              {isDemoBooking || (subject && new URLSearchParams(window.location.search).get('subject')) ? (
                 <Input
-
                   id="subject"
                   value={subject}
                   onChange={(e) => setSubject(e.target.value)}
+                  readOnly={isDemoBooking}
                   className={cn(
                     "cursor-text",
                     "focus-visible:ring-teal-500",
-                    "cursor-not-allowed bg-muted/50"
+                    isDemoBooking && "cursor-not-allowed bg-muted/50"
                   )}
                 />
               ) : (
