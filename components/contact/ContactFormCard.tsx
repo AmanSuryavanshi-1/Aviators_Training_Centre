@@ -31,18 +31,19 @@ const ContactFormCard: React.FC<ContactFormCardProps> = ({inquirySubjects}) => {
         const courseName = params.get('courseName');
         const nameFromUrl = params.get('name');
         const messageFromUrl = params.get('message');
+        const isDemo = subjectFromUrl === 'Book a Demo'; // Check if it's specifically a demo booking
+        setIsDemoBooking(isDemo);
 
         if (nameFromUrl) {
             setName(nameFromUrl);
         }
         if (subjectFromUrl) {
             setSubject(subjectFromUrl);
-            setMessage(isDemoBooking ? `I would like to book a demo${courseName ? ` for the ${courseName} course` : ''}. Please contact me to schedule a time.` : String(messageFromUrl || ''));
-            setIsDemoBooking(true);
+            setMessage(isDemo ? `I would like to book a demo${courseName ? ` for the ${courseName} course` : ''}. Please contact me to schedule a time.` : String(messageFromUrl || ''));
         }
-    }, [isDemoBooking, defaultDemoMessage]);
+    }, []); // Removed dependencies to avoid re-running unnecessarily on state changes
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
         if (!isDemoBooking && !subject) {
@@ -54,21 +55,58 @@ const ContactFormCard: React.FC<ContactFormCardProps> = ({inquirySubjects}) => {
             return;
         }
         setLoading(true);
-        setTimeout(() => {
-            setLoading(false);
-            toast({
-                title: isDemoBooking ? "Demo Request Received!" : "Message Sent Successfully!",
-                description: isDemoBooking
-                    ? `We have received your demo request and will contact you shortly.`
-                    : `Thank you for reaching out! We will get back to you soon.`,
-                variant: "default",
+
+        const formData = {
+            name,
+            email,
+            phone,
+            subject,
+            message,
+        };
+
+        try {
+            const response = await fetch('/api/contact', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData),
             });
-            setName('');
-            setEmail('');
-            setPhone('');
-            setSubject('');
-            setMessage('');
-        }, 1500);
+
+            const result = await response.json();
+
+            if (response.ok) {
+                toast({
+                    title: isDemoBooking ? "Demo Request Received!" : "Message Sent Successfully!",
+                    description: isDemoBooking
+                        ? `We have received your demo request and will contact you shortly.`
+                        : `Thank you for reaching out! We will get back to you soon.`, // Use result.message if available
+                    variant: "default",
+                });
+                // Reset form
+                setName('');
+                setEmail('');
+                setPhone('');
+                // Keep subject if it was from URL for demo booking?
+                // setSubject('');
+                setMessage(isDemoBooking ? `I would like to book a demo${new URLSearchParams(window.location.search).get('courseName') ? ` for the ${new URLSearchParams(window.location.search).get('courseName')} course` : ''}. Please contact me to schedule a time.` : '');
+            } else {
+                toast({
+                    title: "Submission Failed",
+                    description: result.error || "An error occurred. Please try again.",
+                    variant: "destructive",
+                });
+            }
+        } catch (error) {
+            console.error("Form submission error:", error);
+            toast({
+                title: "Submission Error",
+                description: "An unexpected error occurred. Please try again later.",
+                variant: "destructive",
+            });
+        } finally {
+            setLoading(false);
+        }
     };
     const aviationPrimary = 'text-teal-700 dark:text-teal-300';
   return (
