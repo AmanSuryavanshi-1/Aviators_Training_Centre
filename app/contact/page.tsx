@@ -1,5 +1,5 @@
 "use client"
-import React from 'react';
+import React, { useState, useEffect } from 'react'; // Import useState and useEffect
 import { motion } from 'framer-motion';
 import { cn } from "@/components/ui/utils";
 import ContactHeader from '@/components/contact/ContactHeader';
@@ -16,6 +16,14 @@ const itemVariants = {
     visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeInOut" } }
 };
 const ContactPage: React.FC = () => {
+    const [isDemoBooking, setIsDemoBooking] = useState(false); // Add state for isDemoBooking
+
+    useEffect(() => {
+        // Move window-dependent logic here
+        const params = new URLSearchParams(window.location.search);
+        setIsDemoBooking(params.get("subject") ? true : false);
+    }, []); // Empty dependency array ensures this runs only once on mount
+
     const inquirySubjects = [
         "General Inquiry", "CPL Ground Classes (All Subjects)",
         "ATPL Ground Classes (All Subjects)", "Air Navigation Course",
@@ -26,8 +34,8 @@ const ContactPage: React.FC = () => {
         "Batch Schedule Inquiry", "Fee Structure Inquiry",
         "Other"
     ];
-    const params = new URLSearchParams(window.location.search);
-    const isDemoBooking = params.get("subject") ? true : false;
+    // const params = new URLSearchParams(window.location.search); // Removed from here
+    // const isDemoBooking = params.get("subject") ? true : false; // Removed from here
 
   
 

@@ -62,7 +62,7 @@ const Header: React.FC = () => {
         {/* Logo with Image */}
         <NextLink href="/" className="flex items-center group shrink-0">
           {/* Adjusted logo size slightly for better balance with reduced padding */}
-          <div className="relative h-8 overflow-hidden sm:h-10 md:h-12 lg:h-14 w-24 sm:w-32 md:w-40 lg:w-48">
+          <div className="relative h-8 overflow-hidden sm:h-10 md:h-12 lg:h-14 w-24 lg:w-36">
             {mounted && ( // Conditionally render based on mounted state
               <Image
                 src={theme === 'dark' ? '/AVIATORS_TRAINING_CENTRE_LOGO_DarkMode.png' : '/AVIATORS_TRAINING_CENTRE_LOGO_LightMode.png'}
