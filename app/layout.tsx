@@ -31,7 +31,7 @@ export const metadata: Metadata = {
         description: "India's leading aviation training center offering CPL/ATPL exam preparation, Type Rating courses, and comprehensive pilot training programs.",
         siteName: "Aviators Training Centre",
         images: [{
-            url: "/AVIATORS_TRAINING_CENTRE-LOGO.webp",
+            url: "/AVIATORS_TRAINING_CENTRE_LOGO_LightMode.png",
             width: 1200,
             height: 630,
             alt: "Aviators Training Centre"
@@ -41,7 +41,7 @@ export const metadata: Metadata = {
         card: "summary_large_image",
         title: "Aviators Training Centre (ATC) | Premier Pilot Training Institute",
         description: "India's leading aviation training center offering CPL/ATPL exam preparation, Type Rating courses, and comprehensive pilot training programs.",
-        images: ["/AVIATORS_TRAINING_CENTRE-LOGO.webp"]
+        images: ["/AVIATORS_TRAINING_CENTRE_LOGO_LightMode.png"]
     },
     verification: {
         google: "aE_FqlD0SbJberIaVs7Xe0flcsZF9gojWQg0BCQhiBc",

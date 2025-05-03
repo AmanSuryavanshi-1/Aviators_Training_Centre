@@ -4,12 +4,12 @@ import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import NextLink from 'next/link';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import Link from "next/link";
 import { Menu } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { cn } from '@/components/ui/utils';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation'; // Import usePathname
+import { useTheme } from 'next-themes';
 
 import { ThemeToggle } from '@/components/ThemeToggle';
 import { ContactButton } from '@/components/shared/ContactButton';
@@ -17,7 +17,9 @@ import { ContactButton } from '@/components/shared/ContactButton';
 const Header: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [mounted, setMounted] = useState(false); // Add mounted state
   const pathname = usePathname(); // Use usePathname hook
+  const { theme } = useTheme(); // Get the current theme
 
   // Handle scroll effect
   useEffect(() => {
@@ -26,10 +28,15 @@ const Header: React.FC = () => {
     };
 
     window.addEventListener('scroll', handleScroll);
-    
+
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
+  }, []);
+
+  // Set mounted state after initial render
+  useEffect(() => {
+    setMounted(true);
   }, []);
 
   // Updated Nav Links for ATC structure
@@ -53,14 +60,27 @@ const Header: React.FC = () => {
         {/* Logo with Image */}
         <NextLink href="/" className="flex items-center group">
           <div className="relative h-8 overflow-hidden sm:h-12 md:h-14 lg:h-16 w-28 sm:w-40 md:w-48 lg:w-60">
-            <Image 
-              src="/AVIATORS_TRAINING_CENTRE-LOGO.webp" 
-              alt="Aviators Training Centre Logo" 
-              width={128}
-              height={64}
-              className="object-contain transition-transform duration-500 transform group-hover:scale-105"
-              priority
-            />
+            {mounted && ( // Conditionally render based on mounted state
+              <Image
+                src={theme === 'dark' ? '/AVIATORS_TRAINING_CENTRE_LOGO_DarkMode.png' : '/AVIATORS_TRAINING_CENTRE_LOGO_LightMode.png'}
+                alt="Aviators Training Centre Logo"
+                width={128}
+                height={64}
+                className="object-contain transition-transform duration-500 transform group-hover:scale-105"
+                priority
+              />
+            )}
+            {!mounted && ( // Optional: Render a placeholder or the light logo initially to prevent layout shift
+              <Image
+                src={'/AVIATORS_TRAINING_CENTRE_LOGO_LightMode.png'} // Default to light mode logo before mount
+                alt="Aviators Training Centre Logo"
+                width={128}
+                height={64}
+                className="object-contain transition-transform duration-500 transform group-hover:scale-105"
+                priority
+                aria-hidden="true" // Hide placeholder from screen readers
+              />
+            )}
           </div>
         </NextLink>
 

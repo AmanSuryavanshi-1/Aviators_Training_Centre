@@ -18,7 +18,7 @@ const Footer: React.FC = () => {
               <NextLink href="/" className="mb-3">
                 <div className="relative h-24 p-4 overflow-hidden bg-white shadow-lg w-52 shadow-teal-950 rounded-2xl">
                   <Image 
-                    src="/AVIATORS_TRAINING_CENTRE-LOGO.webp" 
+                    src="/AVIATORS_TRAINING_CENTRE_LOGO_LightMode.png"
                     alt="Aviators Training Centre Logo" 
                     width={100} 
                     height={50} 

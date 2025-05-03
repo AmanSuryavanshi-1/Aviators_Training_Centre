@@ -53,7 +53,7 @@ const pathwaySteps = [
     title: "Eligibility & Enrollment",
     description: "Meet basic requirements and enroll in our comprehensive ground school program.",
     details: [
-      "**Age:** Minimum 17 years for SPL (Student Pilot License), 18 years (for CPL).",
+      "**Age:** Minimum 16 years for SPL (Student Pilot License), 18 years (for CPL).",
       "**Education:** Passed Class 10+2 with Physics & Mathematics from a recognized board.",
       "**Medical:** Valid DGCA Class 2 Medical Certificate (minimum). Class 1 needed for CPL/ATPL issuance.",
       "**English Proficiency:** Ability to read, speak, write, and understand English.",
