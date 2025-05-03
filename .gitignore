@@ -26,7 +26,7 @@ dist-ssr
 # Next.js
 .next/
 /out
-/env
+.env
 
 # Cache
 .cache/
