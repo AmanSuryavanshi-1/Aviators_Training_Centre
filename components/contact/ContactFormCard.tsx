@@ -90,24 +90,37 @@ const ContactFormCard: React.FC<ContactFormCardProps> = ({inquirySubjects}) => {
         };
 
         try {
-            // Send a POST request to the API
-            const response = await fetch('/api/contact', {
+            // Send a POST request to the API with absolute URL in production
+            const apiUrl = process.env.NODE_ENV === 'production' 
+                ? `${window.location.origin}/api/contact`
+                : '/api/contact';
+                
+            const response = await fetch(apiUrl, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Accept': 'application/json'
                 },
                 body: JSON.stringify(formData), // Send form data as JSON
             });
 
             // Check if response is successful
             if (!response.ok) {
+              // Clone the response before reading its body to avoid the "body stream already read" error
+              const responseClone = response.clone();
+              
               // Try to parse error response as JSON, if fails use text() method
-              let errorMessage;
+              let errorMessage = "An error occurred. Please try again.";
               try {
-                  const errorData = await response.json();
-                  errorMessage = errorData.error || "An error occurred. Please try again.";
+                  const errorData = await responseClone.json();
+                  errorMessage = errorData.error || errorMessage;
               } catch (jsonError) {
-                errorMessage = await response.text(); // Get raw text if not JSON
+                try {
+                  errorMessage = await response.text(); // Get raw text if not JSON
+                } catch (textError) {
+                  console.error("Error reading response:", textError);
+                  // Keep default error message
+                }
               }
               // Show error toast
               toast({

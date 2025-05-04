@@ -8,8 +8,6 @@ const nextConfig = {
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
     unoptimized: true,
   },
-  // Enable static exports for better performance
-  output: 'export',
   // Add webpack configuration
   webpack: (config) => {
     return config;
