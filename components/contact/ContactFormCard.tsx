@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, FormEvent } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -10,6 +10,13 @@ import { cn } from "@/components/ui/utils";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from '@/hooks/use-toast';
 
+interface FormData {
+  name: string;
+  email: string;
+  phone: string;
+  subject: string;
+  message: string;
+}
 interface ContactFormCardProps {
   inquirySubjects: string[];
 }
@@ -21,12 +28,13 @@ const ContactFormCard: React.FC<ContactFormCardProps> = ({inquirySubjects}) => {
     const [subject, setSubject] = useState('');
     const [message, setMessage] = useState('');
     const [loading, setLoading] = useState(false);
-    const { toast } = useToast();
     const [isDemoBooking, setIsDemoBooking] = useState(false);
-    const defaultDemoMessage = `I would like to book a demo. Please contact me to schedule a time.`;
+    
+    const { toast } = useToast();
 
+    // Effect to handle URL parameters on component mount
     useEffect(() => {
-        const params = new URLSearchParams(window.location.search);
+        const params = new URLSearchParams(window.location.search); // Get URL search parameters
         const subjectFromUrl = params.get('subject');
         const courseName = params.get('courseName');
         const nameFromUrl = params.get('name');
@@ -53,13 +61,18 @@ const ContactFormCard: React.FC<ContactFormCardProps> = ({inquirySubjects}) => {
         // If neither condition is met (no messageFromUrl or it's a demo without a message param), message remains the initial empty string
 
     }, []); // Empty dependency array to run only once on component mount
-
-    const handleSubmit = async (e: React.FormEvent) => {
+    /**
+     * Handles the form submission.
+     * Sends a POST request to the /api/contact endpoint with form data.
+     * @param {FormEvent} e - The form submit event.
+     */
+    const handleFormSubmit = async (e: FormEvent) => {
         e.preventDefault();
-
+        // Check if subject is present when form is not in Demo booking mode.
         if (!isDemoBooking && !subject) {
             toast({
                 title: "Subject Required",
+
                 description: "Please select a subject for your inquiry.",
                 variant: "destructive",
             });
@@ -67,8 +80,9 @@ const ContactFormCard: React.FC<ContactFormCardProps> = ({inquirySubjects}) => {
         }
         setLoading(true);
 
-        const formData = {
-            name,
+        // Collect form data
+        const formData: FormData = {
+          name,
             email,
             phone,
             subject,
@@ -76,54 +90,70 @@ const ContactFormCard: React.FC<ContactFormCardProps> = ({inquirySubjects}) => {
         };
 
         try {
+            // Send a POST request to the API
             const response = await fetch('/api/contact', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(formData),
+                body: JSON.stringify(formData), // Send form data as JSON
             });
 
-            const result = await response.json();
+            // Check if response is successful
+            if (!response.ok) {
+              // Try to parse error response as JSON, if fails use text() method
+              let errorMessage;
+              try {
+                  const errorData = await response.json();
+                  errorMessage = errorData.error || "An error occurred. Please try again.";
+              } catch (jsonError) {
+                errorMessage = await response.text(); // Get raw text if not JSON
+              }
+              // Show error toast
+              toast({
+                  title: "Submission Failed",
+                  description: errorMessage,
+                  variant: "destructive",
+              });
+            } else {
+              // Show success toast
+              toast({
+                  title: isDemoBooking ? "Demo Request Received!" : "Message Sent Successfully!",
+                  description: isDemoBooking
+                      ? `We have received your demo request and will contact you shortly.`
+                      : `Thank you for reaching out! We will get back to you soon.`,
+                  variant: "default",
+              });
 
-            if (response.ok) {
-                toast({
-                    title: isDemoBooking ? "Demo Request Received!" : "Message Sent Successfully!",
-                    description: isDemoBooking
-                        ? `We have received your demo request and will contact you shortly.`
-                        : `Thank you for reaching out! We will get back to you soon.`, // Use result.message if available
-                    variant: "default",
-                });
-                // Reset form
-                setName('');
-                setEmail('');
-                setPhone('');
-                
-                // Handle form reset based on whether it was a demo booking
-                if (isDemoBooking) {
-                    // For demo bookings, keep the subject and reset message to default demo message
-                    const courseName = new URLSearchParams(window.location.search).get('courseName');
-                    setMessage(`I would like to book a demo${courseName ? ` for the ${courseName} course` : ''}. Please contact me to schedule a time.`);
+              // Reset form fields
+              setName('');
+              setEmail('');
+              setPhone('');
+              // Reset subject and message, handle demo booking specific case
+              if (isDemoBooking) {
+                  const courseName = new URLSearchParams(window.location.search).get('courseName');
+                  setMessage(`I would like to book a demo${courseName ? ` for the ${courseName} course` : ''}. Please contact me to schedule a time.`);
                 } else {
-                    // For regular inquiries, reset both subject and message
                     setSubject('');
                     setMessage('');
                 }
-            } else {
-                toast({
-                    title: "Submission Failed",
-                    description: result.error || "An error occurred. Please try again.",
-                    variant: "destructive",
-                });
-            }
+            } 
+            // else {
+            //     toast({
+            //         title: "Submission Failed",
+            //         description: result.error || "An error occurred. Please try again.",
+            //         variant: "destructive",
+            //     });
+            // }
         } catch (error) {
             console.error("Form submission error:", error);
+            // Show error toast
             toast({
                 title: "Submission Error",
                 description: "An unexpected error occurred. Please try again later.",
                 variant: "destructive",
             });
-        } finally {
+        } finally{
             setLoading(false);
         }
     };
@@ -141,7 +171,7 @@ const ContactFormCard: React.FC<ContactFormCardProps> = ({inquirySubjects}) => {
                 </CardDescription>
       </CardHeader>
       <CardContent className="p-0">
-        <form onSubmit={handleSubmit} className="space-y-5">
+        <form onSubmit={handleFormSubmit} className="space-y-5">
           <div className="grid grid-cols-1 gap-5">
             <div className="space-y-1.5">
               <Label htmlFor="name" className="text-sm font-medium">Full Name</Label>
