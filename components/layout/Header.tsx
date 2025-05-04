@@ -89,7 +89,7 @@ const Header: React.FC = () => {
 
         {/* Desktop Navigation - Hidden on mobile */}
         {/* Reduced spacing: space-x-2 md:space-x-3 lg:space-x-6 */}
-        <nav className="items-center hidden space-x-2 text-sm font-medium md:space-x-3 lg:space-x-5 md:flex">
+        <nav className="items-center hidden flex-grow justify-center space-x-2 text-sm font-medium md:space-x-3 lg:space-x-5 md:flex">
           {navLinks.map((link) => (
             <NextLink
               key={link.href}
