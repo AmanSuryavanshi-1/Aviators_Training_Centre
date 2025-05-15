@@ -37,19 +37,19 @@ const instructors = [
     name: 'Dhruv Shirkoli',
     // title: 'Senior Instructor - CPL', // Added title
     image: '/Instructor/Dhruv-Shirkoli.webp',
-    bio: 'A320 type-rated airline pilot with 10+ years of cockpit experience, specializing in Commercial Pilot License (CPL) training. Committed to sharing real-world aviation insights, cockpit best practices, and safety protocols to transform aspiring aviators into skilled professionals. Focus on personalized mentorship for DGCA exam success.'
+    bio: 'An A320 type-rated airline pilot committed to sharing real cockpit wisdom, guiding trainee pilots on their path to the skies.'
   },
   {
     name: 'Ankit Kumar',
     // title: 'Lead Instructor - ATPL', // Added title
     image: '/Instructor/AK.png',
-    bio: 'Airline Captain and ATPL specialist with 15,000+ flight hours on Airbus fleets. Expert in advanced navigation, airline operations, and DGCA exam preparation. Dedicated to mentoring pilots through Airline Transport Pilot License requirements with industry-aligned training methodologies.'
+    bio: 'A pilot with real-world flying experience, training and mentoring aspiring aviators into professional pilots.'
   },
   {
     name: 'Saksham Khandelwal',
     // title: 'RTR(A) & Type Rating Specialist', // Added title
     image: '/Instructor/SakshamEngine.webp',
-    bio: 'B737 type-rated pilot and Radio Telephony (RTR(A)) expert. Bridging cockpit experience with classroom instruction to teach precise aviation communication, ATC procedures, and exam strategies. Focused on building confidence in aviation English for global airspace readiness.'
+    bio: 'A B737 type-rated airline pilot blending real-world flying expertise with a passion for teaching the next generation of aviators.'
   }
 ]
 

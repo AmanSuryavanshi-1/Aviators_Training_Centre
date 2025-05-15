@@ -1,11 +1,10 @@
 "use client"
 import React, { useState, useEffect } from 'react'; // Import useState and useEffect
 import { motion } from 'framer-motion';
-import { cn } from "@/components/ui/utils";
 import ContactHeader from '@/components/contact/ContactHeader';
 import ContactDetailsCard from '@/components/contact/ContactDetailsCard';
 import ContactFormCard from '@/components/contact/ContactFormCard';
-import ContactMapSection from '@/components/contact/ContactMapSection';
+// import ContactMapSection from '@/components/contact/ContactMapSection';
 const aviationPrimary = 'text-teal-700 dark:text-teal-300';
 const sectionVariants = {
     hidden: { opacity: 0, y: 50 },
@@ -51,7 +50,7 @@ const ContactPage: React.FC = () => {
 
             <main id="contact-form" className="container flex-grow px-4 py-16 mx-auto space-y-20 sm:px-6 md:py-24 md:space-y-28">
                 <motion.section variants={sectionVariants} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.05 }}>
-                    <div className="grid items-start grid-cols-1 gap-8 lg:grid-cols-5 lg:gap-12">
+                    <div className="grid grid-cols-1 gap-8 items-start lg:grid-cols-5 lg:gap-12">
                        <motion.div variants={itemVariants} className="lg:col-span-2"> <ContactDetailsCard /> </motion.div>
                         <motion.div variants={itemVariants} className="lg:col-span-3"> <ContactFormCard
                             inquirySubjects={inquirySubjects}
@@ -59,7 +58,7 @@ const ContactPage: React.FC = () => {
                     </div>
                 </motion.section>
 
-                <ContactMapSection />
+                {/* <ContactMapSection /> */}
             </main>
         </div>
     );
