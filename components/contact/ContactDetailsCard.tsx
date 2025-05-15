@@ -16,7 +16,7 @@ const itemVariants = {
 const ContactDetailsCard: React.FC = () => {
     return (
         <motion.div variants={itemVariants} className="lg:col-span-2">
-            <Card className="h-full p-6 border rounded-lg shadow-sm bg-card border-border md:p-8">
+            <Card className="p-6 h-full rounded-lg border shadow-sm bg-card border-border md:p-8">
                 <CardHeader className="p-0 mb-6">
                     <CardTitle className={cn("text-2xl font-semibold", aviationPrimary)}>Contact Details</CardTitle>
                     <CardDescription className="mt-1 text-foreground/70">
@@ -75,15 +75,18 @@ const ContactDetailsCard: React.FC = () => {
                     <div className="pt-4 border-t border-border/50">
                         <h4 className="mb-2 text-sm font-semibold text-foreground">Follow Us</h4>
                         <div className="flex space-x-2">
-                            <Button variant="ghost" size="icon" asChild className={cn("text-foreground/70 hover:text-foreground", aviationSecondary)}>
+                            {/* <Button variant="ghost" size="icon" asChild className={cn("text-foreground/70 hover:text-foreground", aviationSecondary)}>
                                 <Link href="#" aria-label="Facebook"><Facebook size={20} /></Link>
+                            </Button> */}
+                            <Button variant="ghost" size="icon" asChild className={cn("text-foreground/70 hover:text-foreground", aviationSecondary)}>
+                                <Link href="https://www.instagram.com/aviatorstrainingcentre?igsh=MWd2NmVxdG83ZTdxMQ==" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><Instagram size={20} /></Link>
                             </Button>
                             <Button variant="ghost" size="icon" asChild className={cn("text-foreground/70 hover:text-foreground", aviationSecondary)}>
-                                <Link href="#" aria-label="Instagram"><Instagram size={20} /></Link>
+                                <Link href="https://youtube.com/@aviatewithatc?si=VGZ1IChG-bULcnVU" target="_blank" rel="noopener noreferrer" aria-label="YouTube"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M21.8 8.001a2.75 2.75 0 0 0-1.94-1.946C18.2 6 12 6 12 6s-6.2 0-7.86.055A2.75 2.75 0 0 0 2.2 8.001 28.6 28.6 0 0 0 2 12a28.6 28.6 0 0 0 .2 3.999 2.75 2.75 0 0 0 1.94 1.946C5.8 18 12 18 12 18s6.2 0 7.86-.055a2.75 2.75 0 0 0 1.94-1.946A28.6 28.6 0 0 0 22 12a28.6 28.6 0 0 0-.2-3.999zM10 15V9l6 3-6 3z"/></svg></Link>
                             </Button>
-                            <Button variant="ghost" size="icon" asChild className={cn("text-foreground/70 hover:text-foreground", aviationSecondary)}>
+                            {/* <Button variant="ghost" size="icon" asChild className={cn("text-foreground/70 hover:text-foreground", aviationSecondary)}>
                                 <Link href="#" aria-label="Twitter"><Twitter size={20} /></Link>
-                            </Button>
+                            </Button> */}
                         </div>
                     </div>
                 </CardContent>

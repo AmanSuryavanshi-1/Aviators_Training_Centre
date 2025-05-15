@@ -16,7 +16,7 @@ const Footer: React.FC = () => {
           <div className="md:col-span-1">
             <div className="flex flex-col space-y-4">
               <NextLink href="/" className="mb-3">
-                <div className="relative h-24 p-4 overflow-hidden bg-white shadow-lg w-52 shadow-teal-950 rounded-2xl">
+                <div className="overflow-hidden relative p-4 w-52 h-24 bg-white rounded-2xl shadow-lg shadow-teal-950">
                   <Image 
                     src="/AVIATORS_TRAINING_CENTRE_LOGO_LightMode.png"
                     alt="Aviators Training Centre Logo" 
@@ -30,18 +30,21 @@ const Footer: React.FC = () => {
                 Providing world-class aviation training for aspiring pilots and aviation professionals since 2005.
               </p>
               <div className="flex mt-4 space-x-3">
-                <a href="#" className="p-3 transition-colors duration-300 bg-teal-700 rounded-full hover:bg-teal-600">
+                {/* <a href="#" className="p-3 bg-teal-700 rounded-full transition-colors duration-300 hover:bg-teal-600">
                   <Facebook className="w-5 h-5" />
-                </a>
-                <a href="#" className="p-3 transition-colors duration-300 bg-teal-700 rounded-full hover:bg-teal-600">
+                </a> */}
+                {/* <a href="#" className="p-3 bg-teal-700 rounded-full transition-colors duration-300 hover:bg-teal-600">
                   <Twitter className="w-5 h-5" />
-                </a>
-                <a href="https://www.instagram.com/aviatorstrainingcentre" target="_blank" rel="noopener noreferrer" className="p-3 transition-colors duration-300 bg-teal-700 rounded-full hover:bg-teal-600">
+                </a> */}
+                <a href="https://www.instagram.com/aviatorstrainingcentre?igsh=MWd2NmVxdG83ZTdxMQ==" target="_blank" rel="noopener noreferrer" className="p-3 bg-teal-700 rounded-full transition-colors duration-300 hover:bg-teal-600">
                   <Instagram className="w-5 h-5" />
                 </a>
-                <a href="#" className="p-3 transition-colors duration-300 bg-teal-700 rounded-full hover:bg-teal-600">
-                  <Linkedin className="w-5 h-5" />
+                <a href="https://youtube.com/@aviatewithatc?si=VGZ1IChG-bULcnVU" target="_blank" rel="noopener noreferrer" className="p-3 bg-teal-700 rounded-full transition-colors duration-300 hover:bg-teal-600">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5"><path d="M21.8 8.001a2.75 2.75 0 0 0-1.94-1.946C18.2 6 12 6 12 6s-6.2 0-7.86.055A2.75 2.75 0 0 0 2.2 8.001 28.6 28.6 0 0 0 2 12a28.6 28.6 0 0 0 .2 3.999 2.75 2.75 0 0 0 1.94 1.946C5.8 18 12 18 12 18s6.2 0 7.86-.055a2.75 2.75 0 0 0 1.94-1.946A28.6 28.6 0 0 0 22 12a28.6 28.6 0 0 0-.2-3.999zM10 15V9l6 3-6 3z"/></svg>
                 </a>
+                {/* <a href="#" className="p-3 bg-teal-700 rounded-full transition-colors duration-300 hover:bg-teal-600">
+                  <Linkedin className="w-5 h-5" />
+                </a> */}
               </div>
             </div>
           </div>
