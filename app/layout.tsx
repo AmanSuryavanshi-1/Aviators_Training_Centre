@@ -5,6 +5,7 @@ import { Toaster } from "@/components/ui/sonner";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { Analytics } from '@vercel/analytics/react';
+import Script from 'next/script'; // Import the Script component
 
 export const viewport: Viewport = {
     width: "device-width",
@@ -54,11 +55,33 @@ export const metadata: Metadata = {
     }
 };
 
-export default function RootLayout({ children, }: {
-    children: React.ReactNode
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <link rel="icon" href="/AVIATORS_TRAINING_CENTRE_LOGO_LightMode.png" type="image/png" sizes="any" />
+        {/* Google tag (gtag.js) */}
+        <Script
+          strategy="afterInteractive"
+          src={`https://www.googletagmanager.com/gtag/js?id=G-XSRFEJCB7N`}
+        />
+        <Script
+          id="gtag-init"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-XSRFEJCB7N');
+            `,
+          }}
+        />
+      </head>
       <body className="bg-background">
         <ThemeProvider
           attribute="class"
