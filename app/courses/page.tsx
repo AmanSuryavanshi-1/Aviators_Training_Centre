@@ -122,6 +122,7 @@ const Courses: React.FC = () => {
       "name": "Aviators Training Centre",
       "url": "https://aviatorstrainingcentre.com"
     },
+    
     // "serviceType": service.title, // If using @type: "Service"
   }));
 
