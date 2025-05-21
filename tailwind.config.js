@@ -67,8 +67,10 @@ const config = {
         sm: 'calc(var(--radius) - 4px)',
       },
       fontFamily: {
-        sans: ['Roboto', ...fontFamily.sans],
-        heading: ['Montserrat', ...fontFamily.sans],
+        sans: ['var(--font-poppins)', ...fontFamily.sans],
+        heading: ['var(--font-montserrat)', ...fontFamily.sans],
+        montserrat: ['var(--font-montserrat)', ...fontFamily.sans], // Allow using font-montserrat class
+        poppins: ['var(--font-poppins)', ...fontFamily.sans], // Allow using font-poppins class
       },
       keyframes: {
         'accordion-down': {

@@ -21,5 +21,29 @@
       "src": "/(.*)",
       "dest": "/$1"
     }
+  ],
+  "redirects": [
+    {
+      "source": "/:path((?!api/).*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "aviators-training-centre.vercel.app" 
+        }
+      ],
+      "destination": "https://aviatorstrainingcentre.com/:path",
+      "permanent": true
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "host",
+          "value": "aviators-training-centre.vercel.app" 
+        }
+      ],
+      "destination": "https://aviatorstrainingcentre.com/",
+      "permanent": true
+    }
   ]
 }

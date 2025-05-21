@@ -6,6 +6,21 @@ import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { Analytics } from '@vercel/analytics/react';
 import Script from 'next/script'; // Import the Script component
+import { Montserrat, Poppins } from 'next/font/google';
+
+// Font setup
+const montserrat = Montserrat({
+  subsets: ['latin'],
+  variable: '--font-montserrat',
+  display: 'swap',
+});
+
+const poppins = Poppins({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700'],
+  variable: '--font-poppins',
+  display: 'swap',
+});
 
 export const viewport: Viewport = {
     width: "device-width",
@@ -14,14 +29,18 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-    title: "Aviators Training Centre (ATC) | Premier Pilot Training Institute | Aviation Training for Pilots",
-    description: "India's leading aviation training center offering CPL/ATPL exam preparation, Type Rating courses, and comprehensive pilot training programs. Expert instructors, modern facilities, and career guidance.",
-    keywords: "ATC, Aviators Training Centre, pilot training, aviation training, DGCA ground school, CPL training, ATPL training, type rating preparation, RTR(A), pilot career, flight school, aviation academy, pilot license, commercial pilot training",
+    metadataBase: new URL('https://aviatorstrainingcentre.com'), // Recommended for resolving relative paths
+    title: {
+        default: "Aviators Training Centre (ATC) | Premier Pilot Training Institute | Aviation Training for Pilots",
+        template: `%s | Aviators Training Centre (ATC)`,
+    },
+    description: "India's leading aviation training center offering CPL/ATPL exam preparation, Type Rating courses, and comprehensive pilot training programs. Expert instructors, modern facilities, and career guidance for aspiring pilots.", // Slightly refined description
+    keywords: ["Aviators Training Centre", "ATC", "pilot training", "aviation training", "DGCA ground school", "CPL training", "ATPL training", "type rating preparation", "RTR(A)", "pilot career", "flight school", "aviation academy", "pilot license", "commercial pilot training", "online CPL coaching", "ATPL exam prep", "pilot interview training"], // Added more keywords
     robots: "index, follow",
     alternates: {
-        canonical: "https://aviatorstrainingcentre.com",
+        canonical: "/", // Canonical for the homepage
         languages: {
-            'en': 'https://aviatorstrainingcentre.com',
+            'en': '/',
         },
     },
     openGraph: {
@@ -82,7 +101,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className="bg-background">
+      <body className={`${montserrat.variable} ${poppins.variable} font-sans bg-background`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"

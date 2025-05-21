@@ -5,7 +5,6 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Target, Users, Telescope, Heart, MessageSquare, UserCheck, Clock, DollarSign, UserX, MessageCircleQuestion, MapPin, Home, BadgeDollarSign, ArrowRight, Archive, PhoneForwarded } from 'lucide-react';
 import { cn } from "@/components/ui/utils";
 import AboutSection from "@/components/about/AboutSection";
-import { GetStaticProps } from "next";
 import Head from 'next/head';
 
 

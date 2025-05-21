@@ -97,35 +97,70 @@ const Courses: React.FC = () => {
   const formattedEndDate = offerEndDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
 
   // Add JSON-LD Schema for SEO
+  const courseSchema = groundSchoolSubjects.map((subject, index) => ({
+    "@context": "https://schema.org",
+    "@type": "Course",
+    "name": subject.title,
+    "description": subject.description,
+    "provider": {
+      "@type": "Organization",
+      "name": "Aviators Training Centre",
+      "url": "https://aviatorstrainingcentre.com"
+    },
+    // Example of adding courseCode, educationalCredentialAwarded, etc. if applicable
+    // "courseCode": `ATC-GS-${index + 1}`,
+    // "educationalCredentialAwarded": "Certificate of Completion"
+  }));
+
+  const additionalServicesSchema = additionalServicesData.map((service) => ({
+    "@context": "https://schema.org",
+    "@type": "Course", // Can also be "Service" depending on the nature
+    "name": service.title,
+    "description": service.description,
+    "provider": {
+      "@type": "Organization",
+      "name": "Aviators Training Centre",
+      "url": "https://aviatorstrainingcentre.com"
+    },
+    // "serviceType": service.title, // If using @type: "Service"
+  }));
+
+  // Enhanced Course Schema
+  const enhancedCourseSchema = groundSchoolSubjects.map((subject, index) => ({
+    "@context": "https://schema.org",
+    "@type": "Course",
+    "name": subject.title,
+    "description": subject.description,
+    "provider": {
+      "@type": "Organization",
+      "name": "Aviators Training Centre",
+      "url": "https://aviatorstrainingcentre.com"
+    },
+    "courseCode": `ATC-GS-${index + 1}`,
+    "educationalCredentialAwarded": "Certificate of Completion (Ground School)", // Example
+    "timeRequired": "P2M", // Example: 2 months duration (ISO 8601 format)
+    "coursePrerequisites": "Basic understanding of aviation principles recommended.", // Example
+    "learningResourceType": "Online lectures, study materials, mock tests"
+  }));
+
+  const enhancedAdditionalServicesSchema = additionalServicesData.map((service, index) => ({
+    "@context": "https://schema.org",
+    "@type": "Course", // Can also be "Service" depending on the nature
+    "name": service.title,
+    "description": service.description,
+    "provider": {
+      "@type": "Organization",
+      "name": "Aviators Training Centre",
+      "url": "https://aviatorstrainingcentre.com"
+    },
+    "courseCode": `ATC-AS-${index + 1}`,
+    "timeRequired": "P1W", // Example: 1 week duration
+    "coursePrerequisites": service.title.includes("Type Rating") ? "Valid CPL, specific flight hours may apply." : "Interest in aviation communication/career advancement.", // Example
+    "learningResourceType": "Specialized training modules, one-on-one sessions"
+  }));
+
   const jsonLd = {
-    __html: JSON.stringify({
-      "@context": "https://schema.org",
-      "@type": "ItemList",
-      "name": "Aviation Training Courses",
-      "description": "Comprehensive DGCA Ground School, Type Rating Prep, and Pilot Career Services offered by Aviators Training Centre.",
-      "itemListElement": [
-        ...groundSchoolSubjects.map((subject, index) => ({
-          "@type": "Course",
-          "name": subject.title,
-          "description": subject.description,
-          "provider": {
-            "@type": "Organization",
-            "name": "Aviators Training Centre",
-            "sameAs": "https://aviatorstrainingcentre.com"
-          }
-        })),
-        ...additionalServicesData.map((service) => ({
-          "@type": "Course",
-          "name": service.title,
-          "description": service.description,
-          "provider": {
-            "@type": "Organization",
-            "name": "Aviators Training Centre",
-            "sameAs": "https://aviatorstrainingcentre.com"
-          }
-        }))
-      ]
-    })
+    __html: JSON.stringify([ ...enhancedCourseSchema, ...enhancedAdditionalServicesSchema ])
   };
 
   return (
@@ -143,7 +178,7 @@ const Courses: React.FC = () => {
       >
         <video
             autoPlay loop muted playsInline
-            className="absolute inset-0 z-0 object-cover w-full h-full"
+            className="object-cover absolute inset-0 z-0 w-full h-full"
             poster={HERO_FALLBACK_IMAGE}
         >
            <source src={HERO_VIDEO_URL} type="video/mp4" />
@@ -151,15 +186,15 @@ const Courses: React.FC = () => {
         </video>
         <div className="absolute inset-0 bg-gradient-to-r from-[rgba(7,94,104,0.35)] to-[rgba(12,110,114,0.65)] z-10"></div>
         <motion.div
-          className="relative z-20 max-w-4xl p-4 sm:p-6 md:p-10"
+          className="relative z-20 p-4 max-w-4xl sm:p-6 md:p-10"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3, duration: 0.8 }}
         >
-          <h1 className="mb-2 text-2xl font-extrabold leading-tight tracking-tight drop-shadow-md sm:mb-3 sm:text-4xl md:text-5xl lg:text-6xl">
+          <h1 className="mb-2 text-2xl font-extrabold tracking-tight leading-tight drop-shadow-md sm:mb-3 sm:text-4xl md:text-5xl lg:text-6xl">
             Your Flight Path Starts Here
           </h1>
-          <p className="max-w-2xl mx-auto text-base drop-shadow-md sm:text-lg md:text-xl text-white/90">
+          <p className="mx-auto max-w-2xl text-base drop-shadow-md sm:text-lg md:text-xl text-white/90">
             Comprehensive DGCA Ground School, Type Rating Prep, and Pilot Career Services.
           </p>
         </motion.div>
@@ -177,18 +212,18 @@ const Courses: React.FC = () => {
         >
           <div className="mb-12 text-center md:mb-16">
              <motion.h2 variants={itemVariants} className={clsx("mb-3 text-3xl font-bold md:text-4xl", aviationPrimary)}>Complete CPL/ATPL Ground Training</motion.h2>
-             <motion.p variants={itemVariants} className="max-w-3xl mx-auto text-lg text-foreground/80">
+             <motion.p variants={itemVariants} className="mx-auto max-w-3xl text-lg text-foreground/80">
                 We provide in-depth training for all DGCA syllabus subjects, building a strong foundation for your aviation career.
              </motion.p>
           </div>
 
-          <div className="grid items-stretch grid-cols-1 gap-6 mb-12 md:grid-cols-2 lg:grid-cols-3 sm:gap-8">  
+          <div className="grid grid-cols-1 gap-6 items-stretch mb-12 md:grid-cols-2 lg:grid-cols-3 sm:gap-8">  
             {groundSchoolSubjects.map((subject, index) => (
               <motion.div key={index} variants={itemVariants} className="flex">
                  <motion.div className="relative w-full h-full group" whileHover="hover" initial="rest" animate="rest" variants={cardHoverEffect} >
-                   <Card className="relative z-10 flex flex-col w-full h-full overflow-hidden transition-shadow duration-300 border rounded-lg shadow-sm bg-card border-border">
+                   <Card className="flex overflow-hidden relative z-10 flex-col w-full h-full rounded-lg border shadow-sm transition-shadow duration-300 bg-card border-border">
                       <CardHeader className="relative p-0">
-                          <div className="relative h-40 overflow-hidden sm:h-48">
+                          <div className="overflow-hidden relative h-40 sm:h-48">
                             <Image
                                 src={subject.image}
                                 alt={subject.title}
@@ -209,7 +244,7 @@ const Courses: React.FC = () => {
                           {subject.description}
                         </CardDescription>
                      </CardContent>
-                      <CardFooter className="flex justify-end gap-2 p-4 pt-3 mt-auto border-t sm:gap-3 sm:p-5 sm:pt-4 border-border/30">
+                      <CardFooter className="flex gap-2 justify-end p-4 pt-3 mt-auto border-t sm:gap-3 sm:p-5 sm:pt-4 border-border/30">
                           <BookDemoButton
                              size="sm"
                              className="min-h-[40px] w-full sm:w-auto"
@@ -224,7 +259,7 @@ const Courses: React.FC = () => {
             {/* Placeholder Contact Card - Updated Button */}
             <motion.div variants={itemVariants} className="flex">
                  <motion.div className="relative w-full h-full group" whileHover="hover" initial="rest" animate="rest" variants={cardHoverEffect} >
-                    <Card className="relative z-10 flex flex-col items-center justify-center w-full h-full p-4 overflow-hidden text-center transition-shadow duration-300 border border-dashed rounded-lg shadow-sm bg-gradient-to-br sm:p-6 from-teal-50/50 to-sky-50/50 dark:from-gray-800/60 dark:to-gray-900/60 border-border">
+                    <Card className="flex overflow-hidden relative z-10 flex-col justify-center items-center p-4 w-full h-full text-center bg-gradient-to-br rounded-lg border border-dashed shadow-sm transition-shadow duration-300 sm:p-6 from-teal-50/50 to-sky-50/50 dark:from-gray-800/60 dark:to-gray-900/60 border-border">
                        <div className="mb-3 sm:mb-4">
                           <PhoneForwarded className={clsx("w-8 h-8 sm:w-10 sm:h-10", aviationSecondary)} />
                        </div>
@@ -258,7 +293,7 @@ const Courses: React.FC = () => {
                 {additionalServicesData.map((service, index) => (
                     <motion.div key={index} variants={itemVariants}>
                         <motion.div className="relative h-full group" whileHover="hover" initial="rest" animate="rest" variants={cardHoverEffect} >
-                            <Card className="relative z-10 flex flex-col h-full overflow-hidden transition-shadow duration-300 border rounded-lg shadow-sm bg-card sm:flex-row border-border">
+                            <Card className="flex overflow-hidden relative z-10 flex-col h-full rounded-lg border shadow-sm transition-shadow duration-300 bg-card sm:flex-row border-border">
                                 <div className="relative flex-shrink-0 h-48 sm:h-auto sm:w-1/3 aspect-video sm:aspect-auto">
                                     <Image
                                         src={service.image}
@@ -316,17 +351,17 @@ const Courses: React.FC = () => {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.1 }}
-          className="p-5 border shadow-lg bg-gradient-to-br rounded-xl sm:p-8 from-teal-50/30 to-sky-50/30 dark:from-gray-800/40 dark:to-gray-900/40 md:p-12 border-border/50"
+          className="p-5 bg-gradient-to-br rounded-xl border shadow-lg sm:p-8 from-teal-50/30 to-sky-50/30 dark:from-gray-800/40 dark:to-gray-900/40 md:p-12 border-border/50"
         >
             <h2 className={clsx("mb-6 text-2xl font-bold text-center sm:mb-10 sm:text-3xl md:text-4xl", aviationPrimary)}>Why Train with ATC?</h2>
-            <div className="grid grid-cols-2 text-center gap-x-3 gap-y-6 sm:gap-x-6 sm:gap-y-8 sm:grid-cols-3 md:grid-cols-4">
+            <div className="grid grid-cols-2 gap-x-3 gap-y-6 text-center sm:gap-x-6 sm:gap-y-8 sm:grid-cols-3 md:grid-cols-4">
                 {atcFeaturesData.map((feature, index) => (
                     <motion.div
                         key={index}
                         variants={itemVariants}
                         className="flex flex-col items-center p-2 sm:p-3 group" 
                     >
-                         <div className="p-2 mb-2 transition-colors duration-300 rounded-full sm:p-3 sm:mb-3 bg-teal-100/70 dark:bg-teal-900/40 group-hover:bg-teal-200/80 dark:group-hover:bg-teal-800/60">
+                         <div className="p-2 mb-2 rounded-full transition-colors duration-300 sm:p-3 sm:mb-3 bg-teal-100/70 dark:bg-teal-900/40 group-hover:bg-teal-200/80 dark:group-hover:bg-teal-800/60">
                             <feature.icon className={clsx("w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7", aviationSecondary)} />
                         </div>
                         <h4 className="mb-1 text-xs font-semibold sm:text-sm text-foreground">{feature.title}</h4>
@@ -344,10 +379,10 @@ const Courses: React.FC = () => {
           viewport={{ once: true, amount: 0.1 }}
         >
             <h2 className={clsx("mb-6 text-2xl font-bold text-center sm:mb-10 sm:text-3xl md:text-4xl", aviationPrimary)}>Detailed Benefits</h2>
-            <Accordion type="single" collapsible className="w-full max-w-3xl mx-auto">
+            <Accordion type="single" collapsible className="mx-auto w-full max-w-3xl">
                  {atcBenefitsData.map((item, index) => (
                     <motion.div key={index} variants={itemVariants}>
-                        <AccordionItem value={`item-${index + 1}`} className="mb-2 overflow-hidden border-b rounded-md shadow-sm border-border/60 bg-card/40 dark:bg-card/60">
+                        <AccordionItem value={`item-${index + 1}`} className="overflow-hidden mb-2 rounded-md border-b shadow-sm border-border/60 bg-card/40 dark:bg-card/60">
                             <AccordionTrigger className={cn("px-4 py-3 text-sm font-medium text-left transition-colors sm:px-5 sm:py-4 sm:text-base md:text-lg hover:no-underline hover:bg-teal-50/50 dark:hover:bg-teal-900/30", aviationSecondary)}>
                                 {item.title}
                             </AccordionTrigger>
