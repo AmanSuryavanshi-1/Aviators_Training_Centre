@@ -27,7 +27,7 @@ const Footer: React.FC = () => {
                 </div>
               </NextLink>
               <p className="text-sm text-gray-200">
-                Providing world-class aviation training for aspiring pilots and aviation professionals since 2005.
+                Providing world-class aviation training for aspiring pilots and aviation professionals.
               </p>
               <div className="flex mt-4 space-x-3">
                 {/* <a href="#" className="p-3 bg-teal-700 rounded-full transition-colors duration-300 hover:bg-teal-600">
