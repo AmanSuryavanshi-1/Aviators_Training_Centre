@@ -14,35 +14,35 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-    title: "Aviators Training Centre (ATC) | Premier Pilot Training Institute | Aviation Training for Pilots",
-    description: "India's leading aviation training center offering CPL/ATPL exam preparation, Type Rating courses, and comprehensive pilot training programs. Expert instructors, modern facilities, and career guidance.",
-    keywords: "ATC, Aviators Training Centre, pilot training, aviation training, DGCA ground school, CPL training, ATPL training, type rating preparation, RTR(A), pilot career, flight school, aviation academy, pilot license, commercial pilot training",
-    robots: "index, follow",
+    title: "Aviators Training Centre - India's Premier ATC Training Institute | DGCA CPL/ATPL Exam Prep",
+    description: "#1 Aviators Training Centre (ATC) in India. Expert-led DGCA ground school for CPL/ATPL exams, Type Rating prep, RTR(A) training. Learn from airline pilots like Ankit Kumar. 24/7 support, proven success rates.",
+    keywords: "Aviators Training Centre, ATC courses, ATC training, ATC instructors, Ankit Kumar ATC, DGCA ground school, CPL training India, ATPL exam prep, pilot training institute, aviation training courses, type rating preparation, RTR(A) training, best ATC training institute India, online pilot coaching, airline pilot training",
+    robots: "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
     alternates: {
-        canonical: "https://aviatorstrainingcentre.com",
+        canonical: "https://www.aviatorstrainingcentre.in",
         languages: {
-            'en': 'https://aviatorstrainingcentre.com',
+            'en': 'https://www.aviatorstrainingcentre.in',
         },
     },
     openGraph: {
         type: "website",
-        locale: "en_IE",
-        url: "https://aviatorstrainingcentre.com",
-        title: "Aviators Training Centre (ATC) | Premier Pilot Training Institute | Aviation Training for Pilots",
-        description: "India's leading aviation training center offering CPL/ATPL exam preparation, Type Rating courses, and comprehensive pilot training programs.",
+        locale: "en_IN",
+        url: "https://www.aviatorstrainingcentre.in",
+        title: "Aviators Training Centre - India's Premier ATC Training Institute",
+        description: "#1 Aviators Training Centre (ATC) in India. Expert-led DGCA ground school for CPL/ATPL exams, Type Rating prep, RTR(A) training. Learn from airline pilots like Ankit Kumar.",
         siteName: "Aviators Training Centre",
         images: [{
-            url: "/AVIATORS_TRAINING_CENTRE_LOGO_LightMode.png",
+            url: "https://www.aviatorstrainingcentre.in/AVIATORS_TRAINING_CENTRE_LOGO_LightMode.png",
             width: 1200,
             height: 630,
-            alt: "Aviators Training Centre"
+            alt: "Aviators Training Centre - Premier ATC Training Institute India"
         }]
     },
     twitter: {
         card: "summary_large_image",
-        title: "Aviators Training Centre (ATC) | Premier Pilot Training Institute",
-        description: "India's leading aviation training center offering CPL/ATPL exam preparation, Type Rating courses, and comprehensive pilot training programs.",
-        images: ["/AVIATORS_TRAINING_CENTRE_LOGO_LightMode.png"]
+        title: "Aviators Training Centre - India's Premier ATC Training Institute",
+        description: "#1 Aviators Training Centre (ATC) in India. Expert-led DGCA ground school for CPL/ATPL exams, Type Rating prep, RTR(A) training.",
+        images: ["https://www.aviatorstrainingcentre.in/AVIATORS_TRAINING_CENTRE_LOGO_LightMode.png"]
     },
     verification: {
         google: "aE_FqlD0SbJberIaVs7Xe0flcsZF9gojWQg0BCQhiBc",
@@ -64,6 +64,70 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <head>
         <link rel="icon" href="/AVIATORS_TRAINING_CENTRE_LOGO_LightMode.png" type="image/png" sizes="any" />
+        <link rel="apple-touch-icon" href="/AVIATORS_TRAINING_CENTRE_LOGO_LightMode.png" />
+        
+        {/* Enhanced Structured Data for Organization */}
+        <Script
+          id="organization-schema"
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "EducationalOrganization",
+              "name": "Aviators Training Centre",
+              "alternateName": "ATC",
+              "description": "India's premier aviation training institute offering DGCA CPL/ATPL ground school, Type Rating preparation, and comprehensive pilot training programs.",
+              "url": "https://www.aviatorstrainingcentre.in",
+              "logo": "https://www.aviatorstrainingcentre.in/AVIATORS_TRAINING_CENTRE_LOGO_LightMode.png",
+              "image": "https://www.aviatorstrainingcentre.in/AVIATORS_TRAINING_CENTRE_LOGO_LightMode.png",
+              "sameAs": [
+                "https://www.aviatorstrainingcentre.in"
+              ],
+              "address": {
+                "@type": "PostalAddress",
+                "addressCountry": "IN",
+                "addressRegion": "India"
+              },
+              "contactPoint": {
+                "@type": "ContactPoint",
+                "contactType": "customer service",
+                "availableLanguage": "English"
+              },
+              "hasCredential": [
+                "DGCA CPL Ground Training",
+                "DGCA ATPL Ground Training",
+                "Type Rating Preparation",
+                "RTR(A) Training"
+              ],
+              "employee": [
+                {
+                  "@type": "Person",
+                  "name": "Ankit Kumar",
+                  "jobTitle": "Chief Flight Instructor",
+                  "description": "Experienced airline pilot and aviation instructor"
+                },
+                {
+                  "@type": "Person",
+                  "name": "Dhruv Shirkoli",
+                  "jobTitle": "Senior Flight Instructor",
+                  "description": "A320 type-rated airline pilot"
+                },
+                {
+                  "@type": "Person",
+                  "name": "Saksham Khandelwal",
+                  "jobTitle": "Flight Instructor",
+                  "description": "B737 type-rated airline pilot"
+                }
+              ],
+              "offers": {
+                "@type": "Offer",
+                "category": "Aviation Training",
+                "description": "Comprehensive pilot training programs including DGCA ground school, type rating preparation, and career guidance"
+              }
+            })
+          }}
+        />
+        
         {/* Google tag (gtag.js) */}
         <Script
           strategy="afterInteractive"
@@ -77,7 +141,10 @@ export default function RootLayout({
               window.dataLayer = window.dataLayer || [];
               function gtag(){dataLayer.push(arguments);}
               gtag('js', new Date());
-              gtag('config', 'G-XSRFEJCB7N');
+              gtag('config', 'G-XSRFEJCB7N', {
+                page_title: document.title,
+                page_location: window.location.href
+              });
             `,
           }}
         />

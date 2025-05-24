@@ -1,22 +1,29 @@
-import { Metadata } from 'next';
+import { Metadata } from "next";
 
-// SEO Metadata for Instructors Page
 export const metadata: Metadata = {
-  title: "Expert Aviation Instructors | Aviators Training Centre",
-  description: "Learn from airline-experienced instructors specializing in CPL/ATPL exams, RTR(A), and interview preparation. Meet our expert aviation faculty.",
-  keywords: "aviation instructors, pilot trainers, DGCA exam coaches, airline pilots, RTR instructors, aviation faculty",
+  title: "ATC Instructors - Ankit Kumar, Dhruv Shirkoli | Aviators Training Centre",
+  description: "Meet our expert ATC instructors at Aviators Training Centre. Learn from airline pilots Ankit Kumar, Dhruv Shirkoli, and Saksham Khandelwal. A320/B737 type-rated instructors with real-world flying experience teaching DGCA CPL/ATPL.",
+  keywords: "ATC instructors, Ankit Kumar ATC, Dhruv Shirkoli instructor, Saksham Khandelwal pilot, Aviators Training Centre instructors, airline pilot instructors, A320 type rated instructor, B737 instructor, DGCA CPL instructors, ATPL instructors, aviation training experts",
   alternates: {
-    canonical: "https://aviatorstrainingcentre.com/instructors",
+    canonical: "https://www.aviatorstrainingcentre.in/instructors",
   },
   openGraph: {
-    title: "Expert Aviation Instructors | Aviators Training Centre",
-    description: "Learn from airline-experienced instructors specializing in CPL/ATPL exams, RTR(A), and interview preparation.",
-    url: "https://aviatorstrainingcentre.com/instructors",
+    title: "ATC Instructors - Ankit Kumar, Dhruv Shirkoli | Aviators Training Centre",
+    description: "Meet our expert ATC instructors at Aviators Training Centre. Learn from airline pilots Ankit Kumar, Dhruv Shirkoli, and Saksham Khandelwal.",
+    url: "https://www.aviatorstrainingcentre.in/instructors",
+    type: "website",
     images: [{
-      url: "/Instructor/Instructor1.webp",
+      url: "https://www.aviatorstrainingcentre.in/Instructor/AK.png",
       width: 1200,
       height: 630,
-      alt: "Aviators Training Centre Instructors"
+      alt: "ATC Instructors - Ankit Kumar and Expert Aviation Instructors"
     }]
-  }
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "ATC Instructors - Ankit Kumar, Dhruv Shirkoli",
+    description: "Meet our expert ATC instructors. Learn from airline pilots with real-world flying experience.",
+    images: ["https://www.aviatorstrainingcentre.in/Instructor/AK.png"]
+  },
+  robots: "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
 };

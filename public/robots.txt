@@ -1,13 +1,37 @@
-# *
+# https://www.robotstxt.org/robotstxt.html
 User-agent: *
 Allow: /
 Disallow: /404
 Disallow: /500
 Disallow: /_not-found
+Disallow: /api/
+Disallow: /admin/
+Disallow: /_next/
+
+# Specific bot instructions
+User-agent: Googlebot
+Allow: /
+Disallow: /404
+Disallow: /500
+Disallow: /_not-found
+Disallow: /api/
+Disallow: /admin/
+
+User-agent: Bingbot
+Allow: /
+Disallow: /404
+Disallow: /500
+Disallow: /_not-found
+Disallow: /api/
+Disallow: /admin/
 
 # Host
-Host: https://aviatorstrainingcentre.com
+Host: https://www.aviatorstrainingcentre.in
 
 # Sitemaps
-Sitemap: https://aviatorstrainingcentre.com/sitemap.xml
-Sitemap: https://aviatorstrainingcentre.com/server-sitemap.xml
+Sitemap: https://www.aviatorstrainingcentre.in/sitemap.xml
+Sitemap: https://www.aviatorstrainingcentre.in/server-sitemap.xml
+
+# Crawl-delay for aggressive bots
+User-agent: *
+Crawl-delay: 1
