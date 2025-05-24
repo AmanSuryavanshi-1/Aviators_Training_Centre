@@ -18,7 +18,14 @@ export const metadata: Metadata = {
       width: 1200,
       height: 630,
       alt: "Aviators Training Centre"
-    }]
+    }],
+    siteName: "Aviators Training Centre",
+    locale: "en_US",
+    type: "website"
+  },
+  other: {
+    "facebook-domain-verification": "aviatorstrainingcentre",
+    "facebook:page_id": "61576701390492"
   }
 };
 
