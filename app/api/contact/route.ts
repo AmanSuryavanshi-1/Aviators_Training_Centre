@@ -2,8 +2,6 @@ import { NextRequest, NextResponse } from 'next/server';
 import { db } from '@/lib/firebase';
 import { ref, push, serverTimestamp } from 'firebase/database';
 import { Resend } from 'resend';
-import fs from 'fs';
-import path from 'path';
 
 // Define allowed methods and ensure dynamic content
 export const dynamic = 'force-dynamic';
@@ -19,11 +17,197 @@ export async function OPTIONS() {
   return new NextResponse(null, { status: 204, headers });
 }
 
-// Function to read and process email templates
+// Email templates embedded directly in code for production compatibility
+const EMAIL_TEMPLATES = {
+  'user-confirmation': `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thank You for Contacting Us</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .header {
+            background-color: #0066cc;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-radius: 10px 10px 0 0;
+            margin: -30px -30px 30px -30px;
+        }
+        .content {
+            margin-bottom: 20px;
+        }
+        .message-box {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-left: 4px solid #0066cc;
+            margin: 20px 0;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            color: #666;
+            font-size: 14px;
+        }
+        .contact-info {
+            background-color: #e8f4fd;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Thank You, {{ name }}!</h1>
+        </div>
+        
+        <div class="content">
+            <p>We've received your query and will respond shortly.</p>
+            
+            <p><strong>Your message:</strong></p>
+            <div class="message-box">
+                {{ message }}
+            </div>
+            
+            <div class="contact-info">
+                <p>If you have any additional questions, reply to this email or contact us directly.</p>
+                <p><strong>Email:</strong> aviatorstrainingcentre@gmail.com</p>
+                <p><strong>Phone:</strong> +91 9485687609</p>
+            </div>
+        </div>
+        
+        <div class="footer">
+            © Aviators Training Centre
+        </div>
+    </div>
+</body>
+</html>`,
+  'owner-notification': `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Contact Form Submission</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .header {
+            background-color: #0066cc;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-radius: 10px 10px 0 0;
+            margin: -30px -30px 30px -30px;
+        }
+        .field {
+            margin-bottom: 15px;
+            padding: 10px;
+            background-color: #f8f9fa;
+            border-left: 4px solid #0066cc;
+        }
+        .field-label {
+            font-weight: bold;
+            color: #0066cc;
+            margin-bottom: 5px;
+        }
+        .field-value {
+            color: #333;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            color: #666;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>New Contact Form Submission</h1>
+        </div>
+        
+        <div class="field">
+            <div class="field-label">Name</div>
+            <div class="field-value">{{ name }}</div>
+        </div>
+        
+        <div class="field">
+            <div class="field-label">Email</div>
+            <div class="field-value">{{ email }}</div>
+        </div>
+        
+        <div class="field">
+            <div class="field-label">Phone</div>
+            <div class="field-value">{{ phone }}</div>
+        </div>
+        
+        <div class="field">
+            <div class="field-label">Subject</div>
+            <div class="field-value">{{ subject }}</div>
+        </div>
+        
+        <div class="field">
+            <div class="field-label">Message</div>
+            <div class="field-value">{{ message }}</div>
+        </div>
+        
+        <div class="field">
+            <div class="field-label">Time</div>
+            <div class="field-value">{{ timestamp }}</div>
+        </div>
+        
+        <div class="footer">
+            © {{ year }} Aviators Training Centre
+        </div>
+    </div>
+</body>
+</html>`
+};
+
+// Function to process email templates
 function getEmailTemplate(templateName: string, variables: Record<string, string>): string {
   try {
-    const templatePath = path.join(process.cwd(), 'templates', `${templateName}.html`);
-    let template = fs.readFileSync(templatePath, 'utf8');
+    let template = EMAIL_TEMPLATES[templateName as keyof typeof EMAIL_TEMPLATES];
+    
+    if (!template) {
+      console.error(`Template ${templateName} not found`);
+      return '';
+    }
     
     // Replace template variables
     Object.entries(variables).forEach(([key, value]) => {
@@ -33,7 +217,7 @@ function getEmailTemplate(templateName: string, variables: Record<string, string
     
     return template;
   } catch (error) {
-    console.error(`Error reading template ${templateName}:`, error);
+    console.error(`Error processing template ${templateName}:`, error);
     return '';
   }
 }
