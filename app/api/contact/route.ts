@@ -87,8 +87,18 @@ export async function POST(req: NextRequest) {
 
     if (!fromEmail || !userConfirmationTemplateId || !ownerNotificationTemplateId || !owner1Email || !owner2Email) {
         console.error('Missing email configuration in environment variables.');
+        console.error('Required env vars:', {
+          fromEmail: !!fromEmail,
+          userConfirmationTemplateId: !!userConfirmationTemplateId,
+          ownerNotificationTemplateId: !!ownerNotificationTemplateId,
+          owner1Email: !!owner1Email,
+          owner2Email: !!owner2Email
+        });
         // Still return success to the user, but log the error server-side
-        return NextResponse.json({ message: 'Form submitted successfully, but email configuration error occurred.' }, { status: 200, headers });
+        return NextResponse.json({ 
+          message: 'Form submitted successfully! Your message has been saved and you will receive a response soon.',
+          warning: 'Email notifications may be delayed due to configuration issues.'
+        }, { status: 200, headers });
     }
 
     const sentFrom = new Sender(fromEmail, 'Aviators Training Centre');

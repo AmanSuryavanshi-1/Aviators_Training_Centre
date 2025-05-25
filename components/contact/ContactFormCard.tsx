@@ -29,6 +29,7 @@ const ContactFormCard: React.FC<ContactFormCardProps> = ({inquirySubjects}) => {
     const [message, setMessage] = useState('');
     const [loading, setLoading] = useState(false);
     const [isDemoBooking, setIsDemoBooking] = useState(false);
+    const [isSubmitted, setIsSubmitted] = useState(false);
     
     const { toast } = useToast();
 
@@ -129,27 +130,34 @@ const ContactFormCard: React.FC<ContactFormCardProps> = ({inquirySubjects}) => {
                   variant: "destructive",
               });
             } else {
-              // Show success toast
+              // Show success toast with enhanced messaging
               toast({
-                  title: isDemoBooking ? "Demo Request Received!" : "Message Sent Successfully!",
+                  title: isDemoBooking ? "✅ Demo Request Received!" : "✅ Message Sent Successfully!",
                   description: isDemoBooking
-                      ? `We have received your demo request and will contact you shortly.`
-                      : `Thank you for reaching out! We will get back to you soon.`,
+                      ? `We have received your demo request and will contact you within 24 hours to schedule your session.`
+                      : `Thank you for reaching out! We will get back to you within 24 hours. Check your email for a confirmation message.`,
                   variant: "default",
+                  duration: 6000, // Show for 6 seconds
               });
 
-              // Reset form fields
-              setName('');
-              setEmail('');
-              setPhone('');
-              // Reset subject and message, handle demo booking specific case
-              if (isDemoBooking) {
-                  const courseName = new URLSearchParams(window.location.search).get('courseName');
-                  setMessage(`I would like to book a demo${courseName ? ` for the ${courseName} course` : ''}. Please contact me to schedule a time.`);
-                } else {
-                    setSubject('');
-                    setMessage('');
-                }
+              // Set submitted state for visual feedback
+              setIsSubmitted(true);
+
+              // Reset form fields after a short delay
+              setTimeout(() => {
+                setName('');
+                setEmail('');
+                setPhone('');
+                // Reset subject and message, handle demo booking specific case
+                if (isDemoBooking) {
+                    const courseName = new URLSearchParams(window.location.search).get('courseName');
+                    setMessage(`I would like to book a demo${courseName ? ` for the ${courseName} course` : ''}. Please contact me to schedule a time.`);
+                  } else {
+                      setSubject('');
+                      setMessage('');
+                  }
+                  setIsSubmitted(false);
+              }, 3000); // Reset after 3 seconds
             } 
             // else {
             //     toast({
@@ -172,7 +180,7 @@ const ContactFormCard: React.FC<ContactFormCardProps> = ({inquirySubjects}) => {
     };
     const aviationPrimary = 'text-teal-700 dark:text-teal-300';
   return (
-    <Card className="p-6 border rounded-lg shadow-sm bg-card border-border md:p-8">
+    <Card className="p-6 rounded-lg border shadow-sm bg-card border-border md:p-8">
       <CardHeader className="p-0 mb-6">
         <CardTitle className={cn("text-2xl font-semibold", aviationPrimary)}>
           {isDemoBooking ? 'Demo Request Form' : 'Send Us a Message'}
@@ -184,6 +192,31 @@ const ContactFormCard: React.FC<ContactFormCardProps> = ({inquirySubjects}) => {
                 </CardDescription>
       </CardHeader>
       <CardContent className="p-0">
+        {isSubmitted && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="p-4 mb-6 bg-green-50 rounded-lg border border-green-200 dark:bg-green-900/20 dark:border-green-800"
+          >
+            <div className="flex items-center space-x-3">
+              <div className="flex-shrink-0">
+                <svg className="w-6 h-6 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+              <div>
+                <h3 className="text-sm font-medium text-green-800 dark:text-green-200">
+                  {isDemoBooking ? 'Demo Request Sent!' : 'Message Sent Successfully!'}
+                </h3>
+                <p className="mt-1 text-sm text-green-700 dark:text-green-300">
+                  {isDemoBooking 
+                    ? 'We will contact you within 24 hours to schedule your demo session.'
+                    : 'Thank you for reaching out! We will get back to you within 24 hours.'}
+                </p>
+              </div>
+            </div>
+          </motion.div>
+        )}
         <form onSubmit={handleFormSubmit} className="space-y-5">
           <div className="grid grid-cols-1 gap-5">
             <div className="space-y-1.5">
@@ -285,7 +318,7 @@ const ContactFormCard: React.FC<ContactFormCardProps> = ({inquirySubjects}) => {
               {loading ? (
                 <>
                   <motion.div
-                    className="w-5 h-5 border-2 border-white rounded-full border-t-transparent"
+                    className="w-5 h-5 rounded-full border-2 border-white border-t-transparent"
                     animate={{ rotate: 360 }}
                     transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
                   />
@@ -293,7 +326,7 @@ const ContactFormCard: React.FC<ContactFormCardProps> = ({inquirySubjects}) => {
                 </>
               ) : (
                 <>
-                  {isDemoBooking ? 'Confirm Demo Request' : 'Send Message'} <Send className="w-4 h-4 ml-2" />
+                  {isDemoBooking ? 'Confirm Demo Request' : 'Send Message'} <Send className="ml-2 w-4 h-4" />
                 </>
               )}
             </Button>
