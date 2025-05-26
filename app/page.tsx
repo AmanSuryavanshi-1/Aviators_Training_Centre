@@ -4,10 +4,12 @@ import HeroSection from "@/components/home/HeroSection";
 import WhyChooseUs from "@/components/home/WhyChooseUs";
 import CoursesSection from "@/components/home/CoursesSection";
 import PilotPathway from "@/components/home/PilotPathway";
+import TestimonialsSection from "@/components/home/TestimonialsSection";
 import FAQ from "@/components/shared/FAQ";
 import CTASection from "@/components/home/CTASection";
 import { motion } from 'framer-motion'; // Import motion
 import { cn } from "@/components/ui/utils"; // Import cn
+import { Plane, Target, Radio, GraduationCap } from 'lucide-react'; // Import Lucide React icons
 
 // Define consistent animation variants (can be moved to a shared file later)
 const sectionVariants = {
@@ -68,32 +70,44 @@ export default function Home() {
           <div className="container px-4 py-16 mx-auto space-y-20 sm:px-6 md:py-24 md:space-y-28">
           {/* SEO-Optimized Content Section */}
           <motion.section 
-            className="text-center space-y-6"
+            className="text-center space-y-8"
             variants={sectionVariants}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.3 }}
           >
             <motion.h1 
-              className={cn("text-4xl md:text-5xl lg:text-6xl font-bold", aviationPrimary)}
+              className={cn("text-3xl md:text-4xl lg:text-5xl font-bold leading-tight", aviationPrimary)}
               variants={itemVariants}
             >
               Aviators Training Centre - India's Premier ATC Training Institute
             </motion.h1>
             <motion.p 
-              className="text-lg md:text-xl text-muted-foreground max-w-4xl mx-auto leading-relaxed"
+              className="text-xl md:text-2xl lg:text-3xl text-muted-foreground max-w-5xl mx-auto leading-relaxed font-medium"
               variants={itemVariants}
             >
               Master DGCA exams with expert-led online ground school. Learn from experienced airline pilots like <strong>Ankit Kumar</strong>, <strong>Dhruv Shirkoli</strong>, and <strong>Saksham Khandelwal</strong>. Our ATC courses include comprehensive CPL/ATPL training, Type Rating preparation, and RTR(A) certification with 24/7 support and proven success rates.
             </motion.p>
             <motion.div 
-              className="flex flex-wrap justify-center gap-4 text-sm md:text-base text-muted-foreground"
+              className="flex flex-wrap justify-center gap-6 text-base md:text-lg"
               variants={itemVariants}
             >
-              <span className="bg-teal-50 dark:bg-teal-900/20 px-3 py-1 rounded-full">✈️ DGCA Ground School</span>
-              <span className="bg-teal-50 dark:bg-teal-900/20 px-3 py-1 rounded-full">🎯 Type Rating Prep</span>
-              <span className="bg-teal-50 dark:bg-teal-900/20 px-3 py-1 rounded-full">📡 RTR(A) Training</span>
-              <span className="bg-teal-50 dark:bg-teal-900/20 px-3 py-1 rounded-full">👨‍✈️ Airline Instructors</span>
+              <span className="bg-teal-50 dark:bg-teal-900/20 px-4 py-3 rounded-full flex items-center gap-2 text-teal-700 dark:text-teal-300 font-medium">
+                <Plane className="w-5 h-5" />
+                DGCA Ground School
+              </span>
+              <span className="bg-teal-50 dark:bg-teal-900/20 px-4 py-3 rounded-full flex items-center gap-2 text-teal-700 dark:text-teal-300 font-medium">
+                <Target className="w-5 h-5" />
+                Type Rating Prep
+              </span>
+              <span className="bg-teal-50 dark:bg-teal-900/20 px-4 py-3 rounded-full flex items-center gap-2 text-teal-700 dark:text-teal-300 font-medium">
+                <Radio className="w-5 h-5" />
+                RTR(A) Training
+              </span>
+              <span className="bg-teal-50 dark:bg-teal-900/20 px-4 py-3 rounded-full flex items-center gap-2 text-teal-700 dark:text-teal-300 font-medium">
+                <GraduationCap className="w-5 h-5" />
+                Airline Instructors
+              </span>
             </motion.div>
           </motion.section>
 
@@ -105,6 +119,9 @@ export default function Home() {
 
           {/* Courses Section */}
           <CoursesSection />
+
+          {/* Testimonials Section */}
+          <TestimonialsSection />
 
           {/* FAQ Section - Use the updated component */}
           {/* We let the FAQ component handle its own header and styling */}

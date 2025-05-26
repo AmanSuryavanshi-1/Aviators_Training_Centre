@@ -122,10 +122,10 @@ const HeroSection = () => {
           exit="hidden"
           className="mx-auto max-w-4xl text-center text-white"
         >
-          <motion.h1 variants={itemVariants} className="mb-4 text-2xl font-bold tracking-tight drop-shadow-lg sm:text-4xl md:text-6xl lg:text-7xl">
+          <motion.h1 variants={itemVariants} className="mb-4 text-3xl font-bold tracking-tight drop-shadow-lg sm:text-4xl md:text-5xl lg:text-6xl">
             {slides[currentSlide].title}
           </motion.h1>
-          <motion.p variants={itemVariants} className="mx-auto mb-8 max-w-3xl text-lg drop-shadow-md sm:text-xl md:text-2xl text-white/95">
+          <motion.p variants={itemVariants} className="mx-auto mb-8 max-w-3xl text-base drop-shadow-md sm:text-lg md:text-xl text-white/95">
             {slides[currentSlide].subtitle}
           </motion.p>
 
