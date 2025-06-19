@@ -13,7 +13,7 @@ import { useTheme } from 'next-themes';
 
 import { ThemeToggle } from '@/components/ThemeToggle';
 import { ContactButton } from '@/components/shared/ContactButton';
-import { Home, Info, BookOpen, Users, HelpCircle, Sun, Moon } from 'lucide-react'; // Added icons
+import { Home, Info, BookOpen, Users, HelpCircle, Sun, Moon, Rss } from 'lucide-react'; // Added Rss for Blog
 
 const Header: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -47,6 +47,7 @@ const Header: React.FC = () => {
     { href: '/about', label: 'About Us', icon: Info },
     { href: '/courses', label: 'Training Programs', icon: BookOpen },
     { href: '/instructors', label: 'Instructors', icon: Users },
+    { href: '/blog', label: 'Blog', icon: Rss }, // Added Blog link
     { href: '/faq', label: 'FAQ', icon: HelpCircle },
   ];
 
