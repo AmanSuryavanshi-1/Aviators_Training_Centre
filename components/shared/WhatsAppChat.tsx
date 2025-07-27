@@ -253,7 +253,7 @@ const WhatsAppChat: React.FC = () => {
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            className="fixed bottom-24 right-3 sm:right-6 z-40 w-[calc(100vw-1.5rem)] sm:w-80 max-w-sm"
+            className="fixed bottom-24 right-3 sm:right-6 z-40 w-[280px] sm:w-64 max-w-[280px]"
             variants={chatBoxVariants}
             initial="hidden"
             animate="visible"
@@ -261,47 +261,44 @@ const WhatsAppChat: React.FC = () => {
           >
             <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-700 overflow-hidden">
               {/* Header */}
-              <div className="bg-gradient-to-r from-green-500 to-green-600 p-4 text-white">
-                <div className="flex items-center space-x-3">
-                  <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
-                    <Plane className="w-5 h-5" />
+              <div className="bg-gradient-to-r from-green-500 to-green-600 p-3 text-white">
+                <div className="flex items-center space-x-2">
+                  <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
+                    <Plane className="w-4 h-4" />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-sm">Aviators Training Centre</h3>
-                    <p className="text-xs opacity-90">Typically replies in minutes</p>
+                    <h3 className="font-semibold text-xs">Aviators Training Centre</h3>
+                    <p className="text-xs opacity-90">Online now</p>
                   </div>
                 </div>
               </div>
 
               {/* Chat Content */}
-              <div className="p-4 space-y-3">
+              <div className="p-3 space-y-2">
                 <div className="flex items-start space-x-2">
-                  <div className="w-8 h-8 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center flex-shrink-0">
-                    <MessageCircle className="w-4 h-4 text-green-600 dark:text-green-400" />
+                  <div className="w-6 h-6 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center flex-shrink-0">
+                    <MessageCircle className="w-3 h-3 text-green-600 dark:text-green-400" />
                   </div>
-                  <div className="bg-gray-100 dark:bg-gray-700 rounded-2xl rounded-tl-md p-3 max-w-[200px]">
-                    <p className="text-sm text-gray-800 dark:text-gray-200">
-                      Hello! 👋 Ready to soar high in aviation? 
-                    </p>
-                    <p className="text-sm text-gray-800 dark:text-gray-200 mt-1">
-                      How can we help you today?
+                  <div className="bg-gray-100 dark:bg-gray-700 rounded-lg rounded-tl-md p-2 max-w-[180px]">
+                    <p className="text-xs text-gray-800 dark:text-gray-200">
+                      Hello! 👋 How can we help you today?
                     </p>
                   </div>
                 </div>
 
                 {/* Quick action buttons */}
-                <div className="space-y-1.5 pl-0 sm:pl-10">
-                  {Object.entries(quickActions).slice(0, 6).map(([key, action]) => (
+                <div className="space-y-1 pl-0">
+                  {Object.entries(quickActions).slice(0, 4).map(([key, action]) => (
                     <motion.button
                       key={key}
                       onClick={() => handleQuickAction(key as keyof typeof quickActions)}
-                      className="w-full text-left p-2.5 text-sm bg-gray-50 dark:bg-gray-700 hover:bg-green-50 dark:hover:bg-green-900/20 rounded-lg transition-colors duration-150 border border-transparent hover:border-green-200 dark:hover:border-green-800 active:bg-green-100 dark:active:bg-green-900/30"
-                      whileHover={{ x: 3 }}
+                      className="w-full text-left p-2 text-xs bg-gray-50 dark:bg-gray-700 hover:bg-green-50 dark:hover:bg-green-900/20 rounded-md transition-colors duration-150 border border-transparent hover:border-green-200 dark:hover:border-green-800 active:bg-green-100 dark:active:bg-green-900/30"
+                      whileHover={{ x: 2 }}
                       whileTap={{ scale: 0.98 }}
                       transition={{ duration: 0.15 }}
                     >
-                      <span className="flex items-center space-x-2.5">
-                        <span className="text-base">{action.icon}</span>
+                      <span className="flex items-center space-x-2">
+                        <span className="text-sm">{action.icon}</span>
                         <span className="font-medium">{action.label}</span>
                       </span>
                     </motion.button>
@@ -310,14 +307,14 @@ const WhatsAppChat: React.FC = () => {
               </div>
 
               {/* Footer with WhatsApp button */}
-              <div className="p-4 border-t border-gray-200 dark:border-gray-700">
+              <div className="p-3 border-t border-gray-200 dark:border-gray-700">
                 <motion.button
                   onClick={handleWhatsAppClick}
-                  className="w-full bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white rounded-xl py-3 px-4 flex items-center justify-center space-x-2 font-medium transition-all duration-200 hover:shadow-lg"
+                  className="w-full bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white rounded-lg py-2.5 px-3 flex items-center justify-center space-x-2 text-sm font-medium transition-all duration-200 hover:shadow-lg"
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                 >
-                  <Send className="w-4 h-4" />
+                  <Send className="w-3 h-3" />
                   <span>Continue on WhatsApp</span>
                 </motion.button>
               </div>

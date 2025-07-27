@@ -12,7 +12,7 @@ import { TransparentButton } from '@/components/shared/TransparentButton'; // Im
 // --- Configuration ---
 const aviationPrimary = 'text-teal-700 dark:text-teal-300';
 const aviationSecondary = 'text-teal-600 dark:text-teal-400';
-const HERO_IMAGE_URL = "/Instructor/InstructorHero.webp"; // Use a relevant hero image
+const HERO_IMAGE_URL = "/Instructor/Instructor.webp"; // Use a relevant hero image
 const FALLBACK_IMAGE = "/HomePage/Hero4.webp";
 
 // --- Animation Variants (Consistent with other pages) ---

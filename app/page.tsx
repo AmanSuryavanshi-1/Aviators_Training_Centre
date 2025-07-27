@@ -3,7 +3,7 @@ import React from 'react';
 import HeroSection from "@/components/home/HeroSection";
 import WhyChooseUs from "@/components/home/WhyChooseUs";
 import CoursesSection from "@/components/home/CoursesSection";
-import FeaturedBlogSection from "@/components/home/FeaturedBlogSection";
+// import FeaturedBlogSection from "@/components/home/FeaturedBlogSection"; // Removed - not showing Sanity content
 import PilotPathway from "@/components/home/PilotPathway";
 import TestimonialsSection from "@/components/home/TestimonialsSection";
 import FAQ from "@/components/shared/FAQ";
@@ -11,7 +11,7 @@ import CTASection from "@/components/home/CTASection";
 import { motion } from 'framer-motion'; // Import motion
 import { cn } from "@/components/ui/utils"; // Import cn
 // Removed Sanity imports - using static data instead
-import { Plane, Target, Radio, GraduationCap, TrendingUp, ArrowRight } from 'lucide-react'; // Import Lucide React icons
+import { Plane, Target, Radio, GraduationCap, TrendingUp, ArrowRight, Award, Users, Clock, CheckCircle } from 'lucide-react'; // Import Lucide React icons
 import Link from 'next/link';
 // import MetaPixelTest from '@/components/shared/MetaPixelTest'; // Removed for production
 
@@ -29,8 +29,7 @@ const itemVariants = {
 // Define primary color for consistent heading usage
 const aviationPrimary = 'text-teal-700 dark:text-teal-300';
 
-// Import comprehensive blog data
-import { getFeaturedPosts } from '@/lib/blog/comprehensive-blog-data';
+// Removed comprehensive blog data import - no longer using static blog content
 
 export default function Home() {
   return (
@@ -84,13 +83,13 @@ export default function Home() {
             viewport={{ once: true, amount: 0.3 }}
           >
             <motion.h1 
-              className={cn("text-3xl md:text-4xl lg:text-5xl font-bold leading-tight", aviationPrimary)}
+              className={cn("text-2xl md:text-3xl lg:text-4xl font-bold leading-tight", aviationPrimary)}
               variants={itemVariants}
             >
               Aviators Training Centre - India's Premier ATC Training Institute
             </motion.h1>
             <motion.p 
-              className="text-xl md:text-2xl lg:text-3xl text-muted-foreground max-w-5xl mx-auto leading-relaxed font-medium"
+              className="text-lg md:text-xl lg:text-xl text-muted-foreground max-w-4xl mx-auto leading-relaxed"
               variants={itemVariants}
             >
               Master DGCA exams with expert-led online ground school. Learn from experienced airline pilots like <strong>Ankit Kumar</strong>, <strong>Dhruv Shirkoli</strong>, and <strong>Saksham Khandelwal</strong>. Our ATC courses include comprehensive CPL/ATPL training, Type Rating preparation, and RTR(A) certification with 24/7 support and proven success rates.
@@ -143,15 +142,14 @@ export default function Home() {
           <CoursesSection />
 
           {/* Testimonials Section */}
-          <TestimonialsSection />
+          {/* <TestimonialsSection /> */}
 
           {/* FAQ Section - Use the updated component */}
           {/* We let the FAQ component handle its own header and styling */}
           {/* Pass showAll={false} to limit FAQs and show the "View All" button */}
           <FAQ showAll={false} />
 
-          {/* Featured Blog Section */}
-          <FeaturedBlogSection featuredPosts={getFeaturedPosts()} />
+          {/* Featured Blog Section - Removed (was showing random blogs instead of Sanity content) */}
 
           {/* CTA Section */}
           <CTASection />
