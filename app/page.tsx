@@ -13,7 +13,7 @@ import { cn } from "@/components/ui/utils"; // Import cn
 // Removed Sanity imports - using static data instead
 import { Plane, Target, Radio, GraduationCap, TrendingUp, ArrowRight } from 'lucide-react'; // Import Lucide React icons
 import Link from 'next/link';
-import MetaPixelTest from '@/components/shared/MetaPixelTest';
+// import MetaPixelTest from '@/components/shared/MetaPixelTest'; // Removed for production
 
 // Define consistent animation variants (can be moved to a shared file later)
 const sectionVariants = {
@@ -159,8 +159,7 @@ export default function Home() {
 
       </main>
       
-      {/* Meta Pixel Test Component - Remove this after testing */}
-      <MetaPixelTest />
+      {/* Meta Pixel Test Component - Removed for production */}
     </div>
   );
 }
