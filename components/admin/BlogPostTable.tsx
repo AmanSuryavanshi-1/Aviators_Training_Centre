@@ -45,6 +45,9 @@ import {
 import { BlogPostPreview } from '@/lib/types/blog';
 import { formatDate } from '@/lib/utils';
 import { cn } from '@/lib/utils';
+import { DeletionConfirmationDialog } from './DeletionConfirmationDialog';
+import { DeletionStatusIndicator, DeletionProgress } from './DeletionStatusIndicator';
+import { useToast } from '@/hooks/use-toast';
 
 interface BlogPostTableProps {
   posts: BlogPostPreview[];
@@ -79,6 +82,17 @@ export function BlogPostTable({ posts, onDeletePost, onToggleFeatured, loading, 
   const [sortOrder, setSortOrder] = useState<SortOrder>('desc');
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
+  
+  // Deletion-related state
+  const [deletionDialog, setDeletionDialog] = useState<{
+    isOpen: boolean;
+    post: BlogPostPreview | null;
+  }>({ isOpen: false, post: null });
+  const [deletionProgress, setDeletionProgress] = useState<Map<string, DeletionProgress>>(new Map());
+  const [isDeletingPost, setIsDeletingPost] = useState(false);
+  const [deletionError, setDeletionError] = useState<string | null>(null);
+  
+  const { toast } = useToast();
 
   // Extract unique values for filter options
   const filterOptions = useMemo(() => {
@@ -204,12 +218,172 @@ export function BlogPostTable({ posts, onDeletePost, onToggleFeatured, loading, 
     }
   };
 
-  const handleDeletePost = async (slug: string) => {
-    if (!onDeletePost) return;
+  // Enhanced deletion handling
+  const handleDeletePost = (post: BlogPostPreview) => {
+    setDeletionDialog({ isOpen: true, post });
+    setDeletionError(null);
+  };
+
+  const handleConfirmDeletion = async () => {
+    if (!deletionDialog.post) return;
+
+    const post = deletionDialog.post;
+    const identifier = post.slug?.current || post._id;
     
-    if (confirm('Are you sure you want to delete this blog post? This action cannot be undone.')) {
-      await onDeletePost(slug);
+    setIsDeletingPost(true);
+    setDeletionError(null);
+
+    // Initialize progress tracking
+    const initialProgress: DeletionProgress = {
+      status: 'validating',
+      message: 'Preparing to delete post...',
+      progress: 0,
+      postTitle: post.title
+    };
+    
+    setDeletionProgress(prev => new Map(prev.set(identifier, initialProgress)));
+
+    try {
+      // Update progress to deleting
+      setDeletionProgress(prev => new Map(prev.set(identifier, {
+        ...initialProgress,
+        status: 'deleting',
+        message: 'Deleting post from database...',
+        progress: 50
+      })));
+
+      // Use the API endpoint instead of direct service call
+      const response = await fetch(`/api/blog/posts/${identifier}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          retryAttempts: 3,
+          retryDelay: 1000,
+          skipCacheInvalidation: false,
+          validateBeforeDelete: true
+        })
+      });
+
+      const result = await response.json();
+
+      if (response.ok && result.success) {
+        // Update progress to cache invalidation
+        setDeletionProgress(prev => new Map(prev.set(identifier, {
+          status: 'cache-invalidating',
+          message: 'Updating cached data...',
+          progress: 80,
+          postTitle: post.title,
+          cacheInvalidated: result.data?.cacheInvalidated
+        })));
+
+        // Simulate brief cache invalidation delay for UX
+        await new Promise(resolve => setTimeout(resolve, 500));
+
+        // Success
+        setDeletionProgress(prev => new Map(prev.set(identifier, {
+          status: 'success',
+          message: 'Post successfully deleted',
+          progress: 100,
+          postTitle: post.title,
+          cacheInvalidated: result.data?.cacheInvalidated,
+          duration: result.meta?.timestamp ? Date.now() - new Date(result.meta.timestamp).getTime() : undefined
+        })));
+
+        // Show success toast
+        toast({
+          title: "Post Deleted",
+          description: `"${post.title}" has been successfully deleted.`,
+          variant: "default",
+        });
+
+        // Call the original onDeletePost if provided (for parent component updates)
+        if (onDeletePost) {
+          await onDeletePost(identifier);
+        }
+
+        // Close dialog after brief delay
+        setTimeout(() => {
+          setDeletionDialog({ isOpen: false, post: null });
+          setDeletionProgress(prev => {
+            const newMap = new Map(prev);
+            newMap.delete(identifier);
+            return newMap;
+          });
+        }, 2000);
+
+      } else {
+        // Handle deletion failure
+        const error = result.error || { message: 'Unknown error occurred' };
+        setDeletionProgress(prev => new Map(prev.set(identifier, {
+          status: 'error',
+          message: error.message,
+          error: error,
+          postTitle: post.title,
+          retryCount: result.retryCount || 0
+        })));
+
+        setDeletionError(error.message);
+
+        // Show error toast
+        toast({
+          title: "Deletion Failed",
+          description: error.message,
+          variant: "destructive",
+        });
+      }
+
+    } catch (error) {
+      console.error('Unexpected error during deletion:', error);
+      
+      const errorMessage = error instanceof Error ? error.message : 'An unexpected error occurred';
+      
+      setDeletionProgress(prev => new Map(prev.set(identifier, {
+        status: 'error',
+        message: errorMessage,
+        error: {
+          code: 'UNEXPECTED_ERROR',
+          message: errorMessage,
+          category: 'unknown',
+          retryable: true
+        },
+        postTitle: post.title
+      })));
+
+      setDeletionError(errorMessage);
+
+      toast({
+        title: "Deletion Failed",
+        description: errorMessage,
+        variant: "destructive",
+      });
+    } finally {
+      setIsDeletingPost(false);
     }
+  };
+
+  const handleRetryDeletion = async () => {
+    if (!deletionDialog.post) return;
+    
+    const identifier = deletionDialog.post.slug?.current || deletionDialog.post._id;
+    
+    // Update progress to retrying
+    setDeletionProgress(prev => new Map(prev.set(identifier, {
+      status: 'retrying',
+      message: 'Retrying deletion...',
+      progress: 25,
+      postTitle: deletionDialog.post!.title
+    })));
+
+    // Retry the deletion
+    await handleConfirmDeletion();
+  };
+
+  const handleCancelDeletion = () => {
+    setDeletionDialog({ isOpen: false, post: null });
+    setDeletionError(null);
+    setIsDeletingPost(false);
   };
 
   const handleToggleFeatured = async (slug: string, currentFeatured: boolean) => {
@@ -250,6 +424,7 @@ export function BlogPostTable({ posts, onDeletePost, onToggleFeatured, loading, 
   }
 
   return (
+    <>
     <Card className="bg-white dark:bg-slate-800/50 backdrop-blur-sm border-slate-200/50 dark:border-slate-700/50 shadow-sm">
       <CardHeader>
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
@@ -442,14 +617,34 @@ export function BlogPostTable({ posts, onDeletePost, onToggleFeatured, loading, 
                       </TableCell>
                       <TableCell>
                         <div className="flex flex-col gap-1">
-                          <Badge variant="outline" className="w-fit text-green-600 border-green-200">
-                            Published
-                          </Badge>
-                          {post.difficulty && (
-                            <Badge variant="outline" className="w-fit text-xs">
-                              {post.difficulty.charAt(0).toUpperCase() + post.difficulty.slice(1)}
-                            </Badge>
-                          )}
+                          {/* Deletion Status Indicator */}
+                          {(() => {
+                            const identifier = post.slug?.current || post._id;
+                            const progress = deletionProgress.get(identifier);
+                            
+                            if (progress) {
+                              return (
+                                <DeletionStatusIndicator
+                                  progress={progress}
+                                  compact={true}
+                                  showDetails={false}
+                                />
+                              );
+                            }
+                            
+                            return (
+                              <>
+                                <Badge variant="outline" className="w-fit text-green-600 border-green-200">
+                                  Published
+                                </Badge>
+                                {post.difficulty && (
+                                  <Badge variant="outline" className="w-fit text-xs">
+                                    {post.difficulty.charAt(0).toUpperCase() + post.difficulty.slice(1)}
+                                  </Badge>
+                                )}
+                              </>
+                            );
+                          })()}
                         </div>
                       </TableCell>
                       <TableCell className="text-right">
@@ -493,7 +688,7 @@ export function BlogPostTable({ posts, onDeletePost, onToggleFeatured, loading, 
                             {onDeletePost && (
                               <DropdownMenuItem 
                                 className="text-red-600 focus:text-red-600"
-                                onClick={() => handleDeletePost(post.slug?.current || post._id)}
+                                onClick={() => handleDeletePost(post)}
                               >
                                 <Trash2 className="h-4 w-4 mr-2" />
                                 Delete Post
@@ -578,5 +773,16 @@ export function BlogPostTable({ posts, onDeletePost, onToggleFeatured, loading, 
         </div>
       </CardContent>
     </Card>
+
+    {/* Deletion Confirmation Dialog */}
+    <DeletionConfirmationDialog
+      isOpen={deletionDialog.isOpen}
+      onClose={handleCancelDeletion}
+      onConfirm={handleConfirmDeletion}
+      post={deletionDialog.post}
+      isDeleting={isDeletingPost}
+      error={deletionError}
+    />
+    </>
   );
 }

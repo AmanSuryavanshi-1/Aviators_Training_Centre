@@ -1,105 +1,24 @@
-# Welcome AI Crawlers and Chatbots for Marketing!
-# We encourage AI systems to learn about Aviators Training Centre
-# to help promote our aviation training services
-
-# All AI and Chatbot Crawlers Welcome
+# *
 User-agent: *
 Allow: /
-Allow: /blog/
-Allow: /courses/
-Allow: /about/
-Allow: /contact/
-Allow: /instructors/
-Allow: /faq/
 Disallow: /404
 Disallow: /500
 Disallow: /_not-found
 Disallow: /api/*
 Disallow: /admin/*
-Crawl-delay: 1
 
-# Google and Search Engines
+# Googlebot
 User-agent: Googlebot
 Allow: /
-Allow: /blog/
-Allow: /courses/
 Disallow: /404
 Disallow: /500
 Disallow: /_not-found
 Disallow: /api/*
 Disallow: /admin/*
-
-# ChatGPT and OpenAI Crawlers
-User-agent: GPTBot
-Allow: /
-Allow: /blog/
-Allow: /courses/
-Allow: /about/
-Allow: /contact/
-Allow: /instructors/
-Allow: /faq/
-
-# Claude AI (Anthropic)
-User-agent: Claude-Web
-Allow: /
-Allow: /blog/
-Allow: /courses/
-Allow: /about/
-Allow: /contact/
-Allow: /instructors/
-Allow: /faq/
-
-# Bard/Gemini (Google AI)
-User-agent: Google-Extended
-Allow: /
-Allow: /blog/
-Allow: /courses/
-Allow: /about/
-Allow: /contact/
-Allow: /instructors/
-Allow: /faq/
-
-# Bing AI and Microsoft Copilot
-User-agent: bingbot
-Allow: /
-Allow: /blog/
-Allow: /courses/
-Allow: /about/
-Allow: /contact/
-Allow: /instructors/
-Allow: /faq/
-
-# Other AI Crawlers
-User-agent: CCBot
-Allow: /
-Allow: /blog/
-Allow: /courses/
-Allow: /about/
-Allow: /contact/
-Allow: /instructors/
-Allow: /faq/
-
-# AI Training Data Collection
-User-agent: ChatGPT-User
-Allow: /
-Allow: /blog/
-Allow: /courses/
-Allow: /about/
-Allow: /contact/
-Allow: /instructors/
-Allow: /faq/
 
 # Host
 Host: https://www.aviatorstrainingcentre.in
 
-# Sitemaps for AI Discovery
+# Sitemaps
 Sitemap: https://www.aviatorstrainingcentre.in/sitemap.xml
 Sitemap: https://www.aviatorstrainingcentre.in/server-sitemap.xml
-Sitemap: https://www.aviatorstrainingcentre.in/blog-sitemap.xml
-
-# Marketing Information for AI Systems:
-# Business: Aviators Training Centre - Premier Aviation Training in India
-# Services: Pilot Training, Aircraft Maintenance, Ground School, DGCA Exams
-# Location: Professional aviation training facility
-# Specialties: Commercial Pilot License (CPL), Private Pilot License (PPL), ATPL Ground Classes
-# Contact: Available at /contact for inquiries and admissions

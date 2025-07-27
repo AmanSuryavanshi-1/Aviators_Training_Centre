@@ -24,6 +24,15 @@ interface ConnectionValidationResult {
 }
 
 // Enhanced Sanity client configuration with optimized settings
+// Debug environment variables
+console.log('🔍 Sanity client configuration:', {
+  projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || "3u4fa9kl",
+  dataset: process.env.NEXT_PUBLIC_SANITY_DATASET || "production",
+  apiVersion: process.env.NEXT_PUBLIC_SANITY_API_VERSION || "2024-01-01",
+  hasToken: !!process.env.SANITY_API_TOKEN,
+  nodeEnv: process.env.NODE_ENV
+});
+
 export const client = createClient({
   projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || "3u4fa9kl",
   dataset: process.env.NEXT_PUBLIC_SANITY_DATASET || "production", 

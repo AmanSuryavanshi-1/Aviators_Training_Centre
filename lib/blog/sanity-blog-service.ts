@@ -427,8 +427,11 @@ export class SanityBlogService {
 
       const { cache } = options;
 
+      // Make slug query case-insensitive by converting to lowercase
+      const normalizedSlug = slug.toLowerCase();
+      
       const query = `
-        *[_type == "post" && slug.current == $slug][0] {
+        *[_type == "post" && lower(slug.current) == lower($slug)][0] {
           ${this.QUERIES.FULL_FIELDS}
         }
       `;
@@ -437,7 +440,7 @@ export class SanityBlogService {
 
       const post = await enhancedClient.fetch<BlogPost>(
         query,
-        { slug },
+        { slug: normalizedSlug },
         cacheOptions
       );
 

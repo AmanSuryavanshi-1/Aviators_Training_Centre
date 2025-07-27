@@ -407,3 +407,75 @@ export type CreateBlogPost = Omit<BlogPost, keyof SanityDocument | 'viewCount' |
 
 // Export utility type for blog post updates
 export type UpdateBlogPost = PartialBy<BlogPost, keyof SanityDocument>;
+
+// Deletion-specific types and interfaces
+export interface DeletionEvent {
+  id: string;
+  postId: string;
+  slug: string;
+  title: string;
+  initiatedBy: string;
+  timestamp: string;
+  status: 'pending' | 'success' | 'failed' | 'retrying';
+  error?: DeletionError;
+  retryCount: number;
+  maxRetries: number;
+  duration?: number;
+  cacheInvalidated?: boolean;
+}
+
+export interface DeletionError {
+  code: string;
+  message: string;
+  category: 'network' | 'permission' | 'validation' | 'server' | 'unknown';
+  retryable: boolean;
+  suggestedAction?: string;
+  originalError?: any;
+}
+
+export interface CacheInvalidationEvent {
+  postId: string;
+  slug: string;
+  categorySlug?: string;
+  tags: string[];
+  timestamp: string;
+  success: boolean;
+  error?: string;
+  duration?: number;
+}
+
+export interface DeletionAuditLog {
+  eventId: string;
+  postId: string;
+  postTitle: string;
+  postSlug: string;
+  userId: string;
+  userEmail?: string;
+  action: 'delete_initiated' | 'delete_success' | 'delete_failed' | 'delete_retried';
+  timestamp: string;
+  metadata: {
+    userAgent?: string;
+    ipAddress?: string;
+    sessionId?: string;
+    requestId?: string;
+    duration?: string;
+    cacheInvalidated?: string;
+    retryCount?: string;
+    previousError?: string;
+  };
+  error?: DeletionError;
+}
+
+export interface DeletionMetrics {
+  totalDeletions: number;
+  successfulDeletions: number;
+  failedDeletions: number;
+  averageResponseTime: number;
+  errorsByCategory: Record<string, number>;
+  retryRate: number;
+  cacheInvalidationSuccessRate: number;
+  timeRange: {
+    start: string;
+    end: string;
+  };
+}

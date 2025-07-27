@@ -7,9 +7,8 @@ import { Button } from '@/components/ui/button';
 import { ArrowLeft, Loader2 } from 'lucide-react';
 import Link from 'next/link';
 import { toast } from 'sonner';
-import { unifiedBlogService } from '@/lib/blog/unified-blog-service';
-import { useRealTimeSync } from '@/hooks/use-real-time-sync';
 import { Alert, AlertDescription } from '@/components/ui/alert';
+import { unifiedBlogService } from '@/lib/blog/unified-blog-service';
 
 interface BlogFormData {
   title: string;
@@ -41,7 +40,7 @@ export default function EditBlogPage() {
   const [error, setError] = useState<string | null>(null);
   const [postId, setPostId] = useState<string>('');
   
-  const { optimisticUpdate } = useRealTimeSync();
+  // Removed useRealTimeSync to simplify error handling
 
   useEffect(() => {
     const loadBlogPost = async () => {
@@ -49,10 +48,13 @@ export default function EditBlogPage() {
         setLoading(true);
         setError(null);
         
+        // Clear cache first to ensure fresh data
+        unifiedBlogService.clearCache();
+        
         const result = await unifiedBlogService.getPost(id);
         
         if (!result) {
-          throw new Error('Blog post not found');
+          throw new Error(`Blog post not found with ID: ${id}. The post may have been deleted or the ID is incorrect.`);
         }
 
         if (!result.editable) {
@@ -118,50 +120,41 @@ export default function EditBlogPage() {
 
     setSaving(true);
     try {
-      // Use optimistic update with real-time sync
-      await optimisticUpdate(
-        async () => {
-          const updateData = {
-            title: formData.title.trim(),
-            content: formData.content.trim(),
-            excerpt: formData.excerpt.trim(),
-            category: formData.category.trim(),
-            author: formData.author?.trim() || 'Aman Suryavanshi',
-            tags: Array.isArray(formData.tags) ? formData.tags.filter(tag => tag.trim()) : [],
-            featured: Boolean(formData.featured),
-            seoTitle: formData.seoTitle?.trim() || `${formData.title} | Aviators Training Centre`,
-            seoDescription: formData.seoDescription?.trim() || formData.excerpt.substring(0, 160),
-            focusKeyword: formData.focusKeyword?.trim() || ''
-          };
+      // Use API endpoint instead of direct service call
+      const updateData = {
+        title: formData.title.trim(),
+        content: formData.content.trim(),
+        excerpt: formData.excerpt.trim(),
+        category: formData.category.trim(),
+        author: formData.author?.trim() || 'Aman Suryavanshi',
+        tags: Array.isArray(formData.tags) ? formData.tags.filter(tag => tag.trim()) : [],
+        featured: Boolean(formData.featured),
+        seoTitle: formData.seoTitle?.trim() || `${formData.title} | Aviators Training Centre`,
+        seoDescription: formData.seoDescription?.trim() || formData.excerpt.substring(0, 160),
+        focusKeyword: formData.focusKeyword?.trim() || ''
+      };
 
-          const result = await unifiedBlogService.updatePost(postId, updateData);
-          
-          if (!result.success) {
-            throw new Error(result.error || 'Failed to update blog post');
-          }
-          
-          return result;
+      console.log('🔄 Updating post via API:', Object.keys(updateData));
+
+      const response = await fetch(`/api/blog/posts/update/${postId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
         },
-        async () => {
-          // Rollback: reload the original data
-          const result = await unifiedBlogService.getPost(id);
-          if (result) {
-            setInitialData({
-              title: result.title,
-              slug: typeof result.slug === 'string' ? result.slug : result.slug.current,
-              excerpt: result.excerpt,
-              content: result.content || '',
-              category: result.category.title,
-              author: result.author.name,
-              tags: result.tags || [],
-              featured: result.featured,
-              seoTitle: result.title + ' | Aviators Training Centre',
-              seoDescription: result.excerpt.substring(0, 160),
-              focusKeyword: ''
-            });
-          }
-        }
-      );
+        body: JSON.stringify(updateData)
+      });
+
+      const result = await response.json();
+      
+      console.log('📝 API response:', result);
+      
+      if (!response.ok || !result.success) {
+        const errorMessage = result.error?.message || result.error || 'Failed to update blog post';
+        console.error('❌ Update failed:', errorMessage);
+        throw new Error(errorMessage);
+      }
+      
+      console.log('✅ Post updated successfully via API');
 
       toast.success('Blog post updated successfully!');
       

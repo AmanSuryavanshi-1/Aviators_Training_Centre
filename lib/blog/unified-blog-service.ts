@@ -71,6 +71,23 @@ class UnifiedBlogService {
     this.cache.set(`${key}_timestamp`, Date.now() as any);
   }
 
+  /**
+   * Clear cache to force fresh data fetch
+   */
+  clearCache(): void {
+    this.cache.clear();
+    console.log('🧹 Unified blog service cache cleared');
+  }
+
+  /**
+   * Clear cache for specific operations
+   */
+  clearCacheForPost(postId: string): void {
+    // Clear all cache entries since posts might be in different filtered lists
+    this.cache.clear();
+    console.log(`🧹 Cache cleared for post: ${postId}`);
+  }
+
   async getAllPosts(options: { limit?: number; featured?: boolean; category?: string } = {}): Promise<UnifiedBlogPost[]> {
     return withPerformanceMonitoring(
       'blog-get-all-posts',
@@ -234,12 +251,121 @@ class UnifiedBlogService {
 
 
   async getPost(identifier: string): Promise<UnifiedBlogPost | null> {
-    const allPosts = await this.getAllPosts();
-    
-    return allPosts.find(post => 
-      post._id === identifier || 
-      post.slug.current === identifier
-    ) || null;
+    return withPerformanceMonitoring(
+      'blog-get-single-post',
+      async () => {
+        try {
+          // First try to get from cache
+          const allPosts = await this.getAllPosts();
+          const cachedPost = allPosts.find(post => 
+            post._id === identifier || 
+            post.slug.current === identifier
+          );
+          
+          if (cachedPost) {
+            return cachedPost;
+          }
+          
+          // If not found in cache, fetch directly from Sanity
+          console.log(`🔍 Post not found in cache, fetching directly: ${identifier}`);
+          return await this.fetchSinglePostFromSanity(identifier);
+          
+        } catch (error) {
+          console.error('Error in getPost:', error);
+          return null;
+        }
+      }
+    );
+  }
+
+  private async fetchSinglePostFromSanity(identifier: string): Promise<UnifiedBlogPost | null> {
+    return withErrorTracking(
+      'sanity-fetch-single-post',
+      async () => {
+        // Query by both ID and slug to handle both cases
+        const query = `*[_type == "post" && !(_id in path("drafts.**")) && (_id == $identifier || slug.current == $identifier)][0] {
+          _id,
+          title,
+          slug,
+          excerpt,
+          body,
+          publishedAt,
+          featured,
+          readingTime,
+          views,
+          engagementRate,
+          shares,
+          category->{
+            title,
+            slug,
+            color
+          },
+          author->{
+            name,
+            slug,
+            role,
+            image {
+              asset->,
+              alt
+            },
+            bio
+          },
+          image {
+            asset->,
+            alt
+          },
+          tags,
+          seoTitle,
+          seoDescription,
+          focusKeyword
+        }`;
+
+        const post = await enhancedClient.fetch(query, { identifier });
+
+        if (!post) {
+          console.log(`❌ Post not found in Sanity: ${identifier}`);
+          return null;
+        }
+
+        console.log(`✅ Found post in Sanity: ${post.title}`);
+
+        // Convert to UnifiedBlogPost format
+        return {
+          _id: post._id,
+          title: post.title,
+          slug: post.slug,
+          excerpt: post.excerpt,
+          content: this.convertPortableTextToMarkdown(post.body),
+          body: post.body,
+          publishedAt: post.publishedAt,
+          category: {
+            title: post.category?.title || 'General',
+            slug: post.category?.slug || { current: 'general' },
+            color: post.category?.color || '#075E68'
+          },
+          author: {
+            name: post.author?.name || 'Aman Suryavanshi',
+            slug: post.author?.slug || { current: 'aman-suryavanshi' },
+            role: post.author?.role || 'Instructor',
+            image: post.author?.image,
+            bio: post.author?.bio
+          },
+          readingTime: post.readingTime || this.calculateReadingTime(post.body),
+          image: post.image || {
+            asset: { url: '/images/default-blog-image.jpg' },
+            alt: post.title
+          },
+          tags: post.tags || [],
+          featured: post.featured || false,
+          difficulty: 'intermediate',
+          views: post.views || 0,
+          engagementRate: post.engagementRate || 0,
+          shares: post.shares || 0,
+          source: 'sanity',
+          editable: true
+        };
+      }
+    );
   }
 
   async getPostBySlug(slug: string): Promise<{ success: boolean; data?: UnifiedBlogPost; error?: string }> {
@@ -433,43 +559,77 @@ class UnifiedBlogService {
   }
 
   async updatePost(id: string, updateData: any): Promise<{ success: boolean; data?: UnifiedBlogPost; error?: string }> {
+    console.log('🔄 Starting updatePost:', { id, updateData });
+    
     try {
-      return await this.retryOperation(async () => {
-        const post = await this.getPost(id);
-        if (!post) {
-          return { success: false, error: 'Post not found' };
+      // Simplified approach without retryOperation to avoid complex error handling
+      const post = await this.getPost(id);
+      if (!post) {
+        console.error('❌ Post not found:', id);
+        return { success: false, error: 'Post not found' };
+      }
+
+      console.log('✅ Found post to update:', post.title);
+
+      let bodyBlocks;
+      if (updateData.content) {
+        try {
+          bodyBlocks = this.convertMarkdownToPortableText(updateData.content);
+          console.log('✅ Converted markdown to PortableText blocks:', bodyBlocks.length);
+        } catch (conversionError) {
+          console.error('❌ Error converting markdown:', conversionError);
+          throw new Error(`Failed to convert content: ${conversionError instanceof Error ? conversionError.message : 'Unknown conversion error'}`);
         }
+      }
 
-        const bodyBlocks = updateData.content 
-          ? this.convertMarkdownToPortableText(updateData.content)
-          : undefined;
+      const updates: any = {};
+      
+      if (updateData.title) updates.title = updateData.title.trim();
+      if (updateData.excerpt) updates.excerpt = updateData.excerpt.trim();
+      if (bodyBlocks) updates.body = bodyBlocks;
+      if (updateData.featured !== undefined) updates.featured = updateData.featured;
+      if (updateData.tags) updates.tags = updateData.tags;
+      if (updateData.seoTitle) updates.seoTitle = updateData.seoTitle;
+      if (updateData.seoDescription) updates.seoDescription = updateData.seoDescription;
+      
+      // Update reading time if content changed
+      if (updateData.content) {
+        updates.readingTime = Math.max(1, Math.ceil(updateData.content.split(' ').length / 200));
+      }
 
-        const updates: any = {};
-        
-        if (updateData.title) updates.title = updateData.title.trim();
-        if (updateData.excerpt) updates.excerpt = updateData.excerpt.trim();
-        if (bodyBlocks) updates.body = bodyBlocks;
-        if (updateData.featured !== undefined) updates.featured = updateData.featured;
-        if (updateData.tags) updates.tags = updateData.tags;
-        if (updateData.seoTitle) updates.seoTitle = updateData.seoTitle;
-        if (updateData.seoDescription) updates.seoDescription = updateData.seoDescription;
-        
-        // Update reading time if content changed
-        if (updateData.content) {
-          updates.readingTime = Math.max(1, Math.ceil(updateData.content.split(' ').length / 200));
-        }
+      console.log('🔄 Applying updates:', Object.keys(updates));
 
-        await enhancedClient.patch(id).set(updates).commit();
-        
-        // Invalidate cache after successful update
-        await this.invalidateCache('all');
-        
-        const updatedPost = await this.getPost(id);
-        return { success: true, data: updatedPost! };
-      });
+      // Perform the update using the underlying client directly
+      // The enhanced client's patch method is not compatible with chaining
+      const patchResult = await enhancedClient.client.patch(id).set(updates).commit();
+      console.log('✅ Patch completed:', patchResult._id);
+      
+      // Clear cache after successful update
+      this.clearCache();
+      console.log('🧹 Cache cleared after update');
+      
+      // Get the updated post
+      const updatedPost = await this.getPost(id);
+      if (!updatedPost) {
+        console.error('❌ Could not fetch updated post');
+        return { success: false, error: 'Could not fetch updated post' };
+      }
+
+      console.log('✅ Update completed successfully:', updatedPost.title);
+      return { success: true, data: updatedPost };
+
     } catch (error) {
-      console.error('Error updating post:', error);
-      return { success: false, error: error instanceof Error ? error.message : 'Unknown error' };
+      console.error('❌ Error updating post:', {
+        error: error instanceof Error ? error.message : 'Unknown error',
+        stack: error instanceof Error ? error.stack : undefined,
+        id,
+        updateData: Object.keys(updateData)
+      });
+      
+      return { 
+        success: false, 
+        error: error instanceof Error ? error.message : 'Unknown error occurred while updating post' 
+      };
     }
   }
 
@@ -738,6 +898,27 @@ class UnifiedBlogService {
     }).join('');
   }
 
+  private calculateReadingTime(blocks: any[]): number {
+    if (!Array.isArray(blocks) || blocks.length === 0) {
+      return 1;
+    }
+    
+    // Convert PortableText to plain text to count words
+    const plainText = blocks
+      .map(block => {
+        if (block._type === 'block' && block.children) {
+          return block.children
+            .map((child: any) => child.text || '')
+            .join(' ');
+        }
+        return '';
+      })
+      .join(' ');
+    
+    const wordCount = plainText.split(/\s+/).filter(word => word.length > 0).length;
+    return Math.max(1, Math.ceil(wordCount / 200)); // Assuming 200 words per minute
+  }
+
   clearCache(): void {
     this.cache.clear();
   }
@@ -810,7 +991,8 @@ class UnifiedBlogService {
       }
 
       await this.retryOperation(async () => {
-        await enhancedClient
+        // Use the underlying client directly for patch operations
+        await enhancedClient.client
           .patch(postId)
           .setIfMissing({ views: 0 })
           .inc({ views: 1 })
@@ -844,7 +1026,8 @@ class UnifiedBlogService {
         if (engagementData.shares !== undefined) updates.shares = engagementData.shares;
         if (engagementData.engagementRate !== undefined) updates.engagementRate = engagementData.engagementRate;
         
-        await enhancedClient.patch(postId).set(updates).commit();
+        // Use the underlying client directly for patch operations
+        await enhancedClient.client.patch(postId).set(updates).commit();
       });
       
       await this.invalidateCache('post');
