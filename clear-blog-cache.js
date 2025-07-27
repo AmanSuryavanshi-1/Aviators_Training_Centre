@@ -1,4 +1,5 @@
 const https = require('https');
+require('dotenv').config({ path: '.env.local' });
 
 // Function to make API request
 function makeRequest(options, data = null) {
@@ -30,12 +31,21 @@ async function clearCacheAndCheck() {
   // First, check if we can fetch blogs from Sanity directly
   console.log('1. Checking Sanity database...');
   try {
+    const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || '3u4fa9kl';
+    const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET || 'production';
+    const token = process.env.SANITY_API_TOKEN;
+    
+    if (!token) {
+      console.error('❌ SANITY_API_TOKEN not found in environment variables');
+      return;
+    }
+    
     const sanityOptions = {
-      hostname: '3u4fa9kl.api.sanity.io',
-      path: '/v1/data/query/production?query=*[_type == "post"]{title, slug, _id, publishedAt}',
+      hostname: `${projectId}.api.sanity.io`,
+      path: `/v1/data/query/${dataset}?query=*[_type == "post"]{title, slug, _id, publishedAt}`,
       method: 'GET',
       headers: {
-        'Authorization': 'Bearer skvjDzQH8CTxT9Q4QQudbuf9DukZ7vbSqaiBoOFLFkO5EsH7Z1rpUAdaQqkRfQRYHUo6USQfMGD9EFCYjrb45Xaqe39lyxtfAFxOd5Nt6VnMUk9Qm9BotrLEKAnGJl3I0drrsACaCaNMYNvNvDEqR4qxizNZ02XCgeUgJIz97zz6SkxBYmVr'
+        'Authorization': `Bearer ${token}`
       }
     };
     
@@ -91,9 +101,9 @@ async function clearCacheAndCheck() {
   console.log('4. Verify blogs appear on your production site');
   
   console.log('\n📋 Production deployment checklist:');
-  console.log('✓ ***REMOVED***');
-  console.log('✓ NEXT_PUBLIC_SANITY_DATASET=production');
-  console.log('✓ SANITY_API_TOKEN=your_token (with Editor permissions)');
+  console.log(`✓ NEXT_PUBLIC_SANITY_PROJECT_ID=${process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || '3u4fa9kl'}`);
+  console.log(`✓ NEXT_PUBLIC_SANITY_DATASET=${process.env.NEXT_PUBLIC_SANITY_DATASET || 'production'}`);
+  console.log(`✓ SANITY_API_TOKEN=${process.env.SANITY_API_TOKEN ? 'configured' : 'MISSING'} (with Editor permissions)`);
   console.log('✓ Deploy latest code');
   console.log('✓ Clear production cache');
 }

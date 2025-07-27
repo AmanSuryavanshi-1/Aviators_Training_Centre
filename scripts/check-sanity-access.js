@@ -12,7 +12,7 @@ config({ path: '.env.local' });
 const client = createClient({
   projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || '3u4fa9kl',
   dataset: process.env.NEXT_PUBLIC_SANITY_DATASET || 'production',
-  token: process.env.SANITY_API_TOKEN || 'skG2xvgzc6a5mFY1y89cck3rniVJwLHVDN1AdyWgUspOyt9hNHnvpHZ6JDi5Uo8cKZGyJICYpgzR6CfRkayWDgbQBL3x2GtNvfU3ddLk7gye5G3J4RRD24pJ1TXNDcWmH3RlUlBHl4DHc9EkclU9gm3PVNBm1VmKwUnVjzDZU8YjsC82kqfW',
+  token: process.env.SANITY_API_TOKEN,
   useCdn: false,
   apiVersion: process.env.NEXT_PUBLIC_SANITY_API_VERSION || '2024-01-01',
 });
