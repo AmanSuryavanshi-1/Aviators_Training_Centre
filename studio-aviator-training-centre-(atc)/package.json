@@ -1,0 +1,45 @@
+{
+  "name": "aviators-training-centre-blog",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "main": "package.json",
+  "license": "UNLICENSED",
+  "scripts": {
+    "dev": "sanity dev",
+    "start": "sanity start",
+    "build": "sanity build",
+    "deploy": "sanity deploy",
+    "deploy-production": "node scripts/deploy-production.js",
+    "deploy-graphql": "sanity graphql deploy",
+    "validate-schema": "sanity schema validate",
+    "extract-schema": "sanity schema extract",
+    "check-health": "sanity exec scripts/health-check.js",
+    "setup-sample-data": "sanity exec setup-sample-data.js",
+    "test-setup": "node scripts/test-studio-setup.js",
+    "validate-production": "npm run validate-schema && npm run test-setup"
+  },
+  "keywords": [
+    "sanity",
+    "aviation",
+    "blog"
+  ],
+  "dependencies": {
+    "@sanity/vision": "^3.27.1",
+    "@sanity/scheduled-publishing": "^1.4.1",
+    "@sanity/document-internationalization": "^2.0.3",
+    "sanity-plugin-media": "^2.2.2",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-is": "^18.2.0",
+    "sanity": "^3.27.1",
+    "styled-components": "^6.0.7"
+  },
+  "devDependencies": {
+    "@sanity/eslint-config-studio": "^3.0.1",
+    "@types/react": "^18.0.25",
+    "eslint": "^8.6.0",
+    "prettier": "^3.0.2",
+    "typescript": "^5.1.6"
+  }
+}

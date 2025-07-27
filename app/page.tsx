@@ -3,13 +3,16 @@ import React from 'react';
 import HeroSection from "@/components/home/HeroSection";
 import WhyChooseUs from "@/components/home/WhyChooseUs";
 import CoursesSection from "@/components/home/CoursesSection";
+import FeaturedBlogSection from "@/components/home/FeaturedBlogSection";
 import PilotPathway from "@/components/home/PilotPathway";
 import TestimonialsSection from "@/components/home/TestimonialsSection";
 import FAQ from "@/components/shared/FAQ";
 import CTASection from "@/components/home/CTASection";
 import { motion } from 'framer-motion'; // Import motion
 import { cn } from "@/components/ui/utils"; // Import cn
-import { Plane, Target, Radio, GraduationCap } from 'lucide-react'; // Import Lucide React icons
+// Removed Sanity imports - using static data instead
+import { Plane, Target, Radio, GraduationCap, TrendingUp, ArrowRight } from 'lucide-react'; // Import Lucide React icons
+import Link from 'next/link';
 
 // Define consistent animation variants (can be moved to a shared file later)
 const sectionVariants = {
@@ -24,6 +27,9 @@ const itemVariants = {
 
 // Define primary color for consistent heading usage
 const aviationPrimary = 'text-teal-700 dark:text-teal-300';
+
+// Import comprehensive blog data
+import { getFeaturedPosts } from '@/lib/blog/comprehensive-blog-data';
 
 export default function Home() {
   return (
@@ -109,6 +115,21 @@ export default function Home() {
                 Airline Instructors
               </span>
             </motion.div>
+            
+            {/* Internal Link to Blog Content */}
+            <motion.div 
+              className="mt-8 text-center"
+              variants={itemVariants}
+            >
+              <Link 
+                href="/blog/pilot-salary-india-2024-career-earnings-guide"
+                className="inline-flex items-center px-6 py-3 text-sm font-medium text-teal-700 bg-teal-50 rounded-lg hover:bg-teal-100 transition-colors duration-200 dark:bg-teal-900/20 dark:text-teal-300 dark:hover:bg-teal-900/30"
+              >
+                <TrendingUp className="w-4 h-4 mr-2" />
+                Discover Pilot Salary Potential in India
+                <ArrowRight className="w-4 h-4 ml-2" />
+              </Link>
+            </motion.div>
           </motion.section>
 
           {/* Why Choose Us Section */}
@@ -127,6 +148,9 @@ export default function Home() {
           {/* We let the FAQ component handle its own header and styling */}
           {/* Pass showAll={false} to limit FAQs and show the "View All" button */}
           <FAQ showAll={false} />
+
+          {/* Featured Blog Section */}
+          <FeaturedBlogSection featuredPosts={getFeaturedPosts()} />
 
           {/* CTA Section */}
           <CTASection />

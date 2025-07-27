@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import ContactHeader from '@/components/contact/ContactHeader';
 import ContactDetailsCard from '@/components/contact/ContactDetailsCard';
 import ContactFormCard from '@/components/contact/ContactFormCard';
+import { usePageViewTracking } from '@/hooks/use-conversion-tracking';
 // import ContactMapSection from '@/components/contact/ContactMapSection';
 const aviationPrimary = 'text-teal-700 dark:text-teal-300';
 const sectionVariants = {
@@ -16,6 +17,9 @@ const itemVariants = {
 };
 const ContactPage: React.FC = () => {
     const [isDemoBooking, setIsDemoBooking] = useState(false); // Add state for isDemoBooking
+
+    // Track contact page visit for conversion analytics
+    usePageViewTracking('contact');
 
     useEffect(() => {
         // Move window-dependent logic here

@@ -1,11 +1,24 @@
 import "../styles/globals.css";
 import type { Metadata, Viewport } from "next";
 import { ThemeProvider } from "./providers";
-import { Toaster } from "@/components/ui/sonner";
+// import { Toaster } from "@/components/ui/sonner"; // Removed to avoid conflict with custom toast system
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import WhatsAppChat from "@/components/shared/WhatsAppChat";
 import { Analytics } from '@vercel/analytics/react';
-import Script from 'next/script'; // Import the Script component
+import Script from 'next/script';
+import ServiceWorkerRegistration from "@/components/blog/ServiceWorkerRegistration";
+import ErrorHandlingProvider from "@/components/providers/ErrorHandlingProvider";
+
+// Initialize automation system
+if (typeof window === 'undefined') {
+  // Server-side initialization
+  import('@/lib/n8n/init').then(({ initializeAutomationSystem }) => {
+    initializeAutomationSystem();
+  }).catch(error => {
+    console.error('Failed to initialize automation system:', error);
+  });
+}
 
 export const viewport: Viewport = {
     width: "device-width",
@@ -156,15 +169,23 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <div className="flex flex-col min-h-screen bg-background text-foreground">
-            <Header />
-            <main className="flex-grow">
-              {children}
-            </main>
-            <Footer />
-            <Toaster />
-          </div>
-          <Analytics />
+          <ErrorHandlingProvider
+            enableGlobalErrorTracking={true}
+            enableToastNotifications={true}
+            enableConnectionMonitoring={true}
+          >
+            <div className="flex flex-col min-h-screen bg-background text-foreground">
+              <Header />
+              <main className="flex-grow">
+                {children}
+              </main>
+              <Footer />
+              {/* <Toaster /> */} {/* Removed to avoid conflict with custom toast system */}
+            </div>
+            <WhatsAppChat />
+            <Analytics />
+            <ServiceWorkerRegistration />
+          </ErrorHandlingProvider>
         </ThemeProvider>
       </body>
     </html>

@@ -3,6 +3,12 @@
 /* Import custom animations */
 @import './animations.css';
 
+/* Import admin styles */
+@import './admin.css';
+
+/* Import blog styles */
+@import './blog.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

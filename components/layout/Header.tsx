@@ -47,6 +47,7 @@ const Header: React.FC = () => {
     { href: '/about', label: 'About Us', icon: Info },
     { href: '/courses', label: 'Training Programs', icon: BookOpen },
     { href: '/instructors', label: 'Instructors', icon: Users },
+    { href: '/blog', label: 'Blog', icon: BookOpen },
     { href: '/faq', label: 'FAQ', icon: HelpCircle },
   ];
 

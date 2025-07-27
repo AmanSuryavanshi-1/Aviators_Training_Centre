@@ -17,3 +17,90 @@
   50% { background-position: 100% 100%; }
   100% { background-position: 0% 0%; }
 }
+
+/* WhatsApp Chat Button Animations */
+@keyframes whatsapp-bounce {
+  0%, 20%, 60%, 100% {
+    -webkit-transform: translateY(0);
+    transform: translateY(0);
+  }
+  40% {
+    -webkit-transform: translateY(-10px);
+    transform: translateY(-10px);
+  }
+  80% {
+    -webkit-transform: translateY(-5px);
+    transform: translateY(-5px);
+  }
+}
+
+@keyframes whatsapp-pulse {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7);
+  }
+  70% {
+    transform: scale(1.05);
+    box-shadow: 0 0 0 10px rgba(34, 197, 94, 0);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(34, 197, 94, 0);
+  }
+}
+
+@keyframes whatsapp-notification {
+  0%, 100% { transform: scale(1) rotate(0deg); }
+  25% { transform: scale(1.1) rotate(-5deg); }
+  75% { transform: scale(1.1) rotate(5deg); }
+}
+
+@keyframes whatsapp-float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-3px); }
+}
+
+@keyframes aviation-sparkle {
+  0%, 100% { opacity: 0; transform: scale(0.5) rotate(0deg); }
+  50% { opacity: 1; transform: scale(1) rotate(180deg); }
+}
+
+/* Utility classes for WhatsApp button */
+.whatsapp-bounce {
+  animation: whatsapp-bounce 2s infinite;
+}
+
+.whatsapp-pulse {
+  animation: whatsapp-pulse 2s infinite;
+}
+
+.whatsapp-float {
+  animation: whatsapp-float 3s ease-in-out infinite;
+}
+
+.aviation-sparkle {
+  animation: aviation-sparkle 2s ease-in-out infinite;
+}
+
+/* Custom scrollbar styles for WhatsApp chat */
+.whatsapp-chat-scroll {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+}
+
+.whatsapp-chat-scroll::-webkit-scrollbar {
+  display: none; /* WebKit */
+}
+
+/* Prevent horizontal scrolling issues */
+.whatsapp-chat-container {
+  overflow-x: hidden;
+  max-width: 100%;
+}
+
+/* Smooth transitions for mobile */
+@media (max-width: 640px) {
+  .whatsapp-float {
+    animation-duration: 4s;
+  }
+}

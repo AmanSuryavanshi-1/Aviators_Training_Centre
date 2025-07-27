@@ -1,24 +1,28 @@
-# *
 User-agent: *
 Allow: /
-Disallow: /404
-Disallow: /500
-Disallow: /_not-found
-Disallow: /api/*
-Disallow: /admin/*
 
-# Googlebot
-User-agent: Googlebot
-Allow: /
-Disallow: /404
-Disallow: /500
-Disallow: /_not-found
-Disallow: /api/*
-Disallow: /admin/*
+# Sitemaps
+Sitemap: https://www.aviatorstrainingcentre.in/sitemap-index.xml
+Sitemap: https://www.aviatorstrainingcentre.in/sitemap.xml
+Sitemap: https://www.aviatorstrainingcentre.in/blog-sitemap.xml
+
+# Disallow admin and staging areas
+Disallow: /admin/
+Disallow: /.deployment-staging/
+Disallow: /.workflows/
+Disallow: /api/admin/
+
+# Allow important pages
+Allow: /blog/
+Allow: /courses/
+Allow: /about
+Allow: /contact
+Allow: /faq
+Allow: /instructors
+Allow: /schedule
+
+# Crawl delay (optional)
+Crawl-delay: 1
 
 # Host
 Host: https://www.aviatorstrainingcentre.in
-
-# Sitemaps
-Sitemap: https://www.aviatorstrainingcentre.in/sitemap.xml
-Sitemap: https://www.aviatorstrainingcentre.in/server-sitemap.xml

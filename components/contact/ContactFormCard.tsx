@@ -9,6 +9,7 @@ import { motion } from 'framer-motion';
 import { cn } from "@/components/ui/utils";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from '@/hooks/use-toast';
+import { useConversionTracking } from '@/hooks/use-conversion-tracking';
 
 interface FormData {
   name: string;
@@ -32,6 +33,7 @@ const ContactFormCard: React.FC<ContactFormCardProps> = ({inquirySubjects}) => {
     const [isSubmitted, setIsSubmitted] = useState(false);
     
     const { toast } = useToast();
+    const { trackFormSubmission } = useConversionTracking();
 
     // Effect to handle URL parameters on component mount
     useEffect(() => {
@@ -130,6 +132,13 @@ const ContactFormCard: React.FC<ContactFormCardProps> = ({inquirySubjects}) => {
                   variant: "destructive",
               });
             } else {
+              // Track form submission for conversion analytics
+              await trackFormSubmission(isDemoBooking ? 'demo_request' : 'contact_inquiry', {
+                subject,
+                isDemoBooking,
+                timestamp: new Date().toISOString()
+              });
+
               // Show success toast with enhanced messaging
               toast({
                   title: isDemoBooking ? "✅ Demo Request Received!" : "✅ Message Sent Successfully!",

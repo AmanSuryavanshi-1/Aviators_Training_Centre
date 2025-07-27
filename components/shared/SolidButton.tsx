@@ -23,7 +23,7 @@ export function SolidButton({
   className = "", // Default to empty string
 }: SolidButtonProps) {
   // Use standard anchor tag for external links, Link component for internal
-  const ButtonWrapper = external ? motion.a : motion(Link);
+  const ButtonWrapper = external ? motion.a : motion.create(Link);
   const commonProps = {
     whileHover: { scale: 1.05 },
     whileTap: { scale: 0.95 },

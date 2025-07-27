@@ -27,7 +27,7 @@ export function TransparentButton({
   textColorClassName,
   className = "", // Default to empty string
 }: TransparentButtonProps) {
-  const ButtonWrapper = external ? motion.a : motion(Link);
+  const ButtonWrapper = external ? motion.a : motion.create(Link);
   const commonProps = {
         whileHover: { scale: 1.05 },
         whileTap: { scale: 0.95 },

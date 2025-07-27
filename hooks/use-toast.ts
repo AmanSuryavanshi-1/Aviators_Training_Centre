@@ -56,6 +56,12 @@ export function useToast() {
   };
 }
 
+// Export toast function for direct use
+export const toast = (toast: Toast) => {
+  // This is a simplified version for direct use
+  console.log('Toast:', toast);
+};
+
 
 
 

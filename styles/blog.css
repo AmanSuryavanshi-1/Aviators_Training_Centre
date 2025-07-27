@@ -1,0 +1,653 @@
+/* Professional Blog Typography Styles */
+
+/* Import Google Fonts for better typography */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Fira+Code:wght@300;400;500;600;700&display=swap');
+
+/* Blog content container */
+.blog-content {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  font-feature-settings: 'kern' 1, 'liga' 1, 'calt' 1;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  max-width: 100%;
+  line-height: 1.75;
+  color: #374151;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
+}
+
+/* Headings */
+.blog-content h1,
+.blog-content h2,
+.blog-content h3,
+.blog-content h4,
+.blog-content h5,
+.blog-content h6 {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  line-height: 1.2;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  color: #111827;
+}
+
+.blog-content h1 {
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin-top: 3rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 2px solid rgba(7, 94, 104, 0.2);
+  padding-bottom: 1rem;
+}
+
+.blog-content h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-top: 2.5rem;
+  margin-bottom: 1.25rem;
+  color: #075E68;
+}
+
+.blog-content h3 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
+.blog-content h4 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+
+/* Paragraphs */
+.blog-content p {
+  font-size: 1.125rem;
+  line-height: 1.8;
+  margin-bottom: 1.75rem;
+  color: #374151;
+  font-weight: 400;
+  text-align: justify;
+  hyphens: auto;
+}
+
+/* First paragraph after heading */
+.blog-content h1 + p,
+.blog-content h2 + p,
+.blog-content h3 + p,
+.blog-content h4 + p {
+  margin-top: 0.5rem;
+}
+
+/* Lead paragraph (first paragraph) */
+.blog-content > p:first-of-type {
+  font-size: 1.3rem;
+  font-weight: 400;
+  color: #4B5563;
+  line-height: 1.7;
+  margin-bottom: 2rem;
+  text-align: justify;
+}
+
+/* Lists */
+.blog-content ul,
+.blog-content ol {
+  margin: 1.5rem 0;
+  padding-left: 1.5rem;
+}
+
+.blog-content li {
+  font-size: 1.125rem;
+  line-height: 1.7;
+  margin-bottom: 0.5rem;
+  color: #374151;
+}
+
+.blog-content ul li {
+  list-style-type: disc;
+}
+
+.blog-content ol li {
+  list-style-type: decimal;
+}
+
+/* Nested lists */
+.blog-content ul ul,
+.blog-content ol ol,
+.blog-content ul ol,
+.blog-content ol ul {
+  margin: 0.5rem 0;
+  padding-left: 1.5rem;
+}
+
+/* Blockquotes */
+.blog-content blockquote {
+  position: relative;
+  margin: 2rem 0;
+  padding: 1.5rem 2rem;
+  background: rgba(7, 94, 104, 0.05);
+  border-left: 4px solid #075E68;
+  border-radius: 0 0.5rem 0.5rem 0;
+  font-style: italic;
+  font-size: 1.125rem;
+  line-height: 1.7;
+  color: #374151;
+}
+
+.blog-content blockquote::before {
+  content: '"';
+  position: absolute;
+  left: 0.5rem;
+  top: -0.5rem;
+  font-size: 4rem;
+  color: rgba(7, 94, 104, 0.3);
+  font-family: Georgia, serif;
+  line-height: 1;
+}
+
+.blog-content blockquote p {
+  margin: 0;
+  position: relative;
+  z-index: 1;
+}
+
+/* Code blocks */
+.blog-content pre {
+  background: #1f2937;
+  color: #f9fafb;
+  padding: 1.5rem;
+  border-radius: 0.5rem;
+  overflow-x: auto;
+  margin: 2rem 0;
+  font-family: 'Fira Code', 'Monaco', 'Cascadia Code', 'Roboto Mono', monospace;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  border: 1px solid #374151;
+}
+
+.blog-content pre code {
+  background: none;
+  padding: 0;
+  border: none;
+  color: inherit;
+  font-size: inherit;
+}
+
+/* Inline code */
+.blog-content code {
+  background: #f3f4f6;
+  color: #1f2937;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  font-family: 'Fira Code', 'Monaco', 'Cascadia Code', 'Roboto Mono', monospace;
+  font-size: 0.875rem;
+  border: 1px solid #e5e7eb;
+  font-weight: 500;
+}
+
+/* Links */
+.blog-content a {
+  color: #075E68;
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.blog-content a:hover {
+  color: #0891b2;
+  text-decoration-thickness: 3px;
+}
+
+/* Strong and emphasis */
+.blog-content strong {
+  font-weight: 600;
+  color: #111827;
+}
+
+.blog-content em {
+  font-style: italic;
+  color: #4B5563;
+}
+
+/* Images */
+.blog-content img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 0.5rem;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  border: 1px solid #e5e7eb;
+  margin: 2rem 0;
+}
+
+/* Tables */
+.blog-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 2rem 0;
+  font-size: 1rem;
+}
+
+.blog-content th,
+.blog-content td {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.blog-content th {
+  background: #f9fafb;
+  font-weight: 600;
+  color: #111827;
+}
+
+.blog-content tr:hover {
+  background: #f9fafb;
+}
+
+/* Horizontal rules */
+.blog-content hr {
+  border: none;
+  height: 1px;
+  background: linear-gradient(to right, transparent, #e5e7eb, transparent);
+  margin: 3rem 0;
+}
+
+/* Selection */
+.blog-content ::selection {
+  background: rgba(7, 94, 104, 0.2);
+  color: #111827;
+}
+
+/* Focus styles for accessibility */
+.blog-content a:focus {
+  outline: 2px solid #075E68;
+  outline-offset: 2px;
+  border-radius: 0.25rem;
+}
+
+/* Print styles */
+@media print {
+  .blog-content {
+    font-size: 12pt;
+    line-height: 1.5;
+    color: #000;
+  }
+  
+  .blog-content h1,
+  .blog-content h2,
+  .blog-content h3,
+  .blog-content h4 {
+    page-break-after: avoid;
+    color: #000;
+  }
+  
+  .blog-content blockquote {
+    border-left: 4px solid #000;
+    background: none;
+  }
+  
+  .blog-content pre {
+    background: #f5f5f5;
+    color: #000;
+    border: 1px solid #ccc;
+  }
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .blog-content {
+    font-size: 1rem;
+  }
+  
+  .blog-content h1 {
+    font-size: 1.875rem;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+  }
+  
+  .blog-content h2 {
+    font-size: 1.625rem;
+    margin-top: 1.75rem;
+    margin-bottom: 0.875rem;
+  }
+  
+  .blog-content h3 {
+    font-size: 1.375rem;
+    margin-top: 1.5rem;
+    margin-bottom: 0.75rem;
+  }
+  
+  .blog-content p,
+  .blog-content li {
+    font-size: 1rem;
+    line-height: 1.7;
+    text-align: left;
+  }
+  
+  .blog-content > p:first-of-type {
+    font-size: 1.125rem;
+  }
+  
+  .blog-content blockquote {
+    padding: 1rem 1.5rem;
+    margin: 1.5rem 0;
+    font-size: 1rem;
+  }
+  
+  .blog-content pre {
+    padding: 1rem;
+    font-size: 0.8125rem;
+    margin: 1.5rem 0;
+  }
+  
+  .blog-content ul,
+  .blog-content ol {
+    padding-left: 1.25rem;
+  }
+}
+
+/* Tablet responsiveness */
+@media (max-width: 1024px) and (min-width: 769px) {
+  .blog-content p {
+    font-size: 1.0625rem;
+  }
+  
+  .blog-content > p:first-of-type {
+    font-size: 1.1875rem;
+  }
+}
+
+/* Dark mode support */
+.dark .blog-content {
+  color: #e5e7eb;
+}
+
+.dark .blog-content h1,
+.dark .blog-content h2,
+.dark .blog-content h3,
+.dark .blog-content h4 {
+  color: #f9fafb;
+}
+
+.dark .blog-content h2 {
+  color: #56A7B0; /* Light teal for dark mode */
+}
+
+.dark .blog-content p,
+.dark .blog-content li {
+  color: #d1d5db;
+}
+
+.dark .blog-content > p:first-of-type {
+  color: #9ca3af;
+}
+
+.dark .blog-content blockquote {
+  background: rgba(86, 167, 176, 0.1);
+  color: #d1d5db;
+  border-left-color: #56A7B0;
+}
+
+.dark .blog-content blockquote::before {
+  color: rgba(86, 167, 176, 0.3);
+}
+
+.dark .blog-content code {
+  background: #374151;
+  color: #f9fafb;
+  border-color: #4b5563;
+}
+
+.dark .blog-content pre {
+  background: #1f2937;
+  border-color: #374151;
+}
+
+.dark .blog-content a {
+  color: #56A7B0;
+}
+
+.dark .blog-content a:hover {
+  color: #73B5BD;
+}
+
+.dark .blog-content strong {
+  color: #f9fafb;
+}
+
+.dark .blog-content em {
+  color: #9ca3af;
+}
+
+.dark .blog-content th {
+  background: #374151;
+  color: #f9fafb;
+}
+
+.dark .blog-content td {
+  border-bottom-color: #4b5563;
+}
+
+.dark .blog-content tr:hover {
+  background: #374151;
+}
+
+/* Dark mode selection */
+.dark .blog-content ::selection {
+  background: rgba(86, 167, 176, 0.3);
+  color: #f9fafb;
+}
+
+/* Additional utility classes */
+.blog-content .text-center {
+  text-align: center;
+}
+
+.blog-content .text-right {
+  text-align: right;
+}
+
+.blog-content .font-medium {
+  font-weight: 500;
+}
+
+.blog-content .font-semibold {
+  font-weight: 600;
+}
+
+.blog-content .font-bold {
+  font-weight: 700;
+}
+
+/* Improved spacing for content sections */
+.blog-content > * + * {
+  margin-top: 0;
+}
+
+.blog-content h1 + p,
+.blog-content h2 + p,
+.blog-content h3 + p,
+.blog-content h4 + p {
+  margin-top: 0.75rem;
+}
+
+/* Better list styling */
+.blog-content ul ul,
+.blog-content ol ol,
+.blog-content ul ol,
+.blog-content ol ul {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+/* Improved image captions */
+.blog-content img + p {
+  font-size: 0.875rem;
+  color: #6b7280;
+  text-align: center;
+  font-style: italic;
+  margin-top: 0.5rem;
+  margin-bottom: 2rem;
+}
+
+.dark .blog-content img + p {
+  color: #9ca3af;
+}
+
+/* Better spacing for code blocks */
+.blog-content pre + p,
+.blog-content p + pre {
+  margin-top: 2rem;
+}
+
+/* Improved readability for long content */
+.blog-content * {
+  max-width: 100%;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+/* Ensure images don't overflow */
+.blog-content img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Ensure code blocks don't overflow */
+.blog-content pre {
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+/* Ensure tables are responsive */
+.blog-content table {
+  max-width: 100%;
+  overflow-x: auto;
+  display: block;
+  white-space: nowrap;
+}
+
+.blog-content table tbody,
+.blog-content table thead,
+.blog-content table tr {
+  display: table;
+  width: 100%;
+}
+
+/* Ensure all content respects container boundaries */
+.blog-content h1,
+.blog-content h2,
+.blog-content h3,
+.blog-content h4,
+.blog-content h5,
+.blog-content h6 {
+  max-width: 100%;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.blog-content p {
+  max-width: 100%;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.blog-content blockquote {
+  max-width: 100%;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.blog-content ul,
+.blog-content ol {
+  max-width: 100%;
+}
+
+.blog-content li {
+  max-width: 100%;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+/* Prevent horizontal scrolling */
+.blog-content,
+.blog-content * {
+  box-sizing: border-box;
+}
+
+/* Ensure long URLs break properly */
+.blog-content a {
+  word-break: break-all;
+  overflow-wrap: break-word;
+}
+
+/* Custom scrollbar for table of contents */
+.scrollbar-thin {
+  scrollbar-width: thin;
+}
+
+.scrollbar-thin::-webkit-scrollbar {
+  width: 4px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background-color: #d1d5db;
+  border-radius: 2px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background-color: #9ca3af;
+}
+
+.scrollbar-thumb-gray-300::-webkit-scrollbar-thumb {
+  background-color: #d1d5db;
+}
+
+.scrollbar-track-transparent::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Better focus states for accessibility */
+.blog-content a:focus-visible {
+  outline: 2px solid #075E68;
+  outline-offset: 2px;
+  border-radius: 0.25rem;
+}
+
+.dark .blog-content a:focus-visible {
+  outline-color: #56A7B0;
+}
+
+/* Line clamping utilities */
+.line-clamp-1 {
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}

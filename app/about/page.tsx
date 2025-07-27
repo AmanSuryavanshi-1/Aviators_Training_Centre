@@ -1,12 +1,11 @@
 "use client"
 import Image from "next/image";
+import Link from "next/link";
 import { motion } from 'framer-motion';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Target, Users, Telescope, Heart, MessageSquare, UserCheck, Clock, DollarSign, UserX, MessageCircleQuestion, MapPin, Home, BadgeDollarSign, ArrowRight, Archive, PhoneForwarded } from 'lucide-react';
 import { cn } from "@/components/ui/utils";
 import AboutSection from "@/components/about/AboutSection";
-import { GetStaticProps } from "next";
-import Head from 'next/head';
 
 
 // --- Configuration (Removed button style variables) ---
@@ -74,25 +73,7 @@ export default function About() {
   };
 
   return (
-    <>
-      <Head>
-        <link rel="canonical" href="https://aviatorstrainingcentre.com/about" />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "Organization",
-              "name": "Aviators Training Centre",
-              "url": "https://aviatorstrainingcentre.com",
-              "description": "India's premier online ground school for CPL/ATPL. Airline-experienced instructors, 24/7 support, and proven success."
-            })
-          }}
-        />
-      </Head>
-
-      
-   <div className="flex flex-col min-h-screen bg-background text-foreground">
+    <div className="flex flex-col min-h-screen bg-background text-foreground">
       <motion.section
         className="relative h-[50vh] md:h-[60vh] flex items-center justify-center text-center text-white overflow-hidden" // Matched height from Courses
         initial={{ opacity: 0 }}
@@ -142,6 +123,49 @@ export default function About() {
           image="/Plane2.webp"
           reverse
         />
+
+        {/* Internal Links Section */}
+        <motion.section
+          variants={sectionVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.1 }}
+          className="grid grid-cols-1 md:grid-cols-2 gap-6"
+        >
+          <div className="p-6 bg-green-50 rounded-lg dark:bg-green-900/20">
+            <h4 className="font-semibold text-green-800 dark:text-green-300 mb-2 flex items-center gap-2">
+              <UserCheck className="w-5 h-5" />
+              Success Stories & Interview Tips
+            </h4>
+            <p className="text-sm text-green-700 dark:text-green-400 mb-3">
+              Learn from our experts how to excel in airline pilot interviews with proven strategies from successful candidates.
+            </p>
+            <Link 
+              href="/blog/airline-pilot-interview-questions-expert-answers"
+              className="inline-flex items-center text-sm font-medium text-green-600 hover:text-green-700 dark:text-green-400 dark:hover:text-green-300"
+            >
+              Ace Your Pilot Interview
+              <ArrowRight className="w-3 h-3 ml-1" />
+            </Link>
+          </div>
+
+          <div className="p-6 bg-blue-50 rounded-lg dark:bg-blue-900/20">
+            <h4 className="font-semibold text-blue-800 dark:text-blue-300 mb-2 flex items-center gap-2">
+              <BadgeDollarSign className="w-5 h-5" />
+              Training Investment Guide
+            </h4>
+            <p className="text-sm text-blue-700 dark:text-blue-400 mb-3">
+              Understand the complete financial aspects of pilot training and make informed decisions about your aviation career investment.
+            </p>
+            <Link 
+              href="/blog/pilot-training-cost-india-complete-financial-guide"
+              className="inline-flex items-center text-sm font-medium text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300"
+            >
+              Understanding Training Costs
+              <ArrowRight className="w-3 h-3 ml-1" />
+            </Link>
+          </div>
+        </motion.section>
 
         <AboutSection
           title="Our Vision"
@@ -235,6 +259,5 @@ export default function About() {
 
       </main>
     </div>
-    </>
   );
 }

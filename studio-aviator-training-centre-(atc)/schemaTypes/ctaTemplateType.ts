@@ -1,0 +1,515 @@
+import {defineField, defineType} from 'sanity'
+
+export const ctaTemplateType = defineType({
+  name: 'ctaTemplate',
+  title: 'CTA Template',
+  type: 'document',
+  fields: [
+    defineField({
+      name: 'name',
+      title: 'Template Name',
+      type: 'string',
+      validation: (rule) => rule.required().max(100),
+      description: 'Internal name for the CTA template',
+    }),
+    defineField({
+      name: 'slug',
+      title: 'Slug',
+      type: 'slug',
+      options: {source: 'name'},
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'category',
+      title: 'CTA Category',
+      type: 'string',
+      options: {
+        list: [
+          {title: 'Course Enrollment', value: 'course-enrollment'},
+          {title: 'Free Consultation', value: 'consultation'},
+          {title: 'Demo Booking', value: 'demo-booking'},
+          {title: 'Contact Form', value: 'contact-form'},
+          {title: 'Resource Download', value: 'resource-download'},
+          {title: 'Newsletter Signup', value: 'newsletter'},
+          {title: 'Callback Request', value: 'callback'},
+          {title: 'Emergency Contact', value: 'emergency'},
+        ],
+      },
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'ctaType',
+      title: 'CTA Type',
+      type: 'string',
+      options: {
+        list: [
+          {title: 'Course Promotion', value: 'course-promo'},
+          {title: 'Lead Generation', value: 'lead-gen'},
+          {title: 'Information Request', value: 'info-request'},
+          {title: 'Direct Contact', value: 'direct-contact'},
+          {title: 'Resource Access', value: 'resource-access'},
+        ],
+      },
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'style',
+      title: 'Visual Style',
+      type: 'string',
+      options: {
+        list: [
+          {title: 'Card', value: 'card'},
+          {title: 'Banner', value: 'banner'},
+          {title: 'Inline', value: 'inline'},
+          {title: 'Minimal', value: 'minimal'},
+          {title: 'Gradient', value: 'gradient'},
+          {title: 'Testimonial', value: 'testimonial'},
+          {title: 'Floating', value: 'floating'},
+          {title: 'Sidebar', value: 'sidebar'},
+        ],
+      },
+      validation: (rule) => rule.required(),
+      initialValue: 'card',
+    }),
+    defineField({
+      name: 'title',
+      title: 'CTA Title',
+      type: 'string',
+      validation: (rule) => rule.required().max(80),
+      description: 'Main headline for the CTA (supports {courseName} placeholder)',
+    }),
+    defineField({
+      name: 'description',
+      title: 'CTA Description',
+      type: 'text',
+      rows: 3,
+      validation: (rule) => rule.required().max(200),
+      description: 'Supporting text for the CTA (supports {courseName} placeholder)',
+    }),
+    defineField({
+      name: 'primaryButton',
+      title: 'Primary Button',
+      type: 'object',
+      fields: [
+        {
+          name: 'text',
+          title: 'Button Text',
+          type: 'string',
+          validation: (rule) => rule.required().max(30),
+          initialValue: 'Get Started',
+        },
+        {
+          name: 'action',
+          title: 'Button Action',
+          type: 'string',
+          options: {
+            list: [
+              {title: 'Course Page', value: 'course-page'},
+              {title: 'Contact Form', value: 'contact-form'},
+              {title: 'Demo Booking', value: 'demo-booking'},
+              {title: 'Phone Call', value: 'phone-call'},
+              {title: 'WhatsApp', value: 'whatsapp'},
+              {title: 'External Link', value: 'external-link'},
+              {title: 'Download', value: 'download'},
+            ],
+          },
+          validation: (rule) => rule.required(),
+        },
+        {
+          name: 'style',
+          title: 'Button Style',
+          type: 'string',
+          options: {
+            list: [
+              {title: 'Primary', value: 'primary'},
+              {title: 'Secondary', value: 'secondary'},
+              {title: 'Urgent', value: 'urgent'},
+              {title: 'Success', value: 'success'},
+              {title: 'Warning', value: 'warning'},
+            ],
+          },
+          initialValue: 'primary',
+        },
+        {
+          name: 'targetUrl',
+          title: 'Target URL',
+          type: 'string',
+          description: 'URL to redirect to (supports {courseSlug} placeholder)',
+        },
+      ],
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'secondaryButton',
+      title: 'Secondary Button (Optional)',
+      type: 'object',
+      fields: [
+        {
+          name: 'text',
+          title: 'Button Text',
+          type: 'string',
+          validation: (rule) => rule.max(30),
+        },
+        {
+          name: 'action',
+          title: 'Button Action',
+          type: 'string',
+          options: {
+            list: [
+              {title: 'Course Page', value: 'course-page'},
+              {title: 'Contact Form', value: 'contact-form'},
+              {title: 'Demo Booking', value: 'demo-booking'},
+              {title: 'Phone Call', value: 'phone-call'},
+              {title: 'WhatsApp', value: 'whatsapp'},
+              {title: 'External Link', value: 'external-link'},
+              {title: 'Download', value: 'download'},
+            ],
+          },
+        },
+        {
+          name: 'style',
+          title: 'Button Style',
+          type: 'string',
+          options: {
+            list: [
+              {title: 'Primary', value: 'primary'},
+              {title: 'Secondary', value: 'secondary'},
+              {title: 'Outline', value: 'outline'},
+              {title: 'Ghost', value: 'ghost'},
+              {title: 'Link', value: 'link'},
+            ],
+          },
+          initialValue: 'secondary',
+        },
+        {
+          name: 'targetUrl',
+          title: 'Target URL',
+          type: 'string',
+          description: 'URL to redirect to (supports {courseSlug} placeholder)',
+        },
+      ],
+    }),
+    defineField({
+      name: 'urgencyElements',
+      title: 'Urgency & Scarcity Elements',
+      type: 'object',
+      fields: [
+        {
+          name: 'enableCountdown',
+          title: 'Enable Countdown Timer',
+          type: 'boolean',
+          initialValue: false,
+        },
+        {
+          name: 'countdownDuration',
+          title: 'Countdown Duration (hours)',
+          type: 'number',
+          description: 'Duration in hours for countdown timer',
+          hidden: ({parent}) => !parent?.enableCountdown,
+        },
+        {
+          name: 'limitedOffer',
+          title: 'Limited Offer Text',
+          type: 'string',
+          description: 'e.g., "Limited Time Offer", "Only 5 Seats Left"',
+        },
+        {
+          name: 'socialProof',
+          title: 'Social Proof Text',
+          type: 'string',
+          description: 'e.g., "Join 500+ successful pilots", "Trusted by 1000+ students"',
+        },
+        {
+          name: 'urgencyMessage',
+          title: 'Urgency Message',
+          type: 'string',
+          description: 'e.g., "Enrollment closes soon", "Next batch starts in 15 days"',
+        },
+      ],
+    }),
+    defineField({
+      name: 'targetCourse',
+      title: 'Target Course (Optional)',
+      type: 'reference',
+      to: [{type: 'course'}],
+      description: 'Specific course this CTA promotes (leave empty for dynamic routing)',
+    }),
+    defineField({
+      name: 'targetAudience',
+      title: 'Target Audience',
+      type: 'array',
+      of: [{type: 'string'}],
+      options: {
+        list: [
+          {title: 'Aspiring Pilots', value: 'aspiring-pilots'},
+          {title: 'Student Pilots', value: 'student-pilots'},
+          {title: 'Licensed Pilots', value: 'licensed-pilots'},
+          {title: 'Career Changers', value: 'career-changers'},
+          {title: 'Fresh Graduates', value: 'fresh-graduates'},
+          {title: 'Working Professionals', value: 'working-professionals'},
+          {title: 'International Students', value: 'international-students'},
+        ],
+      },
+      description: 'Target audience for this CTA template',
+    }),
+    defineField({
+      name: 'keywords',
+      title: 'Content Keywords',
+      type: 'array',
+      of: [{type: 'string'}],
+      description: 'Keywords that trigger this CTA (e.g., "dgca", "cpl", "ground school")',
+    }),
+    defineField({
+      name: 'conversionGoal',
+      title: 'Conversion Goal',
+      type: 'string',
+      options: {
+        list: [
+          {title: 'Course Enrollment', value: 'enrollment'},
+          {title: 'Lead Generation', value: 'lead-gen'},
+          {title: 'Demo Booking', value: 'demo'},
+          {title: 'Consultation Request', value: 'consultation'},
+          {title: 'Information Request', value: 'info'},
+          {title: 'Contact Form', value: 'contact'},
+          {title: 'Phone Call', value: 'call'},
+          {title: 'Resource Download', value: 'download'},
+        ],
+      },
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'priority',
+      title: 'Priority Score',
+      type: 'number',
+      validation: (rule) => rule.min(0).max(100),
+      initialValue: 50,
+      description: 'Priority score for CTA selection (0-100, higher = more priority)',
+    }),
+    defineField({
+      name: 'abTestVariants',
+      title: 'A/B Test Variants',
+      type: 'array',
+      of: [
+        {
+          type: 'object',
+          fields: [
+            {
+              name: 'name',
+              title: 'Variant Name',
+              type: 'string',
+              validation: (rule) => rule.required(),
+            },
+            {
+              name: 'title',
+              title: 'Alternative Title',
+              type: 'string',
+            },
+            {
+              name: 'description',
+              title: 'Alternative Description',
+              type: 'text',
+              rows: 2,
+            },
+            {
+              name: 'primaryButtonText',
+              title: 'Alternative Button Text',
+              type: 'string',
+            },
+            {
+              name: 'weight',
+              title: 'Traffic Weight (%)',
+              type: 'number',
+              validation: (rule) => rule.min(0).max(100),
+              initialValue: 50,
+            },
+          ],
+        },
+      ],
+      description: 'Alternative versions for A/B testing',
+    }),
+    defineField({
+      name: 'positioning',
+      title: 'Positioning Rules',
+      type: 'object',
+      fields: [
+        {
+          name: 'allowedPositions',
+          title: 'Allowed Positions',
+          type: 'array',
+          of: [{type: 'string'}],
+          options: {
+            list: [
+              {title: 'Top of Post', value: 'top'},
+              {title: 'Middle of Post', value: 'middle'},
+              {title: 'Bottom of Post', value: 'bottom'},
+              {title: 'Sidebar', value: 'sidebar'},
+              {title: 'Floating', value: 'floating'},
+            ],
+          },
+          validation: (rule) => rule.required().min(1),
+        },
+        {
+          name: 'preferredPosition',
+          title: 'Preferred Position',
+          type: 'string',
+          options: {
+            list: [
+              {title: 'Top of Post', value: 'top'},
+              {title: 'Middle of Post', value: 'middle'},
+              {title: 'Bottom of Post', value: 'bottom'},
+              {title: 'Sidebar', value: 'sidebar'},
+              {title: 'Floating', value: 'floating'},
+            ],
+          },
+        },
+        {
+          name: 'excludePositions',
+          title: 'Exclude Positions',
+          type: 'array',
+          of: [{type: 'string'}],
+          options: {
+            list: [
+              {title: 'Top of Post', value: 'top'},
+              {title: 'Middle of Post', value: 'middle'},
+              {title: 'Bottom of Post', value: 'bottom'},
+              {title: 'Sidebar', value: 'sidebar'},
+              {title: 'Floating', value: 'floating'},
+            ],
+          },
+        },
+      ],
+    }),
+    defineField({
+      name: 'displayRules',
+      title: 'Display Rules',
+      type: 'object',
+      fields: [
+        {
+          name: 'deviceTypes',
+          title: 'Device Types',
+          type: 'array',
+          of: [{type: 'string'}],
+          options: {
+            list: [
+              {title: 'Desktop', value: 'desktop'},
+              {title: 'Tablet', value: 'tablet'},
+              {title: 'Mobile', value: 'mobile'},
+            ],
+          },
+          initialValue: ['desktop', 'tablet', 'mobile'],
+        },
+        {
+          name: 'timeOfDay',
+          title: 'Time of Day Restrictions',
+          type: 'object',
+          fields: [
+            {
+              name: 'enabled',
+              title: 'Enable Time Restrictions',
+              type: 'boolean',
+              initialValue: false,
+            },
+            {
+              name: 'startTime',
+              title: 'Start Time (24h format)',
+              type: 'string',
+              hidden: ({parent}) => !parent?.enabled,
+            },
+            {
+              name: 'endTime',
+              title: 'End Time (24h format)',
+              type: 'string',
+              hidden: ({parent}) => !parent?.enabled,
+            },
+          ],
+        },
+        {
+          name: 'userBehavior',
+          title: 'User Behavior Triggers',
+          type: 'object',
+          fields: [
+            {
+              name: 'scrollPercentage',
+              title: 'Show after scroll percentage',
+              type: 'number',
+              validation: (rule) => rule.min(0).max(100),
+              description: 'Show CTA after user scrolls X% of the page',
+            },
+            {
+              name: 'timeOnPage',
+              title: 'Show after time on page (seconds)',
+              type: 'number',
+              description: 'Show CTA after user spends X seconds on page',
+            },
+            {
+              name: 'exitIntent',
+              title: 'Show on exit intent',
+              type: 'boolean',
+              initialValue: false,
+            },
+          ],
+        },
+      ],
+    }),
+    defineField({
+      name: 'customCSS',
+      title: 'Custom CSS (Optional)',
+      type: 'text',
+      rows: 5,
+      description: 'Custom CSS for advanced styling',
+    }),
+    defineField({
+      name: 'active',
+      title: 'Active',
+      type: 'boolean',
+      initialValue: true,
+      description: 'Only active templates are used in CTA selection',
+    }),
+    defineField({
+      name: 'version',
+      title: 'Version',
+      type: 'string',
+      initialValue: '1.0',
+      description: 'Template version for tracking changes',
+    }),
+    defineField({
+      name: 'notes',
+      title: 'Internal Notes',
+      type: 'text',
+      rows: 3,
+      description: 'Internal notes about this CTA template',
+    }),
+  ],
+  preview: {
+    select: {
+      title: 'name',
+      subtitle: 'category',
+      active: 'active',
+      style: 'style',
+    },
+    prepare({title, subtitle, active, style}) {
+      return {
+        title: `${title}${!active ? ' (Inactive)' : ''}`,
+        subtitle: `${subtitle} • ${style}`,
+        media: active ? '✅' : '❌',
+      }
+    },
+  },
+  orderings: [
+    {
+      title: 'Priority (High to Low)',
+      name: 'priorityDesc',
+      by: [{field: 'priority', direction: 'desc'}],
+    },
+    {
+      title: 'Category',
+      name: 'category',
+      by: [{field: 'category', direction: 'asc'}],
+    },
+    {
+      title: 'Created Date',
+      name: 'createdAt',
+      by: [{field: '_createdAt', direction: 'desc'}],
+    },
+  ],
+})

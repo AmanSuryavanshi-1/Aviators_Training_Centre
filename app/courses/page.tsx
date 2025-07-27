@@ -4,7 +4,8 @@ import {clsx} from 'clsx'
 import { motion } from 'framer-motion';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { MicVocal, Plane, UserCheck, GraduationCap, CheckSquare, RadioTower, Briefcase, MessageCircle, Users, Clock, Award, Map, CloudSun, Gavel, Wrench, UsersRound, PhoneForwarded, ArrowRight, Info } from 'lucide-react';
+import { MicVocal, Plane, UserCheck, GraduationCap, CheckSquare, RadioTower, Briefcase, MessageCircle, Users, Clock, Award, Map, CloudSun, Gavel, Wrench, UsersRound, PhoneForwarded, ArrowRight, Info, ExternalLink } from 'lucide-react';
+import Link from 'next/link';
 import { BookDemoButton } from '@/components/shared/BookDemoButton';
 import { UrgencyCTA } from '@/components/shared/UrgencyCTA';
 import { TransparentButton } from '@/components/shared/TransparentButton';
@@ -208,6 +209,33 @@ const Courses: React.FC = () => {
                         <CardDescription className="flex-grow text-xs sm:text-sm text-foreground/80">
                           {subject.description}
                         </CardDescription>
+                        
+                        {/* Internal Links to Related Blog Posts */}
+                        {subject.title === "Technical General" && (
+                          <div className="mt-3 p-3 bg-teal-50 rounded-lg border-l-4 border-teal-500 dark:bg-teal-900/20">
+                            <h4 className="font-semibold text-teal-800 dark:text-teal-300 mb-2 text-xs">📚 Study Guide</h4>
+                            <Link 
+                              href="/blog/dgca-ground-school-technical-general-vs-specific"
+                              className="inline-flex items-center text-xs font-medium text-teal-600 hover:text-teal-700 dark:text-teal-400 dark:hover:text-teal-300"
+                            >
+                              Technical General vs Specific Guide
+                              <ExternalLink className="w-3 h-3 ml-1" />
+                            </Link>
+                          </div>
+                        )}
+                        
+                        {subject.title === "Air Navigation" && (
+                          <div className="mt-3 p-3 bg-blue-50 rounded-lg border-l-4 border-blue-500 dark:bg-blue-900/20">
+                            <h4 className="font-semibold text-blue-800 dark:text-blue-300 mb-2 text-xs">✈️ Complete Guide</h4>
+                            <Link 
+                              href="/blog/dgca-cpl-complete-guide-2024"
+                              className="inline-flex items-center text-xs font-medium text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300"
+                            >
+                              DGCA CPL Complete Guide 2024
+                              <ExternalLink className="w-3 h-3 ml-1" />
+                            </Link>
+                          </div>
+                        )}
                      </CardContent>
                       <CardFooter className="flex justify-end gap-2 p-4 pt-3 mt-auto border-t sm:gap-3 sm:p-5 sm:pt-4 border-border/30">
                           <BookDemoButton
