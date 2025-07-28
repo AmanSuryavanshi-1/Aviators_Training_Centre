@@ -62,7 +62,8 @@
     "cleanup": "tsx scripts/sanity-blog-cleanup.ts",
     "sanity:check": "node scripts/check-sanity-permissions.js",
     "sanity:delete-all": "node scripts/bulk-delete-blogs.js",
-    "blog:analyze": "node scripts/analyze-blog-sources.js"
+    "blog:analyze": "node scripts/analyze-blog-sources.js",
+    "analyze": "ANALYZE=true npm run build"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",
@@ -133,6 +134,7 @@
     "next-sanity": "^9.11.1",
     "next-seo": "^6.8.0",
     "next-themes": "^0.3.0",
+    "node-fetch": "^3.3.2",
     "react": "^18.3.1",
     "react-day-picker": "^8.10.1",
     "react-dom": "^18.3.1",

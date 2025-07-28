@@ -16,7 +16,11 @@ import {
 import { useRealTimeSync } from '@/hooks/use-real-time-sync';
 import { formatDistanceToNow } from 'date-fns';
 
-export function SyncStatusIndicator() {
+interface SyncStatusIndicatorProps {
+  status?: any; // Optional status prop for backward compatibility
+}
+
+export function SyncStatusIndicator({ status }: SyncStatusIndicatorProps = {}) {
   const { 
     syncStatus, 
     recentEvents, 
@@ -26,6 +30,9 @@ export function SyncStatusIndicator() {
     hasErrors, 
     lastSync 
   } = useRealTimeSync();
+
+  // Use passed status if available, otherwise use hook data
+  const activeStatus = status || syncStatus;
 
   const getStatusIcon = () => {
     if (isPending) {

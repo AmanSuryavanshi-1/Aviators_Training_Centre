@@ -36,7 +36,7 @@ export interface BlogAuthor extends SanityDocument {
     current: string;
   };
   image?: SanityImage;
-  bio?: PortableTextBlock[];
+  bio?: string;
   role?: string;
   credentials?: string;
   email?: string;
@@ -204,6 +204,7 @@ export interface BlogPost extends SanityDocument {
 // Simplified blog post interface for listings and previews
 export interface BlogPostPreview {
   _id: string;
+  _createdAt: string;
   title: string;
   slug: {
     current: string;
@@ -230,6 +231,13 @@ export interface BlogPostPreview {
   featured?: boolean;
   tags?: string[];
   difficulty?: 'beginner' | 'intermediate' | 'advanced';
+  editable?: boolean;
+  status?: 'draft' | 'published' | 'archived';
+  analytics?: {
+    views?: number;
+    shares?: number;
+    engagement?: number;
+  };
 }
 
 // Blog listing page data interface
@@ -332,7 +340,7 @@ export interface BlogAPIResponse<T> {
   error?: {
     message: string;
     code?: string;
-    details?: any;
+    details?: unknown;
   };
   meta?: {
     timestamp: string;
@@ -361,7 +369,7 @@ export interface BlogError extends Error {
   statusCode?: number;
   context?: {
     operation: string;
-    params?: any;
+    params?: unknown;
     timestamp: string;
   };
   retryable?: boolean;
@@ -381,9 +389,9 @@ export interface QueryOptions {
   cache?: CacheConfig;
   retries?: number;
   timeout?: number;
-  fallback?: any;
-  transform?: (data: any) => any;
-  validate?: (data: any) => boolean;
+  fallback?: unknown;
+  transform?: (data: unknown) => any;
+  validate?: (data: unknown) => boolean;
 }
 
 // Sanity query builder interface for type-safe queries
@@ -408,6 +416,43 @@ export type CreateBlogPost = Omit<BlogPost, keyof SanityDocument | 'viewCount' |
 // Export utility type for blog post updates
 export type UpdateBlogPost = PartialBy<BlogPost, keyof SanityDocument>;
 
+// Simple blog post interface for admin operations
+export interface SimpleBlogPost extends SanityDocument {
+  title: string;
+  slug: {
+    current: string;
+  };
+  publishedAt: string;
+  excerpt: string;
+  image: SanityImage;
+  category: {
+    title: string;
+    slug: {
+      current: string;
+    };
+    color?: string;
+  };
+  author: {
+    name: string;
+    slug: {
+      current: string;
+    };
+    image?: SanityImage;
+    role?: string;
+  };
+  readingTime: number;
+  featured: boolean;
+  tags?: string[];
+  difficulty?: 'beginner' | 'intermediate' | 'advanced';
+  editable?: boolean;
+  status?: 'draft' | 'published' | 'archived';
+  analytics?: {
+    views?: number;
+    shares?: number;
+    engagement?: number;
+  };
+}
+
 // Deletion-specific types and interfaces
 export interface DeletionEvent {
   id: string;
@@ -430,7 +475,7 @@ export interface DeletionError {
   category: 'network' | 'permission' | 'validation' | 'server' | 'unknown';
   retryable: boolean;
   suggestedAction?: string;
-  originalError?: any;
+  originalError?: unknown;
 }
 
 export interface CacheInvalidationEvent {

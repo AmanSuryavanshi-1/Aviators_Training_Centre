@@ -72,15 +72,10 @@ export async function GET(
     });
 
   } catch (error) {
-    console.error(`Unexpected error in GET /api/blog/posts/${params.slug}:`, error);
+    const resolvedParams = await params;
+    console.error(`Unexpected error in GET /api/blog/posts/${resolvedParams.slug}:`, error);
     return NextResponse.json(
-      {
-        success: false,
-        error: {
-          message: 'Internal server error',
-          code: 'INTERNAL_ERROR'
-        }
-      },
+      { error: 'Internal server error' },
       { status: 500 }
     );
   }
@@ -194,30 +189,10 @@ export async function PUT(
     });
 
   } catch (error) {
-    console.error(`Unexpected error in PUT /api/blog/posts/${params.slug}:`, error);
-    
-    // Handle JSON parsing errors
-    if (error instanceof SyntaxError) {
-      return NextResponse.json(
-        {
-          success: false,
-          error: {
-            message: 'Invalid JSON in request body',
-            code: 'INVALID_JSON'
-          }
-        },
-        { status: 400 }
-      );
-    }
-
+    const resolvedParams = await params;
+    console.error(`Unexpected error in PUT /api/blog/posts/${resolvedParams.slug}:`, error);
     return NextResponse.json(
-      {
-        success: false,
-        error: {
-          message: 'Internal server error',
-          code: 'INTERNAL_ERROR'
-        }
-      },
+      { error: 'Internal server error' },
       { status: 500 }
     );
   }

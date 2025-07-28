@@ -35,9 +35,10 @@ export default function BlogManagementPage() {
       try {
         await simpleBlogService.getAllPosts({ limit: 1 });
       } catch (error) {
-        setConnectionError(error.message);
+        const errorMessage = error instanceof Error ? error.message : 'Connection failed';
+        setConnectionError(errorMessage);
         if (showToast) {
-          toast.error(`Connection issue: ${error.message}`);
+          toast.error(`Connection issue: ${errorMessage}`);
         }
         return;
       }
@@ -56,10 +57,15 @@ export default function BlogManagementPage() {
         category: post.category,
         tags: post.tags,
         image: post.image,
-        analytics: post.analytics,
+        analytics: {
+          views: post.views || 0,
+          engagementRate: post.engagementRate || 0,
+          shares: post.shares || 0
+        },
         readingTime: post.readingTime,
         source: post.source,
-        editable: post.editable
+        editable: post.editable,
+        _createdAt: post._createdAt
       }));
       
       setBlogs(blogPreviews);
@@ -86,10 +92,10 @@ export default function BlogManagementPage() {
 
   // Auto-refresh when sync status changes
   useEffect(() => {
-    if (isConnected && syncStatus.lastSyncTime) {
+    if (isConnected && syncStatus.lastSync) {
       loadAllBlogs(false); // Refresh without toast
     }
-  }, [syncStatus.lastSyncTime, isConnected]);
+  }, [syncStatus.lastSync, isConnected]);
 
   const handleDeleteBlog = async (slug: string) => {
     try {

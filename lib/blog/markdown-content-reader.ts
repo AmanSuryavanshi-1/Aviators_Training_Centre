@@ -866,8 +866,10 @@ export function getAvailableContentSlugs(): string[] {
   return Object.keys(BLOG_CONTENT_MAP);
 }
 
-export default {
+const markdownContentReader = {
+
   getBlogPostContent,
   hasSpecificContent,
   getAvailableContentSlugs
 };
+export default markdownContentReader;

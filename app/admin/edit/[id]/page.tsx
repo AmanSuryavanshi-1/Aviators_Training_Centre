@@ -8,7 +8,7 @@ import { ArrowLeft, Loader2 } from 'lucide-react';
 import Link from 'next/link';
 import { toast } from 'sonner';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { unifiedBlogService } from '@/lib/blog/unified-blog-service';
+import { simpleBlogService } from '@/lib/blog/simple-blog-service';
 
 interface BlogFormData {
   title: string;
@@ -32,7 +32,7 @@ interface BlogFormData {
 export default function EditBlogPage() {
   const router = useRouter();
   const params = useParams();
-  const id = params.id as string;
+  const id = params?.id as string;
   
   const [initialData, setInitialData] = useState<Partial<BlogFormData> | null>(null);
   const [loading, setLoading] = useState(true);
@@ -48,10 +48,8 @@ export default function EditBlogPage() {
         setLoading(true);
         setError(null);
         
-        // Clear cache first to ensure fresh data
-        unifiedBlogService.clearCache();
-        
-        const result = await unifiedBlogService.getPost(id);
+        // Get fresh data
+        const result = await simpleBlogService.getPost(id);
         
         if (!result) {
           throw new Error(`Blog post not found with ID: ${id}. The post may have been deleted or the ID is incorrect.`);
@@ -134,7 +132,6 @@ export default function EditBlogPage() {
         focusKeyword: formData.focusKeyword?.trim() || ''
       };
 
-      console.log('🔄 Updating post via API:', Object.keys(updateData));
 
       const response = await fetch(`/api/blog/posts/update/${postId}`, {
         method: 'PUT',
@@ -146,7 +143,6 @@ export default function EditBlogPage() {
 
       const result = await response.json();
       
-      console.log('📝 API response:', result);
       
       if (!response.ok || !result.success) {
         const errorMessage = result.error?.message || result.error || 'Failed to update blog post';
@@ -154,7 +150,6 @@ export default function EditBlogPage() {
         throw new Error(errorMessage);
       }
       
-      console.log('✅ Post updated successfully via API');
 
       toast.success('Blog post updated successfully!');
       

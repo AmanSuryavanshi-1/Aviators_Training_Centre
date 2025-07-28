@@ -8,7 +8,7 @@ export interface SEOCampaign {
   name: string;
   targetKeywords: string[];
   blogPosts: string[];
-  status: 'active' | 'paused' | 'completed';
+  status: 'active' | 'paused' | 'completed' | 'draft';
   startDate: Date;
   endDate?: Date;
   metrics: {

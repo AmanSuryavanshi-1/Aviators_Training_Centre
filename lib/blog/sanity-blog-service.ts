@@ -1001,7 +1001,7 @@ export class SanityBlogService {
       );
 
       // If we don't have enough related posts, get recent posts
-      let finalPosts = relatedPosts || [];
+      const finalPosts = relatedPosts || [];
       
       if (finalPosts.length < limit) {
         const additionalQuery = `

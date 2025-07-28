@@ -352,7 +352,8 @@ export async function checkBlogSystemHealth(): Promise<{
 }
 
 // Export all utilities
-export default {
+const productionErrorHandler = {
+
   BlogError,
   blogLogger,
   safeBlogAccess,
@@ -363,3 +364,4 @@ export default {
   blogCircuitBreaker,
   checkBlogSystemHealth,
 };
+export default productionErrorHandler;

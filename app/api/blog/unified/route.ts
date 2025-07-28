@@ -6,6 +6,7 @@ import { BlogPostPreview } from '@/lib/types/blog';
 function convertToPreview(post: UnifiedBlogPost): BlogPostPreview {
   return {
     _id: post._id,
+    _createdAt: post._createdAt || post.publishedAt,
     title: post.title,
     slug: post.slug,
     publishedAt: post.publishedAt,
@@ -248,14 +249,21 @@ export async function PUT(request: NextRequest) {
 
     const updatedPost = await unifiedBlogService.updatePost(id, updateData);
 
+    if (!updatedPost.success || !updatedPost.data) {
+      return NextResponse.json(
+        { error: updatedPost.error || 'Failed to update post' },
+        { status: 500 }
+      );
+    }
+
     return NextResponse.json(
       { 
         message: 'Blog post updated successfully', 
         post: {
-          id: updatedPost._id,
-          title: updatedPost.title,
-          slug: updatedPost.slug.current,
-          source: updatedPost.source
+          id: updatedPost.data._id,
+          title: updatedPost.data.title,
+          slug: updatedPost.data.slug.current,
+          source: updatedPost.data.source
         }
       },
       { status: 200 }

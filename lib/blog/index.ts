@@ -487,7 +487,8 @@ export async function initializeBlogSystem(): Promise<void> {
 }
 
 // Export default object for convenience
-export default {
+const index = {
+
   // API functions
   getAllBlogPosts: getAllBlogPostsCompat,
   getBlogPostBySlug: getBlogPostBySlugCompat,
@@ -508,3 +509,4 @@ export default {
   // CTA routing
   ctaRouter: intelligentCTARouter,
 };
+export default index;

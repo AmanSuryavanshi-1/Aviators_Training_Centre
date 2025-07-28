@@ -318,7 +318,7 @@ export class ApprovalWorkflowService {
     }>,
     excludeAuthorId?: string
   ): Array<{ _id: string; name: string; authorLevel: string }> {
-    let availableApprovers = allAuthors.filter(author => {
+    const availableApprovers = allAuthors.filter(author => {
       // Only active authors
       if (author.status !== 'active') return false
       
@@ -535,7 +535,7 @@ export class ApprovalWorkflowService {
    * Get rule priority for sorting
    */
   private static getRulePriority(rule: ApprovalRule): number {
-    let priority = 0
+    const priority = 0
     
     // Higher priority for more restrictive author levels
     if (rule.conditions.authorLevel?.includes('guest')) priority += 100

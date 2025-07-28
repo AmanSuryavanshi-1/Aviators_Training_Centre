@@ -341,6 +341,7 @@ export async function GET(request: NextRequest) {
 function convertToPreview(post: BlogPost): BlogPostPreview {
   return {
     _id: post._id,
+    _createdAt: post._createdAt || post.publishedAt,
     title: post.title,
     slug: post.slug,
     publishedAt: post.publishedAt,
@@ -350,7 +351,7 @@ function convertToPreview(post: BlogPost): BlogPostPreview {
     author: post.author,
     readingTime: post.readingTime,
     featured: post.featured,
-    tags: post.tags,
-    difficulty: post.difficulty,
+    tags: post.tags || [],
+    difficulty: post.difficulty
   };
 }

@@ -27,7 +27,7 @@ export interface ValidationContext {
 export interface ValidationResult {
   passed: boolean;
   message: string;
-  details?: any;
+  details?: unknown;
   suggestedAction?: string;
   canProceed?: boolean;
 }
@@ -46,13 +46,13 @@ export interface PreFlightCheckResult {
   warnings: Array<{
     rule: string;
     message: string;
-    details?: any;
+    details?: unknown;
     suggestedAction?: string;
   }>;
   info: Array<{
     rule: string;
     message: string;
-    details?: any;
+    details?: unknown;
   }>;
   metadata: {
     validationTime: number;

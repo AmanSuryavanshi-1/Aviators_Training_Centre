@@ -125,8 +125,6 @@ const FeaturedPostsCarousel: React.FC<FeaturedPostsCarouselProps> = ({ posts }) 
                         alt={currentPost.image?.alt || currentPost.title}
                         fill
                         className="object-cover transition-transform duration-700 hover:scale-105"
-                        slug={currentPost.slug.current}
-                        priority
                         priority={currentIndex === 0}
                         sizes="(max-width: 768px) 100vw, 50vw"
                       />
@@ -296,7 +294,6 @@ const FeaturedPostsCarousel: React.FC<FeaturedPostsCarouselProps> = ({ posts }) 
                   src={getImageUrl(post.image, 80, 64)}
                   alt={post.title}
                   fill
-                  slug={post.slug.current}
                   className="object-cover"
                   sizes="80px"
                 />

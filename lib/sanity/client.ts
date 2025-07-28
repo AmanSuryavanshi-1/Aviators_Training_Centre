@@ -393,7 +393,7 @@ export class EnhancedSanityClient {
     }
 
     // Import circuit breaker if needed
-    let circuitBreaker: any = null;
+    let circuitBreaker: unknown = null;
     if (useCircuitBreaker) {
       try {
         const { blogCircuitBreakers } = await import('../blog/error-handling');
@@ -528,7 +528,7 @@ export class EnhancedSanityClient {
     return false;
   }
 
-  async create(document: any, options?: { validateConnection?: boolean; useCircuitBreaker?: boolean }): Promise<any> {
+  async create(document: unknown, options?: { validateConnection?: boolean; useCircuitBreaker?: boolean }): Promise<any> {
     const { validateConnection = true, useCircuitBreaker = true } = options || {};
 
     // Pre-flight checks
@@ -580,7 +580,7 @@ export class EnhancedSanityClient {
     }
   }
 
-  patch(documentId: string, options?: { validateConnection?: boolean }): any {
+  patch(documentId: string, options?: { validateConnection?: boolean }): unknown {
     const { validateConnection = false } = options || {};
 
     try {

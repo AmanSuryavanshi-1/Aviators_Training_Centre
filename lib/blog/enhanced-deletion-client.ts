@@ -362,7 +362,7 @@ export class EnhancedDeletionClient {
   /**
    * Categorize deletion-specific errors with detailed analysis
    */
-  private categorizeDeletionError(error: any): DeletionError {
+  private categorizeDeletionError(error: unknown): DeletionError {
     if (!error) {
       return {
         code: 'UNKNOWN_ERROR',

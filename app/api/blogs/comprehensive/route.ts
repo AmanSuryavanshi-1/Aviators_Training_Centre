@@ -129,12 +129,14 @@ export async function POST(request: NextRequest) {
       .trim();
 
     // Create new blog post object
+    const currentTimestamp = new Date().toISOString();
     const newPost: BlogPostPreview = {
       _id: `post-${Date.now()}`,
+      _createdAt: currentTimestamp,
       title,
       slug: { current: slug },
       excerpt,
-      publishedAt: new Date().toISOString(),
+      publishedAt: currentTimestamp,
       category: {
         title: category,
         slug: { current: category.toLowerCase().replace(/\s+/g, '-') },

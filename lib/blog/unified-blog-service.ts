@@ -10,7 +10,7 @@ export interface UnifiedBlogPost {
   slug: { current: string };
   excerpt: string;
   content?: string; // Markdown version for compatibility
-  body?: any[]; // PortableText blocks for rich content rendering
+  body?: unknown[]; // PortableText blocks for rich content rendering
   publishedAt: string;
   category: {
     title: string;
@@ -22,10 +22,10 @@ export interface UnifiedBlogPost {
     slug: { current: string };
     role?: string;
     image?: {
-      asset: any;
+      asset: unknown;
       alt: string;
     };
-    bio?: any[];
+    bio?: unknown[];
   };
   readingTime: number;
   image: {
@@ -193,7 +193,7 @@ class UnifiedBlogService {
 
         console.log(`📊 Fetched ${(posts as any[]).length} posts from Sanity`);
 
-        return (posts as any[]).map((post: any) => {
+        return (posts as any[]).map((post: unknown) => {
         // Debug logging for content
         console.log(`🔍 Processing post: ${post.title}`, {
           hasBody: !!post.body,
@@ -444,7 +444,7 @@ class UnifiedBlogService {
     return this.getAllPosts();
   }
 
-  async createPost(postData: any): Promise<UnifiedBlogPost> {
+  async createPost(postData: unknown): Promise<UnifiedBlogPost> {
     return this.retryOperation(async () => {
       if (!postData.title || !postData.content || !postData.excerpt) {
         throw new Error('Title, content, and excerpt are required');
@@ -477,7 +477,7 @@ class UnifiedBlogService {
 
       const bodyBlocks = this.convertMarkdownToPortableText(postData.content);
 
-      const newPost: any = {
+      const newPost: unknown = {
         _type: 'post',
         title: postData.title.trim(),
         slug: {
@@ -558,7 +558,7 @@ class UnifiedBlogService {
     });
   }
 
-  async updatePost(id: string, updateData: any): Promise<{ success: boolean; data?: UnifiedBlogPost; error?: string }> {
+  async updatePost(id: string, updateData: unknown): Promise<{ success: boolean; data?: UnifiedBlogPost; error?: string }> {
     console.log('🔄 Starting updatePost:', { id, updateData });
     
     try {
@@ -582,7 +582,7 @@ class UnifiedBlogService {
         }
       }
 
-      const updates: any = {};
+      const updates: unknown = {};
       
       if (updateData.title) updates.title = updateData.title.trim();
       if (updateData.excerpt) updates.excerpt = updateData.excerpt.trim();
@@ -722,7 +722,7 @@ class UnifiedBlogService {
     }
   }
 
-  private convertMarkdownToPortableText(markdown: string): any[] {
+  private convertMarkdownToPortableText(markdown: string): unknown[] {
     const lines = markdown.split('\n').filter(line => line.trim());
     
     return lines.map(line => {
@@ -778,7 +778,7 @@ class UnifiedBlogService {
     });
   }
 
-  private convertPortableTextToMarkdown(blocks: any[]): string {
+  private convertPortableTextToMarkdown(blocks: unknown[]): string {
     if (!Array.isArray(blocks) || blocks.length === 0) {
       console.log('⚠️ No blocks provided for markdown conversion');
       return '';
@@ -846,7 +846,7 @@ class UnifiedBlogService {
     return result;
   }
   
-  private convertInlineMarksToMarkdown(children: any[]): string {
+  private convertInlineMarksToMarkdown(children: unknown[]): string {
     if (!Array.isArray(children)) {
       console.log('⚠️ Children is not an array:', typeof children);
       return '';
@@ -867,7 +867,7 @@ class UnifiedBlogService {
       
       // Handle marks (bold, italic, code, etc.)
       if (child.marks && Array.isArray(child.marks)) {
-        child.marks.forEach((mark: any) => {
+        child.marks.forEach((mark: unknown) => {
           if (!mark || !mark._type) return;
           
           switch (mark._type) {
@@ -898,7 +898,7 @@ class UnifiedBlogService {
     }).join('');
   }
 
-  private calculateReadingTime(blocks: any[]): number {
+  private calculateReadingTime(blocks: unknown[]): number {
     if (!Array.isArray(blocks) || blocks.length === 0) {
       return 1;
     }
@@ -908,7 +908,7 @@ class UnifiedBlogService {
       .map(block => {
         if (block._type === 'block' && block.children) {
           return block.children
-            .map((child: any) => child.text || '')
+            .map((child: unknown) => child.text || '')
             .join(' ');
         }
         return '';
@@ -1022,7 +1022,7 @@ class UnifiedBlogService {
       }
 
       await this.retryOperation(async () => {
-        const updates: any = {};
+        const updates: unknown = {};
         if (engagementData.shares !== undefined) updates.shares = engagementData.shares;
         if (engagementData.engagementRate !== undefined) updates.engagementRate = engagementData.engagementRate;
         

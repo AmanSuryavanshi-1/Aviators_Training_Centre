@@ -1,10 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { enhancedClient } from '@/lib/sanity/client';
 
-export async function GET(
-  request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
-) {
+export async function GET(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     const { id } = await params;
     const post = await enhancedClient.fetch(`
@@ -36,7 +33,7 @@ export async function GET(
         seoDescription,
         focusKeyword
       }
-    `, { id: params.id });
+    `, { id });
 
     if (!post) {
       return NextResponse.json(
@@ -50,6 +47,24 @@ export async function GET(
     console.error('Error fetching blog post:', error);
     return NextResponse.json(
       { error: 'Failed to fetch blog post' },
+      { status: 500 }
+    );
+  }
+}
+
+export async function DELETE(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+  try {
+    const { id } = await params;
+    await enhancedClient.delete(id);
+    
+    return NextResponse.json(
+      { message: 'Blog post deleted successfully' },
+      { status: 200 }
+    );
+  } catch (error) {
+    console.error('Error deleting blog post:', error);
+    return NextResponse.json(
+      { error: 'Failed to delete blog post' },
       { status: 500 }
     );
   }

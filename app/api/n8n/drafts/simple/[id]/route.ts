@@ -3,13 +3,12 @@ import { enhancedClient } from '@/lib/sanity/client';
 import { logAutomationError } from '@/lib/n8n/simple-error-logger';
 
 // GET - Fetch a specific automated draft by ID
-export async function GET(
-  request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
-) {
+export async function GET(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+  let draftId: string = 'unknown';
+  
   try {
     const { id } = await params;
-    const draftId = params.id;
+    draftId = id;
     
     // Fetch the draft with all details
     const draft = await enhancedClient.fetch(
@@ -35,7 +34,7 @@ export async function GET(
     await logAutomationError(
       error instanceof Error ? error : new Error(String(error)),
       'fetch_draft_details',
-      { draftId: params.id }
+      { draftId }
     );
     
     return NextResponse.json(
@@ -48,14 +47,13 @@ export async function GET(
   }
 }
 
-// POST - Approve or reject a specific draft
-export async function POST(
-  request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
-) {
+// PUT - Approve or reject a specific draft
+export async function PUT(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+  let draftId: string = 'unknown';
+  
   try {
     const { id } = await params;
-    const draftId = params.id;
+    draftId = id;
     const body = await request.json();
     const { action, editorId, editorName, comments } = body;
     
@@ -126,7 +124,7 @@ export async function POST(
     await logAutomationError(
       error instanceof Error ? error : new Error(String(error)),
       'draft_action',
-      { draftId: params.id }
+      { draftId }
     );
     
     return NextResponse.json(
@@ -140,13 +138,10 @@ export async function POST(
 }
 
 // DELETE - Delete a draft
-export async function DELETE(
-  request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
-) {
+export async function DELETE(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     const { id } = await params;
-    const draftId = params.id;
+    const draftId = id;
     const { searchParams } = new URL(request.url);
     const editorId = searchParams.get('editorId');
     const editorName = searchParams.get('editorName');
@@ -181,10 +176,11 @@ export async function DELETE(
       message: 'Draft deleted successfully'
     });
   } catch (error) {
+    const { id } = await params;
     await logAutomationError(
       error instanceof Error ? error : new Error(String(error)),
       'delete_draft',
-      { draftId: params.id }
+      { draftId: id }
     );
     
     return NextResponse.json(
