@@ -1,6 +1,6 @@
-&apos;use client&apos;;
+'use client';
 
-import React, { Component, ErrorInfo, ReactNode } from &apos;react&apos;;
+import React, { Component, ErrorInfo, ReactNode } from 'react';
 
 interface Props {
   children: ReactNode;
@@ -27,7 +27,7 @@ export class BlogErrorBoundary extends Component<Props, State> {
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     // Log error details for debugging
-    console.error(&apos;Blog Error Boundary caught an error:&apos;, {
+    console.error('Blog Error Boundary caught an error:', {
       error: error.message,
       stack: error.stack,
       componentStack: errorInfo.componentStack,
@@ -40,7 +40,7 @@ export class BlogErrorBoundary extends Component<Props, State> {
     }
 
     // In production, you might want to send this to an error reporting service
-    if (process.env.NODE_ENV === &apos;production&apos;) {
+    if (process.env.NODE_ENV === 'production') {
       // Example: Send to error reporting service
       // errorReportingService.captureException(error, { extra: errorInfo });
     }
@@ -79,18 +79,18 @@ export class BlogErrorBoundary extends Component<Props, State> {
           
           <div className="text-sm text-red-700 mb-4">
             <p>
-              We&apos;re experiencing technical difficulties loading this content. 
+              We're experiencing technical difficulties loading this content. 
               Please try refreshing the page or contact support if the problem persists.
             </p>
             
-            {process.env.NODE_ENV === &apos;development&apos; && this.state.error && (
+            {process.env.NODE_ENV === 'development' && this.state.error && (
               <details className="mt-4 p-3 bg-red-100 rounded border">
                 <summary className="cursor-pointer font-medium">
                   Error Details (Development Only)
                 </summary>
                 <pre className="mt-2 text-xs overflow-auto">
                   {this.state.error.message}
-                  {&apos;\n\n&apos;}
+                  {'\n\n'}
                   {this.state.error.stack}
                 </pre>
               </details>
@@ -138,7 +138,7 @@ export function withBlogErrorBoundary<P extends object>(
 // Hook for handling async errors in functional components
 export function useBlogErrorHandler() {
   const handleError = React.useCallback((error: Error, context?: string) => {
-    console.error(`Blog error${context ? ` in ${context}` : &apos;&apos;}:`, {
+    console.error(`Blog error${context ? ` in ${context}` : ''}:`, {
       error: error.message,
       stack: error.stack,
       timestamp: new Date().toISOString(),
@@ -146,7 +146,7 @@ export function useBlogErrorHandler() {
     });
 
     // In production, you might want to send this to an error reporting service
-    if (process.env.NODE_ENV === &apos;production&apos;) {
+    if (process.env.NODE_ENV === 'production') {
       // Example: Send to error reporting service
       // errorReportingService.captureException(error, { extra: { context } });
     }
@@ -216,7 +216,7 @@ export const BlogListFallback = () => (
             Blog posts temporarily unavailable
           </h3>
           <p className="mt-1 text-sm text-blue-700">
-            We&apos;re having trouble loading the blog posts right now. Please check back in a few minutes.
+            We're having trouble loading the blog posts right now. Please check back in a few minutes.
           </p>
           <div className="mt-4">
             <button

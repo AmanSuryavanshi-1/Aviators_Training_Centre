@@ -12,7 +12,7 @@
  * - 1.4: System ignores other sources and only uses Sanity data
  */
 
-import { enhancedSanityBlogService, getImageUrl as getSanityImageUrl } from "./features/blog/enhanced-sanity-service';
+import { enhancedSanityBlogService, getImageUrl as getSanityImageUrl } from "./features/blog/enhanced-sanity-service";
 import {
   BlogPost,
   BlogPostPreview,

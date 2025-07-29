@@ -10,14 +10,9 @@ import { cn } from "@/components/ui/utils";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from '@/hooks/use-toast';
 import { useConversionTracking } from '@/hooks/use-conversion-tracking';
+import { useFormValidation, FormData } from '@/hooks/use-form-validation';
+import ValidationError, { FormValidationSummary, FieldWrapper } from './ValidationError';
 
-interface FormData {
-  name: string;
-  email: string;
-  phone: string;
-  subject: string;
-  message: string;
-}
 interface ContactFormCardProps {
   inquirySubjects: string[];
 }
@@ -31,9 +26,11 @@ const ContactFormCard: React.FC<ContactFormCardProps> = ({inquirySubjects}) => {
     const [loading, setLoading] = useState(false);
     const [isDemoBooking, setIsDemoBooking] = useState(false);
     const [isSubmitted, setIsSubmitted] = useState(false);
+    const [showValidationSummary, setShowValidationSummary] = useState(false);
     
     const { toast } = useToast();
     const { trackFormSubmission } = useConversionTracking();
+    const validation = useFormValidation();
 
     // Effect to handle URL parameters on component mount
     useEffect(() => {
@@ -71,26 +68,43 @@ const ContactFormCard: React.FC<ContactFormCardProps> = ({inquirySubjects}) => {
      */
     const handleFormSubmit = async (e: FormEvent) => {
         e.preventDefault();
-        // Check if subject is present when form is not in Demo booking mode.
-        if (!isDemoBooking && !subject) {
-            toast({
-                title: "Subject Required",
-
-                description: "Please select a subject for your inquiry.",
-                variant: "destructive",
-            });
-            return;
-        }
-        setLoading(true);
+        setShowValidationSummary(false);
 
         // Collect form data
         const formData: FormData = {
-          name,
+            name,
             email,
             phone,
             subject,
             message,
         };
+
+        // Validate form before submission
+        const isFormValid = validation.validateForm(formData, { isDemoBooking });
+        
+        if (!isFormValid) {
+            setShowValidationSummary(true);
+            toast({
+                title: "Validation Error",
+                description: "Please correct the highlighted fields and try again.",
+                variant: "destructive",
+            });
+            return;
+        }
+
+        // Additional check for subject in non-demo mode (legacy validation)
+        if (!isDemoBooking && !subject) {
+            validation.setError('subject', 'Please select a subject for your inquiry.');
+            setShowValidationSummary(true);
+            toast({
+                title: "Subject Required",
+                description: "Please select a subject for your inquiry.",
+                variant: "destructive",
+            });
+            return;
+        }
+
+        setLoading(true);
 
         try {
             // Send a POST request to the API with absolute URL in production
@@ -166,6 +180,9 @@ const ContactFormCard: React.FC<ContactFormCardProps> = ({inquirySubjects}) => {
                       setMessage('');
                   }
                   setIsSubmitted(false);
+                  // Clear validation errors
+                  validation.clearAllErrors();
+                  setShowValidationSummary(false);
               }, 3000); // Reset after 3 seconds
             } 
             // else {
@@ -226,6 +243,12 @@ const ContactFormCard: React.FC<ContactFormCardProps> = ({inquirySubjects}) => {
             </div>
           </motion.div>
         )}
+        
+        {/* Validation Summary */}
+        <FormValidationSummary 
+          errors={validation.errors} 
+          show={showValidationSummary}
+        />
         <form onSubmit={handleFormSubmit} className="space-y-5">
           <div className="grid grid-cols-1 gap-5">
             <div className="space-y-1.5">
@@ -234,10 +257,17 @@ const ContactFormCard: React.FC<ContactFormCardProps> = ({inquirySubjects}) => {
                 id="name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
+                onBlur={() => validation.validateField('name', name, { isDemoBooking })}
                 placeholder="e.g. John Doe"
                 required
-                className="focus-visible:ring-teal-500"
+                className={cn(
+                  "focus-visible:ring-teal-500",
+                  validation.errors.name && "border-red-500 focus:border-red-500 focus:ring-red-500"
+                )}
+                aria-invalid={!!validation.errors.name}
+                aria-describedby={validation.errors.name ? "name-error" : undefined}
               />
+              <ValidationError error={validation.errors.name} fieldId="name" />
             </div>
             <div className="space-y-1.5">
               <Label htmlFor="email" className="text-sm font-medium">Email Address</Label>
@@ -246,10 +276,17 @@ const ContactFormCard: React.FC<ContactFormCardProps> = ({inquirySubjects}) => {
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                onBlur={() => validation.validateField('email', email)}
                 placeholder="e.g. john.doe@email.com"
                 required
-                className="focus-visible:ring-teal-500"
+                className={cn(
+                  "focus-visible:ring-teal-500",
+                  validation.errors.email && "border-red-500 focus:border-red-500 focus:ring-red-500"
+                )}
+                aria-invalid={!!validation.errors.email}
+                aria-describedby={validation.errors.email ? "email-error" : undefined}
               />
+              <ValidationError error={validation.errors.email} fieldId="email" />
             </div>
           </div>
           <div className="grid grid-cols-1 gap-5">
@@ -259,9 +296,16 @@ const ContactFormCard: React.FC<ContactFormCardProps> = ({inquirySubjects}) => {
                 id="phone"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
+                onBlur={() => validation.validateField('phone', phone)}
                 placeholder="e.g. +91 12345 67890"
-                className="focus-visible:ring-teal-500"
+                className={cn(
+                  "focus-visible:ring-teal-500",
+                  validation.errors.phone && "border-red-500 focus:border-red-500 focus:ring-red-500"
+                )}
+                aria-invalid={!!validation.errors.phone}
+                aria-describedby={validation.errors.phone ? "phone-error" : undefined}
               />
+              <ValidationError error={validation.errors.phone} fieldId="phone" />
             </div>
             <div className="space-y-1.5">
               <Label htmlFor="subject" className="text-sm font-medium">Subject</Label>
@@ -270,19 +314,34 @@ const ContactFormCard: React.FC<ContactFormCardProps> = ({inquirySubjects}) => {
                   id="subject"
                   value={subject}
                   onChange={(e) => setSubject(e.target.value)}
+                  onBlur={() => validation.validateField('subject', subject, { isDemoBooking })}
                   readOnly={isDemoBooking}
                   className={cn(
                     "cursor-text",
                     "focus-visible:ring-teal-500",
+                    validation.errors.subject && "border-red-500 focus:border-red-500 focus:ring-red-500",
                     isDemoBooking && "cursor-not-allowed bg-muted/50"
                   )}
+                  aria-invalid={!!validation.errors.subject}
+                  aria-describedby={validation.errors.subject ? "subject-error" : undefined}
                 />
               ) : (
                 <Select
                   value={subject}
-                  onValueChange={setSubject}
+                  onValueChange={(value) => {
+                    setSubject(value);
+                    validation.validateField('subject', value, { isDemoBooking });
+                  }}
                 >
-                  <SelectTrigger id="subject-select" className="focus:ring-teal-500">
+                  <SelectTrigger 
+                    id="subject-select" 
+                    className={cn(
+                      "focus:ring-teal-500",
+                      validation.errors.subject && "border-red-500 focus:border-red-500 focus:ring-red-500"
+                    )}
+                    aria-invalid={!!validation.errors.subject}
+                    aria-describedby={validation.errors.subject ? "subject-error" : undefined}
+                  >
                     <SelectValue placeholder="Select a subject..." />
                   </SelectTrigger>
                   <SelectContent>
@@ -294,6 +353,7 @@ const ContactFormCard: React.FC<ContactFormCardProps> = ({inquirySubjects}) => {
                   </SelectContent>
                 </Select>
               )}
+              <ValidationError error={validation.errors.subject} fieldId="subject" />
             </div>
           </div>
           <div className="space-y-1.5">
@@ -302,15 +362,20 @@ const ContactFormCard: React.FC<ContactFormCardProps> = ({inquirySubjects}) => {
               id="message"
               value={message}
               onChange={(e) => setMessage(e.target.value)}
+              onBlur={() => validation.validateField('message', message, { isDemoBooking })}
               placeholder={isDemoBooking ? "Add any specific questions here..." : "Please provide details about your question or request..."}
               rows={5}
               required={!isDemoBooking}
               readOnly={isDemoBooking}
               className={cn("cursor-text",
                 "focus-visible:ring-teal-500",
+                validation.errors.message && "border-red-500 focus:border-red-500 focus:ring-red-500",
                 isDemoBooking && "bg-muted/50 cursor-not-allowed"
               )}
+              aria-invalid={!!validation.errors.message}
+              aria-describedby={validation.errors.message ? "message-error" : undefined}
             />
+            <ValidationError error={validation.errors.message} fieldId="message" />
           </div>
           <div>
             <Button

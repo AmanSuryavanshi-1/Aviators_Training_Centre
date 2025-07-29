@@ -337,7 +337,7 @@ export async function POST(req: NextRequest) {
       // Continue execution - don't return error to user if only this email fails
     }
 
-    // 2. Send Notification Emails to Owners
+    // 2. Send Notification Emails to Both Owners (single API call to avoid rate limits)
     const ownerTemplateVariables = {
       name: name,
       email: email,
@@ -351,36 +351,50 @@ export async function POST(req: NextRequest) {
     const ownerHtmlContent = getEmailTemplate('owner-notification', ownerTemplateVariables);
     
     if (ownerHtmlContent) {
-      // Send to Owner 1
+      // Send to both owners in a single API call
       try {
-        console.log('Preparing owner 1 notification email...');
+        console.log('Preparing owner notification emails for both owners...');
         
-        const owner1EmailResult = await resend.emails.send({
+        const ownerEmailResult = await resend.emails.send({
           from: `Aviators Training Centre <${fromEmail}>`,
-          to: [owner1Email],
+          to: [owner1Email, owner2Email], // Send to both owners at once
           subject: `New Contact Form Submission from ${name}`,
           html: ownerHtmlContent,
         });
         
-        console.log('Owner 1 notification email sent successfully:', owner1EmailResult);
-      } catch (owner1EmailError) {
-        console.error(`Error sending owner notification email to ${owner1Email}:`, owner1EmailError);
-      }
-
-      // Send to Owner 2
-      try {
-        console.log('Preparing owner 2 notification email...');
+        console.log('Owner notification emails sent successfully to both owners:', ownerEmailResult);
+      } catch (ownerEmailError) {
+        console.error('Error sending owner notification emails:', ownerEmailError);
         
-        const owner2EmailResult = await resend.emails.send({
-          from: `Aviators Training Centre <${fromEmail}>`,
-          to: [owner2Email],
-          subject: `New Contact Form Submission from ${name}`,
-          html: ownerHtmlContent,
-        });
+        // Fallback: Try sending individually with delay if batch sending fails
+        console.log('Attempting to send owner emails individually as fallback...');
         
-        console.log('Owner 2 notification email sent successfully:', owner2EmailResult);
-      } catch (owner2EmailError) {
-        console.error(`Error sending owner notification email to ${owner2Email}:`, owner2EmailError);
+        try {
+          console.log('Sending to owner 1...');
+          const owner1EmailResult = await resend.emails.send({
+            from: `Aviators Training Centre <${fromEmail}>`,
+            to: [owner1Email],
+            subject: `New Contact Form Submission from ${name}`,
+            html: ownerHtmlContent,
+          });
+          console.log('Owner 1 notification email sent successfully:', owner1EmailResult);
+          
+          // Wait 1 second to respect rate limits
+          console.log('Waiting 1 second before sending to owner 2...');
+          await new Promise(resolve => setTimeout(resolve, 1000));
+          
+          console.log('Sending to owner 2...');
+          const owner2EmailResult = await resend.emails.send({
+            from: `Aviators Training Centre <${fromEmail}>`,
+            to: [owner2Email],
+            subject: `New Contact Form Submission from ${name}`,
+            html: ownerHtmlContent,
+          });
+          console.log('Owner 2 notification email sent successfully:', owner2EmailResult);
+          
+        } catch (fallbackError) {
+          console.error('Fallback email sending also failed:', fallbackError);
+        }
       }
     } else {
       console.error('Failed to load owner notification template');

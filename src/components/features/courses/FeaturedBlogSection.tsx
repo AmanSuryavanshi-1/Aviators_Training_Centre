@@ -4,7 +4,7 @@ import React from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
-import BlogCard from "@/components/features/blog/BlogCard';
+import BlogCard from "@/components/features/blog/BlogCard";
 import { type BlogPostPreview } from '@/lib/types/blog';
 import { getFeaturedPosts } from '@/lib/blog/comprehensive-blog-data';
 
