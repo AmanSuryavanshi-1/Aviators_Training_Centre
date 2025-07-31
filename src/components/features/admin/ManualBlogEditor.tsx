@@ -81,7 +81,7 @@ export function ManualBlogEditor({
     excerpt: initialData.excerpt || '',
     content: initialData.content || '',
     category: initialData.category || '',
-    author: initialData.author || 'Aman Suryavanshi',
+    author: initialData.author || 'ATC Instructor',
     tags: initialData.tags || [],
     featured: initialData.featured || false,
     seoTitle: initialData.seoTitle || '',
@@ -517,7 +517,7 @@ export function ManualBlogEditor({
                             <SelectValue placeholder="Select an author" />
                           </SelectTrigger>
                           <SelectContent>
-                            <SelectItem value="Capt. Aman Suryavanshi">Capt. Aman Suryavanshi</SelectItem>
+                            <SelectItem value="Capt. ATC Instructor">Capt. ATC Instructor</SelectItem>
                             <SelectItem value="Capt. Ankit Kumar">Capt. Ankit Kumar</SelectItem>
                             <SelectItem value="Capt. Dhruv Shirkoli">Capt. Dhruv Shirkoli</SelectItem>
                             <SelectItem value="Capt. Saksham Engine">Capt. Saksham Engine</SelectItem>

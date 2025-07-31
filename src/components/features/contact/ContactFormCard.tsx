@@ -10,8 +10,10 @@ import { cn } from "@/components/ui/utils";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from '@/hooks/use-toast';
 import { useConversionTracking } from '@/hooks/use-conversion-tracking';
+import { trackFormSubmission } from '@/lib/analytics/client';
 import { useFormValidation, FormData } from '@/hooks/use-form-validation';
 import ValidationError, { FormValidationSummary, FieldWrapper } from './ValidationError';
+import { useContactAnalytics } from '@/hooks/useAnalytics';
 
 interface ContactFormCardProps {
   inquirySubjects: string[];
@@ -31,6 +33,7 @@ const ContactFormCard: React.FC<ContactFormCardProps> = ({inquirySubjects}) => {
     const { toast } = useToast();
     const { trackFormSubmission } = useConversionTracking();
     const validation = useFormValidation();
+    const { trackFormStart, trackFormSubmit } = useContactAnalytics();
 
     // Effect to handle URL parameters on component mount
     useEffect(() => {
@@ -59,6 +62,9 @@ const ContactFormCard: React.FC<ContactFormCardProps> = ({inquirySubjects}) => {
             setMessage(`I would like to book a demo${courseName ? ` for the ${courseName} course` : ''}. Please contact me to schedule a time.`);
         }
         // If neither condition is met (no messageFromUrl or it's a demo without a message param), message remains the initial empty string
+
+        // Track form start when user lands on contact form
+        trackFormStart();
 
     }, []); // Empty dependency array to run only once on component mount
     /**
@@ -146,11 +152,35 @@ const ContactFormCard: React.FC<ContactFormCardProps> = ({inquirySubjects}) => {
                   variant: "destructive",
               });
             } else {
-              // Track form submission for conversion analytics
+              // Track form submission for conversion analytics (legacy)
               await trackFormSubmission(isDemoBooking ? 'demo_request' : 'contact_inquiry', {
                 subject,
                 isDemoBooking,
                 timestamp: new Date().toISOString()
+              });
+
+              // New analytics tracking
+              const params = new URLSearchParams(window.location.search);
+              const referrerSlug = params.get('referrer');
+              await trackFormSubmission(
+                isDemoBooking ? 'demo_booking' : 'contact',
+                'contact',
+                {
+                  referrerSlug: referrerSlug || undefined,
+                  formData: {
+                    subject,
+                    isDemoBooking,
+                  },
+                  immediate: true
+                }
+              );
+
+              // Google Analytics 4 tracking
+              trackFormSubmit({
+                subject,
+                isDemoBooking,
+                courseName: params.get('courseName'),
+                referrerSlug: referrerSlug || undefined
               });
 
               // Show success toast with enhanced messaging

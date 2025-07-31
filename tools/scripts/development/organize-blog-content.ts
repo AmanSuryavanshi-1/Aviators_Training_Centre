@@ -164,7 +164,7 @@ title: "${post.title}"
 slug: "${post.slug}"
 category: "${post.category}"
 excerpt: "${post.excerpt}"
-author: "Aman Suryavanshi"
+author: "ATC Instructor"
 featured: true
 readingTime: 12
 quality: "${post.quality}"
@@ -191,7 +191,7 @@ title: "${post.title}"
 slug: "${post.slug}"
 category: "${post.category}"
 excerpt: "${post.excerpt}"
-author: "Aman Suryavanshi"
+author: "ATC Instructor"
 featured: true
 readingTime: 12
 quality: "${post.quality}"

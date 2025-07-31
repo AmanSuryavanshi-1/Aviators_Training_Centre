@@ -1,6 +1,6 @@
 /**
  * Script to create and publish 5 high-conversion aviation blog posts
- * Author: Aman Suryavanshi
+ * Author: ATC Instructor
  * Focus: SEO-optimized, conversion-focused aviation content
  */
 
@@ -14,15 +14,15 @@ const client = createClient({
   token: process.env.SANITY_API_TOKEN,
 });
 
-// Author profile for Aman Suryavanshi
+// Author profile for ATC Instructor
 const authorProfile = {
   _type: 'author',
-  _id: 'aman-suryavanshi',
-  name: 'Aman Suryavanshi',
-  slug: { current: 'aman-suryavanshi' },
+  _id: 'atc-instructor',
+  name: 'ATC Instructor',
+  slug: { current: 'atc-instructor' },
   role: 'Chief Flight Instructor & Aviation Career Consultant',
   credentials: 'ATPL, CFI, 12,000+ flight hours, 15+ years aviation experience',
-  bio: 'Aman Suryavanshi is a seasoned aviation professional with over 12,000 flight hours and 15 years of experience in commercial aviation. He holds an Airline Transport Pilot License (ATPL) and is a certified flight instructor specializing in DGCA exam preparation and commercial pilot training. Aman has helped over 500 students achieve their aviation dreams at Aviators Training Centre.',
+  bio: 'ATC Instructor is a seasoned aviation professional with over 12,000 flight hours and 15 years of experience in commercial aviation. He holds an Airline Transport Pilot License (ATPL) and is a certified flight instructor specializing in DGCA exam preparation and commercial pilot training. Aman has helped over 500 students achieve their aviation dreams at Aviators Training Centre.',
   email: 'aman@aviatorstrainingcentre.com',
 };
 

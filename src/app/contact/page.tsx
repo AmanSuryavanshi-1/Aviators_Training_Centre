@@ -5,6 +5,7 @@ import ContactHeader from "@/components/features/contact/ContactHeader";
 import ContactDetailsCard from "@/components/features/contact/ContactDetailsCard";
 import ContactFormCard from "@/components/features/contact/ContactFormCard";
 import { usePageViewTracking } from '@/hooks/use-conversion-tracking';
+import { trackContactVisit } from '@/lib/analytics/client';
 // import ContactMapSection from "@/components/features/contact/ContactMapSection';
 const aviationPrimary = 'text-teal-700 dark:text-teal-300';
 const sectionVariants = {
@@ -18,8 +19,21 @@ const itemVariants = {
 const ContactPage: React.FC = () => {
     const [isDemoBooking, setIsDemoBooking] = useState(false); // Add state for isDemoBooking
 
-    // Track contact page visit for conversion analytics
+    // Track contact page visit for conversion analytics (legacy)
     usePageViewTracking('contact');
+
+    // New analytics tracking
+    useEffect(() => {
+        const params = new URLSearchParams(window.location.search);
+        const referrerSlug = params.get('referrer');
+        const source = params.get('subject') === 'Book a Demo' ? 'cta' : 'direct';
+        
+        // Track contact visit with new analytics system
+        trackContactVisit(source, {
+            referrerSlug: referrerSlug || undefined,
+            immediate: false
+        });
+    }, []);
 
     useEffect(() => {
         // Move window-dependent logic here

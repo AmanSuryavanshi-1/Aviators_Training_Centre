@@ -124,7 +124,7 @@ export default function EditBlogPage() {
         content: formData.content.trim(),
         excerpt: formData.excerpt.trim(),
         category: formData.category.trim(),
-        author: formData.author?.trim() || 'Aman Suryavanshi',
+        author: formData.author?.trim() || 'ATC Instructor',
         tags: Array.isArray(formData.tags) ? formData.tags.filter(tag => tag.trim()) : [],
         featured: Boolean(formData.featured),
         seoTitle: formData.seoTitle?.trim() || `${formData.title} | Aviators Training Centre`,

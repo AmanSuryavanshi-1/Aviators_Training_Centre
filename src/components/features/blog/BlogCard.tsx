@@ -8,11 +8,36 @@ import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
-import { BlogPostPreview } from '@/lib/types/blog';
-import { safeBlogAccess, validateBlogData, getFallbackPost, handleBlogError } from '@/lib/blog/production-error-handler';
+import { sanitySimpleService } from '@/lib/sanity/client.simple';
+
+// Type definition for compatibility
+interface BlogPost {
+  _id: string;
+  title: string;
+  slug: { current: string };
+  excerpt: string;
+  publishedAt: string;
+  featured: boolean;
+  image?: {
+    asset: { _id: string; url: string };
+    alt?: string;
+  };
+  category: {
+    title: string;
+    slug: { current: string };
+    color?: string;
+  };
+  author?: {
+    name: string;
+    slug: { current: string };
+    image?: {
+      asset: { _id: string; url: string };
+    };
+  };
+}
 
 interface BlogCardProps {
-  post: BlogPostPreview;
+  post: BlogPost;
   viewMode?: 'grid' | 'list';
   variant?: 'default' | 'compact';
   featured?: boolean;
@@ -105,47 +130,53 @@ const BlogCard: React.FC<BlogCardProps> = ({
   const isListView = viewMode === 'list';
   const isCompact = variant === 'compact';
 
-  // Comprehensive error handling and validation
+  // Safe post data with fallbacks
   const safePost = React.useMemo(() => {
     try {
-      // Validate post data structure
-      if (!validateBlogData(post)) {
-        handleBlogError('Invalid blog post data received', { 
-          postId: post?._id,
-          operation: 'BlogCard.render' 
-        });
-        return getFallbackPost(post);
-      }
-
-      // Use safe access for all properties with fallbacks
       return {
-        _id: safeBlogAccess(() => post._id, `fallback-${Date.now()}`, { field: '_id' }),
-        title: safeBlogAccess(() => post.title, 'Aviation Article', { field: 'title' }),
-        slug: safeBlogAccess(() => post.slug, { current: 'aviation-article' }, { field: 'slug' }),
-        excerpt: safeBlogAccess(() => post.excerpt, 'Discover expert aviation insights and training guidance.', { field: 'excerpt' }),
-        readingTime: safeBlogAccess(() => post.readingTime, 5, { field: 'readingTime' }),
-        publishedAt: safeBlogAccess(() => post.publishedAt, new Date().toISOString(), { field: 'publishedAt' }),
-        category: safeBlogAccess(() => post.category, {
+        _id: post._id || `fallback-${Date.now()}`,
+        title: post.title || 'Aviation Article',
+        slug: post.slug || { current: 'aviation-article' },
+        excerpt: post.excerpt || 'Discover expert aviation insights and training guidance.',
+        readingTime: post.readingTime || 5,
+        publishedAt: post.publishedAt || new Date().toISOString(),
+        category: post.category || {
           title: 'Aviation',
           slug: { current: 'aviation' },
           color: '#075E68'
-        }, { field: 'category' }),
-        author: safeBlogAccess(() => post.author, {
+        },
+        author: post.author || {
           name: 'Aviation Expert',
-          slug: { current: 'aviation-expert' },
-          role: 'Flight Instructor'
-        }, { field: 'author' }),
-        tags: safeBlogAccess(() => post.tags, [], { field: 'tags' }),
-        image: safeBlogAccess(() => post.image, null, { field: 'image' }),
-        featured: safeBlogAccess(() => post.featured, false, { field: 'featured' }),
-        difficulty: safeBlogAccess(() => post.difficulty, undefined, { field: 'difficulty' }),
+          slug: { current: 'aviation-expert' }
+        },
+        tags: post.tags || [],
+        image: post.image || null,
+        featured: post.featured || false,
+        featuredOnHome: post.featuredOnHome || false,
       };
     } catch (error) {
-      handleBlogError(error as Error, { 
-        operation: 'BlogCard.safePost',
-        postId: post?._id 
-      });
-      return getFallbackPost(post);
+      console.error('Error processing blog post data:', error);
+      return {
+        _id: `fallback-${Date.now()}`,
+        title: 'Aviation Article',
+        slug: { current: 'aviation-article' },
+        excerpt: 'Discover expert aviation insights and training guidance.',
+        readingTime: 5,
+        publishedAt: new Date().toISOString(),
+        category: {
+          title: 'Aviation',
+          slug: { current: 'aviation' },
+          color: '#075E68'
+        },
+        author: {
+          name: 'Aviation Expert',
+          slug: { current: 'aviation-expert' }
+        },
+        tags: [],
+        image: null,
+        featured: false,
+        featuredOnHome: false,
+      };
     }
   }, [post]);
 
@@ -154,13 +185,20 @@ const BlogCard: React.FC<BlogCardProps> = ({
     return null;
   }
 
-  // Get image source safely
+  // Get image source safely using Sanity service
   const getImageSrc = () => {
-    if (safePost.image?.asset) {
-      if (typeof safePost.image.asset === 'string') {
-        return safePost.image.asset;
+    if (safePost.image && safePost.image.asset) {
+      try {
+        return sanitySimpleService.getImageUrl(safePost.image, {
+          width: 400,
+          height: 300,
+          quality: 85,
+          format: 'webp'
+        });
+      } catch (error) {
+        console.error('Error getting image URL:', error);
+        return null;
       }
-      return (safePost.image.asset as any)?.url || null;
     }
     return null;
   };
@@ -295,11 +333,15 @@ const BlogCard: React.FC<BlogCardProps> = ({
                 <div className="flex gap-1 overflow-hidden">
                   {safePost.tags.slice(0, 2).map((tag, index) => (
                     <Badge 
-                      key={`${tag}-${index}`}
+                      key={`${tag.slug?.current || tag.title}-${index}`}
                       variant="secondary" 
                       className="text-xs px-2 py-0.5 bg-muted/50 text-muted-foreground hover:bg-muted transition-colors flex-shrink-0 max-w-[80px] truncate"
+                      style={{ 
+                        backgroundColor: tag.color ? `${tag.color}20` : undefined,
+                        borderColor: tag.color || undefined
+                      }}
                     >
-                      {tag}
+                      {tag.title}
                     </Badge>
                   ))}
                   {safePost.tags.length > 2 && (
@@ -327,11 +369,9 @@ const BlogCard: React.FC<BlogCardProps> = ({
                   <p className="text-sm font-medium text-foreground truncate">
                     {safePost.author.name}
                   </p>
-                  {safePost.author.role && (
-                    <p className="text-xs text-muted-foreground truncate">
-                      {safePost.author.role}
-                    </p>
-                  )}
+                  <p className="text-xs text-muted-foreground truncate">
+                    Aviation Expert
+                  </p>
                 </div>
               </div>
 

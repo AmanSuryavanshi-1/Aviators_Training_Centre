@@ -154,8 +154,8 @@ class ProductionContentDeployer {
 
     // Prepare author data
     const author = {
-      name: 'Captain Aman Suryavanshi',
-      slug: 'aman-suryavanshi',
+      name: 'ATC Instructor',
+      slug: 'atc-instructor',
       bio: 'Senior Aviation Instructor and Commercial Pilot with over 10 years of experience in DGCA training and aviation education.',
       credentials: [
         'Commercial Pilot License (CPL)',

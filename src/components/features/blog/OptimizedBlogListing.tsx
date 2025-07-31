@@ -6,9 +6,42 @@ import { Search, Filter, Grid, List, BookOpen, TrendingUp, RefreshCw } from 'luc
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { simpleBlogService } from '@/lib/blog/simple-blog-service';
+import { sanitySimpleService } from '@/lib/sanity/client.simple';
+
+// Type definitions for compatibility
+interface BlogPost {
+  _id: string;
+  title: string;
+  slug: { current: string };
+  excerpt: string;
+  publishedAt: string;
+  featured: boolean;
+  image?: {
+    asset: { _id: string; url: string };
+    alt?: string;
+  };
+  category: {
+    title: string;
+    slug: { current: string };
+    color?: string;
+  };
+  author?: {
+    name: string;
+    slug: { current: string };
+    image?: {
+      asset: { _id: string; url: string };
+    };
+  };
+}
+
+interface Category {
+  _id: string;
+  title: string;
+  slug: { current: string };
+  description?: string;
+  color?: string;
+}
 import BlogCard from './BlogCard';
-import { BlogPostPreview, BlogCategory } from '@/lib/types/blog';
 import { useRealTimeSync } from '@/hooks/use-real-time-sync';
 
 const OptimizedBlogListing: React.FC = () => {
@@ -20,10 +53,10 @@ const OptimizedBlogListing: React.FC = () => {
   const { optimisticUpdate, isConnected, isPending } = useRealTimeSync();
 
   // State for blog data
-  const [posts, setPosts] = React.useState<BlogPostPreview[]>([]);
-  const [featuredPosts, setFeaturedPosts] = React.useState<BlogPostPreview[]>([]);
-  const [categories, setCategories] = React.useState<BlogCategory[]>([]);
-  const [filteredPosts, setFilteredPosts] = React.useState<BlogPostPreview[]>([]);
+  const [posts, setPosts] = React.useState<BlogPost[]>([]);
+  const [featuredPosts, setFeaturedPosts] = React.useState<BlogPost[]>([]);
+  const [categories, setCategories] = React.useState<Category[]>([]);
+  const [filteredPosts, setFilteredPosts] = React.useState<BlogPost[]>([]);
   const [isLoading, setIsLoading] = React.useState(true);
   const [error, setError] = React.useState<string | null>(null);
 
@@ -34,11 +67,11 @@ const OptimizedBlogListing: React.FC = () => {
       setError(null);
       console.log('🔄 Loading blog data from Sanity CMS via unified service...');
       
-      // Load all data from unified service
+      // Load all data from Sanity service
       const [allPosts, featured, cats] = await Promise.all([
-        simpleBlogService.getAllPosts(),
-        simpleBlogService.getAllPosts({ featured: true }),
-        simpleBlogService.getAllCategories()
+        sanitySimpleService.getAllPosts({ limit: 50 }),
+        sanitySimpleService.getAllPosts({ limit: 6 }).then(posts => posts.filter(p => p.featured)),
+        sanitySimpleService.getCategories()
       ]);
 
       console.log(`✅ Loaded ${allPosts.length} posts, ${featured.length} featured, ${cats.length} categories from Sanity`);
@@ -87,7 +120,7 @@ const OptimizedBlogListing: React.FC = () => {
       filtered = filtered.filter(post =>
         post.title.toLowerCase().includes(query) ||
         post.excerpt.toLowerCase().includes(query) ||
-        (post.tags || []).some(tag => tag.toLowerCase().includes(query))
+        (post.tags || []).some(tag => tag.title.toLowerCase().includes(query))
       );
     }
 

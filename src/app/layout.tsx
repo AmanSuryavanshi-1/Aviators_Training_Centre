@@ -9,6 +9,7 @@ import { Analytics } from '@vercel/analytics/react';
 import Script from 'next/script';
 import ServiceWorkerRegistration from "@/components/features/blog/ServiceWorkerRegistration";
 import ErrorHandlingProvider from "@/components/shared/ErrorHandlingProvider";
+import { AnalyticsProvider } from "@/components/providers/AnalyticsProvider";
 
 // Initialize automation system
 if (typeof window === 'undefined') {
@@ -167,7 +168,7 @@ export default function RootLayout({
         </noscript>
         {/* End Meta Pixel Code */}
 
-        {/* Google tag (gtag.js) */}
+        {/* Google tag (gtag.js) - Enhanced for proper domain tracking */}
         <Script
           strategy="afterInteractive"
           src={`https://www.googletagmanager.com/gtag/js?id=G-XSRFEJCB7N`}
@@ -182,7 +183,25 @@ export default function RootLayout({
               gtag('js', new Date());
               gtag('config', 'G-XSRFEJCB7N', {
                 page_title: document.title,
-                page_location: window.location.href
+                page_location: window.location.href,
+                cookie_domain: 'aviatorstrainingcentre.in',
+                custom_map: {
+                  'custom_parameter_1': 'traffic_source',
+                  'custom_parameter_2': 'ai_platform',
+                  'custom_parameter_3': 'campaign_source'
+                },
+                // Enhanced tracking for your domain
+                send_page_view: true,
+                anonymize_ip: false,
+                allow_google_signals: true,
+                allow_ad_personalization_signals: true
+              });
+              
+              // Track domain information
+              gtag('event', 'domain_info', {
+                'current_domain': window.location.hostname,
+                'canonical_domain': 'www.aviatorstrainingcentre.in',
+                'is_production': window.location.hostname === 'www.aviatorstrainingcentre.in'
               });
             `,
           }}
@@ -195,23 +214,25 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <ErrorHandlingProvider
-            enableGlobalErrorTracking={true}
-            enableToastNotifications={true}
-            enableConnectionMonitoring={true}
-          >
-            <div className="flex flex-col min-h-screen bg-background text-foreground">
-              <Header />
-              <main className="flex-grow">
-                {children}
-              </main>
-              <Footer />
-              {/* <Toaster /> */} {/* Removed to avoid conflict with custom toast system */}
-            </div>
-            <WhatsAppChat />
-            <Analytics />
-            <ServiceWorkerRegistration />
-          </ErrorHandlingProvider>
+          <AnalyticsProvider>
+            <ErrorHandlingProvider
+              enableGlobalErrorTracking={true}
+              enableToastNotifications={true}
+              enableConnectionMonitoring={true}
+            >
+              <div className="flex flex-col min-h-screen bg-background text-foreground">
+                <Header />
+                <main className="flex-grow">
+                  {children}
+                </main>
+                <Footer />
+                {/* <Toaster /> */} {/* Removed to avoid conflict with custom toast system */}
+              </div>
+              <WhatsAppChat />
+              <Analytics />
+              <ServiceWorkerRegistration />
+            </ErrorHandlingProvider>
+          </AnalyticsProvider>
         </ThemeProvider>
       </body>
     </html>

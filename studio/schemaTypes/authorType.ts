@@ -66,8 +66,8 @@ export const authorType = defineType({
       type: 'text',
       group: 'profile',
       rows: 4,
-      validation: (rule) => rule.required().min(100).max(500),
-      description: 'Professional biography highlighting aviation experience',
+      validation: (rule) => rule.min(100).max(500),
+      description: 'Professional biography highlighting aviation experience (optional)',
     }),
     defineField({
       name: 'role',
@@ -135,7 +135,7 @@ export const authorType = defineType({
           },
         },
       ],
-      description: 'Aviation licenses and certifications',
+      description: 'Aviation licenses and certifications (if you see a type mismatch error, please clear this field and re-add credentials)',
     }),
     defineField({
       name: 'experience',
@@ -172,10 +172,10 @@ export const authorType = defineType({
       group: 'permissions',
       options: {
         list: [
-          {title: '👑 Admin Author', value: 'admin'},
-          {title: '✅ Senior Author', value: 'senior'},
-          {title: '📝 Regular Author', value: 'regular'},
-          {title: '🆕 Guest Author', value: 'guest'},
+          {title: 'Admin Author', value: 'admin'},
+          {title: 'Senior Author', value: 'senior'},
+          {title: 'Regular Author', value: 'regular'},
+          {title: 'Guest Author', value: 'guest'},
         ],
       },
       initialValue: 'regular',
@@ -279,9 +279,9 @@ export const authorType = defineType({
       group: 'permissions',
       options: {
         list: [
-          {title: '✅ Active', value: 'active'},
-          {title: '⏸️ Inactive', value: 'inactive'},
-          {title: '🚫 Suspended', value: 'suspended'},
+          {title: 'Active', value: 'active'},
+          {title: 'Inactive', value: 'inactive'},
+          {title: 'Suspended', value: 'suspended'},
         ],
       },
       initialValue: 'active',
@@ -340,24 +340,24 @@ export const authorType = defineType({
       status: 'status',
     },
     prepare({title, media, role, authorLevel, status}) {
-      const levelEmojis = {
-        admin: '👑',
-        senior: '✅',
-        regular: '📝',
-        guest: '🆕',
+      const levelLabels = {
+        admin: 'Admin',
+        senior: 'Senior',
+        regular: 'Regular',
+        guest: 'Guest',
       }
       
-      const statusEmojis = {
-        active: '✅',
-        inactive: '⏸️',
-        suspended: '🚫',
+      const statusLabels = {
+        active: 'Active',
+        inactive: 'Inactive',
+        suspended: 'Suspended',
       }
       
-      const levelEmoji = levelEmojis[authorLevel as keyof typeof levelEmojis] || '📝'
-      const statusEmoji = statusEmojis[status as keyof typeof statusEmojis] || '✅'
+      const levelLabel = levelLabels[authorLevel as keyof typeof levelLabels] || 'Regular'
+      const statusLabel = statusLabels[status as keyof typeof statusLabels] || 'Active'
       
       return {
-        title: `${levelEmoji} ${statusEmoji} ${title}`,
+        title: `${title} (${levelLabel} - ${statusLabel})`,
         media,
         subtitle: role || 'Aviation Professional',
       }

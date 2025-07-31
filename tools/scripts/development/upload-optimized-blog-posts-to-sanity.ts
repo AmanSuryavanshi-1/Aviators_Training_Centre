@@ -54,9 +54,9 @@ const categoryMapping: Record<string, { title: string; slug: string; color: stri
 
 // Author mapping
 const authorMapping: Record<string, any> = {
-  'Aman Suryavanshi': {
-    name: 'Aman Suryavanshi',
-    slug: { current: 'aman-suryavanshi' },
+  'ATC Instructor': {
+    name: 'ATC Instructor',
+    slug: { current: 'atc-instructor' },
     bio: 'Senior Flight Instructor with 15+ years of experience in aviation training and DGCA examination preparation.',
     role: 'Chief Flight Instructor',
     credentials: 'ATPL, CFI, DGCA Approved Examiner',
@@ -229,7 +229,7 @@ async function createOrGetCategory(categoryName: string): Promise<any> {
 
 // Create or get author
 async function createOrGetAuthor(authorName: string): Promise<any> {
-  const authorInfo = authorMapping[authorName] || authorMapping['Aman Suryavanshi'];
+  const authorInfo = authorMapping[authorName] || authorMapping['ATC Instructor'];
 
   // Check if author exists
   const existingAuthor = await client.fetch(
@@ -290,7 +290,7 @@ async function uploadOptimizedBlogPosts() {
 
       // Create category and author
       const category = await createOrGetCategory(postMeta.category);
-      const author = await createOrGetAuthor(frontMatter.author || 'Aman Suryavanshi');
+      const author = await createOrGetAuthor(frontMatter.author || 'ATC Instructor');
 
       if (!category || !author) {
         console.error(`❌ Failed to create category or author for: ${postMeta.title}`);

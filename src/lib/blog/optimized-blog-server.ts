@@ -28,14 +28,14 @@ const categoryMapping: Record<string, { title: string; slug: string; color: stri
 
 // Author mapping
 const authorMapping: Record<string, BlogAuthor> = {
-  'Aman Suryavanshi': {
-    _id: 'aman-suryavanshi',
+  'ATC Instructor': {
+    _id: 'atc-instructor',
     _type: 'author',
     _createdAt: '2024-01-01T00:00:00Z',
     _updatedAt: '2024-01-01T00:00:00Z',
     _rev: 'v1',
-    name: 'Aman Suryavanshi',
-    slug: { current: 'aman-suryavanshi' },
+    name: 'ATC Instructor',
+    slug: { current: 'atc-instructor' },
     bio: 'Senior Flight Instructor with 15+ years of experience in aviation training and DGCA examination preparation.',
     role: 'Chief Flight Instructor',
     credentials: 'ATPL, CFI, DGCA Approved Examiner',
@@ -217,8 +217,8 @@ export function loadBlogData(): { posts: BlogPost[]; categories: BlogCategory[];
         
         // Get category and author
         const categoryInfo = categoryMapping[postMeta.category];
-        const authorName = frontMatter.author || 'Aman Suryavanshi';
-        const author = authorMapping[authorName] || authorMapping['Aman Suryavanshi'];
+        const authorName = frontMatter.author || 'ATC Instructor';
+        const author = authorMapping[authorName] || authorMapping['ATC Instructor'];
         
         if (!categoryInfo) {
           console.warn(`Unknown category: ${postMeta.category}`);

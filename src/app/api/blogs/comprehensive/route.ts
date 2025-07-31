@@ -106,7 +106,7 @@ export async function POST(request: NextRequest) {
     const content = formData.get('content') as string;
     const excerpt = formData.get('excerpt') as string;
     const category = formData.get('category') as string || 'General';
-    const author = formData.get('author') as string || 'Aman Suryavanshi';
+    const author = formData.get('author') as string || 'ATC Instructor';
     const tags = (formData.get('tags') as string || '').split(',').filter(tag => tag.trim());
     const featured = formData.get('featured') === 'true';
 

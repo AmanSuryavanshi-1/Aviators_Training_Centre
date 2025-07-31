@@ -41,7 +41,7 @@ const defaultFormData: EnhancedBlogFormData = {
   excerpt: '',
   content: '',
   category: '',
-  author: 'Aman Suryavanshi',
+  author: 'ATC Instructor',
   tags: [],
   featured: false,
   seoTitle: '',
@@ -93,7 +93,7 @@ export function EnhancedBlogEditor({
         excerpt: initialData.excerpt || '',
         content: initialData.content || '',
         category: initialData.category || '',
-        author: initialData.author || 'Aman Suryavanshi',
+        author: initialData.author || 'ATC Instructor',
         tags: Array.isArray(initialData.tags) ? initialData.tags : [],
         featured: Boolean(initialData.featured),
         seoTitle: initialData.seoTitle || '',
@@ -125,7 +125,7 @@ export function EnhancedBlogEditor({
         excerpt: initialData.excerpt || '',
         content: initialData.content || '',
         category: initialData.category || '',
-        author: initialData.author || 'Aman Suryavanshi',
+        author: initialData.author || 'ATC Instructor',
         tags: initialData.tags || [],
         featured: initialData.featured || false,
         seoTitle: initialData.seoTitle || '',
@@ -781,7 +781,7 @@ export function EnhancedBlogEditor({
                         placeholder="Enter author name (optional)"
                       />
                       <p className="text-xs text-slate-500">
-                        If left empty, will default to "Aman Suryavanshi"
+                        If left empty, will default to "ATC Instructor"
                       </p>
                     </div>
                   </div>

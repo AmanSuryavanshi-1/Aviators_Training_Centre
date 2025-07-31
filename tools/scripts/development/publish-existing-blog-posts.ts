@@ -48,7 +48,7 @@ interface BlogPostFrontMatter {
 
 async function createAuthorIfNotExists() {
   // Check if author exists
-  const existingAuthor = await client.fetch(`*[_type == "author" && slug.current == "aman-suryavanshi"][0]`);
+  const existingAuthor = await client.fetch(`*[_type == "author" && slug.current == "atc-instructor"][0]`);
   
   if (existingAuthor) {
     console.log('✅ Author already exists:', existingAuthor.name);
@@ -58,8 +58,8 @@ async function createAuthorIfNotExists() {
   // Create author
   const author = await client.create({
     _type: 'author',
-    name: 'Aman Suryavanshi',
-    slug: { current: 'aman-suryavanshi' },
+    name: 'ATC Instructor',
+    slug: { current: 'atc-instructor' },
     bio: 'Senior Aviation Instructor and Commercial Pilot with over 10 years of experience in DGCA training and aviation education. Expert in CPL/ATPL ground school preparation and career guidance.',
     credentials: [
       'Commercial Pilot License (CPL)',
@@ -251,7 +251,7 @@ async function main() {
     console.log('\n📊 Summary:');
     console.log(`- Total posts processed: ${metadata.totalPosts}`);
     console.log(`- Categories created: ${Object.keys(categoryIds).length}`);
-    console.log(`- Author: Aman Suryavanshi`);
+    console.log(`- Author: ATC Instructor`);
     console.log('\n✅ Blog posts are now available on the website!');
 
   } catch (error) {

@@ -1,0 +1,182 @@
+/* Aviation-themed Blog Content Styles */
+.prose {
+  /* Tables */
+  table {
+    @apply w-full border-collapse border border-aviation-accent/30 my-8 rounded-lg overflow-hidden shadow-sm;
+  }
+  
+  table th {
+    @apply bg-aviation-primary text-white border border-aviation-primary px-4 py-3 text-left font-semibold;
+  }
+  
+  table td {
+    @apply border border-aviation-accent/20 px-4 py-3 text-aviation-text;
+  }
+  
+  table thead tr {
+    @apply bg-aviation-primary;
+  }
+  
+  table tbody tr:nth-child(even) {
+    @apply bg-aviation-light/10;
+  }
+  
+  table tbody tr:hover {
+    @apply bg-aviation-accent/10 transition-colors;
+  }
+  
+  /* Sections */
+  section {
+    @apply mb-10;
+  }
+  
+  /* Navigation */
+  nav ul {
+    @apply list-none pl-0;
+  }
+  
+  nav li {
+    @apply mb-3;
+  }
+  
+  nav a {
+    @apply text-aviation-primary hover:text-aviation-secondary hover:underline font-medium transition-colors;
+  }
+  
+  /* Lists */
+  ul {
+    @apply list-disc pl-6 mb-6 space-y-2;
+  }
+  
+  ol {
+    @apply list-decimal pl-6 mb-6 space-y-2;
+  }
+  
+  li {
+    @apply leading-relaxed text-aviation-text;
+  }
+  
+  li::marker {
+    @apply text-aviation-primary;
+  }
+  
+  /* Headings with aviation theme */
+  h1 {
+    @apply text-4xl font-heading font-bold mt-12 mb-6 text-aviation-primary border-b-2 border-aviation-accent/30 pb-3;
+  }
+  
+  h2 {
+    @apply text-3xl font-heading font-bold mt-10 mb-5 text-aviation-secondary relative;
+  }
+  
+  h2::before {
+    content: '';
+    @apply absolute -left-4 top-1/2 transform -translate-y-1/2 w-1 h-8 bg-aviation-primary rounded;
+  }
+  
+  h3 {
+    @apply text-2xl font-heading font-bold mt-8 mb-4 text-aviation-tertiary;
+  }
+  
+  h4 {
+    @apply text-xl font-heading font-semibold mt-6 mb-3 text-aviation-text;
+  }
+  
+  h5 {
+    @apply text-lg font-heading font-semibold mt-4 mb-2 text-aviation-text;
+  }
+  
+  h6 {
+    @apply text-base font-heading font-semibold mt-3 mb-2 text-aviation-text;
+  }
+  
+  /* Paragraphs */
+  p {
+    @apply mb-6 leading-relaxed text-aviation-text text-lg;
+  }
+  
+  /* Emphasis */
+  strong {
+    @apply font-bold text-aviation-primary;
+  }
+  
+  em {
+    @apply italic text-aviation-secondary;
+  }
+  
+  /* Links with aviation theme */
+  a {
+    @apply text-aviation-primary hover:text-aviation-secondary hover:underline font-medium transition-all duration-200 relative;
+  }
+  
+  a:hover {
+    @apply shadow-sm;
+  }
+  
+  /* Blockquotes */
+  blockquote {
+    @apply border-l-4 border-aviation-primary bg-aviation-light/10 pl-6 pr-4 py-4 my-8 italic rounded-r-lg;
+  }
+  
+  blockquote p {
+    @apply text-aviation-secondary mb-0;
+  }
+  
+  /* Code blocks */
+  pre {
+    @apply bg-aviation-text text-white p-6 rounded-lg my-8 overflow-x-auto;
+  }
+  
+  code {
+    @apply bg-aviation-light/20 text-aviation-primary px-2 py-1 rounded text-sm font-mono;
+  }
+  
+  pre code {
+    @apply bg-transparent text-white px-0 py-0;
+  }
+  
+  /* Images */
+  img {
+    @apply rounded-lg shadow-md my-8 border border-aviation-accent/20;
+  }
+  
+  /* Footer */
+  footer {
+    @apply mt-16 pt-8 border-t-2 border-aviation-accent/30;
+  }
+  
+  footer small {
+    @apply text-sm text-aviation-text/70;
+  }
+  
+  /* Article structure */
+  article {
+    @apply max-w-none;
+  }
+  
+  /* Header */
+  header {
+    @apply mb-10;
+  }
+  
+  /* Custom callout boxes */
+  .callout {
+    @apply border-l-4 p-6 my-8 rounded-r-lg shadow-sm;
+  }
+  
+  .callout-info {
+    @apply border-aviation-primary bg-aviation-light/10;
+  }
+  
+  .callout-warning {
+    @apply border-yellow-500 bg-yellow-50;
+  }
+  
+  .callout-success {
+    @apply border-green-500 bg-green-50;
+  }
+  
+  .callout-error {
+    @apply border-red-500 bg-red-50;
+  }
+}

@@ -1,6 +1,7 @@
-import {postType} from './postType'
+import {postType} from './postType.simple'
 import {categoryType} from './categoryType'
 import {authorType} from './authorType'
+import {tagType} from './tagType'
 import {courseType} from './courseType'
 import {workflowType} from './workflowType'
 import {ctaTemplateType} from './ctaTemplateType'
@@ -13,6 +14,7 @@ export const schemaTypes = [
   postType, 
   categoryType, 
   authorType, 
+  tagType,
   courseType, 
   workflowType,
   ctaTemplateType,

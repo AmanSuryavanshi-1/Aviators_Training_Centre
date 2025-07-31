@@ -185,7 +185,7 @@ class ContentPublishingWorkflowService {
               priority: data.metadata?.priority || 50,
               wordCount: data.metadata?.wordCount,
               category: data.metadata?.category,
-              author: 'Captain Aman Suryavanshi',
+              author: 'ATC Instructor',
               createdAt: stats.birthtime.toISOString(),
               updatedAt: stats.mtime.toISOString(),
               filePath: filePath,

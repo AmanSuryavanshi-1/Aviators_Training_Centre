@@ -1,0 +1,10 @@
+Analyzing div structure in blog page:
+
+Opening divs:
+1. <div className="min-h-screen bg-background"> (line ~43)
+2. <div className="container mx-auto px-4 py-8"> (line ~44)  
+3. <div className="max-w-4xl mx-auto"> (line ~46)
+4. <div className="mb-8"> (line ~47)
+5. <div className="flex items-center gap-2 text-sm text-muted-foreground mb-4"> (line ~48)
+
+Need to find all closing </div> tags to match them up.

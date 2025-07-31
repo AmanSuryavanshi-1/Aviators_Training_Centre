@@ -25,12 +25,21 @@ import SyncErrorHandler from '@/components/shared/SyncErrorHandler';
 import { useErrorHandlingContext } from '@/components/shared/ErrorHandlingProvider';
 import { useComprehensiveErrorHandling } from '@/hooks/use-comprehensive-error-handling';
 import { simpleBlogService } from '@/lib/blog/simple-blog-service';
+// Firebase connection status is now fetched via API route
+import { sanitySimpleService } from '@/lib/sanity/client.simple';
 
 interface SystemHealth {
   sanity: 'healthy' | 'unhealthy' | 'checking';
-  database: 'healthy' | 'unhealthy' | 'checking';
+  firestore: 'healthy' | 'unhealthy' | 'checking';
   api: 'healthy' | 'unhealthy' | 'checking';
   cache: 'healthy' | 'unhealthy' | 'checking';
+}
+
+interface DetailedHealthStatus {
+  status: 'healthy' | 'unhealthy' | 'checking';
+  latency?: number;
+  error?: string;
+  details?: any;
 }
 
 interface PerformanceMetrics {
@@ -43,10 +52,12 @@ interface PerformanceMetrics {
 const SystemStatusDashboard: React.FC = () => {
   const [systemHealth, setSystemHealth] = useState<SystemHealth>({
     sanity: 'checking',
-    database: 'checking',
+    firestore: 'checking',
     api: 'checking',
     cache: 'checking'
   });
+
+  const [detailedHealth, setDetailedHealth] = useState<Record<string, DetailedHealthStatus>>({});
   
   const [performanceMetrics, setPerformanceMetrics] = useState<PerformanceMetrics>({
     responseTime: 0,
@@ -74,42 +85,170 @@ const SystemStatusDashboard: React.FC = () => {
         // Check Sanity CMS
         setSystemHealth(prev => ({ ...prev, sanity: 'checking' }));
         try {
-          // Simple Sanity health check
-          const testPosts = await simpleBlogService.getAllPosts({ limit: 1 });
+          const sanityStartTime = Date.now();
+          // Use the enhanced Sanity service for health check
+          const testPosts = await sanitySimpleService.getAllPosts({ limit: 1 });
+          const sanityLatency = Date.now() - sanityStartTime;
+          
           const isHealthy = Array.isArray(testPosts) && testPosts.length >= 0;
           setSystemHealth(prev => ({ 
             ...prev, 
             sanity: isHealthy ? 'healthy' : 'unhealthy' 
           }));
+          setDetailedHealth(prev => ({
+            ...prev,
+            sanity: {
+              status: isHealthy ? 'healthy' : 'unhealthy',
+              latency: sanityLatency,
+              details: { postsCount: testPosts.length }
+            }
+          }));
         } catch (error) {
           setSystemHealth(prev => ({ ...prev, sanity: 'unhealthy' }));
+          setDetailedHealth(prev => ({
+            ...prev,
+            sanity: {
+              status: 'unhealthy',
+              error: error instanceof Error ? error.message : 'Unknown error'
+            }
+          }));
           handleError(error, { operation: 'Sanity Health Check' });
+        }
+
+        // Check Firestore via API route
+        setSystemHealth(prev => ({ ...prev, firestore: 'checking' }));
+        try {
+          const firestoreStartTime = Date.now();
+          const response = await fetch('/api/firebase/status', { 
+            method: 'GET',
+            cache: 'no-cache' 
+          });
+          const firestoreLatency = Date.now() - firestoreStartTime;
+          
+          if (response.ok) {
+            const result = await response.json();
+            const connectionStatus = result.data;
+            const isHealthy = connectionStatus.status === 'healthy';
+            const isConfigError = result.error?.isConfigurationError;
+            
+            setSystemHealth(prev => ({ 
+              ...prev, 
+              firestore: isConfigError ? 'unhealthy' : (isHealthy ? 'healthy' : 'unhealthy')
+            }));
+            setDetailedHealth(prev => ({
+              ...prev,
+              firestore: {
+                status: isConfigError ? 'unhealthy' : (isHealthy ? 'healthy' : 'unhealthy'),
+                latency: connectionStatus.details?.connection?.latency || firestoreLatency,
+                details: connectionStatus.details,
+                configurationError: isConfigError,
+                message: isConfigError ? 'Firebase credentials not configured' : undefined
+              }
+            }));
+          } else {
+            throw new Error(`Firebase status API returned ${response.status}`);
+          }
+        } catch (error) {
+          setSystemHealth(prev => ({ ...prev, firestore: 'unhealthy' }));
+          setDetailedHealth(prev => ({
+            ...prev,
+            firestore: {
+              status: 'unhealthy',
+              error: error instanceof Error ? error.message : 'Unknown error'
+            }
+          }));
+          handleError(error, { operation: 'Firestore Health Check' });
         }
 
         // Check API endpoints
         setSystemHealth(prev => ({ ...prev, api: 'checking' }));
         try {
-          const response = await fetch('/api/blog/health');
+          const apiStartTime = Date.now();
+          const endpoints = [
+            '/api/blog/health',
+            '/api/analytics/pageview',
+            '/api/sanity/health'
+          ];
+          
+          const endpointResults = await Promise.allSettled(
+            endpoints.map(async (endpoint) => {
+              const response = await fetch(endpoint, { method: 'GET' });
+              return { endpoint, ok: response.ok, status: response.status };
+            })
+          );
+          
+          const apiLatency = Date.now() - apiStartTime;
+          const healthyEndpoints = endpointResults.filter(
+            result => result.status === 'fulfilled' && result.value.ok
+          ).length;
+          
+          const isHealthy = healthyEndpoints >= endpoints.length * 0.8; // 80% success rate
           setSystemHealth(prev => ({ 
             ...prev, 
-            api: response.ok ? 'healthy' : 'unhealthy' 
+            api: isHealthy ? 'healthy' : 'unhealthy' 
+          }));
+          setDetailedHealth(prev => ({
+            ...prev,
+            api: {
+              status: isHealthy ? 'healthy' : 'unhealthy',
+              latency: apiLatency,
+              details: { 
+                healthyEndpoints, 
+                totalEndpoints: endpoints.length,
+                results: endpointResults 
+              }
+            }
           }));
         } catch (error) {
           setSystemHealth(prev => ({ ...prev, api: 'unhealthy' }));
+          setDetailedHealth(prev => ({
+            ...prev,
+            api: {
+              status: 'unhealthy',
+              error: error instanceof Error ? error.message : 'Unknown error'
+            }
+          }));
           handleError(error, { operation: 'API Health Check' });
         }
 
-        // Check database (simulated)
-        setSystemHealth(prev => ({ ...prev, database: 'checking' }));
-        setTimeout(() => {
-          setSystemHealth(prev => ({ ...prev, database: 'healthy' }));
-        }, 500);
-
-        // Check cache (simulated)
+        // Check cache (Next.js ISR)
         setSystemHealth(prev => ({ ...prev, cache: 'checking' }));
-        setTimeout(() => {
+        try {
+          const cacheStartTime = Date.now();
+          // Test cache by making a request to a cached page
+          const response = await fetch('/api/cache/status', { 
+            method: 'GET',
+            cache: 'no-cache' 
+          });
+          const cacheLatency = Date.now() - cacheStartTime;
+          
+          const isHealthy = response.ok;
+          setSystemHealth(prev => ({ 
+            ...prev, 
+            cache: isHealthy ? 'healthy' : 'unhealthy' 
+          }));
+          setDetailedHealth(prev => ({
+            ...prev,
+            cache: {
+              status: isHealthy ? 'healthy' : 'unhealthy',
+              latency: cacheLatency,
+              details: { 
+                hitRate: performanceMetrics.cacheHitRate,
+                status: response.status 
+              }
+            }
+          }));
+        } catch (error) {
+          // Cache check is non-critical, assume healthy if endpoint doesn't exist
           setSystemHealth(prev => ({ ...prev, cache: 'healthy' }));
-        }, 300);
+          setDetailedHealth(prev => ({
+            ...prev,
+            cache: {
+              status: 'healthy',
+              details: { note: 'Cache status endpoint not available, assuming healthy' }
+            }
+          }));
+        }
 
         const endTime = Date.now();
         setPerformanceMetrics(prev => ({
@@ -229,6 +368,30 @@ const SystemStatusDashboard: React.FC = () => {
               <p className="text-xs text-muted-foreground">
                 Content Management
               </p>
+              {detailedHealth.sanity?.latency && (
+                <p className="text-xs text-muted-foreground mt-1">
+                  {detailedHealth.sanity.latency}ms
+                </p>
+              )}
+            </div>
+
+            {/* Firestore */}
+            <div className={`p-3 rounded-lg border ${getHealthColor(systemHealth.firestore)}`}>
+              <div className="flex items-center justify-between mb-2">
+                <div className="flex items-center gap-2">
+                  <Database className="h-4 w-4" />
+                  <span className="text-sm font-medium">Firestore</span>
+                </div>
+                {getHealthIcon(systemHealth.firestore)}
+              </div>
+              <p className="text-xs text-muted-foreground">
+                Analytics Storage
+              </p>
+              {detailedHealth.firestore?.latency && (
+                <p className="text-xs text-muted-foreground mt-1">
+                  {detailedHealth.firestore.latency}ms
+                </p>
+              )}
             </div>
 
             {/* API */}
@@ -241,22 +404,13 @@ const SystemStatusDashboard: React.FC = () => {
                 {getHealthIcon(systemHealth.api)}
               </div>
               <p className="text-xs text-muted-foreground">
-                Blog Endpoints
+                Blog & Analytics Endpoints
               </p>
-            </div>
-
-            {/* Database */}
-            <div className={`p-3 rounded-lg border ${getHealthColor(systemHealth.database)}`}>
-              <div className="flex items-center justify-between mb-2">
-                <div className="flex items-center gap-2">
-                  <Database className="h-4 w-4" />
-                  <span className="text-sm font-medium">Database</span>
-                </div>
-                {getHealthIcon(systemHealth.database)}
-              </div>
-              <p className="text-xs text-muted-foreground">
-                Data Storage
-              </p>
+              {detailedHealth.api?.details && (
+                <p className="text-xs text-muted-foreground mt-1">
+                  {detailedHealth.api.details.healthyEndpoints}/{detailedHealth.api.details.totalEndpoints} healthy
+                </p>
+              )}
             </div>
 
             {/* Cache */}
@@ -269,8 +423,13 @@ const SystemStatusDashboard: React.FC = () => {
                 {getHealthIcon(systemHealth.cache)}
               </div>
               <p className="text-xs text-muted-foreground">
-                Performance Layer
+                Next.js ISR
               </p>
+              {detailedHealth.cache?.details?.hitRate && (
+                <p className="text-xs text-muted-foreground mt-1">
+                  {detailedHealth.cache.details.hitRate}% hit rate
+                </p>
+              )}
             </div>
           </div>
 
@@ -356,6 +515,131 @@ const SystemStatusDashboard: React.FC = () => {
                 value={performanceMetrics.cacheHitRate} 
                 className="h-2"
               />
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Detailed System Information */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Server className="h-5 w-5" />
+            System Details
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Sanity Details */}
+            <div className="space-y-3">
+              <h4 className="font-medium text-sm">Sanity CMS</h4>
+              <div className="space-y-2 text-sm">
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground">Status:</span>
+                  <Badge variant={systemHealth.sanity === 'healthy' ? 'default' : 'destructive'}>
+                    {systemHealth.sanity}
+                  </Badge>
+                </div>
+                {detailedHealth.sanity?.latency && (
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">Response Time:</span>
+                    <span>{detailedHealth.sanity.latency}ms</span>
+                  </div>
+                )}
+                {detailedHealth.sanity?.error && (
+                  <div className="text-red-600 text-xs">
+                    Error: {detailedHealth.sanity.error}
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Firestore Details */}
+            <div className="space-y-3">
+              <h4 className="font-medium text-sm">Firestore Analytics</h4>
+              <div className="space-y-2 text-sm">
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground">Status:</span>
+                  <Badge variant={systemHealth.firestore === 'healthy' ? 'default' : 'destructive'}>
+                    {systemHealth.firestore}
+                  </Badge>
+                </div>
+                {detailedHealth.firestore?.latency && (
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">Response Time:</span>
+                    <span>{detailedHealth.firestore.latency}ms</span>
+                  </div>
+                )}
+                {detailedHealth.firestore?.details?.services && (
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">Services:</span>
+                    <span>
+                      {detailedHealth.firestore.details.services.firestore ? '✓' : '✗'} Firestore{' '}
+                      {detailedHealth.firestore.details.services.auth ? '✓' : '✗'} Auth
+                    </span>
+                  </div>
+                )}
+                {detailedHealth.firestore?.error && (
+                  <div className="text-red-600 text-xs">
+                    Error: {detailedHealth.firestore.error}
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* API Details */}
+            <div className="space-y-3">
+              <h4 className="font-medium text-sm">API Endpoints</h4>
+              <div className="space-y-2 text-sm">
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground">Status:</span>
+                  <Badge variant={systemHealth.api === 'healthy' ? 'default' : 'destructive'}>
+                    {systemHealth.api}
+                  </Badge>
+                </div>
+                {detailedHealth.api?.details && (
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">Healthy Endpoints:</span>
+                    <span>
+                      {detailedHealth.api.details.healthyEndpoints}/{detailedHealth.api.details.totalEndpoints}
+                    </span>
+                  </div>
+                )}
+                {detailedHealth.api?.latency && (
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">Response Time:</span>
+                    <span>{detailedHealth.api.latency}ms</span>
+                  </div>
+                )}
+                {detailedHealth.api?.error && (
+                  <div className="text-red-600 text-xs">
+                    Error: {detailedHealth.api.error}
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Cache Details */}
+            <div className="space-y-3">
+              <h4 className="font-medium text-sm">Cache System</h4>
+              <div className="space-y-2 text-sm">
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground">Status:</span>
+                  <Badge variant={systemHealth.cache === 'healthy' ? 'default' : 'destructive'}>
+                    {systemHealth.cache}
+                  </Badge>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground">Hit Rate:</span>
+                  <span>{performanceMetrics.cacheHitRate}%</span>
+                </div>
+                {detailedHealth.cache?.latency && (
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">Response Time:</span>
+                    <span>{detailedHealth.cache.latency}ms</span>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </CardContent>

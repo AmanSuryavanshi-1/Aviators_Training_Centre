@@ -402,7 +402,7 @@ class SimpleBlogService {
       console.error('Error finding/creating author:', error);
       // Return a default author ID if available
       const defaultAuthor = await client.fetch(
-        `*[_type == "author" && name == "Aman Suryavanshi"][0]._id`
+        `*[_type == "author" && name == "ATC Instructor"][0]._id`
       );
       return defaultAuthor || 'default-author';
     }

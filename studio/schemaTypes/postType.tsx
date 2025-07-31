@@ -1,9 +1,19 @@
+import React from 'react'
 import {defineField, defineType} from 'sanity'
+import {ComprehensivePreview} from '../components/ComprehensivePreview'
+import {RealTimeSEOAnalyzer} from '../components/RealTimeSEOAnalyzer'
+import {PreviewStatusIndicator} from '../components/PreviewStatusIndicator'
+import {SEOAuditPanel} from '../components/SEOAuditPanel'
+import {SEOWarningBanner} from '../components/SEOWarningBanner'
+import {SocialImageGenerator} from '../components/SocialImageGenerator'
 
 export const postType = defineType({
   name: 'post',
   title: 'Blog Post',
   type: 'document',
+  components: {
+    preview: ComprehensivePreview,
+  },
   groups: [
     {
       name: 'content',
@@ -24,6 +34,26 @@ export const postType = defineType({
     },
   ],
   fields: [
+    // SEO Warning Banner (appears at top)
+    defineField({
+      name: 'seoWarnings',
+      title: 'SEO Status',
+      type: 'object',
+      group: 'content',
+      fields: [
+        {
+          name: 'placeholder',
+          type: 'string',
+          title: 'Placeholder',
+          hidden: true,
+        }
+      ],
+      components: {
+        input: (props) => <SEOWarningBanner document={props.document} />
+      },
+      description: 'SEO status and warnings',
+    }),
+
     defineField({
       name: 'title',
       title: 'Title',
@@ -74,6 +104,14 @@ export const postType = defineType({
       validation: (rule) => rule.required(),
     }),
     defineField({
+      name: 'tags',
+      title: 'Tags',
+      type: 'array',
+      group: 'content',
+      of: [{type: 'reference', to: [{type: 'tag'}]}],
+      description: 'Select relevant tags for better content organization and SEO',
+    }),
+    defineField({
       name: 'author',
       title: 'Author',
       type: 'reference',
@@ -91,20 +129,27 @@ export const postType = defineType({
           type: 'block',
           styles: [
             {title: 'Normal', value: 'normal'},
+            {title: 'H1', value: 'h1'},
             {title: 'H2', value: 'h2'},
             {title: 'H3', value: 'h3'},
             {title: 'H4', value: 'h4'},
+            {title: 'H5', value: 'h5'},
+            {title: 'H6', value: 'h6'},
             {title: 'Quote', value: 'blockquote'},
+            {title: 'Code Block', value: 'code'},
           ],
           lists: [
             {title: 'Bullet', value: 'bullet'},
             {title: 'Numbered', value: 'number'},
+            {title: 'Checklist', value: 'checklist'},
           ],
           marks: {
             decorators: [
               {title: 'Strong', value: 'strong'},
               {title: 'Emphasis', value: 'em'},
               {title: 'Code', value: 'code'},
+              {title: 'Underline', value: 'underline'},
+              {title: 'Strike', value: 'strike-through'},
             ],
             annotations: [
               {
@@ -116,6 +161,29 @@ export const postType = defineType({
                     title: 'URL',
                     name: 'href',
                     type: 'url',
+                    validation: (rule) => rule.required(),
+                  },
+                  {
+                    title: 'Open in new tab',
+                    name: 'blank',
+                    type: 'boolean',
+                    initialValue: false,
+                  },
+                ],
+              },
+              {
+                title: 'Internal Link',
+                name: 'internalLink',
+                type: 'object',
+                fields: [
+                  {
+                    title: 'Reference',
+                    name: 'reference',
+                    type: 'reference',
+                    to: [
+                      {type: 'post'},
+                      {type: 'course'},
+                    ],
                   },
                 ],
               },
@@ -131,16 +199,186 @@ export const postType = defineType({
               type: 'string',
               title: 'Alt Text',
               validation: (rule) => rule.required(),
+              description: 'Describe the image for accessibility and SEO',
             },
             {
               name: 'caption',
               type: 'string',
               title: 'Caption',
+              description: 'Optional caption displayed below the image',
+            },
+            {
+              name: 'attribution',
+              type: 'string',
+              title: 'Attribution',
+              description: 'Photo credit or source attribution',
             },
           ]
-        }
+        },
+        {
+          type: 'object',
+          name: 'callout',
+          title: 'Callout Box',
+          fields: [
+            {
+              name: 'type',
+              title: 'Type',
+              type: 'string',
+              options: {
+                list: [
+                  {title: 'Info', value: 'info'},
+                  {title: 'Warning', value: 'warning'},
+                  {title: 'Success', value: 'success'},
+                  {title: 'Error', value: 'error'},
+                  {title: 'Tip', value: 'tip'},
+                ],
+              },
+              initialValue: 'info',
+            },
+            {
+              name: 'title',
+              title: 'Title',
+              type: 'string',
+            },
+            {
+              name: 'content',
+              title: 'Content',
+              type: 'text',
+              rows: 3,
+            },
+          ],
+          preview: {
+            select: {
+              title: 'title',
+              type: 'type',
+              content: 'content',
+            },
+            prepare({title, type, content}) {
+              const typeEmojis = {
+                info: 'ℹ️',
+                warning: '⚠️',
+                success: '✅',
+                error: '❌',
+                tip: '💡',
+              }
+              const emoji = typeEmojis[type as keyof typeof typeEmojis] || 'ℹ️'
+              return {
+                title: `${emoji} ${title || 'Callout'}`,
+                subtitle: content,
+              }
+            },
+          },
+        },
+        {
+          type: 'object',
+          name: 'codeBlock',
+          title: 'Code Block',
+          fields: [
+            {
+              name: 'language',
+              title: 'Language',
+              type: 'string',
+              options: {
+                list: [
+                  {title: 'JavaScript', value: 'javascript'},
+                  {title: 'TypeScript', value: 'typescript'},
+                  {title: 'Python', value: 'python'},
+                  {title: 'HTML', value: 'html'},
+                  {title: 'CSS', value: 'css'},
+                  {title: 'JSON', value: 'json'},
+                  {title: 'Bash', value: 'bash'},
+                  {title: 'Plain Text', value: 'text'},
+                ],
+              },
+              initialValue: 'text',
+            },
+            {
+              name: 'code',
+              title: 'Code',
+              type: 'text',
+              rows: 10,
+            },
+            {
+              name: 'filename',
+              title: 'Filename',
+              type: 'string',
+              description: 'Optional filename to display',
+            },
+          ],
+          preview: {
+            select: {
+              language: 'language',
+              filename: 'filename',
+              code: 'code',
+            },
+            prepare({language, filename, code}) {
+              return {
+                title: `💻 ${filename || `${language} code`}`,
+                subtitle: code?.substring(0, 100) + (code?.length > 100 ? '...' : ''),
+              }
+            },
+          },
+        },
+        // Raw HTML block for direct HTML content
+        {
+          type: 'object',
+          name: 'htmlBlock',
+          title: 'HTML Block',
+          fields: [
+            {
+              name: 'html',
+              title: 'HTML Content',
+              type: 'text',
+              rows: 10,
+              description: 'Raw HTML content',
+            },
+            {
+              name: 'description',
+              title: 'Description',
+              type: 'string',
+              description: 'Brief description of this HTML block',
+            },
+          ],
+          preview: {
+            select: {
+              html: 'html',
+              description: 'description',
+            },
+            prepare({html, description}) {
+              return {
+                title: `🔧 ${description || 'HTML Block'}`,
+                subtitle: html?.substring(0, 100) + (html?.length > 100 ? '...' : ''),
+              }
+            },
+          },
+        },
       ],
       validation: (rule) => rule.required(),
+      description: 'Main content of the blog post. Supports rich text, images, callouts, and code blocks. HTML can be pasted and will be converted automatically.',
+    }),
+    // Alias field for content (some imports might use 'content' instead of 'body')
+    defineField({
+      name: 'content',
+      title: 'Content (Alias)',
+      type: 'array',
+      group: 'content',
+      hidden: true, // Hide from UI since we use 'body'
+      of: [
+        {
+          type: 'block',
+        }
+      ],
+      description: 'Alias for body field to support different import formats',
+    }),
+    // Raw HTML content field for direct HTML imports
+    defineField({
+      name: 'htmlContent',
+      title: 'Raw HTML Content',
+      type: 'text',
+      group: 'content',
+      rows: 20,
+      hidden: true, // Hide from UI unless needed
+      description: 'Raw HTML content for direct imports (use body field for structured content)',
     }),
     defineField({
       name: 'publishedAt',
@@ -165,7 +403,51 @@ export const postType = defineType({
       group: 'settings',
       initialValue: 5,
       validation: (rule) => rule.min(1).max(60),
+      description: 'Automatically calculated based on content length (can be manually overridden)',
     }),
+    defineField({
+      name: 'wordCount',
+      title: 'Word Count',
+      type: 'number',
+      group: 'settings',
+      description: 'Automatically calculated from content',
+    }),
+    defineField({
+      name: 'ctaPositions',
+      title: 'CTA Position Tracking',
+      type: 'array',
+      group: 'cta',
+      of: [{type: 'number'}],
+      description: 'Word count intervals where CTAs are positioned (automatically tracked)',
+    }),
+    defineField({
+      name: 'featuredOnHome',
+      title: 'Featured on Home Page',
+      type: 'boolean',
+      group: 'settings',
+      initialValue: false,
+      description: 'Display this post in the featured section on the home page',
+    }),
+    // SEO Audit Panel
+    defineField({
+      name: 'seoAudit',
+      title: 'SEO Audit & Analysis',
+      type: 'object',
+      group: 'seo',
+      fields: [
+        {
+          name: 'placeholder',
+          type: 'string',
+          title: 'Placeholder',
+          hidden: true,
+        }
+      ],
+      components: {
+        input: (props) => <SEOAuditPanel document={props.document} />
+      },
+      description: 'Comprehensive SEO analysis and recommendations',
+    }),
+
     // Enhanced SEO Fields
     defineField({
       name: 'seoTitle',
@@ -174,6 +456,14 @@ export const postType = defineType({
       group: 'seo',
       validation: (rule) => rule.max(60),
       description: 'Optimized title for search engines (max 60 characters)',
+      components: {
+        input: (props) => (
+          <div>
+            {props.renderDefault(props)}
+            <RealTimeSEOAnalyzer document={props.document} />
+          </div>
+        ),
+      },
     }),
     defineField({
       name: 'seoDescription',
@@ -220,6 +510,26 @@ export const postType = defineType({
           title: 'Alt Text',
         }
       ],
+    }),
+
+    // Social Image Generator
+    defineField({
+      name: 'socialImageGenerator',
+      title: 'Generate Social Media Images',
+      type: 'object',
+      group: 'seo',
+      fields: [
+        {
+          name: 'placeholder',
+          type: 'string',
+          title: 'Placeholder',
+          hidden: true,
+        }
+      ],
+      components: {
+        input: (props) => <SocialImageGenerator document={props.document} />
+      },
+      description: 'Automatically generate optimized social media images',
     }),
     // Structured Data Fields
     defineField({
@@ -479,6 +789,15 @@ export const postType = defineType({
       ],
       description: 'Automatically tracked performance metrics',
     }),
+    // Additional fields that might be used in imports
+    defineField({
+      name: 'estimatedReadingTime',
+      title: 'Estimated Reading Time (Legacy)',
+      type: 'number',
+      group: 'settings',
+      hidden: true, // Hide since we use performanceMetrics.estimatedReadingTime
+      description: 'Legacy field for reading time',
+    }),
     // Content Validation
     defineField({
       name: 'contentValidation',
@@ -512,6 +831,26 @@ export const postType = defineType({
         },
       ],
       description: 'Content validation status',
+    }),
+
+    // Preview Status (read-only display)
+    defineField({
+      name: 'previewStatus',
+      title: 'Preview Status',
+      type: 'object',
+      group: 'settings',
+      readOnly: true,
+      fields: [
+        {
+          name: 'placeholder',
+          type: 'string',
+          title: 'Placeholder'
+        }
+      ],
+      components: {
+        input: PreviewStatusIndicator
+      },
+      description: 'Preview availability and status information',
     }),
   ],
   preview: {

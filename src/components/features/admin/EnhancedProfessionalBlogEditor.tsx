@@ -81,7 +81,7 @@ export default function EnhancedProfessionalBlogEditor({
   onSave,
   onPreview,
   categories = ['DGCA Exam Preparation', 'Pilot Training', 'Aviation Career', 'Flight Training'],
-  authors = ['Aman Suryavanshi', 'Aviation Expert', 'Chief Flight Instructor']
+  authors = ['ATC Instructor', 'Aviation Expert', 'Chief Flight Instructor']
 }: EnhancedProfessionalBlogEditorProps) {
   const [formData, setFormData] = useState<BlogPost>(post || initialPost);
   const [isLoading, setIsLoading] = useState(false);

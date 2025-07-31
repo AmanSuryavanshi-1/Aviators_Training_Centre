@@ -92,7 +92,7 @@ At Aviators Training Centre, we've successfully guided hundreds of students thro
 
 **Take the first step toward your aviation career today.**`,
     category: "DGCA Exam Preparation",
-    author: "Aman Suryavanshi",
+    author: "ATC Instructor",
     tags: ["DGCA", "Commercial Pilot License", "CPL", "Aviation Career", "Pilot Training", "India"],
     featured: true,
     readingTime: 18,
@@ -152,7 +152,7 @@ Significant salary increase and command authority.
 
 At Aviators Training Centre, we prepare aviation professionals for successful, high-earning careers with industry connections and placement assistance. Our graduates consistently secure positions with leading airlines and achieve competitive salaries.`,
     category: "Career Guidance",
-    author: "Aman Suryavanshi",
+    author: "ATC Instructor",
     tags: ["Pilot Salary", "Aviation Career", "Commercial Pilot", "Airline Jobs", "Career Growth"],
     featured: true,
     readingTime: 15,
@@ -202,7 +202,7 @@ Electric Vertical Take-Off and Landing (eVTOL) aircraft are set to revolutionize
 
 At Aviators Training Centre (ATC), we've invested in state-of-the-art flight simulation technology to provide our students with the most effective training experience possible.`,
     category: "Flight Training",
-    author: "Aman Suryavanshi",
+    author: "ATC Instructor",
     tags: ["Flight Simulator", "Pilot Training", "Aviation Technology", "Flight Safety", "Training Efficiency"],
     featured: false,
     readingTime: 12,
@@ -244,7 +244,7 @@ Electric Vertical Take-Off and Landing (eVTOL) aircraft are set to revolutionize
 
 At Aviators Training Centre, we ensure our students are prepared for this technological future. Our curriculum includes training on the latest avionics systems, sustainable aviation practices, and emerging technologies that will define the next generation of aviation.`,
     category: "Aviation Technology",
-    author: "Aman Suryavanshi",
+    author: "ATC Instructor",
     tags: ["Aviation Technology", "Future of Aviation", "AI in Aviation", "Aircraft Systems", "Innovation"],
     featured: false,
     readingTime: 11,
@@ -282,7 +282,7 @@ Safety professionals develop and implement safety management systems, conduct au
 
 At Aviators Training Centre, we believe in opening doors to all aviation opportunities. Whether you dream of being a pilot or are interested in the diverse career paths that support aviation, we can help you find your perfect fit in this exciting industry.`,
     category: "Industry Insights",
-    author: "Aman Suryavanshi",
+    author: "ATC Instructor",
     tags: ["Airline Careers", "Aviation Industry", "Career Opportunities", "Aviation Management", "Airport Jobs"],
     featured: false,
     readingTime: 13,

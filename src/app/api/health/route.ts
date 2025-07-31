@@ -1,18 +1,26 @@
-import { NextResponse } from 'next/server';
+import { NextResponse } from 'next/server'
 
 export async function GET() {
   try {
-    return NextResponse.json({
+    const health = {
       status: 'healthy',
-      message: 'Blog system is operational',
       timestamp: new Date().toISOString(),
-      service: 'simple-blog-service'
-    });
+      services: {
+        nextjs: 'healthy',
+        sanity: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID ? 'configured' : 'not-configured',
+        firebase: (process.env.FIREBASE_PROJECT_ID && process.env.FIREBASE_PRIVATE_KEY) ? 'configured' : 'not-configured',
+        email: process.env.RESEND_API_KEY ? 'configured' : 'not-configured'
+      },
+      version: '1.0.0',
+      uptime: process.uptime()
+    }
+
+    return NextResponse.json(health)
   } catch (error) {
     return NextResponse.json({
       status: 'unhealthy',
-      message: 'Blog service error',
-      timestamp: new Date().toISOString()
-    }, { status: 503 });
+      timestamp: new Date().toISOString(),
+      error: error instanceof Error ? error.message : 'Unknown error'
+    }, { status: 500 })
   }
 }

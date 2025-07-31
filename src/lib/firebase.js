@@ -1,6 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp, getApps, getApp } from "firebase/app";
 import { getDatabase } from "firebase/database";
+import { getFirestore } from "firebase/firestore";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -19,7 +20,12 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
+
+// Initialize Realtime Database (for contact forms)
 const db = getDatabase(app);
 
-export { app, db };
+// Initialize Firestore (for analytics)
+const firestore = getFirestore(app);
+
+export { app, db, firestore };
 // const analytics = getAnalytics(app);

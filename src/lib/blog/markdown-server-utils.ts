@@ -64,7 +64,7 @@ class MarkdownBlogReader {
         slug: data.slug || path.basename(filePath, '.md'),
         excerpt: data.excerpt || '',
         category: data.category || 'General',
-        author: data.author || 'Aman Suryavanshi',
+        author: data.author || 'ATC Instructor',
         tags: data.tags || [],
         featured: isFeatured,
         readingTime: readingTime,

@@ -132,9 +132,9 @@ const CATEGORY_MAPPINGS = {
 
 // Author information
 const AUTHORS = {
-  "aman-suryavanshi": {
-    name: "Aman Suryavanshi",
-    slug: "aman-suryavanshi",
+  "atc-instructor": {
+    name: "ATC Instructor",
+    slug: "atc-instructor",
     bio: "Senior Flight Instructor with 15+ years of experience in aviation training and DGCA examination preparation.",
     role: "Chief Flight Instructor",
     credentials: "ATPL, CFI, DGCA Approved Examiner",
@@ -329,15 +329,15 @@ function markdownToPortableText(markdown: string): any[] {
 function getAuthorForPost(postSlug: string): any {
   // Map posts to specific authors
   const authorMappings: Record<string, string> = {
-    'dgca-cpl-complete-guide-2024': 'aman-suryavanshi',
+    'dgca-cpl-complete-guide-2024': 'atc-instructor',
     'dgca-medical-examination-tips-aspiring-pilots': 'dr-priya-sharma',
     'pilot-salary-india-2024-career-earnings-guide': 'capt-rajesh-kumar',
-    'flight-simulator-training-benefits-student-pilots': 'aman-suryavanshi',
-    'aviation-technology-trends-future-flying-2024': 'aman-suryavanshi',
+    'flight-simulator-training-benefits-student-pilots': 'atc-instructor',
+    'aviation-technology-trends-future-flying-2024': 'atc-instructor',
     'airline-industry-career-opportunities-beyond-pilot-jobs': 'capt-rajesh-kumar'
   };
 
-  const authorKey = authorMappings[postSlug] || 'aman-suryavanshi';
+  const authorKey = authorMappings[postSlug] || 'atc-instructor';
   return AUTHORS[authorKey as keyof typeof AUTHORS];
 }
 

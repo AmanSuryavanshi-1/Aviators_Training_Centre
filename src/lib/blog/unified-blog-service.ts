@@ -344,8 +344,8 @@ class UnifiedBlogService {
             color: post.category?.color || '#075E68'
           },
           author: {
-            name: post.author?.name || 'Aman Suryavanshi',
-            slug: post.author?.slug || { current: 'aman-suryavanshi' },
+            name: post.author?.name || 'ATC Instructor',
+            slug: post.author?.slug || { current: 'atc-instructor' },
             role: post.author?.role || 'Instructor',
             image: post.author?.image,
             bio: post.author?.bio

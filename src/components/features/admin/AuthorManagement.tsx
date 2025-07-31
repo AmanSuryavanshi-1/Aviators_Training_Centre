@@ -256,9 +256,9 @@ const AuthorManagement: React.FC<AuthorManagementProps> = ({
       {/* Authors Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredAuthors.map((author) => {
-          const levelConfig = authorLevelConfig[author.authorLevel]
-          const statusConfig_ = statusConfig[author.status]
-          const LevelIcon = levelConfig.icon
+          const levelConfig = authorLevelConfig[author.authorLevel] || authorLevelConfig.regular
+          const statusConfig_ = statusConfig[author.status] || statusConfig.active
+          const LevelIcon = levelConfig?.icon || User
 
           return (
             <Card key={author._id} className="hover:shadow-lg transition-shadow">

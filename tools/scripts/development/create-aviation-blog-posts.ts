@@ -1,16 +1,16 @@
 /**
  * Script to create 5 high-conversion aviation blog posts in Sanity CMS
- * Author: Aman Suryavanshi
+ * Author: ATC Instructor
  * These posts are designed for maximum SEO impact and conversion potential
  */
 
 import { client } from '../lib/sanity/client';
 
-// Author profile for Aman Suryavanshi
+// Author profile for ATC Instructor
 const authorProfile = {
   _type: 'author',
-  name: 'Aman Suryavanshi',
-  slug: { current: 'aman-suryavanshi' },
+  name: 'ATC Instructor',
+  slug: { current: 'atc-instructor' },
   role: 'Chief Flight Instructor & Aviation Expert',
   credentials: 'ATPL, CFI, 12,000+ flight hours, 15+ years aviation training experience',
   bio: [
@@ -19,14 +19,14 @@ const authorProfile = {
       children: [
         {
           _type: 'span',
-          text: 'Aman Suryavanshi is a seasoned aviation professional and Chief Flight Instructor at Aviators Training Centre with over 15 years of experience in commercial aviation and pilot training. He holds an Airline Transport Pilot License (ATPL) and is a certified flight instructor specializing in DGCA exam preparation, commercial pilot training, and advanced aviation education. With more than 12,000 flight hours and extensive experience training hundreds of successful pilots, Aman is passionate about sharing his knowledge to help aspiring aviators achieve their dreams of flying.',
+          text: 'ATC Instructor is a seasoned aviation professional and Chief Flight Instructor at Aviators Training Centre with over 15 years of experience in commercial aviation and pilot training. He holds an Airline Transport Pilot License (ATPL) and is a certified flight instructor specializing in DGCA exam preparation, commercial pilot training, and advanced aviation education. With more than 12,000 flight hours and extensive experience training hundreds of successful pilots, Aman is passionate about sharing his knowledge to help aspiring aviators achieve their dreams of flying.',
         },
       ],
     },
   ],
   email: 'aman@aviatorstrainingcentre.com',
   socialLinks: {
-    linkedin: 'https://linkedin.com/in/aman-suryavanshi-aviation',
+    linkedin: 'https://linkedin.com/in/atc-instructor-aviation',
   },
 };
 

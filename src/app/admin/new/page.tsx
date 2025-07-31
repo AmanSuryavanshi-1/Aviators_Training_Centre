@@ -62,7 +62,7 @@ export default function NewBlogPage() {
       submitFormData.append('content', formData.content.trim());
       submitFormData.append('excerpt', formData.excerpt.trim());
       submitFormData.append('category', formData.category.trim());
-      submitFormData.append('author', formData.author?.trim() || 'Aman Suryavanshi');
+      submitFormData.append('author', formData.author?.trim() || 'ATC Instructor');
       submitFormData.append('tags', Array.isArray(formData.tags) ? formData.tags.filter(tag => tag.trim()).join(',') : '');
       submitFormData.append('featured', String(Boolean(formData.featured)));
       submitFormData.append('seoTitle', formData.seoTitle?.trim() || `${formData.title} | Aviators Training Centre`);

@@ -27,10 +27,10 @@ import {
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { Separator } from '@/components/ui/separator';
-import { BlogPost, BlogPostPreview } from '@/lib/types/blog';
-import { unifiedBlogService } from '@/lib/blog/unified-blog-service';
+import { BlogPost, sanityService } from '@/lib/sanity/service';
 import { useRealTimeSync } from '@/hooks/use-real-time-sync';
 import { usePageViewTracking, useCTATracking } from '@/hooks/use-conversion-tracking';
+import { trackPageview, trackCTAClick } from '@/lib/analytics/client';
 import BlogContentRenderer from './BlogContentRenderer';
 import ReadingProgressBar from './ReadingProgressBar';
 import TableOfContents from './TableOfContents';
@@ -42,16 +42,27 @@ interface BlogPostPageClientProps {
 
 export default function BlogPostPageClient({ slug }: BlogPostPageClientProps) {
   const [post, setPost] = useState<BlogPost | null>(null);
-  const [relatedPosts, setRelatedPosts] = useState<BlogPostPreview[]>([]);
+  const [relatedPosts, setRelatedPosts] = useState<BlogPost[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   
   // Real-time sync for updates
   const { isConnected, isPending } = useRealTimeSync();
   
-  // Conversion tracking
+  // Conversion tracking (legacy)
   usePageViewTracking('blog', slug);
   const { createCTAClickHandler } = useCTATracking(slug);
+
+  // New analytics tracking
+  useEffect(() => {
+    if (slug && post) {
+      // Track pageview with new analytics system
+      trackPageview(slug, {
+        referrer: document.referrer,
+        immediate: false
+      });
+    }
+  }, [slug, post]);
 
   useEffect(() => {
     if (!slug) return;
@@ -61,36 +72,30 @@ export default function BlogPostPageClient({ slug }: BlogPostPageClientProps) {
         setLoading(true);
         setError(null);
         
-        console.log('🔄 Loading blog post from unified service:', slug);
+        console.log('🔄 Loading blog post from Sanity service:', slug);
         
-        // Fetch the specific blog post from simple blog service
-        const { simpleBlogService } = await import('@/lib/blog/simple-blog-service');
-        const result = await simpleBlogService.getPostBySlug(slug);
+        // Fetch the specific blog post from Sanity
+        const blogPost = await sanityService.getPostBySlug(slug, { cache: 'default', revalidate: 300 });
         
-        if (!result.success || !result.data) {
+        if (!blogPost) {
           console.log('❌ Blog post not found:', slug);
           notFound();
           return;
         }
         
-        const blogPost = result.data;
         setPost(blogPost);
         
-        // Increment view count (skip for now since we're using simple service)
-        // try {
-        //   await simpleBlogService.incrementViews(blogPost._id);
-        // } catch (viewError) {
-        //   console.warn('Failed to increment views:', viewError);
-        // }
-        
-        // Fetch related posts from the same category
+        // Fetch related posts from the same category and tags
         try {
-          const allPosts = await simpleBlogService.getAllPosts();
+          const categoryId = blogPost.category._id || '';
+          const tagIds = (blogPost.tags || []).map(tag => tag._id || '').filter(Boolean);
           
-          // Filter out current post and limit to 3
-          const related = allPosts
-            .filter(p => p._id !== blogPost._id && p.category.slug.current === blogPost.category.slug.current)
-            .slice(0, 3);
+          const related = await sanityService.getRelatedPosts(
+            blogPost._id, 
+            categoryId, 
+            tagIds, 
+            3
+          );
             
           setRelatedPosts(related);
         } catch (relatedError) {
@@ -143,6 +148,21 @@ export default function BlogPostPageClient({ slug }: BlogPostPageClientProps) {
     }
 
     window.open(urls[platform as keyof typeof urls], '_blank', 'width=600,height=400');
+  };
+
+  // New CTA click handler using new analytics system
+  const handleNewCTAClick = (ctaType: string, ctaText: string, targetUrl?: string) => {
+    return async (event: React.MouseEvent) => {
+      if (slug) {
+        await trackCTAClick(slug, ctaType, {
+          ctaText,
+          targetUrl,
+          immediate: true
+        });
+      }
+      // Also call legacy handler for backward compatibility
+      createCTAClickHandler(ctaType, ctaText, 'blog-post')(event);
+    };
   };
 
   if (loading) {
@@ -221,7 +241,7 @@ export default function BlogPostPageClient({ slug }: BlogPostPageClientProps) {
         <div className="absolute inset-0 bg-gradient-to-br from-aviation-primary/95 via-aviation-secondary/90 to-aviation-tertiary/85" />
         <div className="absolute inset-0">
           <img 
-            src={post.image?.asset ? `${post.image.asset.url}?w=1920&h=1080&fit=crop` : '/Blogs/Blog_Header.webp'} 
+            src={post.image ? sanityService.getImageUrl(post.image, { width: 1920, height: 1080, fit: 'crop' }) : '/Blogs/Blog_Header.webp'} 
             alt={post.image?.alt || post.title}
             className="w-full h-full object-cover opacity-20"
           />
@@ -257,7 +277,7 @@ export default function BlogPostPageClient({ slug }: BlogPostPageClientProps) {
             <div className="flex flex-wrap items-center justify-center gap-6 text-white/90">
               <div className="flex items-center gap-2">
                 <img 
-                  src={post.author?.image?.asset ? `${post.author.image.asset.url}?w=32&h=32&fit=crop&crop=face` : '/Instructor/AK.png'} 
+                  src={post.author?.image ? sanityService.getImageUrl(post.author.image, { width: 32, height: 32, fit: 'crop' }) : '/Instructor/AK.png'} 
                   alt={post.author?.name || 'Author'}
                   className="w-8 h-8 rounded-full border-2 border-white/30"
                 />
@@ -276,8 +296,8 @@ export default function BlogPostPageClient({ slug }: BlogPostPageClientProps) {
                 {post.readingTime || 5} min read
               </div>
               <div className="flex items-center gap-1">
-                <Heart className="w-4 h-4" />
-                {post.viewCount || 0} views
+                <BookOpen className="w-4 h-4" />
+                {post.wordCount || 0} words
               </div>
             </div>
           </motion.div>
@@ -302,11 +322,15 @@ export default function BlogPostPageClient({ slug }: BlogPostPageClientProps) {
                   <div className="flex flex-wrap gap-3 mb-12">
                     {(post.tags || []).map((tag, index) => (
                       <Badge 
-                        key={index} 
+                        key={tag.slug?.current || index} 
                         variant="secondary" 
                         className="bg-aviation-primary/10 text-aviation-primary hover:bg-aviation-primary/20 transition-colors px-3 py-1 text-sm font-medium"
+                        style={{ 
+                          backgroundColor: tag.color ? `${tag.color}20` : undefined,
+                          color: tag.color || undefined
+                        }}
                       >
-                        {tag}
+                        {tag.title}
                       </Badge>
                     ))}
                   </div>
@@ -327,35 +351,16 @@ export default function BlogPostPageClient({ slug }: BlogPostPageClientProps) {
                   <div className="bg-gradient-to-r from-aviation-primary/5 to-aviation-secondary/5 rounded-xl p-8">
                     <div className="flex items-start gap-4">
                       <img 
-                        src={post.author.image?.asset ? `${post.author.image.asset.url}?w=64&h=64&fit=crop&crop=face` : '/Instructor/AK.png'} 
+                        src={post.author.image ? sanityService.getImageUrl(post.author.image, { width: 64, height: 64, fit: 'crop' }) : '/Instructor/AK.png'} 
                         alt={post.author.name}
                         className="w-16 h-16 rounded-full border-4 border-white shadow-lg"
                       />
                       <div className="flex-1">
                         <h3 className="text-xl font-bold text-gray-800 mb-2">{post.author.name}</h3>
-                        {post.author.role && (
-                          <p className="text-aviation-primary font-medium mb-2">{post.author.role}</p>
-                        )}
-                        {post.author.bio && post.author.bio.length > 0 ? (
-                          <div className="text-gray-600 leading-relaxed">
-                            <PortableText 
-                              value={post.author.bio}
-                              components={{
-                                block: {
-                                  normal: ({children}) => <p className="mb-2">{children}</p>,
-                                },
-                                marks: {
-                                  strong: ({children}) => <strong className="font-semibold">{children}</strong>,
-                                  em: ({children}) => <em className="italic">{children}</em>,
-                                },
-                              }}
-                            />
-                          </div>
-                        ) : (
-                          <p className="text-gray-600 leading-relaxed">
-                            Aviation expert with extensive experience in pilot training and DGCA exam preparation.
-                          </p>
-                        )}
+                        <p className="text-aviation-primary font-medium mb-2">Aviation Expert</p>
+                        <p className="text-gray-600 leading-relaxed">
+                          {post.author.bio || 'Aviation expert with extensive experience in pilot training and DGCA exam preparation.'}
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -433,7 +438,7 @@ export default function BlogPostPageClient({ slug }: BlogPostPageClientProps) {
                   <p className="text-white/90 mb-4 text-xs leading-relaxed">
                     Get expert guidance and personalized training from experienced aviation professionals.
                   </p>
-                  <div onClick={createCTAClickHandler('book-demo-sidebar', 'Book Demo', 'sidebar-cta')} className="w-full">
+                  <div onClick={handleNewCTAClick('book-demo-sidebar', 'Book Demo', '/contact?subject=Book a Demo')} className="w-full">
                     <BookDemoButton />
                   </div>
                 </CardContent>
@@ -449,7 +454,7 @@ export default function BlogPostPageClient({ slug }: BlogPostPageClientProps) {
                         <Link key={relatedPost._id} href={`/blog/${relatedPost.slug.current}`}>
                           <div className="group flex gap-3 p-2 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer w-full overflow-hidden">
                             <img 
-                              src={relatedPost.image?.asset ? `${relatedPost.image.asset.url}?w=56&h=42&fit=crop` : '/Blogs/Blog_Header.webp'} 
+                              src={relatedPost.image ? sanityService.getImageUrl(relatedPost.image, { width: 56, height: 42, fit: 'crop' }) : '/Blogs/Blog_Header.webp'} 
                               alt={relatedPost.image?.alt || relatedPost.title}
                               className="w-14 h-10 object-cover rounded-md flex-shrink-0"
                             />
@@ -500,13 +505,13 @@ export default function BlogPostPageClient({ slug }: BlogPostPageClientProps) {
               Our proven methods have helped over 500+ students pass their DGCA exams.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <div onClick={createCTAClickHandler('book-demo-cta', 'Book Demo', 'bottom-cta')}>
+              <div onClick={handleNewCTAClick('book-demo-cta', 'Book Demo', '/contact?subject=Book a Demo')}>
                 <BookDemoButton />
               </div>
               <Button 
                 variant="outline" 
                 className="bg-white/10 border-white/30 text-white hover:bg-white hover:text-aviation-primary backdrop-blur-sm"
-                onClick={createCTAClickHandler('view-courses-cta', 'View All Courses', 'bottom-cta')}
+                onClick={handleNewCTAClick('view-courses-cta', 'View All Courses', '/courses')}
               >
                 <BookOpen className="mr-2 w-5 h-5" />
                 View All Courses

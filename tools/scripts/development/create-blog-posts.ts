@@ -304,8 +304,8 @@ const categories = [
 
 // Author profile
 const authorProfile = {
-  name: 'Aman Suryavanshi',
-  slug: 'aman-suryavanshi',
+  name: 'ATC Instructor',
+  slug: 'atc-instructor',
   role: 'Chief Flight Instructor',
   credentials: 'ATPL, CFI, 12,000+ flight hours',
   bio: [
@@ -314,7 +314,7 @@ const authorProfile = {
       children: [
         {
           _type: 'span',
-          text: 'Aman Suryavanshi is an experienced aviation professional and instructor with over 15 years in commercial aviation.',
+          text: 'ATC Instructor is an experienced aviation professional and instructor with over 15 years in commercial aviation.',
         },
       ],
     },

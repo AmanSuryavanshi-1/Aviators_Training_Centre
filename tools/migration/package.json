@@ -1,0 +1,40 @@
+{
+  "name": "blog-migration-tools",
+  "version": "1.0.0",
+  "description": "Tools for migrating blog data to Sanity CMS",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "dev": "ts-node cli.ts",
+    "migrate": "ts-node cli.ts migrate",
+    "analyze": "ts-node cli.ts analyze",
+    "validate": "ts-node cli.ts validate",
+    "init": "ts-node cli.ts init",
+    "status": "ts-node cli.ts status"
+  },
+  "bin": {
+    "blog-migrator": "./dist/cli.js"
+  },
+  "keywords": [
+    "blog",
+    "migration",
+    "sanity",
+    "cms",
+    "content"
+  ],
+  "author": "Aviators Training Centre",
+  "license": "MIT",
+  "dependencies": {
+    "@sanity/client": "^6.10.0",
+    "commander": "^11.1.0",
+    "gray-matter": "^4.0.3"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.3.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

@@ -93,8 +93,8 @@ const ProductionBlogEditor: React.FC<{
       // Load authors (mock data for now)
       const authorsData = [
         {
-          _id: 'aman-suryavanshi',
-          name: 'Aman Suryavanshi',
+          _id: 'atc-instructor',
+          name: 'ATC Instructor',
           role: 'Chief Flight Instructor'
         },
         {

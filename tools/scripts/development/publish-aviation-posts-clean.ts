@@ -2,7 +2,7 @@
 
 /**
  * Clean script to publish 5 high-conversion aviation blog posts to Sanity CMS
- * Author: Aman Suryavanshi
+ * Author: ATC Instructor
  * Focus: Create and publish SEO-optimized, conversion-focused aviation content
  */
 
@@ -17,12 +17,12 @@ const client = createClient({
   token: process.env.SANITY_API_TOKEN,
 });
 
-// Author profile for Aman Suryavanshi
+// Author profile for ATC Instructor
 const authorProfile = {
-  _id: 'aman-suryavanshi',
+  _id: 'atc-instructor',
   _type: 'author',
-  name: 'Aman Suryavanshi',
-  slug: { current: 'aman-suryavanshi' },
+  name: 'ATC Instructor',
+  slug: { current: 'atc-instructor' },
   role: 'Chief Flight Instructor & Aviation Career Consultant',
   credentials: 'ATPL, CFI, 12,000+ flight hours',
   email: 'aman@aviatorstrainingcentre.com',
@@ -32,7 +32,7 @@ const authorProfile = {
       children: [
         {
           _type: 'span',
-          text: 'Aman Suryavanshi is a seasoned aviation professional with over 15 years of experience in commercial aviation and pilot training. He holds an Airline Transport Pilot License (ATPL) and is a certified flight instructor with more than 12,000 flight hours. Aman specializes in DGCA exam preparation, commercial pilot training, and has helped over 500 students achieve their aviation dreams at Aviators Training Centre.',
+          text: 'ATC Instructor is a seasoned aviation professional with over 15 years of experience in commercial aviation and pilot training. He holds an Airline Transport Pilot License (ATPL) and is a certified flight instructor with more than 12,000 flight hours. Aman specializes in DGCA exam preparation, commercial pilot training, and has helped over 500 students achieve their aviation dreams at Aviators Training Centre.',
         },
       ],
     },
@@ -40,7 +40,7 @@ const authorProfile = {
   image: {
     _type: 'image',
     asset: { _type: 'reference', _ref: 'image-author-placeholder' }, // Will be replaced with actual image
-    alt: 'Aman Suryavanshi - Chief Flight Instructor',
+    alt: 'ATC Instructor - Chief Flight Instructor',
   },
 };
 
@@ -215,7 +215,7 @@ const blogPosts = [
     ],
 
     category: { _type: 'reference', _ref: 'dgca-exam-preparation' },
-    author: { _type: 'reference', _ref: 'aman-suryavanshi' },
+    author: { _type: 'reference', _ref: 'atc-instructor' },
     
     tags: ['DGCA', 'Commercial Pilot License', 'CPL', 'Aviation Career', 'Pilot Training', 'India'],
     
@@ -368,7 +368,7 @@ const blogPosts = [
     ],
 
     category: { _type: 'reference', _ref: 'career-guidance' },
-    author: { _type: 'reference', _ref: 'aman-suryavanshi' },
+    author: { _type: 'reference', _ref: 'atc-instructor' },
     
     tags: ['Pilot Salary', 'Aviation Career', 'Commercial Pilot', 'Airline Jobs', 'Career Growth'],
     
@@ -507,7 +507,7 @@ const blogPosts = [
     ],
 
     category: { _type: 'reference', _ref: 'flight-training' },
-    author: { _type: 'reference', _ref: 'aman-suryavanshi' },
+    author: { _type: 'reference', _ref: 'atc-instructor' },
     
     tags: ['Flight Simulator', 'Pilot Training', 'Aviation Technology', 'Flight Safety', 'Training Efficiency'],
     
@@ -655,7 +655,7 @@ const blogPosts = [
     ],
 
     category: { _type: 'reference', _ref: 'aviation-technology' },
-    author: { _type: 'reference', _ref: 'aman-suryavanshi' },
+    author: { _type: 'reference', _ref: 'atc-instructor' },
     
     tags: ['Aviation Technology', 'Future of Aviation', 'AI in Aviation', 'Aircraft Systems', 'Innovation'],
     
@@ -803,7 +803,7 @@ const blogPosts = [
     ],
 
     category: { _type: 'reference', _ref: 'industry-insights' },
-    author: { _type: 'reference', _ref: 'aman-suryavanshi' },
+    author: { _type: 'reference', _ref: 'atc-instructor' },
     
     tags: ['Airline Careers', 'Aviation Industry', 'Career Opportunities', 'Aviation Management', 'Airport Jobs'],
     

@@ -1,23 +1,83 @@
 "use client";
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, BookOpen } from 'lucide-react';
 import BlogCard from "@/components/features/blog/BlogCard";
-import { type BlogPostPreview } from '@/lib/types/blog';
-import { getFeaturedPosts } from '@/lib/blog/comprehensive-blog-data';
+import { BlogPost, sanityService } from '@/lib/sanity/service';
 
 interface FeaturedBlogSectionProps {
-  featuredPosts?: BlogPostPreview[];
+  featuredPosts?: BlogPost[];
 }
 
 export default function FeaturedBlogSection({ featuredPosts: propFeaturedPosts }: FeaturedBlogSectionProps) {
-  // Use provided posts or fallback to comprehensive blog data
-  const featuredPosts = propFeaturedPosts || getFeaturedPosts();
-  
-  if (!featuredPosts || featuredPosts.length === 0) {
-    return null;
+  const [featuredPosts, setFeaturedPosts] = useState<BlogPost[]>(propFeaturedPosts || []);
+  const [loading, setLoading] = useState(!propFeaturedPosts);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (propFeaturedPosts) {
+      setFeaturedPosts(propFeaturedPosts);
+      return;
+    }
+
+    const fetchFeaturedPosts = async () => {
+      try {
+        setLoading(true);
+        const posts = await sanityService.getFeaturedPosts(3, { 
+          cache: 'default', 
+          revalidate: 600 // 10 minutes
+        });
+        setFeaturedPosts(posts);
+      } catch (error) {
+        console.error('Error fetching featured posts:', error);
+        setError('Failed to load featured posts');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchFeaturedPosts();
+  }, [propFeaturedPosts]);
+
+  if (loading) {
+    return (
+      <section className="py-16 bg-gray-50 dark:bg-gray-900/40">
+        <div className="container px-4 mx-auto">
+          <div className="animate-pulse">
+            <div className="h-8 bg-gray-200 rounded w-1/3 mb-4"></div>
+            <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+              {[...Array(3)].map((_, i) => (
+                <div key={i} className="h-96 bg-gray-200 rounded-lg"></div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  if (error || !featuredPosts || featuredPosts.length === 0) {
+    return (
+      <section className="py-16 bg-gray-50 dark:bg-gray-900/40">
+        <div className="container px-4 mx-auto text-center">
+          <BookOpen className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+          <h3 className="text-lg font-semibold text-gray-600 mb-2">
+            Featured Posts Coming Soon
+          </h3>
+          <p className="text-gray-500 mb-4">
+            We're working on bringing you the latest aviation insights.
+          </p>
+          <Link 
+            href="/blog"
+            className="inline-flex items-center gap-2 px-6 py-3 text-sm font-medium text-white transition-colors rounded-full bg-gradient-to-r from-teal-500 to-blue-500 hover:from-teal-600 hover:to-blue-600"
+          >
+            Explore All Posts <ArrowRight className="w-4 h-4" />
+          </Link>
+        </div>
+      </section>
+    );
   }
 
   return (
