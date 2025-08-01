@@ -1,20 +1,20 @@
-# Sanity CMS Admin System
+# Aviators Training Centre - Admin System
 
-A comprehensive blog management system for the Aviators Training Centre website powered by Sanity CMS. This headless CMS provides a professional content management interface for writers and content managers to create, edit, and manage blog posts with advanced features including scheduled publishing, media management, and internationalization support.
+A comprehensive administration system for the Aviators Training Centre platform, featuring Sanity CMS integration, advanced form validation, analytics tracking, and content management capabilities. This system provides both a headless CMS interface and a custom admin dashboard for complete platform management.
 
 ## Features
 
-### 📊 Enhanced Content Management
-- **Sanity Studio Interface**: Professional, user-friendly content management dashboard with enhanced plugins
-- **Custom Admin Dashboard**: Comprehensive Next.js-based admin interface with modern UI
-- **Organized Field Groups**: Content, SEO, CTA, and Settings tabs for better organization
-- **Real-time Collaboration**: Multiple users can work simultaneously
-- **Content Preview**: Live preview of blog posts before publishing with draft support
-- **Version History**: Track changes and revert to previous versions
-- **Responsive Admin Interface**: Mobile-first admin panel with collapsible navigation
-- **Scheduled Publishing**: Schedule posts for future publication with automated workflow
-- **Enhanced Media Management**: Professional media library with credit line support and advanced organization
-- **Document Internationalization**: Multi-language support for global content management (English/Hindi ready)
+### 📊 Content Management System
+- **Sanity Studio Integration**: Professional headless CMS (Project ID: 3u4fa9kl) with real-time collaboration
+- **Custom Admin Dashboard**: Next.js-based admin interface with responsive design and modern UI
+- **Organized Content Structure**: Content, SEO, CTA, and Settings organization for better workflow
+- **Real-time Collaboration**: Multiple users can work simultaneously with conflict resolution
+- **Content Preview System**: Live preview of blog posts before publishing with draft support
+- **Version History & Audit Trail**: Track changes and revert to previous versions with detailed logs
+- **Mobile-First Admin Interface**: Responsive admin panel with collapsible navigation and touch support
+- **Scheduled Publishing**: Automated content scheduling with workflow management
+- **Enhanced Media Management**: Professional media library with CDN optimization and asset organization
+- **Multi-language Support**: Document internationalization ready (English/Hindi)
 
 ### ✍️ Advanced Blog Management
 - **Rich Text Editor**: PortableText editor with advanced formatting options and custom rendering

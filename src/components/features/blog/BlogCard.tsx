@@ -138,7 +138,7 @@ const BlogCard: React.FC<BlogCardProps> = ({
         title: post.title || 'Aviation Article',
         slug: post.slug || { current: 'aviation-article' },
         excerpt: post.excerpt || 'Discover expert aviation insights and training guidance.',
-        readingTime: post.readingTime || 5,
+        readingTime: post.readingTime || 8,
         publishedAt: post.publishedAt || new Date().toISOString(),
         category: post.category || {
           title: 'Aviation',
@@ -161,7 +161,7 @@ const BlogCard: React.FC<BlogCardProps> = ({
         title: 'Aviation Article',
         slug: { current: 'aviation-article' },
         excerpt: 'Discover expert aviation insights and training guidance.',
-        readingTime: 5,
+        readingTime: 8,
         publishedAt: new Date().toISOString(),
         category: {
           title: 'Aviation',

@@ -364,7 +364,7 @@
   }
 }
 
-/* Dark mode support */
+/* Enhanced Dark mode support */
 .dark .blog-content {
   color: #e5e7eb;
 }
@@ -372,8 +372,14 @@
 .dark .blog-content h1,
 .dark .blog-content h2,
 .dark .blog-content h3,
-.dark .blog-content h4 {
+.dark .blog-content h4,
+.dark .blog-content h5,
+.dark .blog-content h6 {
   color: #f9fafb;
+}
+
+.dark .blog-content h1 {
+  border-bottom-color: rgba(86, 167, 176, 0.3);
 }
 
 .dark .blog-content h2 {
@@ -383,20 +389,22 @@
 .dark .blog-content p,
 .dark .blog-content li {
   color: #d1d5db;
+  font-weight: 500; /* Enhanced font weight for better readability */
 }
 
 .dark .blog-content > p:first-of-type {
   color: #9ca3af;
+  font-weight: 500;
 }
 
 .dark .blog-content blockquote {
-  background: rgba(86, 167, 176, 0.1);
+  background: rgba(86, 167, 176, 0.15);
   color: #d1d5db;
   border-left-color: #56A7B0;
 }
 
 .dark .blog-content blockquote::before {
-  color: rgba(86, 167, 176, 0.3);
+  color: rgba(86, 167, 176, 0.4);
 }
 
 .dark .blog-content code {
@@ -412,6 +420,7 @@
 
 .dark .blog-content a {
   color: #56A7B0;
+  font-weight: 600; /* Enhanced font weight */
 }
 
 .dark .blog-content a:hover {
@@ -419,7 +428,8 @@
 }
 
 .dark .blog-content strong {
-  color: #f9fafb;
+  color: #56A7B0; /* Teal color for strong text */
+  font-weight: 700;
 }
 
 .dark .blog-content em {
@@ -439,10 +449,20 @@
   background: #374151;
 }
 
-/* Dark mode selection */
+/* Enhanced dark mode selection */
 .dark .blog-content ::selection {
-  background: rgba(86, 167, 176, 0.3);
+  background: rgba(86, 167, 176, 0.4);
   color: #f9fafb;
+}
+
+/* Enhanced readability for dark mode */
+.dark .blog-content img {
+  border-color: #4b5563;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
+}
+
+.dark .blog-content hr {
+  background: linear-gradient(to right, transparent, #4b5563, transparent);
 }
 
 /* Additional utility classes */

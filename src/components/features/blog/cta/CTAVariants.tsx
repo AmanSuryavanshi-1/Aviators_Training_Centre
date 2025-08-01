@@ -60,7 +60,9 @@ export function CTACardVariant({
     if (action === 'primary') {
       window.location.href = course.targetUrl;
     } else {
-      window.location.href = '/contact';
+      // Enhanced contact form URL with pre-populated parameters
+      const contactUrl = `/contact?subject=Demo%20Request%3A%20${encodeURIComponent(course.name)}&courseName=${encodeURIComponent(course.name)}&message=${encodeURIComponent(`I would like to book a demo for the ${course.name} course. Please contact me to schedule a time.`)}&referrer=${encodeURIComponent(blogPost.slug.current)}#contact-form`;
+      window.location.href = contactUrl;
     }
   }, [blogPost, course, position, testId, onInteraction]);
 

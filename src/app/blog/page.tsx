@@ -1,6 +1,7 @@
 import { Metadata } from 'next';
 import { sanitySimpleService } from '@/lib/sanity/client.simple';
 import BlogCard from '@/components/features/blog/BlogCard';
+import FeaturedPostsCarousel from '@/components/features/blog/FeaturedPostsCarousel';
 
 export const metadata: Metadata = {
   title: 'Aviation Blog - Aviators Training Centre',
@@ -25,9 +26,22 @@ export default async function BlogPage() {
     error = err instanceof Error ? err.message : 'Failed to load blog posts';
   }
 
+  // Separate featured posts
+  const featuredPosts = posts.filter(post => post.featured);
+  // Show all posts in the main section (both featured and non-featured)
+  const allPosts = posts;
+
   return (
     <div className="min-h-screen bg-background">
       <div className="container mx-auto px-4 py-8">
+        {/* Featured Posts Carousel */}
+        {featuredPosts.length > 0 && (
+          <div className="mb-12">
+            <h2 className="text-3xl font-bold text-center mb-4">Featured Posts</h2>
+            <FeaturedPostsCarousel posts={featuredPosts} />
+          </div>
+        )}
+
         {/* Header */}
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold text-foreground mb-4">
@@ -71,10 +85,10 @@ export default async function BlogPage() {
           </div>
         )}
 
-        {/* Blog Posts Grid */}
-        {!error && posts.length > 0 && (
+{/* Blog Posts Grid */}
+        {!error && allPosts.length > 0 && (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {posts.map((post) => (
+            {allPosts.map((post) => (
               <BlogCard
                 key={post._id}
                 post={{

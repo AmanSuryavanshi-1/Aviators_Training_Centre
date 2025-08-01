@@ -1,61 +1,73 @@
-# Aviators Training Centre Blog System
+# Aviators Training Centre - Full-Stack Aviation Training Platform
 
-A comprehensive, full-stack blog system with integrated CMS, analytics, and admin dashboard built for the Aviators Training Centre. This system combines Next.js, Sanity Studio, and Firebase to deliver a professional content management experience with real-time analytics and SEO optimization.
+A comprehensive, production-ready aviation training platform built for Aviators Training Centre. This system combines Next.js 15, Sanity CMS, Firebase, and advanced analytics to deliver a professional content management experience with real-time tracking, form validation, and SEO optimization.
 
-## 🚀 Features
+## 🚀 Key Features
 
-### Content Management
-- **Sanity Studio Integration** - Professional CMS with real-time collaboration
-- **Rich Content Editor** - Support for HTML paste, media uploads, and structured content
-- **Content Versioning** - Track changes and restore previous versions
-- **Scheduled Publishing** - Plan and automate content releases
-- **Preview System** - Preview drafts before publishing
-- **SEO Automation** - Automated meta tags, keyword analysis, and social previews
+### Content Management System
+- **Sanity Studio Integration** - Professional headless CMS with real-time collaboration
+- **Rich Content Editor** - PortableText support with HTML paste, media uploads, and structured content
+- **Content Versioning** - Track changes and restore previous versions with audit trails
+- **Scheduled Publishing** - Plan and automate content releases with workflow management
+- **Preview System** - Preview drafts before publishing with staging environment
+- **SEO Automation** - Automated meta tags, keyword analysis, structured data, and social previews
+- **Multi-language Support** - Document internationalization ready (English/Hindi)
 
-### Analytics & Monitoring
-- **Real-time Analytics** - Track pageviews, CTA clicks, and user behavior
-- **Conversion Tracking** - Monitor form submissions and user journeys
-- **Admin Dashboard** - Comprehensive analytics and system monitoring
-- **Performance Metrics** - Core Web Vitals and performance tracking
-- **Error Monitoring** - Automated error detection and reporting
+### Advanced Analytics & Tracking
+- **Real-time Analytics** - Track pageviews, CTA clicks, user behavior, and engagement metrics
+- **Conversion Tracking** - Monitor form submissions, demo bookings, and user journey funnels
+- **Blog Analytics** - Track reading time, scroll depth, and content performance
+- **Contact Form Analytics** - Track form starts, completions, and conversion rates
+- **Traffic Source Detection** - Identify and track referral sources and campaign performance
+- **Firebase Integration** - Firestore for analytics storage and real-time data sync
 
-### User Experience
-- **Responsive Design** - Mobile-first approach with aviation theme
-- **Fast Performance** - ISR, image optimization, and caching strategies
-- **SEO Optimized** - Meta tags, Open Graph, Twitter Cards, and sitemaps
-- **Accessibility** - WCAG compliant with screen reader support
-- **Progressive Enhancement** - Works without JavaScript
+### Form Validation & User Experience
+- **Advanced Form Validation** - Real-time email and phone number validation with Indian formats
+- **Contact Form System** - Intelligent contact forms with demo booking capabilities
+- **Validation Error Handling** - User-friendly error messages with accessibility support
+- **Form Pre-population** - URL parameter support for course-specific inquiries
+- **Success Tracking** - Form submission analytics and conversion optimization
+
+### Performance & SEO
+- **Next.js 15 Optimizations** - Latest performance features and experimental enhancements
+- **Image Optimization** - WebP/AVIF support with responsive loading and CDN delivery
+- **ISR (Incremental Static Regeneration)** - Smart caching with automatic revalidation
+- **SEO Excellence** - Comprehensive meta tags, Open Graph, Twitter Cards, and XML sitemaps
+- **Core Web Vitals** - Optimized for Google's performance metrics
+- **Accessibility Compliance** - WCAG guidelines with screen reader support
 
 ### Developer Experience
-- **TypeScript** - Full type safety across the entire stack
-- **Modern Stack** - Next.js 14, React 18, and latest web standards
-- **Automated Testing** - Unit, integration, and E2E tests
-- **CI/CD Pipeline** - Automated deployment with Vercel
-- **Development Tools** - Hot reload, debugging, and profiling
+- **TypeScript** - Full type safety across the entire stack with strict configuration
+- **Modern Architecture** - Next.js 15 App Router with server components and streaming
+- **Error Handling** - Multi-layered error boundaries with circuit breaker patterns
+- **Testing Suite** - Comprehensive unit, integration, and E2E testing
+- **Development Tools** - Hot reload, debugging, profiling, and validation scripts
 
 ## 🛠 Tech Stack
 
-### Frontend
-- **Framework:** Next.js 14 with App Router
-- **Language:** TypeScript
-- **Styling:** Tailwind CSS with custom aviation theme
-- **Components:** Custom React components with shadcn/ui
-- **State Management:** React Context and custom hooks
+### Frontend Architecture
+- **Framework:** Next.js 15 with App Router and React 18
+- **Language:** TypeScript with strict type checking
+- **Styling:** Tailwind CSS with custom aviation theme and responsive design
+- **Components:** Custom React components with shadcn/ui and Radix UI primitives
+- **Animations:** Framer Motion for smooth interactions and page transitions
+- **State Management:** React Context, custom hooks, and client-side validation
 
 ### Backend & Services
-- **CMS:** Sanity Studio with custom schemas
-- **Database:** Firebase Firestore for analytics
-- **Authentication:** Firebase Auth + custom JWT
-- **Email:** Resend for transactional emails
-- **File Storage:** Sanity Assets with CDN
-- **Search:** Sanity's built-in search with custom indexing
+- **CMS:** Sanity Studio (Project ID: 3u4fa9kl) with custom schemas and plugins
+- **Database:** Firebase Firestore for analytics and real-time data
+- **Authentication:** Firebase Auth with custom JWT and admin dashboard
+- **Email Service:** Resend API for transactional emails and notifications
+- **File Storage:** Sanity Assets with CDN optimization and image transformations
+- **Analytics:** Custom analytics system with Google Analytics 4 integration
 
-### Infrastructure
-- **Hosting:** Vercel with global CDN
-- **Domain:** Custom domain with SSL
-- **Monitoring:** Built-in analytics + optional Sentry
-- **Caching:** ISR, CDN, and browser caching
-- **Security:** HTTPS, CORS, rate limiting, and input validation
+### Infrastructure & Deployment
+- **Hosting:** Vercel with global CDN and edge functions
+- **Domain:** Custom domain with SSL and security headers
+- **Environment:** Production/development environment separation
+- **Caching:** ISR, CDN caching, and browser caching strategies
+- **Security:** HTTPS enforcement, CORS configuration, input validation, and rate limiting
+- **Monitoring:** Built-in health checks, error tracking, and performance monitoring
 
 ## 📋 Prerequisites
 
@@ -161,35 +173,40 @@ aviators-training-centre/
 
 ### Environment Variables
 
-The system requires several environment variables for different services:
+The system requires several environment variables for different services. Current configuration:
 
 #### Core Configuration
 ```bash
 # Site Configuration
-NEXT_PUBLIC_SITE_URL=https://aviatorstrainingcentre.com
-NEXT_PUBLIC_SITE_NAME="Aviators Training Centre"
+NEXT_PUBLIC_SITE_URL=https://www.aviatorstrainingcentre.in
 
-# Sanity CMS
-NEXT_PUBLIC_SANITY_PROJECT_ID=your_project_id
-SANITY_API_TOKEN=your_api_token
-SANITY_WEBHOOK_SECRET=your_webhook_secret
+# Sanity CMS (Production Ready)
+***REMOVED***
+NEXT_PUBLIC_SANITY_DATASET=production
+NEXT_PUBLIC_SANITY_API_VERSION=2024-01-01
+SANITY_API_TOKEN=your_sanity_write_token
 
-# Firebase
-NEXT_PUBLIC_FIREBASE_PROJECT_ID=your_project_id
+# Firebase (Configured)
+FIREBASE_API_KEY=AIzaSyAMjXalWzAN-LGKKH2GyQfPldcmdINlxXs
+FIREBASE_PROJECT_ID=aviators-training-centre---atc
 FIREBASE_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----\n...\n-----END PRIVATE KEY-----\n"
-FIREBASE_CLIENT_EMAIL=firebase-adminsdk-xxx@project.iam.gserviceaccount.com
+FIREBASE_CLIENT_EMAIL=firebase-adminsdk-fbsvc@aviators-training-centre---atc.iam.gserviceaccount.com
 
-# Email Service
-RESEND_API_KEY=your_resend_api_key
-FROM_EMAIL=noreply@aviatorstrainingcentre.com
+# Email Service (Active)
+***REMOVED***e_T9mZYtYh_8bKAa3Qec9QmrFJ5rgUm5KfM
+***REMOVED***
+***REMOVED***
+***REMOVED***
 
 # Admin Access
-ADMIN_USERNAME=admin
-ADMIN_PASSWORD=your_secure_password
-JWT_SECRET=your_jwt_secret
+***REMOVED***
+***REMOVED***
+
+# Analytics
+***REMOVED***
 ```
 
-See [.env.local.example](.env.local.example) for the complete list.
+See [.env.local.example](.env.local.example) for the complete configuration template.
 
 ### Automated Setup
 
@@ -209,23 +226,24 @@ This script will:
 
 ### Setup & Deployment
 - [📖 Production Setup Guide](docs/PRODUCTION_SETUP_GUIDE.md) - Complete production deployment guide
-- [📋 Deployment Checklist](PRODUCTION_DEPLOYMENT_CHECKLIST.md) - Pre and post-deployment verification
 - [🔧 Environment Setup](docs/ENVIRONMENT_SETUP.md) - Development environment configuration
+- [📋 Deployment Checklist](PRODUCTION_DEPLOYMENT_CHECKLIST.md) - Pre and post-deployment verification
 
-### Development
-- [💻 Development Guide](docs/DEVELOPMENT_GUIDE.md) - Local development setup and workflows
-- [🏗 Architecture Overview](docs/architecture/SYSTEM_ARCHITECTURE.md) - System design and architecture
-- [📝 API Documentation](docs/api/API_DOCUMENTATION.md) - API endpoints and usage
-
-### Content Management
-- [📝 Blog System Guide](docs/BLOG_SYSTEM_README.md) - Content creation and management
+### Content Management & Features
+- [📝 Blog System Guide](docs/BLOG_SYSTEM_README.md) - Comprehensive blog system with Sanity CMS integration
+- [👤 Admin System Guide](docs/ADMIN_SYSTEM_README.md) - Admin dashboard and content management
 - [🎨 Sanity Studio Guide](docs/SANITY_QUICK_SETUP.md) - CMS configuration and usage
-- [📊 Analytics Guide](docs/ANALYTICS_SYSTEM_README.md) - Analytics setup and interpretation
 
-### Administration
-- [👤 Admin System Guide](docs/ADMIN_SYSTEM_README.md) - Admin dashboard usage
+### Implementation Specifications
+- [✅ Contact Form Validation](/.kiro/specs/contact-form-validation/tasks.md) - Advanced form validation system
+- [📊 Blog Studio Analytics](/.kiro/specs/blog-studio-analytics-system/tasks.md) - Analytics and CMS integration
+- [🔧 Schema Field Validation](/.kiro/specs/sanity-schema-field-validation-fix/tasks.md) - Sanity schema fixes
+- [🚀 Advanced SEO Maximization](/.kiro/specs/advanced-blog-seo-maximization/tasks.md) - SEO optimization roadmap
+
+### Development & Architecture
+- [🏗 System Architecture](docs/architecture/SYSTEM_ARCHITECTURE.md) - System design and architecture
+- [📝 API Documentation](docs/api/API_DOCUMENTATION.md) - API endpoints and usage
 - [📈 Monitoring Guide](docs/MONITORING_SYSTEM_README.md) - System monitoring and alerts
-- [🔒 Security Guide](docs/SECURITY_GUIDE.md) - Security best practices
 
 ## 🧪 Testing
 
@@ -294,30 +312,37 @@ The system includes automated deployment via:
 ## 📊 Available Scripts
 
 ### Development
-- `npm run dev` - Start development server
-- `npm run build` - Build for production
+- `npm run dev` - Start Next.js development server
+- `npm run build` - Build for production with optimizations
 - `npm run start` - Start production server
-- `npm run lint` - Run ESLint
+- `npm run lint` - Run ESLint with Next.js configuration
 - `npm run type-check` - TypeScript type checking
 
-### Testing
-- `npm test` - Run all tests
-- `npm run test:unit` - Unit tests only
-- `npm run test:integration` - Integration tests
-- `npm run test:e2e` - End-to-end tests
-- `npm run test:coverage` - Test coverage report
+### Testing & Validation
+- `npm test` - Run type checking and linting
+- `npm run test:blog-functionality` - Comprehensive blog system tests
+- `npm run test:sync` - Test synchronization functionality
+- `npm run validate:sanity` - Validate Sanity CMS configuration
+- `npm run validate:seo` - SEO implementation validation
+- `npm run validate:env` - Environment variables validation
 
-### Production
+### Content Management
+- `npm run migrate:blog` - Migrate blog content to Sanity CMS
+- `npm run manage:blog-posts` - Blog post management and statistics
+- `npm run blog:populate-images` - Auto-populate blog images
+- `npm run blog:enhance-posts` - Enhance existing blog posts
+
+### Production & Deployment
 - `npm run production:setup` - Production environment setup
-- `npm run production:validate` - Validate production config
-- `npm run production:deploy` - Full production deployment
+- `npm run production:validate` - Validate production configuration
+- `npm run deploy:production` - Full production deployment
 - `npm run production:backup` - Create system backup
 
-### Maintenance
-- `npm run migrate:blog` - Migrate blog data
-- `npm run validate:sanity` - Validate Sanity configuration
+### Maintenance & Monitoring
+- `npm run fix:blog` - Run comprehensive blog system fixes
 - `npm run health:check` - System health check
-- `npm run cleanup` - Clean up temporary files
+- `npm run cleanup` - Clean up temporary files and dependencies
+- `npm run monitoring:setup` - Setup production monitoring
 
 ## 🔍 Monitoring & Analytics
 

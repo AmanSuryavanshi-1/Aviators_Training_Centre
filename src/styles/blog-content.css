@@ -1,4 +1,4 @@
-/* Aviation-themed Blog Content Styles */
+/* Aviation-themed Blog Content Styles with Dark Mode Support */
 .prose {
   /* Tables */
   table {
@@ -23,6 +23,27 @@
   
   table tbody tr:hover {
     @apply bg-aviation-accent/10 transition-colors;
+  }
+  
+  /* Dark mode table styles */
+  .dark & table {
+    @apply border-teal-600/40;
+  }
+  
+  .dark & table th {
+    @apply bg-teal-600 border-teal-600;
+  }
+  
+  .dark & table td {
+    @apply border-teal-700/30 text-foreground;
+  }
+  
+  .dark & table tbody tr:nth-child(even) {
+    @apply bg-teal-900/20;
+  }
+  
+  .dark & table tbody tr:hover {
+    @apply bg-teal-800/20;
   }
   
   /* Sections */
@@ -90,9 +111,36 @@
     @apply text-base font-heading font-semibold mt-3 mb-2 text-aviation-text;
   }
   
+  /* Dark mode headings */
+  .dark & h1 {
+    @apply text-teal-300 border-teal-600/40;
+  }
+  
+  .dark & h2 {
+    @apply text-teal-400;
+  }
+  
+  .dark & h2::before {
+    @apply bg-teal-400;
+  }
+  
+  .dark & h3 {
+    @apply text-teal-300;
+  }
+  
+  .dark & h4,
+  .dark & h5,
+  .dark & h6 {
+    @apply text-foreground;
+  }
+  
   /* Paragraphs */
   p {
-    @apply mb-6 leading-relaxed text-aviation-text text-lg;
+    @apply mb-6 leading-relaxed text-aviation-text text-lg font-medium;
+  }
+  
+  .dark & p {
+    @apply text-foreground font-medium;
   }
   
   /* Emphasis */
@@ -100,13 +148,25 @@
     @apply font-bold text-aviation-primary;
   }
   
+  .dark & strong {
+    @apply text-teal-200 font-bold;
+  }
+  
   em {
     @apply italic text-aviation-secondary;
   }
   
+  .dark & em {
+    @apply text-teal-300;
+  }
+  
   /* Links with aviation theme */
   a {
-    @apply text-aviation-primary hover:text-aviation-secondary hover:underline font-medium transition-all duration-200 relative;
+    @apply text-aviation-primary hover:text-aviation-secondary hover:underline font-semibold transition-all duration-200 relative;
+  }
+  
+  .dark & a {
+    @apply text-teal-400 hover:text-teal-300 font-semibold;
   }
   
   a:hover {

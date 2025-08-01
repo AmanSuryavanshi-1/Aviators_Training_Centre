@@ -64,25 +64,32 @@
   }
 
   .dark {
-    --background: 187 30% 15%;
+    --background: 187 30% 12%;
     --foreground: 185 30% 95%;
-    --card: 187 30% 18%;
+    --card: 187 30% 15%;
     --card-foreground: 185 30% 95%;
-    --popover: 187 30% 18%;
+    --popover: 187 30% 15%;
     --popover-foreground: 185 30% 95%;
-    --primary: 184 63% 36%;
+    --primary: 184 63% 45%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 184 35% 51%;
-    --secondary-foreground: 215 25% 17%;
-    --accent: 184 32% 60%;
-    --accent-foreground: 215 25% 17%;
-    --muted: 187 30% 25%;
-    --muted-foreground: 185 20% 80%;
+    --secondary: 184 35% 55%;
+    --secondary-foreground: 0 0% 100%;
+    --accent: 184 32% 65%;
+    --accent-foreground: 187 30% 12%;
+    --muted: 187 30% 20%;
+    --muted-foreground: 185 20% 75%;
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
-    --border: 187 30% 25%;
-    --input: 187 30% 25%;
-    --ring: 184 63% 36%;
+    --border: 187 30% 22%;
+    --input: 187 30% 22%;
+    --ring: 184 63% 45%;
+    
+    /* Enhanced aviation colors for dark mode */
+    --aviation-primary: 184 63% 45%;    /* Lighter teal for dark mode */
+    --aviation-primary-dark: 184 55% 50%;  /* Medium teal */
+    --aviation-secondary: 184 50% 55%;  /* Light teal */
+    --aviation-tertiary: 184 40% 65%;   /* Very light teal */
+    --aviation-light: 184 35% 75%;      /* Pale teal */
   }
 }
 
@@ -125,17 +132,57 @@
     background-size: 200% 200%;
   }
   
-  /* .heading-xl {
-    @apply text-3xl font-bold tracking-tight md:text-4xl lg:text-5xl;
+  /* Enhanced blog content styling */
+  .blog-content-enhanced {
+    @apply text-aviation-text;
   }
   
-  .heading-lg {
-    @apply text-2xl font-bold tracking-tight md:text-3xl lg:text-4xl;
+  .blog-content-enhanced h1,
+  .blog-content-enhanced h2,
+  .blog-content-enhanced h3,
+  .blog-content-enhanced h4,
+  .blog-content-enhanced h5,
+  .blog-content-enhanced h6 {
+    @apply text-aviation-primary font-bold;
   }
   
-  .heading-md {
-    @apply text-xl font-semibold tracking-tight md:text-2xl lg:text-3xl;
-  } */
+  .blog-content-enhanced p {
+    @apply text-aviation-text font-medium leading-relaxed;
+  }
+  
+  .blog-content-enhanced strong {
+    @apply text-aviation-primary font-bold;
+  }
+  
+  .blog-content-enhanced a {
+    @apply text-aviation-secondary font-semibold hover:text-aviation-primary transition-colors;
+  }
+  
+  /* Dark mode blog content */
+  .dark .blog-content-enhanced {
+    @apply text-foreground;
+  }
+  
+  .dark .blog-content-enhanced h1,
+  .dark .blog-content-enhanced h2,
+  .dark .blog-content-enhanced h3,
+  .dark .blog-content-enhanced h4,
+  .dark .blog-content-enhanced h5,
+  .dark .blog-content-enhanced h6 {
+    @apply text-teal-300 font-bold;
+  }
+  
+  .dark .blog-content-enhanced p {
+    @apply text-foreground font-medium;
+  }
+  
+  .dark .blog-content-enhanced strong {
+    @apply text-teal-200 font-bold;
+  }
+  
+  .dark .blog-content-enhanced a {
+    @apply text-teal-400 font-semibold hover:text-teal-300 transition-colors;
+  }
   
   .text-balance {
     text-wrap: balance;

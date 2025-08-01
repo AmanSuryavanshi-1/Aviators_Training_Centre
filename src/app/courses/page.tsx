@@ -1,5 +1,5 @@
 "use client"
-import React from 'react';
+import React, { useEffect } from 'react';
 import {clsx} from 'clsx'
 import { motion } from 'framer-motion';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
@@ -50,18 +50,18 @@ const cardHoverEffect = {
 
 // --- Course Data (Unchanged) ---
 const groundSchoolSubjects = [
-  { icon: Map, title: "Air Navigation", description: "Mastering flight path calculations, chart reading, and navigational instruments.", image: NAV_IMAGE },
-  { icon: CloudSun, title: "Meteorology", description: "Understanding atmospheric conditions, weather patterns, and forecasts.", image: MET_IMAGE },
-  { icon: Gavel, title: "Air Regulations", description: "Knowledge of national (DGCA) and international aviation laws and procedures.", image: REGS_IMAGE },
-  { icon: Wrench, title: "Technical General", description: "Fundamental principles of flight, aerodynamics, aircraft structures, and systems.", image: TECH_GEN_IMAGE },
-  { icon: Plane, title: "Technical Specific", description: "In-depth study of specific aircraft types systems and performance.", image: TECH_SPEC_IMAGE },
+{ id: "air-navigation", icon: Map, title: "Air Navigation", description: "Mastering flight path calculations, chart reading, and navigational instruments.", image: NAV_IMAGE },
+{ id: "meteorology", icon: CloudSun, title: "Meteorology", description: "Understanding atmospheric conditions, weather patterns, and forecasts.", image: MET_IMAGE },
+{ id: "air-regulations", icon: Gavel, title: "Air Regulations", description: "Knowledge of national (DGCA) and international aviation laws and procedures.", image: REGS_IMAGE },
+{ id: "technical-general", icon: Wrench, title: "Technical General", description: "Fundamental principles of flight, aerodynamics, aircraft structures, and systems.", image: TECH_GEN_IMAGE },
+  { id: "technical-specific", icon: Plane, title: "Technical Specific", description: "In-depth study of specific aircraft types systems and performance.", image: TECH_SPEC_IMAGE },
 ];
 
 const additionalServicesData = [
-  { icon: RadioTower, title: "RTR(A) - Radio Telephony", description: "Specialized training to enhance communication skills for the RTR(A) license exam.", image: RTR_IMAGE, link: "/contact", learnMoreText: "Ace Communication" },
-  { icon: Plane, title: "A320 & B737 Type Rating Prep", description: "Intensive preparation for type rating exams, including major airlines like IndiGo.", image: TYPE_RATING_IMAGE, link: "/contact", learnMoreText: "Prep for Type Rating" },
-  { icon: UserCheck, title: "One-on-One Online Classes", description: "Personalized tutoring for CPL/ATPL subjects, tailored to your learning pace.", image: ONE_ON_ONE_IMAGE, link: "/contact", learnMoreText: "Get Coaching" },
-  { icon: Briefcase, title: "Interview Preparation", description: "Targeted practice sessions to develop confidence for airline interviews.", image: INTERVIEW_PREP_IMAGE, link: "/contact", learnMoreText: "Ace Your Interview" },
+{ id: "rtr-radio-telephony", icon: RadioTower, title: "RTR(A) - Radio Telephony", description: "Specialized training to enhance communication skills for the RTR(A) license exam.", image: RTR_IMAGE, link: "/contact", learnMoreText: "Ace Communication" },
+{ id: "type-rating-prep", icon: Plane, title: "A320 & B737 Type Rating Prep", description: "Intensive preparation for type rating exams, including major airlines like IndiGo.", image: TYPE_RATING_IMAGE, link: "/contact", learnMoreText: "Prep for Type Rating" },
+  { id: "one-on-one-classes", icon: UserCheck, title: "One-on-One Online Classes", description: "Personalized tutoring for CPL/ATPL subjects, tailored to your learning pace.", image: ONE_ON_ONE_IMAGE, link: "/contact", learnMoreText: "Get Coaching" },
+  { id: "interview-prep", icon: Briefcase, title: "Interview Preparation", description: "Targeted practice sessions to develop confidence for airline interviews.", image: INTERVIEW_PREP_IMAGE, link: "/contact", learnMoreText: "Ace Your Interview" },
 ];
 
 const atcFeaturesData = [
@@ -84,6 +84,48 @@ const atcBenefitsData = [
 
 // --- Component ---
 const Courses: React.FC = () => {
+  // Auto-scroll functionality for hash-based navigation
+  useEffect(() => {
+    const handleHashNavigation = () => {
+      const hash = window.location.hash.substring(1); // Remove the '#' from hash
+      if (hash) {
+        // Small delay to ensure DOM is rendered
+        setTimeout(() => {
+          const element = document.getElementById(hash);
+          if (element) {
+            // Smooth scroll to the element with offset for header
+            const yOffset = -80; // Adjust based on your header height
+            const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
+            
+            window.scrollTo({
+              top: y,
+              behavior: 'smooth'
+            });
+            
+            // Add a subtle highlight effect
+            element.style.transform = 'scale(1.02)';
+            element.style.transition = 'transform 0.3s ease-in-out';
+            
+            // Remove highlight after animation
+            setTimeout(() => {
+              element.style.transform = 'scale(1)';
+            }, 1000);
+          }
+        }, 100);
+      }
+    };
+
+    // Handle hash on initial load
+    handleHashNavigation();
+
+    // Handle hash changes (for single page navigation)
+    window.addEventListener('hashchange', handleHashNavigation);
+    
+    // Cleanup event listener
+    return () => {
+      window.removeEventListener('hashchange', handleHashNavigation);
+    };
+  }, []);
 
   const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
     const target = e.target as HTMLImageElement;
@@ -186,7 +228,7 @@ const Courses: React.FC = () => {
           <div className="grid items-stretch grid-cols-1 gap-6 mb-12 md:grid-cols-2 lg:grid-cols-3 sm:gap-8">  
             {groundSchoolSubjects.map((subject, index) => (
               <motion.div key={index} variants={itemVariants} className="flex">
-                 <motion.div className="relative w-full h-full group" whileHover="hover" initial="rest" animate="rest" variants={cardHoverEffect} >
+                 <motion.div id={subject.id} className="relative w-full h-full group" whileHover="hover" initial="rest" animate="rest" variants={cardHoverEffect} >
                    <Card className="relative z-10 flex flex-col w-full h-full overflow-hidden transition-shadow duration-300 border rounded-lg shadow-sm bg-card border-border">
                       <CardHeader className="relative p-0">
                           <div className="relative h-40 overflow-hidden sm:h-48">
@@ -285,7 +327,7 @@ const Courses: React.FC = () => {
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2 sm:gap-8 lg:gap-10">
                 {additionalServicesData.map((service, index) => (
                     <motion.div key={index} variants={itemVariants}>
-                        <motion.div className="relative h-full group" whileHover="hover" initial="rest" animate="rest" variants={cardHoverEffect} >
+                        <motion.div id={service.id} className="relative h-full group" whileHover="hover" initial="rest" animate="rest" variants={cardHoverEffect} >
                             <Card className="relative z-10 flex flex-col h-full overflow-hidden transition-shadow duration-300 border rounded-lg shadow-sm bg-card sm:flex-row border-border">
                                 <div className="relative flex-shrink-0 h-48 sm:h-auto sm:w-1/3 aspect-video sm:aspect-auto">
                                     <Image

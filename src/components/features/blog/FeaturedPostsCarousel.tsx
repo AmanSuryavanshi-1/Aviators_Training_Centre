@@ -167,7 +167,7 @@ const FeaturedPostsCarousel: React.FC<FeaturedPostsCarouselProps> = ({ posts }) 
                           </div>
                           <div className="flex items-center gap-1">
                             <Clock className="w-3 h-3 sm:w-4 sm:h-4" />
-                            <span>{currentPost.readingTime} min read</span>
+                            <span>{currentPost.readingTime || 8} min read</span>
                           </div>
                         </div>
                       </div>

@@ -278,7 +278,7 @@ function CTACardVariant({ template, onInteraction, className }: { template: CTAT
         {/* Action Buttons */}
         <div className="flex flex-col sm:flex-row gap-3">
           <motion.a
-            href={template.primaryButton.url}
+href={`${template.primaryButton.url}?subject=Demo%20Request%3A%20${encodeURIComponent(template.title)}&courseName=${encodeURIComponent(template.title)}&message=${encodeURIComponent('I would like to book a demo for the ' + template.title + ' course. Please contact me to schedule a time.')}#contact-form`
             onClick={() => handleClick('primary')}
             className={cn(
               'flex-1 flex items-center justify-center px-6 py-3 rounded-xl font-semibold text-white transition-all duration-300',
@@ -365,7 +365,7 @@ function CTABannerVariant({ template, onInteraction, className }: { template: CT
 
         <div className="flex flex-col sm:flex-row gap-3">
           <motion.a
-            href={template.primaryButton.url}
+            href={`${template.primaryButton.url}?subject=Demo%20Request%3A%20${encodeURIComponent(template.title)}&courseName=${encodeURIComponent(template.title)}&message=${encodeURIComponent('I would like to book a demo for the ' + template.title + ' course. Please contact me to schedule a time.')}#contact-form`}
             onClick={() => handleClick('primary')}
             className="px-8 py-4 bg-white text-blue-600 font-bold rounded-xl hover:bg-gray-50 transition-all duration-300 shadow-lg hover:shadow-xl flex items-center justify-center"
             whileHover={{ scale: 1.05 }}
@@ -423,7 +423,7 @@ function CTAInlineVariant({ template, onInteraction, className }: { template: CT
 
         <div className="flex gap-3 w-full md:w-auto">
           <motion.a
-            href={template.primaryButton.url}
+            href={`${template.primaryButton.url}?subject=Demo%20Request%3A%20${encodeURIComponent(template.title)}&courseName=${encodeURIComponent(template.title)}&message=${encodeURIComponent('I would like to book a demo for the ' + template.title + ' course. Please contact me to schedule a time.')}#contact-form`}
             onClick={() => handleClick('primary')}
             className="flex-1 md:flex-none px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors duration-300 flex items-center justify-center"
             whileHover={{ scale: 1.02 }}
