@@ -4,7 +4,7 @@
  */
 
 import { NextRequest } from 'next/server';
-
+ 
 export interface AuthValidationResult {
   isAuthenticated: boolean;
   authMethod: 'sanity' | 'simple' | 'none';
