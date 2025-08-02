@@ -27,11 +27,13 @@ export function getEnvDiagnostics(): EnvDiagnostics {
 }
 
 export function logEnvDiagnostics(context: string = 'Unknown'): void {
-  const diagnostics = getEnvDiagnostics();
-  console.log(`🔍 Environment Diagnostics (${context}):`, {
-    ...diagnostics,
-    sanityApiToken: diagnostics.sanityApiToken ? 'Present' : 'Missing'
-  });
+  if (process.env.NODE_ENV === 'development') {
+    const diagnostics = getEnvDiagnostics();
+    console.log(`🔍 Environment Diagnostics (${context}):`, {
+      ...diagnostics,
+      sanityApiToken: diagnostics.sanityApiToken ? 'Present' : 'Missing'
+    });
+  }
 }
 
 export function validateSanityEnv(): {

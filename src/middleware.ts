@@ -87,8 +87,8 @@ function hasSanityAuth(request: NextRequest): boolean {
            !value.startsWith('deleted');
   });
 
-  // Enhanced logging for debugging (only for admin routes)
-  if (request.nextUrl.pathname.startsWith('/admin')) {
+  // Enhanced logging for debugging (only for admin routes in development)
+  if (process.env.NODE_ENV === 'development' && request.nextUrl.pathname.startsWith('/admin')) {
     console.log('🔍 Sanity auth check:', {
       pathname: request.nextUrl.pathname,
       totalCookies: allCookies.length,
@@ -135,20 +135,28 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  console.log(`🔐 Protecting route: ${pathname}`);
+  if (process.env.NODE_ENV === 'development') {
+    console.log(`🔐 Protecting route: ${pathname}`);
+  }
 
   // Check for Sanity Studio authentication only
   const hasSanityStudioAuth = hasSanityAuth(request);
   
-  console.log('🔍 Auth status:', { hasSanityStudioAuth });
+  if (process.env.NODE_ENV === 'development') {
+    console.log('🔍 Auth status:', { hasSanityStudioAuth });
+  }
   
   if (!hasSanityStudioAuth) {
-    console.log('❌ No Sanity Studio authentication found, redirecting to studio');
+    if (process.env.NODE_ENV === 'development') {
+      console.log('❌ No Sanity Studio authentication found, redirecting to studio');
+    }
     
     return redirectToStudio(request);
   }
 
-  console.log(`✅ Access granted to ${pathname} - Sanity Studio auth detected`);
+  if (process.env.NODE_ENV === 'development') {
+    console.log(`✅ Access granted to ${pathname} - Sanity Studio auth detected`);
+  }
   
   return NextResponse.next();
 }

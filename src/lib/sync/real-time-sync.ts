@@ -185,7 +185,9 @@ class RealTimeSyncManager {
       this.forceSyncCheck();
     }, 30000);
 
-    console.log('Real-time sync manager initialized');
+    if (process.env.NODE_ENV === 'development') {
+      console.log('Real-time sync manager initialized');
+    }
   }
 
   // Cleanup

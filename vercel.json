@@ -2,6 +2,8 @@
   "version": 2,
   "installCommand": "npm install --legacy-peer-deps",
   "buildCommand": "npm run build",
+  "framework": "nextjs",
+  "regions": ["iad1"],
   "rewrites": [
     {
       "source": "/studio/:path*",
@@ -31,6 +33,10 @@
         {
           "key": "Access-Control-Allow-Headers",
           "value": "X-Requested-With, Content-Type, Accept, Authorization, Cookie"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "SAMEORIGIN"
         }
       ]
     },
@@ -71,17 +77,41 @@
           "value": "X-Requested-With, Content-Type, Accept"
         }
       ]
+    },
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        }
+      ]
     }
   ],
   "functions": {
-    "src/app/api/**/*.ts": {
+    "src/app/api/**/route.{js,ts}": {
       "maxDuration": 30
     }
   },
+  "crons": [
+    {
+      "path": "/api/maintenance",
+      "schedule": "0 2 * * *"
+    }
+  ],
   "env": {
     "NEXT_PUBLIC_SANITY_PROJECT_ID": "3u4fa9kl",
     "NEXT_PUBLIC_SANITY_DATASET": "production",
     "NEXT_PUBLIC_SANITY_API_VERSION": "2024-01-01",
-    "NEXT_PUBLIC_SITE_URL": "https://www.aviatorstrainingcentre.in"
+    "NEXT_PUBLIC_SITE_URL": "https://www.aviatorstrainingcentre.in",
+    "NODE_ENV": "production"
   }
 }
