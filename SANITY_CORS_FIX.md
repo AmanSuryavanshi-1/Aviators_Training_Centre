@@ -57,7 +57,7 @@ The current setup has conflicts. Here's the clean configuration:
 #### **For Production (.env.production)**:
 ```bash
 # Sanity Configuration
-***REMOVED***
+NEXT_PUBLIC_SANITY_PROJECT_ID=your_sanity_project_id
 NEXT_PUBLIC_SANITY_DATASET=production
 NEXT_PUBLIC_SANITY_API_VERSION=2024-01-01
 SANITY_API_TOKEN=your_new_editor_token_here

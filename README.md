@@ -54,7 +54,7 @@ A comprehensive, production-ready aviation training platform built for Aviators 
 - **State Management:** React Context, custom hooks, and client-side validation
 
 ### Backend & Services
-- **CMS:** Sanity Studio (Project ID: 3u4fa9kl) with custom schemas and plugins
+- **CMS:** Sanity Studio with custom schemas and plugins
 - **Database:** Firebase Firestore for analytics and real-time data
 - **Authentication:** Firebase Auth with custom JWT and admin dashboard
 - **Email Service:** Resend API for transactional emails and notifications
@@ -94,7 +94,7 @@ You'll need accounts for:
 ```bash
 # Clone the repository
 git clone <repository-url>
-cd aviators-training-centre
+cd your-project-directory
 
 # Install dependencies
 npm install
@@ -131,7 +131,7 @@ npm run dev
 ## 📁 Project Structure
 
 ```
-aviators-training-centre/
+your-project-directory/
 ├── 📁 src/                          # Application source code
 │   ├── 📁 app/                      # Next.js App Router pages
 │   │   ├── 📁 admin/                # Admin dashboard
@@ -178,32 +178,32 @@ The system requires several environment variables for different services. Curren
 #### Core Configuration
 ```bash
 # Site Configuration
-NEXT_PUBLIC_SITE_URL=https://www.aviatorstrainingcentre.in
+NEXT_PUBLIC_SITE_URL=https://your-domain.com
 
-# Sanity CMS (Production Ready)
-***REMOVED***
+# Sanity CMS
+NEXT_PUBLIC_SANITY_PROJECT_ID=your_sanity_project_id
 NEXT_PUBLIC_SANITY_DATASET=production
 NEXT_PUBLIC_SANITY_API_VERSION=2024-01-01
 SANITY_API_TOKEN=your_sanity_write_token
 
-# Firebase (Configured)
-FIREBASE_API_KEY=AIzaSyAMjXalWzAN-LGKKH2GyQfPldcmdINlxXs
-FIREBASE_PROJECT_ID=aviators-training-centre---atc
-FIREBASE_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----\n...\n-----END PRIVATE KEY-----\n"
-FIREBASE_CLIENT_EMAIL=firebase-adminsdk-fbsvc@aviators-training-centre---atc.iam.gserviceaccount.com
+# Firebase
+FIREBASE_API_KEY=your_firebase_api_key
+FIREBASE_PROJECT_ID=your-firebase-project-id
+FIREBASE_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----\nYOUR_PRIVATE_KEY_HERE\n-----END PRIVATE KEY-----\n"
+FIREBASE_CLIENT_EMAIL=firebase-adminsdk-xxxxx@your-project.iam.gserviceaccount.com
 
-# Email Service (Active)
-***REMOVED***e_T9mZYtYh_8bKAa3Qec9QmrFJ5rgUm5KfM
-***REMOVED***
-***REMOVED***
-***REMOVED***
+# Email Service
+RESEND_API_KEY=your_resend_api_key
+FROM_EMAIL=noreply@your-domain.com
+OWNER1_EMAIL=your-email@domain.com
+OWNER2_EMAIL=your-second-email@domain.com
 
 # Admin Access
-***REMOVED***
-***REMOVED***
+ADMIN_USERNAME=your_admin_username
+ADMIN_PASSWORD=your_secure_password
 
 # Analytics
-***REMOVED***
+NEXT_PUBLIC_GA_MEASUREMENT_ID=G-XXXXXXXXXX
 ```
 
 See [.env.local.example](.env.local.example) for the complete configuration template.

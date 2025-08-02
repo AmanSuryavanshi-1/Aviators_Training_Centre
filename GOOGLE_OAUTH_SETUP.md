@@ -46,8 +46,8 @@ Add these to your `.env.production` file:
 
 ```bash
 # Google OAuth Configuration
-NEXT_PUBLIC_GOOGLE_CLIENT_ID=your_client_id_here
-GOOGLE_CLIENT_SECRET=your_client_secret_here
+NEXT_PUBLIC_GOOGLE_CLIENT_ID=your_google_oauth_client_id
+GOOGLE_CLIENT_SECRET=your_google_oauth_client_secret
 ```
 
 ## 👥 Step 3: Manage Sanity Workspace Members

@@ -10,7 +10,7 @@ import { createClient } from '@sanity/client';
 
 // Sanity client configuration
 const client = createClient({
-  projectId: '3u4fa9kl',
+  projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID,
   dataset: 'production',
   apiVersion: '2024-01-01',
   useCdn: false,

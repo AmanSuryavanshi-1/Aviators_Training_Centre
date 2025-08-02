@@ -86,8 +86,8 @@ async function validateEnvironmentVariables() {
   
   // Validate specific values
   const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID;
-  if (projectId && projectId !== '3u4fa9kl') {
-    logWarning(`Project ID is ${projectId}, expected 3u4fa9kl`);
+  if (!projectId) {
+    logWarning(`Project ID is not set in environment variables`);
   }
   
   const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET;

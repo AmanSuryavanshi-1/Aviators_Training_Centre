@@ -54,6 +54,7 @@
     "validate:seo": "tsx tools/scripts/development/validate-seo-implementation.ts",
     "validate:sanity": "node tools/scripts/development/validate-sanity-environment.js",
     "validate:env": "node tools/scripts/development/validate-environment.js",
+    "verify:security": "node scripts/verify-security-cleanup.js",
     "upload:images": "node tools/scripts/development/upload-blog-images.js",
     "deploy:prepare": "node tools/scripts/deploy/production-deployment.js",
     "deploy:build": "npm run validate:pre-deploy && npm run deploy:prepare && npm run build",

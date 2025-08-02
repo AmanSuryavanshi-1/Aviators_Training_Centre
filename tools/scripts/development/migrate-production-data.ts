@@ -54,7 +54,7 @@ class ProductionDataMigrator {
         _type: 'author',
         name: 'Aviators Training Centre',
         slug: {
-          current: 'aviators-training-centre',
+          current: 'training-centre',
           _type: 'slug'
         },
         bio: 'Expert aviation instructors at Aviators Training Centre',

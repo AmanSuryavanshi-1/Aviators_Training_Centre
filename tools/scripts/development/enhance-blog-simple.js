@@ -9,7 +9,7 @@ require('dotenv').config({ path: '.env.local' });
 
 // Sanity client configuration
 const client = createClient({
-  projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || '3u4fa9kl',
+  projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID,
   dataset: process.env.NEXT_PUBLIC_SANITY_DATASET || 'production',
   token: process.env.SANITY_API_TOKEN,
   useCdn: false,
@@ -173,7 +173,7 @@ async function enhanceAndPublishBlogPosts() {
   
   // Debug configuration
   console.log('🔧 Configuration check:');
-  console.log(`Project ID: 3u4fa9kl`);
+  console.log(`Project ID: ${process.env.NEXT_PUBLIC_SANITY_PROJECT_ID}`);
   console.log(`Dataset: production`);
   console.log(`Token configured: true`);
   

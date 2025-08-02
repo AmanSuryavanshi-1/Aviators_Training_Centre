@@ -79,16 +79,16 @@
 **Update `.env.production`**:
 ```bash
 # Sanity Configuration - REQUIRED
-***REMOVED***
+NEXT_PUBLIC_SANITY_PROJECT_ID=your_sanity_project_id
 NEXT_PUBLIC_SANITY_DATASET=production
 NEXT_PUBLIC_SANITY_API_VERSION=2024-01-01
 SANITY_API_TOKEN=your_new_editor_token_here
 
 # Site Configuration - REQUIRED
-NEXT_PUBLIC_SITE_URL=https://www.aviatorstrainingcentre.in
+NEXT_PUBLIC_SITE_URL=https://your-domain.com
 
 # Authentication
-***REMOVED***
+JWT_SECRET=your_secure_jwt_secret_minimum_32_characters
 
 # Other existing configs...
 ```

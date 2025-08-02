@@ -246,7 +246,7 @@ async function createFallbackContent(): Promise<void> {
     const fallbackPost = {
       _type: 'post',
       title: 'Welcome to Aviators Training Centre Blog',
-      slug: { current: 'welcome-to-aviators-training-centre', _type: 'slug' },
+      slug: { current: 'welcome-to-training-centre', _type: 'slug' },
       excerpt: 'Discover expert aviation training content, pilot career guidance, and industry insights.',
       publishedAt: new Date().toISOString(),
       featured: false,
@@ -270,7 +270,7 @@ async function createFallbackContent(): Promise<void> {
 
     // Check if fallback post already exists
     const existingFallback = await enhancedClient.fetch(
-      `*[_type == "post" && slug.current == "welcome-to-aviators-training-centre"][0]`
+      `*[_type == "post" && slug.current == "welcome-to-training-centre"][0]`
     );
 
     if (!existingFallback) {
