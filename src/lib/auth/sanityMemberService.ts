@@ -99,7 +99,7 @@ export class SanityMemberService {
       const fallbackMembers: SanityMember[] = [
         {
           id: 'aman-admin',
-          email: 'amanduggyanshi000@gmail.com',
+          email: 'amansuryavanshi2002@gmail.com',
           displayName: 'Aman',
           role: 'administrator',
           isActive: true,

@@ -6,9 +6,8 @@
 'use client';
 
 import { NextStudio } from 'next-sanity/studio';
-import { metadata } from 'next-sanity/studio/metadata';
 import { config } from '../../../../studio/sanity.config';
-import { Suspense } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { Loader2 } from 'lucide-react';
 
 // Loading component for Studio
@@ -71,23 +70,34 @@ function StudioErrorBoundary({ children }: { children: React.ReactNode }) {
 
 // Main Studio component
 export default function StudioPage() {
-  // Check if we're in the browser
-  if (typeof window === 'undefined') {
+  const [isClient, setIsClient] = useState(false);
+  const [configError, setConfigError] = useState<string | null>(null);
+
+  useEffect(() => {
+    setIsClient(true);
+    
+    // Validate configuration
+    const requiredEnvVars = {
+      NEXT_PUBLIC_SANITY_PROJECT_ID: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID,
+      NEXT_PUBLIC_SANITY_DATASET: process.env.NEXT_PUBLIC_SANITY_DATASET,
+    };
+
+    const missingVars = Object.entries(requiredEnvVars)
+      .filter(([_, value]) => !value)
+      .map(([key]) => key);
+
+    if (missingVars.length > 0) {
+      setConfigError(`Missing environment variables: ${missingVars.join(', ')}`);
+    }
+  }, []);
+
+  // Show loading during SSR
+  if (!isClient) {
     return <StudioLoading />;
   }
 
-  // Check for required environment variables
-  const requiredEnvVars = {
-    NEXT_PUBLIC_SANITY_PROJECT_ID: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID,
-    NEXT_PUBLIC_SANITY_DATASET: process.env.NEXT_PUBLIC_SANITY_DATASET,
-    NEXT_PUBLIC_SANITY_API_VERSION: process.env.NEXT_PUBLIC_SANITY_API_VERSION,
-  };
-
-  const missingEnvVars = Object.entries(requiredEnvVars)
-    .filter(([_, value]) => !value)
-    .map(([key]) => key);
-
-  if (missingEnvVars.length > 0) {
+  // Show configuration error
+  if (configError) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="max-w-md mx-auto bg-white rounded-lg shadow-sm border border-gray-200 p-6">
@@ -97,18 +107,22 @@ export default function StudioPage() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.732-.833-2.5 0L4.268 19.5c-.77.833.192 2.5 1.732 2.5z" />
               </svg>
             </div>
-            <h1 className="text-xl font-semibold text-gray-900 mb-2">Configuration Required</h1>
-            <p className="text-gray-600 mb-4">
-              Missing required environment variables:
-            </p>
-            <ul className="text-left text-sm text-red-600 space-y-1 mb-4">
-              {missingEnvVars.map(envVar => (
-                <li key={envVar}>• {envVar}</li>
-              ))}
-            </ul>
-            <p className="text-xs text-gray-500">
-              Please configure these variables and restart the application.
-            </p>
+            <h1 className="text-xl font-semibold text-gray-900 mb-2">Configuration Error</h1>
+            <p className="text-gray-600 mb-4">{configError}</p>
+            <div className="space-y-2">
+              <button
+                onClick={() => window.location.reload()}
+                className="w-full bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors"
+              >
+                Retry
+              </button>
+              <a
+                href="/admin"
+                className="block w-full bg-gray-100 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-200 transition-colors text-center"
+              >
+                Return to Admin
+              </a>
+            </div>
           </div>
         </div>
       </div>

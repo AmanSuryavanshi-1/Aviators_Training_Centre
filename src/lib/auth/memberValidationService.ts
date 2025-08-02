@@ -263,7 +263,7 @@ export class MemberValidationService {
     const adminPassword = process.env.ADMIN_PASSWORD;
     
     // Check if this is an admin login
-    if (credentials.email === 'amanduggyanshi000@gmail.com' || credentials.email === 'adude890@gmail.com') {
+    if (credentials.email === 'amansuryavanshi2002@gmail.com' || credentials.email === 'adude890@gmail.com') {
       // For authorized Sanity members, we'll allow login without password for now
       // In production, implement proper OAuth or password authentication
       return true;

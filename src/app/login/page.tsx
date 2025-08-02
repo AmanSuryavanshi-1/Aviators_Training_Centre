@@ -1,149 +1,61 @@
 /**
- * Login Page
- * Handles user authentication with Sanity member validation
+ * Simple Login Page
+ * Redirects to Sanity Studio for authentication
  */
 
 'use client';
 
-import { useState, useEffect, Suspense } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Loader2, Shield, User, Mail } from 'lucide-react';
-
-interface LoginFormData {
-  email: string;
-  password: string;
-}
-
-interface LoginResponse {
-  success: boolean;
-  user?: {
-    id: string;
-    email: string;
-    name: string;
-    role: string;
-  };
-  error?: string;
-  expiresAt?: number;
-}
+import { Loader2, Shield, ExternalLink } from 'lucide-react';
+import { checkSanityStudioAuth, redirectToSanityStudio } from '@/lib/auth/sanity-studio-auth';
 
 function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const redirectTo = searchParams.get('redirect') || '/admin';
-
-  const [formData, setFormData] = useState<LoginFormData>({
-    email: '',
-    password: '',
-  });
-  const [isLoading, setIsLoading] = useState(false);
+  const redirectTo = searchParams?.get('redirect') || '/admin';
+  
+  const [isChecking, setIsChecking] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState<string | null>(null);
 
-  // Check if user is already logged in
   useEffect(() => {
-    const checkSession = async () => {
-      try {
-        const response = await fetch('/api/auth/session');
-        if (response.ok) {
-          const data = await response.json();
-          if (data.success) {
-            // User is already logged in, redirect
-            router.push(redirectTo);
-          }
-        }
-      } catch (error) {
-        // Ignore errors, user is not logged in
-      }
-    };
+    checkAuthStatus();
+  }, []);
 
-    checkSession();
-  }, [router, redirectTo]);
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value,
-    }));
-    
-    // Clear errors when user starts typing
-    if (error) setError(null);
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsLoading(true);
-    setError(null);
-    setSuccess(null);
-
+  const checkAuthStatus = async () => {
     try {
-      // Validate form
-      if (!formData.email) {
-        setError('Email is required');
-        setIsLoading(false);
-        return;
-      }
-
-      if (!isValidEmail(formData.email)) {
-        setError('Please enter a valid email address');
-        setIsLoading(false);
-        return;
-      }
-
-      // Attempt login
-      const response = await fetch('/api/auth/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email: formData.email,
-          password: formData.password,
-          provider: 'email',
-        }),
-      });
-
-      const data: LoginResponse = await response.json();
-
-      if (data.success && data.user) {
-        setSuccess(`Welcome back, ${data.user.name}! Redirecting...`);
-        
-        // Small delay to show success message
-        setTimeout(() => {
-          router.push(redirectTo);
-        }, 1000);
+      const user = await checkSanityStudioAuth();
+      
+      if (user && user.isAuthenticated) {
+        // User is already authenticated, redirect to intended destination
+        router.push(redirectTo);
       } else {
-        setError(data.error || 'Login failed');
+        setIsChecking(false);
       }
     } catch (error) {
-      console.error('Login error:', error);
-      setError('Network error. Please check your connection and try again.');
-    } finally {
-      setIsLoading(false);
+      console.error('Auth check failed:', error);
+      setError('Failed to check authentication status');
+      setIsChecking(false);
     }
   };
 
-  const isValidEmail = (email: string): boolean => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
+  const handleStudioLogin = () => {
+    redirectToSanityStudio(redirectTo);
   };
 
-  const isAuthorizedEmail = (email: string): boolean => {
-    const authorizedEmails = [
-      'amanduggyanshi000@gmail.com',
-      'adude890@gmail.com',
-    ];
-    return authorizedEmails.includes(email.toLowerCase());
-  };
-
-  const handleQuickLogin = (email: string) => {
-    setFormData(prev => ({ ...prev, email }));
-  };
+  if (isChecking) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100">
+        <div className="text-center">
+          <Loader2 className="w-8 h-8 animate-spin mx-auto mb-4 text-blue-600" />
+          <p className="text-gray-600">Checking authentication...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 px-4">
@@ -153,122 +65,85 @@ function LoginForm() {
             <Shield className="w-6 h-6 text-white" />
           </div>
           <CardTitle className="text-2xl font-bold text-gray-900">
-            Admin Login
+            Admin Access Required
           </CardTitle>
           <CardDescription className="text-gray-600">
-            Sign in to access the admin dashboard
+            Please authenticate with Sanity Studio to access the admin dashboard
           </CardDescription>
         </CardHeader>
 
         <CardContent>
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="email" className="text-sm font-medium text-gray-700">
-                Email Address
-              </Label>
-              <div className="relative">
-                <Mail className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-                <Input
-                  id="email"
-                  name="email"
-                  type="email"
-                  value={formData.email}
-                  onChange={handleInputChange}
-                  placeholder="Enter your email"
-                  className="pl-10"
-                  disabled={isLoading}
-                  required
-                />
-              </div>
-              {formData.email && !isAuthorizedEmail(formData.email) && (
-                <p className="text-xs text-amber-600">
-                  ⚠️ Only Sanity project members can access the admin dashboard
-                </p>
-              )}
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="password" className="text-sm font-medium text-gray-700">
-                Password
-              </Label>
-              <div className="relative">
-                <User className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-                <Input
-                  id="password"
-                  name="password"
-                  type="password"
-                  value={formData.password}
-                  onChange={handleInputChange}
-                  placeholder="Enter your password"
-                  className="pl-10"
-                  disabled={isLoading}
-                />
-              </div>
-              <p className="text-xs text-gray-500">
-                For authorized Sanity members, password is optional
-              </p>
-            </div>
-
+          <div className="space-y-4">
             {error && (
               <Alert variant="destructive">
                 <AlertDescription>{error}</AlertDescription>
               </Alert>
             )}
 
-            {success && (
-              <Alert className="border-green-200 bg-green-50 text-green-800">
-                <AlertDescription>{success}</AlertDescription>
-              </Alert>
-            )}
-
+            {/* Studio Login Button */}
             <Button
-              type="submit"
-              className="w-full"
-              disabled={isLoading || !formData.email}
+              onClick={handleStudioLogin}
+              className="w-full bg-blue-600 hover:bg-blue-700"
             >
-              {isLoading ? (
-                <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Signing in...
-                </>
-              ) : (
-                'Sign In'
-              )}
+              <ExternalLink className="mr-2 h-4 w-4" />
+              Login with Sanity Studio
             </Button>
-          </form>
 
-          {/* Quick login buttons for authorized users */}
-          <div className="mt-6 pt-6 border-t border-gray-200">
-            <p className="text-xs text-gray-500 text-center mb-3">
-              Quick login for authorized members:
-            </p>
-            <div className="space-y-2">
+            {/* Information */}
+            <div className="mt-6 p-4 bg-blue-50 rounded-lg">
+              <div className="flex items-start space-x-3">
+                <Shield className="w-5 h-5 text-blue-600 mt-0.5" />
+                <div>
+                  <h3 className="text-sm font-medium text-blue-900">
+                    How This Works
+                  </h3>
+                  <div className="text-sm text-blue-700 mt-1 space-y-1">
+                    <p>1. Click "Login with Sanity Studio"</p>
+                    <p>2. Sign in with your Google account in Sanity</p>
+                    <p>3. You'll be redirected back to the admin dashboard</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Authorized members info */}
+            <div className="mt-4 p-3 bg-gray-50 rounded-lg">
+              <h4 className="text-xs font-medium text-gray-700 mb-2">
+                Authorized Members:
+              </h4>
+              <div className="space-y-1 text-xs text-gray-600">
+                <div className="flex items-center space-x-2">
+                  <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                  <span>amansuryavanshi2002@gmail.com</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                  <span>adude890@gmail.com</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Direct Studio access */}
+            <div className="mt-6 pt-4 border-t border-gray-200">
+              <p className="text-xs text-gray-500 text-center mb-2">
+                Or access Sanity Studio directly:
+              </p>
               <Button
                 variant="outline"
                 size="sm"
                 className="w-full text-xs"
-                onClick={() => handleQuickLogin('amanduggyanshi000@gmail.com')}
-                disabled={isLoading}
+                onClick={() => window.open('/studio', '_blank')}
               >
-                Aman (Administrator)
-              </Button>
-              <Button
-                variant="outline"
-                size="sm"
-                className="w-full text-xs"
-                onClick={() => handleQuickLogin('adude890@gmail.com')}
-                disabled={isLoading}
-              >
-                Myst (Administrator)
+                Open Sanity Studio
               </Button>
             </div>
-          </div>
 
-          {/* Security notice */}
-          <div className="mt-6 pt-4 border-t border-gray-200">
-            <div className="flex items-center justify-center space-x-2 text-xs text-gray-500">
-              <Shield className="w-3 h-3" />
-              <span>Secured by Sanity member validation</span>
+            {/* Security notice */}
+            <div className="mt-4 pt-4 border-t border-gray-200">
+              <div className="flex items-center justify-center space-x-2 text-xs text-gray-500">
+                <Shield className="w-3 h-3" />
+                <span>Secured by Sanity Studio authentication</span>
+              </div>
             </div>
           </div>
         </CardContent>
