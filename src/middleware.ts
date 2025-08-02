@@ -36,7 +36,7 @@ function redirectToLogin(request: NextRequest): NextResponse {
 
 /**
  * Check if user has Sanity Studio authentication
- * More comprehensive check for Sanity session cookies
+ * Comprehensive check for various Sanity session cookie patterns
  */
 function hasSanityAuth(request: NextRequest): boolean {
   // Get all cookies
@@ -46,34 +46,46 @@ function hasSanityAuth(request: NextRequest): boolean {
   const sanityAuthCookies = allCookies.filter(cookie => {
     const name = cookie.name.toLowerCase();
     return (
-      // Common Sanity cookie patterns
+      // Sanity Studio session cookies (most common patterns)
+      name.startsWith('sanity') ||
       name.includes('sanity') && (
         name.includes('auth') || 
         name.includes('session') || 
-        name.includes('token')
-      )
-    ) || (
+        name.includes('token') ||
+        name.includes('user')
+      ) ||
       // Specific known Sanity cookie names
-      name === 'sanity-session' ||
-      name === '__sanity_auth_token' ||
-      name === 'sanity.auth.token' ||
-      name === 'sanity-auth-token' ||
-      name === 'sanity_auth_token'
+      [
+        'sanity-session',
+        '__sanity_auth_token',
+        'sanity.auth.token',
+        'sanity-auth-token',
+        'sanity_auth_token',
+        'sanity-studio-session',
+        'sanity_studio_session'
+      ].includes(name)
     );
   });
 
   // Check if we have valid auth cookies with actual values
   const hasValidAuth = sanityAuthCookies.some(cookie => 
-    cookie.value && cookie.value.length > 10
+    cookie.value && cookie.value.length > 10 && cookie.value !== 'undefined'
   );
 
-  // Log for debugging
-  console.log('🔍 Auth check:', {
-    totalCookies: allCookies.length,
-    sanityAuthCookies: sanityAuthCookies.map(c => c.name),
-    hasValidAuth,
-    pathname: request.nextUrl.pathname
-  });
+  // Enhanced logging for debugging
+  if (request.nextUrl.pathname.startsWith('/admin')) {
+    console.log('🔍 Detailed auth check:', {
+      pathname: request.nextUrl.pathname,
+      totalCookies: allCookies.length,
+      allCookieNames: allCookies.map(c => c.name),
+      sanityAuthCookies: sanityAuthCookies.map(c => ({ 
+        name: c.name, 
+        hasValue: !!c.value, 
+        valueLength: c.value?.length || 0 
+      })),
+      hasValidAuth,
+    });
+  }
 
   return hasValidAuth;
 }

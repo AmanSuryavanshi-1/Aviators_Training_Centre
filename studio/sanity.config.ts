@@ -109,22 +109,21 @@ export const config = defineConfig({
     },
   },
 
-  // CORS configuration
+  // CORS configuration - Note: This is for client-side only
+  // Actual CORS must be configured in Sanity Management Console
   cors: {
     credentials: true,
-    origin: [
-      'http://localhost:3000',
-      'http://localhost:3333',
-      siteUrl,
-      'https://aviatorstrainingcentre.in',
-      'https://www.aviatorstrainingcentre.in',
-    ].filter(Boolean) as string[],
+    origin: true, // Allow all origins for now - configure in Sanity Console
   },
 
-  // Authentication configuration - simplified for production
+  // Authentication configuration
   auth: {
     mode: 'replace',
-    redirectOnSingle: true, // Auto-redirect if only one provider
+    redirectOnSingle: true,
+    providers: [
+      // This will use Sanity's default Google OAuth provider
+      // No additional configuration needed
+    ],
   },
 
   // Tools configuration
