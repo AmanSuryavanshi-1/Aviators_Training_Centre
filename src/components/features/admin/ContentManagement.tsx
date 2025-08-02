@@ -21,6 +21,7 @@ import {
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { sanitySimpleService } from '@/lib/sanity/client.simple';
+import { urlGenerator } from '@/lib/utils/urlGenerator';
 
 interface BlogPost {
   _id: string;
@@ -277,7 +278,7 @@ const ContentManagement: React.FC = () => {
                 Refresh
               </Button>
               <Button size="sm" asChild>
-                <a href="http://localhost:3333" target="_blank" rel="noopener noreferrer">
+                <a href={urlGenerator.getStudioUrl()} target="_blank" rel="noopener noreferrer">
                   <ExternalLink className="w-4 h-4 mr-2" />
                   Open Studio
                 </a>
@@ -356,7 +357,7 @@ const ContentManagement: React.FC = () => {
                     <FileText className="w-12 h-12 mx-auto mb-4 text-gray-300" />
                     <p>No blog posts found</p>
                     <Button className="mt-4" asChild>
-                      <a href="http://localhost:3333" target="_blank">
+                      <a href={urlGenerator.getCreateUrl('post')} target="_blank">
                         <Plus className="w-4 h-4 mr-2" />
                         Create First Post
                       </a>
@@ -408,7 +409,7 @@ const ContentManagement: React.FC = () => {
                           </a>
                         </Button>
                         <Button variant="outline" size="sm" asChild>
-                          <a href={`http://localhost:3333/desk/post;${post._id}`} target="_blank">
+                          <a href={urlGenerator.getEditUrl(post._id, 'post')} target="_blank">
                             <Edit className="w-4 h-4" />
                           </a>
                         </Button>
@@ -439,7 +440,7 @@ const ContentManagement: React.FC = () => {
                     <Users className="w-12 h-12 mx-auto mb-4 text-gray-300" />
                     <p>No authors found</p>
                     <Button className="mt-4" asChild>
-                      <a href="http://localhost:3333" target="_blank">
+                      <a href={urlGenerator.getCreateUrl('author')} target="_blank">
                         <Plus className="w-4 h-4 mr-2" />
                         Add First Author
                       </a>
@@ -467,7 +468,7 @@ const ContentManagement: React.FC = () => {
                       </div>
                       <div className="flex items-center gap-2">
                         <Button variant="outline" size="sm" asChild>
-                          <a href={`/studio/desk/author;${author._id}`} target="_blank">
+                          <a href={urlGenerator.getEditUrl(author._id, 'author')} target="_blank">
                             <Edit className="w-4 h-4" />
                           </a>
                         </Button>
@@ -498,7 +499,7 @@ const ContentManagement: React.FC = () => {
                     <FolderOpen className="w-12 h-12 mx-auto mb-4 text-gray-300" />
                     <p>No categories found</p>
                     <Button className="mt-4" asChild>
-                      <a href="http://localhost:3333" target="_blank">
+                      <a href={urlGenerator.getCreateUrl('category')} target="_blank">
                         <Plus className="w-4 h-4 mr-2" />
                         Add First Category
                       </a>
@@ -536,7 +537,7 @@ const ContentManagement: React.FC = () => {
                       </div>
                       <div className="flex items-center gap-2">
                         <Button variant="outline" size="sm" asChild>
-                          <a href={`/studio/desk/category;${category._id}`} target="_blank">
+                          <a href={urlGenerator.getEditUrl(category._id, 'category')} target="_blank">
                             <Edit className="w-4 h-4" />
                           </a>
                         </Button>

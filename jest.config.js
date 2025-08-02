@@ -1,103 +1,197 @@
-/** @type {import('jest').Config} */
-const config = {
+/**
+ * Jest Configuration for Comprehensive Testing Suite
+ */
+
+const nextJest = require('next/jest');
+
+const createJestConfig = nextJest({
+  // Provide the path to your Next.js app to load next.config.js and .env files
+  dir: './',
+});
+
+// Add any custom config to be passed to Jest
+const customJestConfig = {
   // Test environment
-  testEnvironment: 'node',
-  
+  testEnvironment: 'jsdom',
+
   // Setup files
-  setupFilesAfterEnv: ['<rootDir>/tests/setup.ts'],
-  
-  // Test file patterns
+  setupFilesAfterEnv: ['<rootDir>/src/__tests__/setup/testSetup.ts'],
+
+  // Module name mapping for absolute imports
+  moduleNameMapping: {
+    '^@/(.*)$': '<rootDir>/src/$1',
+    '^@/components/(.*)$': '<rootDir>/src/components/$1',
+    '^@/lib/(.*)$': '<rootDir>/src/lib/$1',
+    '^@/contexts/(.*)$': '<rootDir>/src/contexts/$1',
+    '^@/hooks/(.*)$': '<rootDir>/src/hooks/$1',
+    '^@/types/(.*)$': '<rootDir>/src/types/$1',
+    '^@/styles/(.*)$': '<rootDir>/src/styles/$1',
+  },
+
+  // Test patterns
   testMatch: [
-    '<rootDir>/tests/**/*.test.{js,ts,tsx}',
-    '<rootDir>/src/**/__tests__/**/*.{js,ts,tsx}',
-    '<rootDir>/tools/**/__tests__/**/*.{js,ts,tsx}'
+    '<rootDir>/src/**/__tests__/**/*.{js,jsx,ts,tsx}',
+    '<rootDir>/src/**/*.{test,spec}.{js,jsx,ts,tsx}',
   ],
-  
+
   // Coverage configuration
-  collectCoverage: true,
   collectCoverageFrom: [
-    'src/**/*.{js,ts,tsx}',
-    'tools/**/*.{js,ts,tsx}',
-    'studio/**/*.{js,ts,tsx}',
+    'src/**/*.{js,jsx,ts,tsx}',
     '!src/**/*.d.ts',
-    '!src/**/*.stories.{js,ts,tsx}',
-    '!src/**/index.{js,ts,tsx}',
-    '!**/node_modules/**',
-    '!**/.next/**',
-    '!**/dist/**'
+    '!src/**/*.stories.{js,jsx,ts,tsx}',
+    '!src/**/__tests__/**',
+    '!src/**/__mocks__/**',
+    '!src/app/**/layout.tsx',
+    '!src/app/**/loading.tsx',
+    '!src/app/**/error.tsx',
+    '!src/app/**/not-found.tsx',
+    '!src/middleware.ts',
   ],
-  coverageDirectory: 'coverage',
-  coverageReporters: ['text', 'lcov', 'html'],
+
+  // Coverage thresholds
   coverageThreshold: {
     global: {
       branches: 80,
       functions: 80,
       lines: 80,
-      statements: 80
-    }
+      statements: 80,
+    },
+    // Specific thresholds for critical modules
+    './src/lib/auth/': {
+      branches: 90,
+      functions: 90,
+      lines: 90,
+      statements: 90,
+    },
+    './src/contexts/': {
+      branches: 85,
+      functions: 85,
+      lines: 85,
+      statements: 85,
+    },
   },
-  
-  // Module resolution
-  moduleNameMapper: {
-    '^@/(.*)$': '<rootDir>/src/$1',
-    '^@studio/(.*)$': '<rootDir>/studio/$1',
-    '^@tools/(.*)$': '<rootDir>/tools/$1'
-  },
-  
-  // Transform configuration
-  preset: 'ts-jest',
-  extensionsToTreatAsEsm: ['.ts', '.tsx'],
-  globals: {
-    'ts-jest': {
-      useESM: true,
-      tsconfig: {
-        jsx: 'react-jsx'
-      }
-    }
-  },
-  
-  // Module file extensions
-  moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json'],
-  
-  // Transform ignore patterns
-  transformIgnorePatterns: [
-    'node_modules/(?!(.*\\.mjs$|@sanity|@portabletext))'
-  ],
-  
+
+  // Coverage reporters
+  coverageReporters: ['text', 'lcov', 'html', 'json-summary'],
+
   // Test timeout
   testTimeout: 10000,
-  
+
+  // Transform configuration
+  transform: {
+    '^.+\\.(js|jsx|ts|tsx)$': ['babel-jest', { presets: ['next/babel'] }],
+  },
+
+  // Module file extensions
+  moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
+
+  // Ignore patterns
+  testPathIgnorePatterns: [
+    '<rootDir>/.next/',
+    '<rootDir>/node_modules/',
+    '<rootDir>/dist/',
+    '<rootDir>/build/',
+  ],
+
+  // Transform ignore patterns
+  transformIgnorePatterns: [
+    '/node_modules/(?!(.*\\.mjs$|@sanity|@portabletext))',
+  ],
+
+  // Global variables
+  globals: {
+    'ts-jest': {
+      tsconfig: 'tsconfig.json',
+    },
+  },
+
   // Verbose output
   verbose: true,
-  
+
   // Clear mocks between tests
   clearMocks: true,
-  
+
   // Restore mocks after each test
   restoreMocks: true,
-  
-  // Error handling
+
+  // Error on deprecated features
   errorOnDeprecated: true,
-  
-  // Watch mode configuration
-  watchPathIgnorePatterns: [
-    '<rootDir>/node_modules/',
-    '<rootDir>/.next/',
-    '<rootDir>/dist/',
-    '<rootDir>/coverage/'
+
+  // Test suites configuration
+  projects: [
+    {
+      displayName: 'Unit Tests',
+      testMatch: ['<rootDir>/src/**/*.test.{js,jsx,ts,tsx}'],
+      testEnvironment: 'jsdom',
+    },
+    {
+      displayName: 'Integration Tests',
+      testMatch: ['<rootDir>/src/**/__tests__/integration/*.{js,jsx,ts,tsx}'],
+      testEnvironment: 'jsdom',
+      testTimeout: 15000,
+    },
+    {
+      displayName: 'Security Tests',
+      testMatch: ['<rootDir>/src/**/__tests__/security/*.{js,jsx,ts,tsx}'],
+      testEnvironment: 'node',
+      testTimeout: 20000,
+    },
+    {
+      displayName: 'Compatibility Tests',
+      testMatch: ['<rootDir>/src/**/__tests__/compatibility/*.{js,jsx,ts,tsx}'],
+      testEnvironment: 'jsdom',
+      testTimeout: 30000,
+    },
   ],
-  
+
   // Reporters
   reporters: [
     'default',
     [
       'jest-junit',
       {
-        outputDirectory: 'test-results',
-        outputName: 'junit.xml'
-      }
-    ]
-  ]
-}
+        outputDirectory: './test-results',
+        outputName: 'junit.xml',
+        suiteName: 'Production Critical Fixes Test Suite',
+      },
+    ],
+    [
+      'jest-html-reporters',
+      {
+        publicPath: './test-results',
+        filename: 'test-report.html',
+        expand: true,
+      },
+    ],
+  ],
 
-module.exports = config
+  // Watch plugins
+  watchPlugins: [
+    'jest-watch-typeahead/filename',
+    'jest-watch-typeahead/testname',
+  ],
+
+  // Max workers for parallel execution
+  maxWorkers: '50%',
+
+  // Cache directory
+  cacheDirectory: '<rootDir>/.jest-cache',
+
+  // Notify mode
+  notify: false,
+
+  // Bail on first test failure in CI
+  bail: process.env.CI ? 1 : 0,
+
+  // Force exit after tests complete
+  forceExit: true,
+
+  // Detect open handles
+  detectOpenHandles: true,
+
+  // Detect leaked timers
+  detectLeaks: false,
+};
+
+// Create and export the Jest configuration
+module.exports = createJestConfig(customJestConfig);

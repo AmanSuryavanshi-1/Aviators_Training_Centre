@@ -1,11 +1,9 @@
-import { Metadata } from 'next';
-import { Toaster } from 'sonner';
+/**
+ * Admin Layout
+ * Provides authentication context for admin pages
+ */
 
-export const metadata: Metadata = {
-  title: 'Admin Dashboard - Aviators Training Centre',
-  description: 'Manage your blog content and website settings',
-  robots: 'noindex, nofollow', // Prevent search engines from indexing admin pages
-};
+import { AuthProvider } from '@/contexts/AuthContext';
 
 export default function AdminLayout({
   children,
@@ -13,18 +11,8 @@ export default function AdminLayout({
   children: React.ReactNode;
 }) {
   return (
-    <>
+    <AuthProvider>
       {children}
-      <Toaster 
-        position="top-right"
-        toastOptions={{
-          style: {
-            background: 'hsl(var(--background))',
-            color: 'hsl(var(--foreground))',
-            border: '1px solid hsl(var(--border))',
-          },
-        }}
-      />
-    </>
+    </AuthProvider>
   );
 }

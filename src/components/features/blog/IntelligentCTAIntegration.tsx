@@ -278,7 +278,7 @@ function CTACardVariant({ template, onInteraction, className }: { template: CTAT
         {/* Action Buttons */}
         <div className="flex flex-col sm:flex-row gap-3">
           <motion.a
-href={`${template.primaryButton.url}?subject=Demo%20Request%3A%20${encodeURIComponent(template.title)}&courseName=${encodeURIComponent(template.title)}&message=${encodeURIComponent('I would like to book a demo for the ' + template.title + ' course. Please contact me to schedule a time.')}#contact-form`
+            href={`${template.primaryButton.url}?subject=Demo%20Request%3A%20${encodeURIComponent(template.title)}&courseName=${encodeURIComponent(template.title)}&message=${encodeURIComponent('I would like to book a demo for the ' + template.title + ' course. Please contact me to schedule a time.')}#contact-form`}
             onClick={() => handleClick('primary')}
             className={cn(
               'flex-1 flex items-center justify-center px-6 py-3 rounded-xl font-semibold text-white transition-all duration-300',
