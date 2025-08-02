@@ -116,14 +116,15 @@ export const config = defineConfig({
       'http://localhost:3000',
       'http://localhost:3333',
       siteUrl,
-      ...(siteUrl.startsWith('https://www.') ? [siteUrl.replace('https://www.', 'https://')] : []),
+      'https://aviatorstrainingcentre.in',
+      'https://www.aviatorstrainingcentre.in',
     ].filter(Boolean) as string[],
   },
 
-  // Authentication configuration
+  // Authentication configuration - simplified for production
   auth: {
     mode: 'replace',
-    redirectOnSingle: false,
+    redirectOnSingle: true, // Auto-redirect if only one provider
   },
 
   // Tools configuration

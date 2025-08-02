@@ -46,6 +46,36 @@ function LoginForm() {
     redirectToSanityStudio(redirectTo);
   };
 
+  const handleSimpleLogin = async (email: string) => {
+    try {
+      setIsChecking(true);
+      setError(null);
+
+      const response = await fetch('/api/auth/simple-login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email }),
+        credentials: 'include',
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        // Redirect to intended destination
+        router.push(redirectTo);
+      } else {
+        setError(data.error || 'Login failed');
+      }
+    } catch (error) {
+      console.error('Simple login error:', error);
+      setError('Login failed');
+    } finally {
+      setIsChecking(false);
+    }
+  };
+
   if (isChecking) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100">
@@ -83,11 +113,36 @@ function LoginForm() {
             {/* Studio Login Button */}
             <Button
               onClick={handleStudioLogin}
-              className="w-full bg-blue-600 hover:bg-blue-700"
+              className="w-full bg-blue-600 hover:bg-blue-700 mb-2"
             >
               <ExternalLink className="mr-2 h-4 w-4" />
               Login with Sanity Studio
             </Button>
+
+            {/* Simple Login for Testing */}
+            <div className="mt-4 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
+              <h4 className="text-sm font-medium text-yellow-800 mb-2">
+                🧪 Testing Login (Temporary)
+              </h4>
+              <div className="space-y-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="w-full text-xs"
+                  onClick={() => handleSimpleLogin('amansuryavanshi2002@gmail.com')}
+                >
+                  Quick Login: Aman
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="w-full text-xs"
+                  onClick={() => handleSimpleLogin('adude890@gmail.com')}
+                >
+                  Quick Login: Myst
+                </Button>
+              </div>
+            </div>
 
             {/* Information */}
             <div className="mt-6 p-4 bg-blue-50 rounded-lg">
