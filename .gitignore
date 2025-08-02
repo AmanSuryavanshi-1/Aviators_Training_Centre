@@ -231,6 +231,8 @@ performance-report-*.json
 # Kiro IDE Specific (Development tool artifacts)
 .kiro/
 *.kiro
+.continue/
+*.continue
 
 # Documentation and Summary Files (Development artifacts)
 *_SUMMARY.md
