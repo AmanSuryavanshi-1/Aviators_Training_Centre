@@ -1,23 +1,24 @@
 /**
- * Simple Logout API
- * Clears Sanity Studio session and redirects
+ * Sanity Studio Logout API
+ * Clears Sanity Studio session cookies
  */
 
 import { NextRequest, NextResponse } from 'next/server';
 
 /**
  * POST /api/auth/logout
- * Clear Sanity Studio session
+ * Clear Sanity Studio session and redirect to studio
  */
 export async function POST(request: NextRequest) {
   try {
-    // Create response that redirects to login
+    // Create response
     const response = NextResponse.json({
       success: true,
-      message: 'Logged out successfully'
+      message: 'Logged out successfully',
+      redirectTo: '/studio'
     });
 
-    // Clear any potential auth cookies
+    // Clear any potential Sanity auth cookies
     const cookieOptions = {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
@@ -26,12 +27,22 @@ export async function POST(request: NextRequest) {
       maxAge: 0, // Expire immediately
     };
 
-    // Clear common Sanity auth cookies
-    response.cookies.set('sanity-session', '', cookieOptions);
-    response.cookies.set('__sanity_auth_token', '', cookieOptions);
-    response.cookies.set('sanity.auth.token', '', cookieOptions);
+    // Clear all known Sanity auth cookie patterns
+    const sanityCookieNames = [
+      'sanity-session',
+      '__sanity_auth_token',
+      'sanity.auth.token',
+      'sanity-auth-token',
+      'sanity_auth_token',
+      'sanity-studio-session',
+      'sanity_studio_session'
+    ];
 
-    console.log('✅ Logout successful - cleared auth cookies');
+    sanityCookieNames.forEach(cookieName => {
+      response.cookies.set(cookieName, '', cookieOptions);
+    });
+
+    console.log('✅ Sanity Studio logout successful - cleared auth cookies');
     return response;
 
   } catch (error) {

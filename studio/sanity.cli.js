@@ -4,5 +4,6 @@ export default defineCliConfig({
   api: {
     projectId: '3u4fa9kl',
     dataset: 'production'
-  }
+  },
+  studioHost: 'https://www.aviatorstrainingcentre.in/studio'
 })

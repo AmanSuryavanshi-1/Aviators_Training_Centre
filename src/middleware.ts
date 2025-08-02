@@ -1,6 +1,7 @@
 /**
  * Next.js Middleware for Admin Route Protection
- * Uses Sanity Studio authentication for admin access
+ * Unified authentication using Sanity Studio only
+ * Redirects unauthenticated users to /studio instead of /login
  */
 
 import { NextRequest, NextResponse } from 'next/server';
@@ -26,12 +27,12 @@ function isPublicRoute(pathname: string): boolean {
 }
 
 /**
- * Create redirect response to login
+ * Create redirect response to Sanity Studio
  */
-function redirectToLogin(request: NextRequest): NextResponse {
-  const loginUrl = new URL('/login', request.url);
-  loginUrl.searchParams.set('redirect', request.nextUrl.pathname);
-  return NextResponse.redirect(loginUrl);
+function redirectToStudio(request: NextRequest): NextResponse {
+  const studioUrl = new URL('/studio', request.url);
+  studioUrl.searchParams.set('redirect', request.nextUrl.pathname);
+  return NextResponse.redirect(studioUrl);
 }
 
 /**
@@ -42,46 +43,60 @@ function hasSanityAuth(request: NextRequest): boolean {
   // Get all cookies
   const allCookies = request.cookies.getAll();
   
-  // Look for Sanity authentication cookies with various naming patterns
+  // Known Sanity authentication cookie patterns
+  const knownSanityCookieNames = [
+    'sanity-session',
+    '__sanity_auth_token',
+    'sanity.auth.token',
+    'sanity-auth-token',
+    'sanity_auth_token',
+    'sanity-studio-session',
+    'sanity_studio_session',
+    '__sanity_auth_state',
+    'sanity.auth.state'
+  ];
+  
+  // Look for Sanity authentication cookies
   const sanityAuthCookies = allCookies.filter(cookie => {
     const name = cookie.name.toLowerCase();
+    
+    // Check known cookie names first
+    if (knownSanityCookieNames.includes(name)) {
+      return true;
+    }
+    
+    // Check for Sanity-related patterns
     return (
-      // Sanity Studio session cookies (most common patterns)
-      name.startsWith('sanity') ||
-      name.includes('sanity') && (
+      name.startsWith('sanity') && (
         name.includes('auth') || 
         name.includes('session') || 
         name.includes('token') ||
-        name.includes('user')
-      ) ||
-      // Specific known Sanity cookie names
-      [
-        'sanity-session',
-        '__sanity_auth_token',
-        'sanity.auth.token',
-        'sanity-auth-token',
-        'sanity_auth_token',
-        'sanity-studio-session',
-        'sanity_studio_session'
-      ].includes(name)
+        name.includes('user') ||
+        name.includes('state')
+      )
     );
   });
 
   // Check if we have valid auth cookies with actual values
-  const hasValidAuth = sanityAuthCookies.some(cookie => 
-    cookie.value && cookie.value.length > 10 && cookie.value !== 'undefined'
-  );
+  const hasValidAuth = sanityAuthCookies.some(cookie => {
+    const value = cookie.value;
+    return value && 
+           value.length > 10 && 
+           value !== 'undefined' && 
+           value !== 'null' &&
+           !value.startsWith('deleted');
+  });
 
-  // Enhanced logging for debugging
+  // Enhanced logging for debugging (only for admin routes)
   if (request.nextUrl.pathname.startsWith('/admin')) {
-    console.log('🔍 Detailed auth check:', {
+    console.log('🔍 Sanity auth check:', {
       pathname: request.nextUrl.pathname,
       totalCookies: allCookies.length,
-      allCookieNames: allCookies.map(c => c.name),
       sanityAuthCookies: sanityAuthCookies.map(c => ({ 
         name: c.name, 
         hasValue: !!c.value, 
-        valueLength: c.value?.length || 0 
+        valueLength: c.value?.length || 0,
+        valuePreview: c.value?.substring(0, 20) + '...'
       })),
       hasValidAuth,
     });
@@ -122,26 +137,18 @@ export async function middleware(request: NextRequest) {
 
   console.log(`🔐 Protecting route: ${pathname}`);
 
-  // Check for authentication (Sanity Studio or simple session)
+  // Check for Sanity Studio authentication only
   const hasSanityStudioAuth = hasSanityAuth(request);
-  const hasSimpleSession = request.cookies.get('simple_admin_session')?.value === 'authenticated';
   
-  const hasAuth = hasSanityStudioAuth || hasSimpleSession;
+  console.log('🔍 Auth status:', { hasSanityStudioAuth });
   
-  console.log('🔍 Auth status:', { hasSanityStudioAuth, hasSimpleSession, hasAuth });
-  
-  if (!hasAuth) {
-    console.log('❌ No authentication found, redirecting to login');
+  if (!hasSanityStudioAuth) {
+    console.log('❌ No Sanity Studio authentication found, redirecting to studio');
     
-    // Add debug info to redirect URL
-    const loginUrl = new URL('/login', request.url);
-    loginUrl.searchParams.set('redirect', pathname);
-    loginUrl.searchParams.set('debug', 'no-auth');
-    
-    return NextResponse.redirect(loginUrl);
+    return redirectToStudio(request);
   }
 
-  console.log(`✅ Access granted to ${pathname} - Sanity auth detected`);
+  console.log(`✅ Access granted to ${pathname} - Sanity Studio auth detected`);
   
   return NextResponse.next();
 }

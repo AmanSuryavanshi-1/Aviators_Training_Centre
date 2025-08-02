@@ -1,9 +1,8 @@
 'use client';
 
 import Link from 'next/link';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 import { 
   BarChart3, 
   Settings, 
@@ -39,11 +38,11 @@ const getQuickActions = (): QuickAction[] => {
   return [
     {
       title: 'Open Sanity Studio',
-      description: 'Create and manage blog posts',
+      description: 'Create and manage blog posts with unified authentication',
       icon: PlusCircle,
       href: studioUrl,
       color: 'bg-blue-500',
-      external: false, // Changed to false since it's now same-origin
+      external: false,
       warning: isLocalhost ? 'Using localhost URL - ensure Studio is running locally' : undefined,
     },
     {
@@ -84,15 +83,8 @@ export default function AdminDashboard() {
   }, []);
 
   const handleStudioNavigation = (href: string) => {
-    // Generate navigation token for seamless Studio access
-    const token = Math.random().toString(36).substring(2, 15);
-    const navigationUrl = urlGenerator.getStudioNavigationUrl('', {
-      token,
-      returnUrl: '/admin',
-    });
-    
-    // Open Studio in same tab for better UX
-    window.location.href = navigationUrl;
+    // Navigate directly to studio - authentication is already unified
+    window.location.href = href;
   };
 
   return (
@@ -107,7 +99,7 @@ export default function AdminDashboard() {
                   Admin Dashboard
                 </h1>
                 <p className="text-aviation-primary/20 text-lg">
-                  Manage your aviation training content and monitor system performance
+                  Manage your aviation training content with unified Sanity Studio authentication
                 </p>
                 <div className="flex items-center gap-4 mt-4">
                   <div className="flex items-center gap-2">
@@ -116,7 +108,7 @@ export default function AdminDashboard() {
                   </div>
                   <div className="flex items-center gap-2">
                     <Shield className="w-4 h-4" />
-                    <span className="text-sm">Secure Access</span>
+                    <span className="text-sm">Sanity Studio Auth</span>
                   </div>
                 </div>
               </div>
@@ -167,7 +159,7 @@ export default function AdminDashboard() {
                   </div>
                   <div className="flex items-center gap-2">
                     <div className={`w-2 h-2 rounded-full ${urlConfig.isProduction && !urlConfig.isLocalhost ? 'bg-green-500' : 'bg-yellow-500'}`}></div>
-                    <span className="text-xs">{urlConfig.isProduction && !urlConfig.isLocalhost ? 'Production Ready' : 'Development Mode'}</span>
+                    <span className="text-xs">{urlConfig.isProduction && !urlConfig.isLocalhost ? 'Production Ready - Unified Auth' : 'Development Mode'}</span>
                   </div>
                 </div>
               </CardContent>
