@@ -1,6 +1,6 @@
 /**
- * Main Sanity Studio Configuration
- * Automatically selects appropriate configuration based on environment
+ * Production-Ready Sanity Studio Configuration
+ * Simplified configuration with default authentication
  */
 
 import { defineConfig } from 'sanity';
@@ -10,90 +10,12 @@ import { schemaTypes } from './schemaTypes';
 import React from 'react';
 
 // Environment-aware configuration
-const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || process.env.SANITY_STUDIO_PROJECT_ID || '3u4fa9kl';
-const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET || process.env.SANITY_STUDIO_DATASET || 'production';
-const apiVersion = process.env.NEXT_PUBLIC_SANITY_API_VERSION || process.env.SANITY_STUDIO_API_VERSION || '2024-01-01';
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.aviatorstrainingcentre.in';
+const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || '3u4fa9kl';
+const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET || 'production';
+const apiVersion = process.env.NEXT_PUBLIC_SANITY_API_VERSION || '2024-01-01';
 
-// Determine if we're in production
-const isProduction = process.env.NODE_ENV === 'production';
-
-// Configuration validation
-if (isProduction) {
-  if (!projectId || projectId === 'your-project-id') {
-    console.error('❌ SANITY_PROJECT_ID is not configured for production');
-  }
-  if (!dataset || dataset === 'your-dataset') {
-    console.error('❌ SANITY_DATASET is not configured for production');
-  }
-  if (siteUrl.includes('localhost')) {
-    console.warn('⚠️ Using localhost URL in production environment');
-  }
-  console.log('✅ Sanity Studio configured for production:', {
-    projectId,
-    dataset,
-    siteUrl,
-    basePath: '/studio'
-  });
-} else {
-  console.log('🔧 Sanity Studio configured for development:', {
-    projectId,
-    dataset,
-    siteUrl
-  });
-}
-
-// Base plugins
-const plugins = [
-  structureTool({
-    structure: (S) =>
-      S.list()
-        .title('Content')
-        .items([
-          S.listItem()
-            .title('Blog Posts')
-            .child(
-              S.documentTypeList('post')
-                .title('Blog Posts')
-                .filter('_type == "post"')
-                .defaultOrdering([{ field: 'publishedAt', direction: 'desc' }])
-            ),
-          S.listItem()
-            .title('Categories')
-            .child(
-              S.documentTypeList('category')
-                .title('Categories')
-                .filter('_type == "category"')
-            ),
-          S.listItem()
-            .title('Tags')
-            .child(
-              S.documentTypeList('tag')
-                .title('Tags')
-                .filter('_type == "tag"')
-            ),
-          S.listItem()
-            .title('Authors')
-            .child(
-              S.documentTypeList('author')
-                .title('Authors')
-                .filter('_type == "author"')
-            ),
-          S.divider(),
-          ...S.documentTypeListItems().filter(
-            (listItem) => !['post', 'category', 'tag', 'author'].includes(listItem.getId()!)
-          ),
-        ]),
-  }),
-];
-
-// Add Vision tool conditionally
-if (!isProduction || process.env.SANITY_STUDIO_ENABLE_VISION === 'true') {
-  plugins.push(visionTool());
-}
-
-export const config = defineConfig({
-  name: isProduction ? 'aviators-training-centre-production' : 'aviators-training-centre-dev',
+export default defineConfig({
+  name: 'aviators-training-centre-blog',
   title: 'Aviators Training Centre - Content Management',
   
   projectId,
@@ -103,7 +25,49 @@ export const config = defineConfig({
   // Set proper basePath for studio routing
   basePath: '/studio',
   
-  plugins,
+  plugins: [
+    structureTool({
+      structure: (S) =>
+        S.list()
+          .title('Content')
+          .items([
+            S.listItem()
+              .title('Blog Posts')
+              .child(
+                S.documentTypeList('post')
+                  .title('Blog Posts')
+                  .filter('_type == "post"')
+                  .defaultOrdering([{ field: 'publishedAt', direction: 'desc' }])
+              ),
+            S.listItem()
+              .title('Categories')
+              .child(
+                S.documentTypeList('category')
+                  .title('Categories')
+                  .filter('_type == "category"')
+              ),
+            S.listItem()
+              .title('Tags')
+              .child(
+                S.documentTypeList('tag')
+                  .title('Tags')
+                  .filter('_type == "tag"')
+              ),
+            S.listItem()
+              .title('Authors')
+              .child(
+                S.documentTypeList('author')
+                  .title('Authors')
+                  .filter('_type == "author"')
+              ),
+            S.divider(),
+            ...S.documentTypeListItems().filter(
+              (listItem) => !['post', 'category', 'tag', 'author'].includes(listItem.getId()!)
+            ),
+          ]),
+    }),
+    visionTool(),
+  ],
 
   schema: {
     types: schemaTypes,
@@ -119,54 +83,10 @@ export const config = defineConfig({
           fontWeight: 'bold',
           color: '#1e40af'
         }
-      }, `✈️ ATC Studio ${isProduction ? '(Production)' : '(Development)'}`),
+      }, '✈️ ATC Studio'),
     },
   },
 
-  // Document configuration
-  document: {
-    actions: (prev, context) => {
-      // Customize actions based on environment
-      if (isProduction && context.schemaType === 'post') {
-        // Remove potentially dangerous actions in production
-        return prev.filter(action => 
-          !['duplicate', 'delete'].includes(action.action || '')
-        );
-      }
-      return prev;
-    },
-  },
-
-  // CORS configuration - Note: This is for client-side only
-  // Actual CORS must be configured in Sanity Management Console
-  cors: {
-    credentials: true,
-    origin: isProduction 
-      ? [
-          'https://www.aviatorstrainingcentre.in',
-          'https://aviatorstrainingcentre.in'
-        ]
-      : true, // Allow all origins in development
-  },
-
-  // Authentication configuration
-  auth: {
-    mode: 'replace',
-    redirectOnSingle: true,
-    providers: [
-      // This will use Sanity's default Google OAuth provider
-      // No additional configuration needed
-    ],
-  },
-
-  // Tools configuration
-  tools: (prev) => {
-    if (isProduction) {
-      // Filter tools for production if needed
-      return prev;
-    }
-    return prev;
-  },
+  // Use default Sanity authentication (includes Google OAuth)
+  // No custom auth configuration needed - this will show all available providers
 });
-
-export default config;

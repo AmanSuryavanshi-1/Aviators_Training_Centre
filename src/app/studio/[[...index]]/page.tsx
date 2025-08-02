@@ -6,7 +6,7 @@
 'use client';
 
 import { NextStudio } from 'next-sanity/studio';
-import { config } from '../../../../studio/sanity.config';
+import config from '../../../../studio/sanity.config';
 import { Suspense, useEffect, useState } from 'react';
 import { Loader2 } from 'lucide-react';
 
