@@ -1,80 +1,91 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { revalidateTag, revalidatePath } from 'next/cache';
 
-/**
- * POST /api/cache/invalidate
- * Server-side cache invalidation endpoint for client-side requests
- */
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json();
-    const { type, value } = body;
+    // Get the secret token from headers or body
+    const authHeader = request.headers.get('authorization');
+    const body = await request.json().catch(() => ({}));
+    const token = authHeader?.replace('Bearer ', '') || body.token;
 
-    if (!type || !value) {
-      return NextResponse.json(
-        { success: false, error: 'Missing type or value' },
-        { status: 400 }
-      );
+    // Simple token validation (you can make this more secure)
+    const expectedToken = process.env.CACHE_INVALIDATION_TOKEN || 'dev-token';
+    if (token !== expectedToken) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    console.log(`🔄 Cache invalidation request: ${type} = ${value}`);
+    const { type = 'all', path, tag } = body;
 
-    if (type === 'tag') {
-      revalidateTag(value);
-      console.log(`✅ Invalidated cache tag: ${value}`);
-    } else if (type === 'path') {
-      revalidatePath(value);
-      console.log(`✅ Invalidated cache path: ${value}`);
-    } else {
-      return NextResponse.json(
-        { success: false, error: 'Invalid type. Must be "tag" or "path"' },
-        { status: 400 }
-      );
+    console.log('🔄 Manual cache invalidation requested:', { type, path, tag });
+
+    switch (type) {
+      case 'all':
+        // Invalidate all blog-related cache
+        revalidateTag('blog-posts');
+        revalidateTag('blog-post');
+        revalidateTag('blog-categories');
+        revalidateTag('blog-authors');
+        revalidatePath('/blog');
+        revalidatePath('/');
+        console.log('✅ All blog cache invalidated');
+        break;
+
+      case 'path':
+        if (path) {
+          revalidatePath(path);
+          console.log(`✅ Path cache invalidated: ${path}`);
+        }
+        break;
+
+      case 'tag':
+        if (tag) {
+          revalidateTag(tag);
+          console.log(`✅ Tag cache invalidated: ${tag}`);
+        }
+        break;
+
+      case 'blog':
+        revalidateTag('blog-posts');
+        revalidateTag('blog-post');
+        revalidatePath('/blog');
+        console.log('✅ Blog cache invalidated');
+        break;
+
+      default:
+        return NextResponse.json({ error: 'Invalid invalidation type' }, { status: 400 });
     }
 
-    return NextResponse.json({
+    return NextResponse.json({ 
       success: true,
-      message: `Cache ${type} invalidated successfully`,
-      invalidated: { type, value }
+      message: `Cache invalidated successfully (${type})`,
+      timestamp: new Date().toISOString()
     });
 
   } catch (error) {
-    console.error('Cache invalidation error:', error);
+    console.error('❌ Cache invalidation error:', error);
     return NextResponse.json(
-      {
-        success: false,
-        error: 'Failed to invalidate cache',
-        details: error instanceof Error ? error.message : 'Unknown error'
-      },
+      { error: 'Internal server error' }, 
       { status: 500 }
     );
   }
 }
 
-/**
- * GET /api/cache/invalidate
- * Get cache invalidation endpoint information
- */
 export async function GET() {
-  return NextResponse.json({
-    success: true,
-    message: 'Cache invalidation endpoint',
+  return NextResponse.json({ 
+    message: 'Cache invalidation endpoint is active',
     usage: {
       method: 'POST',
+      headers: {
+        'Authorization': 'Bearer YOUR_TOKEN',
+        'Content-Type': 'application/json'
+      },
       body: {
-        type: 'tag | path',
-        value: 'string'
+        type: 'all | path | tag | blog',
+        path: '/blog/some-post (for path type)',
+        tag: 'blog-posts (for tag type)',
+        token: 'YOUR_TOKEN (alternative to Authorization header)'
       }
     },
-    examples: [
-      {
-        type: 'tag',
-        value: 'blog-posts'
-      },
-      {
-        type: 'path',
-        value: '/blog'
-      }
-    ]
+    timestamp: new Date().toISOString()
   });
 }

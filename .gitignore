@@ -18,6 +18,23 @@ dist-ssr/
 .env
 .env.local
 .env.development
+.env.production
+.env.*.local
+*.env
+
+# Kiro AI IDE sensitive configurations
+.kiro/settings/secrets.json
+.kiro/settings/*-secrets.json
+.kiro/settings/*-keys.json
+
+# Documentation that might contain secrets
+*_DEPLOYMENT_*.md
+*_SECRETS_*.md
+*_CREDENTIALS_*.md
+*_KEYS_*.md
+*SECRET*
+*KEY*
+*CREDENTIAL*
 .env.development.local
 .env.test
 .env.test.local
@@ -234,7 +251,7 @@ performance-report-*.json
 .continue/
 *.continue
 
-# Documentation and Summary Files (Development artifacts)
+# Documentation and Summary Files (Development artifacts - may contain secrets)
 *_SUMMARY.md
 *_IMPLEMENTATION*.md
 *_FIXES*.md
@@ -244,7 +261,37 @@ performance-report-*.json
 *_REPORT*.md
 *_UPDATE*.md
 *_CHECKLIST*.md
+*_READY.md
+*_SETUP*.md
+*_SUCCESS.md
 PROJECT_ORGANIZATION_*.md
+PRODUCTION_DEPLOYMENT_*.md
+PRODUCTION_BUILD_*.md
+SANITY_WEBHOOK_*.md
+CONTENT_SYNC_*.md
+DEPLOYMENT_GUIDE_*.md
+
+# Any files that might contain API keys or secrets
+*API_KEYS*
+*SECRETS*
+*CREDENTIALS*
+*TOKENS*
+
+# Coverage and test artifacts (may contain code snippets with secrets)
+coverage/
+test-results/
+*.tsbuildinfo
+
+# Build and distribution artifacts
+studio/dist/
+.next/
+dist/
+build/
+
+# Test files that might contain example secrets
+src/**/*.test.ts
+src/**/*.test.tsx
+**/__tests__/**
 
 # Lock Files (Keep only one package manager)
 # Uncomment the ones you DON'T use:

@@ -15,6 +15,7 @@ import {
 import ContentManagement from "@/components/features/admin/ContentManagement";
 import SimpleAnalyticsDashboard from "@/components/features/admin/SimpleAnalyticsDashboard";
 import AnalyticsVerification from "@/components/admin/AnalyticsVerification";
+import CacheInvalidation from "@/components/admin/CacheInvalidation";
 import { urlGenerator } from '@/lib/utils/urlGenerator';
 import { useEffect, useState } from 'react';
 
@@ -129,6 +130,11 @@ export default function AdminDashboard() {
         {/* Analytics Verification */}
         <div className="mb-8">
           <AnalyticsVerification />
+        </div>
+
+        {/* Cache Management */}
+        <div className="mb-8">
+          <CacheInvalidation />
         </div>
 
         {/* Analytics Overview */}

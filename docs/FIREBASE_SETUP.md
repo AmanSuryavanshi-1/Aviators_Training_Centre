@@ -21,7 +21,7 @@ From the downloaded JSON file, you'll need two values:
 
 ```json
 {
-  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQC...\n-----END PRIVATE KEY-----\n",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nYOUR_ACTUAL_PRIVATE_KEY_CONTENT_HERE\n-----END PRIVATE KEY-----\n",
   "client_email": "firebase-adminsdk-xxxxx@aviators-training-centre---atc.iam.gserviceaccount.com"
 }
 ```
@@ -35,7 +35,7 @@ In your `.env.local` file, replace the placeholder values:
 FIREBASE_PRIVATE_KEY="PLACEHOLDER_NOT_CONFIGURED"
 
 # With the actual private key (keep the quotes and escape sequences):
-FIREBASE_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQC...\n-----END PRIVATE KEY-----\n"
+FIREBASE_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----\nYOUR_ACTUAL_PRIVATE_KEY_CONTENT_HERE\n-----END PRIVATE KEY-----\n"
 
 # Replace this placeholder:
 FIREBASE_CLIENT_EMAIL="PLACEHOLDER_NOT_CONFIGURED"

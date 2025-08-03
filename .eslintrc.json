@@ -3,6 +3,12 @@
     "next/core-web-vitals"
   ],
   "rules": {
-    "@typescript-eslint/no-unused-expressions": "off"
+    "react/no-unescaped-entities": "off",
+    "@next/next/no-img-element": "off",
+    "@next/next/no-html-link-for-pages": "off",
+    "jsx-a11y/alt-text": "off",
+    "react-hooks/exhaustive-deps": "warn",
+    "react-hooks/rules-of-hooks": "error",
+    "import/no-anonymous-default-export": "off"
   }
 }

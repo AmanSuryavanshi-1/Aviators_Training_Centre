@@ -457,3 +457,31 @@ export const {
   logConfigurationStatus,
   generateEnvironmentTemplate,
 } = environmentValidator;
+
+// Additional exports for API routes
+export function generateConfigurationReport(): any {
+  const validation = environmentValidator.validateEnvironment();
+  const summary = environmentValidator.getConfigurationSummary();
+  
+  return {
+    validation,
+    summary,
+    timestamp: new Date().toISOString(),
+    environment: process.env.NODE_ENV || 'development'
+  };
+}
+
+export function getQuickFixes(): string[] {
+  const validation = environmentValidator.validateEnvironment();
+  const fixes: string[] = [];
+  
+  if (validation.missing.length > 0) {
+    fixes.push(`Add missing environment variables: ${validation.missing.join(', ')}`);
+  }
+  
+  if (validation.invalid.length > 0) {
+    fixes.push(`Fix invalid environment variables: ${validation.invalid.join(', ')}`);
+  }
+  
+  return fixes;
+}
