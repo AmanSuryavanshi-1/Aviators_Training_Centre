@@ -52,9 +52,9 @@ export default function AdminReturnButton({
       onClick={handleReturnToAdmin}
       className={`
         inline-flex items-center gap-2 px-4 py-2 
-        bg-blue-600 hover:bg-blue-700 text-white 
+        bg-[hsl(var(--aviation-primary))] hover:bg-[hsl(var(--aviation-secondary))] text-white 
         rounded-lg transition-colors duration-200
-        text-sm font-medium shadow-sm
+        text-sm font-medium shadow-sm border border-[hsl(var(--aviation-primary-dark))]
         ${className}
       `}
       title={navigationContext.returnUrl ? `Return to ${navigationContext.returnUrl}` : 'Return to Admin Dashboard'}
@@ -108,10 +108,10 @@ export function FloatingAdminReturnButton() {
         onClick={handleReturnToAdmin}
         className="
           flex items-center gap-2 px-4 py-3
-          bg-blue-600 hover:bg-blue-700 text-white
+          bg-[hsl(var(--aviation-primary))] hover:bg-[hsl(var(--aviation-secondary))] text-white
           rounded-full shadow-lg hover:shadow-xl
           transition-all duration-200 transform hover:scale-105
-          text-sm font-medium
+          text-sm font-medium border border-[hsl(var(--aviation-primary-dark))]
         "
         title={navigationContext.returnUrl ? `Return to ${navigationContext.returnUrl}` : 'Return to Admin Dashboard'}
       >
@@ -158,7 +158,7 @@ export function StudioHeaderReturnButton() {
         onClick={handleReturnToAdmin}
         className="
           flex items-center gap-1 px-2 py-1
-          text-blue-600 hover:text-blue-700 hover:bg-blue-50
+          text-[hsl(var(--aviation-primary))] hover:text-[hsl(var(--aviation-secondary))] hover:bg-[hsl(var(--aviation-light))]/10
           rounded transition-colors duration-200
           text-xs font-medium
         "

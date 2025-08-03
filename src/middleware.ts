@@ -7,7 +7,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 // Protected routes that require Sanity Studio authentication
-const PROTECTED_ROUTES = ['/admin'];
+const PROTECTED_ROUTES = ['/admin', '/studio/admin'];
 
 // Public routes that don't require authentication
 const PUBLIC_ROUTES = ['/login', '/studio', '/api/auth', '/api/studio'];

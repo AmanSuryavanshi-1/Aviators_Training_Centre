@@ -773,7 +773,9 @@ class LeadQualificationRoutingEngine {
   // Send email
   private async sendEmail(leadProfile: LeadProfile, config: any): Promise<any> {
     // In a real implementation, integrate with email service
-    console.log(`Sending email to ${leadProfile.email} using template: ${config.template}`);
+    if (process.env.NODE_ENV === 'development') {
+      console.log(`Sending email to ${leadProfile.email} using template: ${config.template}`);
+    }
     
     return {
       emailSent: true,
@@ -800,7 +802,9 @@ class LeadQualificationRoutingEngine {
     };
 
     // Store task (in real implementation, save to database)
-    console.log('Created task:', task);
+    if (process.env.NODE_ENV === 'development') {
+      console.log('Created task:', task);
+    }
 
     return task;
   }
@@ -836,7 +840,9 @@ class LeadQualificationRoutingEngine {
       createdAt: new Date()
     };
 
-    console.log('Scheduled call:', call);
+    if (process.env.NODE_ENV === 'development') {
+      console.log('Scheduled call:', call);
+    }
     return call;
   }
 
@@ -846,7 +852,9 @@ class LeadQualificationRoutingEngine {
       throw new Error('No phone number available for SMS');
     }
 
-    console.log(`Sending SMS to ${leadProfile.phone} using template: ${config.template}`);
+    if (process.env.NODE_ENV === 'development') {
+      console.log(`Sending SMS to ${leadProfile.phone} using template: ${config.template}`);
+    }
     
     return {
       smsSent: true,
@@ -865,7 +873,9 @@ class LeadQualificationRoutingEngine {
     };
 
     // In real implementation, make HTTP request to webhook URL
-    console.log(`Calling webhook: ${config.url}`, payload);
+    if (process.env.NODE_ENV === 'development') {
+      console.log(`Calling webhook: ${config.url}`, payload);
+    }
     
     return { webhookCalled: true, url: config.url };
   }
@@ -919,7 +929,9 @@ class LeadQualificationRoutingEngine {
 
   private async sendAssignmentNotification(leadProfile: LeadProfile, assignedUserId: string, config: any): Promise<void> {
     // Send notification to assigned user
-    console.log(`Sending assignment notification to ${assignedUserId} for lead ${leadProfile.id}`);
+    if (process.env.NODE_ENV === 'development') {
+      console.log(`Sending assignment notification to ${assignedUserId} for lead ${leadProfile.id}`);
+    }
   }
 
   private async startNurtureSequence(leadProfile: LeadProfile, sequence: LeadNurtureSequence, startDelay: number): Promise<any> {

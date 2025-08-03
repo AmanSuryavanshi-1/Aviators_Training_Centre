@@ -12,7 +12,9 @@ export default function AdminLayout({
 }) {
   return (
     <AuthProvider>
-      {children}
+      <div className="admin-layout">
+        {children}
+      </div>
     </AuthProvider>
   );
 }

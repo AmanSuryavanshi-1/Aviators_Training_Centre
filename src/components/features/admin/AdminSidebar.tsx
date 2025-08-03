@@ -11,23 +11,15 @@ import {
   FileText,
   PlusCircle,
   Settings,
-  BarChart3,
-  Users,
   Tags,
   Search,
   Menu,
   X,
   Home,
   Eye,
-  TrendingUp,
-  Calendar,
-  Filter,
   BookOpen,
-  Target,
-  Zap,
   Bot,
   AlertTriangle,
-  Trash2,
   ArrowRight
 } from 'lucide-react';
 
@@ -143,8 +135,8 @@ export function AdminSidebar({ className }: AdminSidebarProps) {
             'flex items-center justify-between rounded-lg px-3 py-2 text-sm font-medium transition-colors',
             level > 0 && 'ml-4 border-l border-slate-200 dark:border-slate-700 pl-4',
             active
-              ? 'bg-blue-100 text-blue-900 dark:bg-blue-900 dark:text-blue-100'
-              : 'text-slate-700 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800'
+              ? 'bg-[hsl(var(--aviation-light))]/20 text-[hsl(var(--aviation-primary))] border-l-2 border-[hsl(var(--aviation-primary))] dark:bg-[hsl(var(--aviation-primary))]/20 dark:text-[hsl(var(--aviation-light))]'
+              : 'text-[hsl(var(--foreground))] hover:bg-[hsl(var(--aviation-light))]/10 hover:text-[hsl(var(--aviation-primary))] dark:text-slate-300 dark:hover:bg-slate-800'
           )}
         >
           <Link
@@ -205,23 +197,27 @@ export function AdminSidebar({ className }: AdminSidebarProps) {
       {/* Sidebar */}
       <div
         className={cn(
-          'fixed left-0 top-0 z-40 h-full w-64 transform bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 transition-transform duration-200 ease-in-out md:relative md:translate-x-0',
+          'fixed left-0 top-0 z-40 h-screen w-64 transform bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 transition-transform duration-200 ease-in-out md:relative md:h-auto md:min-h-screen md:translate-x-0',
           isMobileOpen ? 'translate-x-0' : '-translate-x-full',
           className
         )}
       >
-        <div className="flex h-full flex-col">
+        <div className="flex h-full md:min-h-screen flex-col">
           {/* Header */}
-          <div className="flex items-center gap-3 border-b border-slate-200 dark:border-slate-800 px-6 py-4">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-600">
-              <LayoutDashboard className="h-4 w-4 text-white" />
+          <div className="flex items-center gap-3 border-b border-[hsl(var(--aviation-border))] px-6 py-4 bg-gradient-to-r from-[hsl(var(--aviation-primary))]/5 to-[hsl(var(--aviation-secondary))]/5">
+            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[hsl(var(--aviation-primary))] shadow-md">
+              <img 
+                src="/AVIATORS_TRAINING_CENTRE_LOGO_DarkMode.png" 
+                alt="ATC Logo" 
+                className="h-6 w-6 object-contain"
+              />
             </div>
             <div>
-              <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100">
-                Admin Panel
+              <h2 className="text-lg font-bold text-[hsl(var(--aviation-primary))] font-heading">
+                ATC Admin
               </h2>
-              <p className="text-xs text-slate-500 dark:text-slate-400">
-                Blog Management
+              <p className="text-xs text-[hsl(var(--aviation-secondary))] font-medium">
+                Content Management
               </p>
             </div>
           </div>
@@ -230,13 +226,13 @@ export function AdminSidebar({ className }: AdminSidebarProps) {
           <div className="border-b border-slate-200 dark:border-slate-800 px-6 py-4">
             <div className="space-y-2">
               <Link href="/admin/new">
-                <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white">
+                <Button className="w-full bg-[hsl(var(--aviation-primary))] hover:bg-[hsl(var(--aviation-secondary))] text-white border border-[hsl(var(--aviation-primary-dark))] shadow-sm">
                   <PlusCircle className="h-4 w-4 mr-2" />
                   Create New Post
                 </Button>
               </Link>
               <Link href="/">
-                <Button variant="outline" className="w-full">
+                <Button variant="outline" className="w-full border-[hsl(var(--aviation-border))] text-[hsl(var(--aviation-primary))] hover:bg-[hsl(var(--aviation-light))]/10 hover:text-[hsl(var(--aviation-secondary))]">
                   <Home className="h-4 w-4 mr-2" />
                   View Website
                 </Button>

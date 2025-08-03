@@ -19,7 +19,7 @@ if (typeof window !== 'undefined' && process.env.NODE_ENV === 'development') {
 
 export default function StudioPage() {
   return (
-    <div style={{ height: '100vh', overflow: 'hidden' }}>
+    <div className="studio-container">
       <NextStudio config={config} />
     </div>
   );

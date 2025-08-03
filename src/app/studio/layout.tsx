@@ -16,5 +16,9 @@ export default function StudioLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return children;
+  return (
+    <div className="studio-layout">
+      {children}
+    </div>
+  );
 }

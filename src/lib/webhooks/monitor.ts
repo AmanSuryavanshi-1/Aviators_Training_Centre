@@ -46,9 +46,13 @@ class WebhookMonitor {
     
     // Log to console for debugging
     if (event.success) {
-      console.log(`✅ Webhook processed: ${event.type}/${event.event} (${event.duration}ms)`)
+      if (process.env.NODE_ENV === 'development') {
+        console.log(`✅ Webhook processed: ${event.type}/${event.event} (${event.duration}ms)`);
+      }
     } else {
-      console.error(`❌ Webhook failed: ${event.type}/${event.event} - ${event.error}`)
+      if (process.env.NODE_ENV === 'development') {
+        console.error(`❌ Webhook failed: ${event.type}/${event.event} - ${event.error}`);
+      }
     }
   }
   

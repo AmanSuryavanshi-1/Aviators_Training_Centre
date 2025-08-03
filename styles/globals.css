@@ -187,6 +187,40 @@
   .text-balance {
     text-wrap: balance;
   }
+  
+  /* Studio Layout Styling */
+  .studio-layout {
+    @apply min-h-screen bg-[hsl(var(--aviation-bg))];
+  }
+  
+  .studio-container {
+    @apply min-h-screen;
+    /* Remove fixed height to allow proper scrolling */
+    height: auto;
+    min-height: 100vh;
+  }
+  
+  /* Admin Layout Styling */
+  .admin-layout {
+    @apply min-h-screen bg-gradient-to-br from-slate-50 via-teal-50/30 to-sky-50/20;
+    @apply dark:from-slate-900 dark:via-teal-950/20 dark:to-slate-800;
+  }
+  
+  /* Ensure proper scrolling for all admin content */
+  .admin-layout .table-wrapper {
+    @apply overflow-x-auto overflow-y-auto max-h-[calc(100vh-200px)];
+  }
+  
+  /* Studio specific overrides */
+  .studio-layout [data-ui="RootTheme"] {
+    min-height: 100vh !important;
+    height: auto !important;
+  }
+  
+  /* Admin page content scrolling fix */
+  .admin-content {
+    @apply overflow-y-auto max-h-screen;
+  }
 }
 
 @keyframes gradient-xy {

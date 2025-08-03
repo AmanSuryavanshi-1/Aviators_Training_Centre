@@ -256,12 +256,12 @@ const ProductionAdminDashboard: React.FC = () => {
   }
 
   return (
-    <div className="p-6 space-y-6">
+    <div className="space-y-4">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-foreground">Blog Management</h1>
-          <p className="text-muted-foreground">
+          <h1 className="text-2xl font-bold text-foreground">ATC Admin Dashboard</h1>
+          <p className="text-sm text-muted-foreground">
             Manage your aviation training blog content and monitor performance
           </p>
         </div>
@@ -273,14 +273,14 @@ const ProductionAdminDashboard: React.FC = () => {
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-3">
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-1">
             <CardTitle className="text-sm font-medium">Total Posts</CardTitle>
             <FileText className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{stats.totalPosts}</div>
+          <CardContent className="pt-1">
+            <div className="text-2xl font-bold text-blue-600">{stats.totalPosts}</div>
             <p className="text-xs text-muted-foreground">
               {stats.publishedPosts} published
             </p>
@@ -288,66 +288,66 @@ const ProductionAdminDashboard: React.FC = () => {
         </Card>
 
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Featured Posts</CardTitle>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-1">
+            <CardTitle className="text-sm font-medium">Published</CardTitle>
             <Star className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{stats.featuredPosts}</div>
+          <CardContent className="pt-1">
+            <div className="text-2xl font-bold text-green-600">{stats.publishedPosts}</div>
             <p className="text-xs text-muted-foreground">
-              Highlighted content
+              Live content
             </p>
           </CardContent>
         </Card>
 
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Views</CardTitle>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-1">
+            <CardTitle className="text-sm font-medium">Drafts</CardTitle>
             <TrendingUp className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{stats.totalViews.toLocaleString()}</div>
+          <CardContent className="pt-1">
+            <div className="text-2xl font-bold text-yellow-600">{stats.totalPosts - stats.publishedPosts}</div>
             <p className="text-xs text-muted-foreground">
-              All time views
+              In progress
             </p>
           </CardContent>
         </Card>
 
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Avg. Reading Time</CardTitle>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-1">
+            <CardTitle className="text-sm font-medium">Featured</CardTitle>
             <Clock className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{stats.avgReadingTime}m</div>
+          <CardContent className="pt-1">
+            <div className="text-2xl font-bold text-purple-600">{stats.featuredPosts}</div>
             <p className="text-xs text-muted-foreground">
-              Minutes per post
+              Highlighted
             </p>
           </CardContent>
         </Card>
 
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-1">
             <CardTitle className="text-sm font-medium">Authors</CardTitle>
             <Users className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{stats.totalAuthors}</div>
+          <CardContent className="pt-1">
+            <div className="text-2xl font-bold text-teal-600">{stats.totalAuthors}</div>
             <p className="text-xs text-muted-foreground">
-              Content creators
+              Contributors
             </p>
           </CardContent>
         </Card>
 
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-1">
             <CardTitle className="text-sm font-medium">Categories</CardTitle>
             <Tag className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{categories.length}</div>
+          <CardContent className="pt-1">
+            <div className="text-2xl font-bold text-indigo-600">{categories.length}</div>
             <p className="text-xs text-muted-foreground">
-              Content categories
+              Topics
             </p>
           </CardContent>
         </Card>

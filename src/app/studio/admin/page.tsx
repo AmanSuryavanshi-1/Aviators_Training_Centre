@@ -82,7 +82,8 @@ export default function StudioAdminDashboard() {
 
   return (
     <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 py-8 max-w-7xl">
+        <div className="admin-content overflow-y-auto max-h-screen pb-16">
         {/* Header */}
         <div className="mb-12">
           <div className="bg-gradient-to-r from-aviation-primary to-aviation-primary/80 rounded-2xl p-8 text-white">
@@ -222,6 +223,7 @@ export default function StudioAdminDashboard() {
               </div>
             </div>
           </div>
+        </div>
         </div>
       </div>
     </div>

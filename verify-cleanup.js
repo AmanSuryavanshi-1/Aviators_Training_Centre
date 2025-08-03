@@ -3,17 +3,17 @@
 const { execSync } = require('child_process');
 
 const secretsToCheck = [
-    'RESEND_API_KEY=r',
-    'SANITY_API_TOKEN=s', 
-    'JWT_SECRET=79f512dc35cba1c0f6d1561b23bd6d9eacf0e799e3f5cc2c43b1a90052930433',
-    'ADMIN_PASSWORD=aman@S',
-    'FROM_EMAIL=noreply@aviatorstrainingcentre.in',
-    'OWNER1_EMAIL=adude890@gmail.com',
-    'OWNER2_EMAIL=aviatorstrainingcentre@gmail.com',
-    'NEXT_PUBLIC_SANITY_PROJECT_ID=3u4fa9kl',
-    'NEXT_PUBLIC_GA_MEASUREMENT_ID=G-XSRFEJCB7N',
-    'ADMIN_USERNAME=amanS',
-    'FIREBASE_MESSAGING_SENDER_ID=9'
+    'RESEND_API_KEY=',
+    'SANITY_API_TOKEN=', 
+    'JWT_SECRET=',
+    'ADMIN_PASSWORD=',
+    'FROM_EMAIL=',
+    'OWNER1_EMAIL=',
+    'OWNER2_EMAIL=',
+    'NEXT_PUBLIC_SANITY_PROJECT_ID=',
+    'NEXT_PUBLIC_GA_MEASUREMENT_ID=',
+    'ADMIN_USERNAME=',
+    'FIREBASE_MESSAGING_SENDER_ID='
 ];
 
 console.log('🔍 Verifying secret removal from git history...\n');
