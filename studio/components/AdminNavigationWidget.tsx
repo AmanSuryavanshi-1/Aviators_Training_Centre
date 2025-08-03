@@ -1,37 +1,21 @@
 /**
- * Admin Navigation Widget for Sanity Studio
- * Provides seamless navigation between Studio and Admin Dashboard
+ * ATC Admin Navigation Widget for Sanity Studio
+ * Provides seamless navigation to ATC Admin Dashboard
  */
 
 import React from 'react'
-import {Card, Text, Box, Stack, Button, Flex} from '@sanity/ui'
-// Temporarily disable navigation utils import due to path issues
-// import {navigationUtils} from '../../src/lib/auth/studioAdminAuth'
+import {Card, Text, Box, Stack, Button} from '@sanity/ui'
 
-// Simple navigation functions
-const navigationUtils = {
-  navigateToAdmin: (path = '') => {
-    window.open(`/admin${path}`, '_blank', 'noopener,noreferrer')
-  }
-}
-
-interface AdminNavigationWidgetProps {
+interface ATCAdminNavigationWidgetProps {
   title?: string
 }
 
-export const AdminNavigationWidget: React.FC<AdminNavigationWidgetProps> = ({ 
-  title = "Admin Dashboard" 
+export const AdminNavigationWidget: React.FC<ATCAdminNavigationWidgetProps> = ({ 
+  title = "ATC Admin" 
 }) => {
   const handleNavigateToAdmin = () => {
-    navigationUtils.navigateToAdmin()
-  }
-
-  const handleNavigateToAnalytics = () => {
-    navigationUtils.navigateToAdmin('/analytics')
-  }
-
-  const handleNavigateToSystemStatus = () => {
-    navigationUtils.navigateToAdmin('/system')
+    // Navigate to studio admin dashboard (same tab since we're already authenticated)
+    window.location.href = '/studio/admin'
   }
 
   return (
@@ -39,37 +23,23 @@ export const AdminNavigationWidget: React.FC<AdminNavigationWidgetProps> = ({
       <Stack space={3}>
         <Box>
           <Text size={2} weight="bold">
-            {title}
+            ✈️ {title}
           </Text>
           <Text size={1} tone="default" marginTop={2}>
-            Access analytics, system monitoring, and admin tools
+            Access ATC admin dashboard with analytics and system tools
           </Text>
         </Box>
 
-        <Stack space={2}>
-          <Button
-            text="📊 Open Analytics Dashboard"
-            tone="primary"
-            onClick={handleNavigateToAnalytics}
-            style={{ width: '100%' }}
-          />
-          
-          <Button
-            text="🔧 System Status"
-            tone="default"
-            mode="ghost"
-            onClick={handleNavigateToSystemStatus}
-            style={{ width: '100%' }}
-          />
-          
-          <Button
-            text="⚙️ Full Admin Dashboard"
-            tone="default"
-            mode="ghost"
-            onClick={handleNavigateToAdmin}
-            style={{ width: '100%' }}
-          />
-        </Stack>
+        <Button
+          text="🚀 Open ATC Admin Dashboard"
+          tone="primary"
+          onClick={handleNavigateToAdmin}
+          style={{ 
+            width: '100%',
+            background: 'linear-gradient(135deg, #1e40af 0%, #3b82f6 100%)',
+            border: 'none'
+          }}
+        />
 
         <Box 
           padding={2} 
@@ -80,7 +50,7 @@ export const AdminNavigationWidget: React.FC<AdminNavigationWidgetProps> = ({
           }}
         >
           <Text size={0} tone="default">
-            💡 Tip: Use Ctrl+Click (Cmd+Click on Mac) to open in new tab
+            ✨ Unified authentication - no additional login required
           </Text>
         </Box>
       </Stack>

@@ -183,20 +183,6 @@ export default function CoursePromotionCTA({
   className = '',
   useIntelligentCTA = true
 }: CoursePromotionCTAProps) {
-  // Use the new intelligent CTA system by default
-  if (useIntelligentCTA) {
-    return (
-      <IntelligentCTA
-        blogPost={blogPost}
-        position={position}
-        className={className}
-        enableABTesting={true}
-        enableAnalytics={true}
-        fallbackCourse={getRecommendedCourse(blogPost)}
-      />
-    );
-  }
-
   // Legacy implementation for backward compatibility
   const recommendedCourse = getRecommendedCourse(blogPost);
 

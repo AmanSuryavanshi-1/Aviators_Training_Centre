@@ -10,6 +10,7 @@ import Script from 'next/script';
 import ServiceWorkerRegistration from "@/components/features/blog/ServiceWorkerRegistration";
 import ErrorHandlingProvider from "@/components/shared/ErrorHandlingProvider";
 import { AnalyticsProvider } from "@/components/providers/AnalyticsProvider";
+import ConditionalLayout from "@/components/layout/ConditionalLayout";
 
 // Initialize automation system
 if (typeof window === 'undefined') {
@@ -220,15 +221,9 @@ export default function RootLayout({
               enableToastNotifications={true}
               enableConnectionMonitoring={true}
             >
-              <div className="flex flex-col min-h-screen bg-background text-foreground">
-                <Header />
-                <main className="flex-grow">
-                  {children}
-                </main>
-                <Footer />
-                {/* <Toaster /> */} {/* Removed to avoid conflict with custom toast system */}
-              </div>
-              <WhatsAppChat />
+              <ConditionalLayout>
+                {children}
+              </ConditionalLayout>
               <Analytics />
               <ServiceWorkerRegistration />
             </ErrorHandlingProvider>
