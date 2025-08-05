@@ -9,8 +9,8 @@ import { Analytics } from '@vercel/analytics/react';
 import Script from 'next/script';
 import ServiceWorkerRegistration from "@/components/features/blog/ServiceWorkerRegistration";
 import ErrorHandlingProvider from "@/components/shared/ErrorHandlingProvider";
-import { AnalyticsProvider } from "@/components/providers/AnalyticsProvider";
 import ConditionalLayout from "@/components/layout/ConditionalLayout";
+import ConditionalAnalytics from "@/components/analytics/ConditionalAnalytics";
 
 // Initialize automation system
 if (typeof window === 'undefined') {
@@ -215,7 +215,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <AnalyticsProvider>
+          <ConditionalAnalytics>
             <ErrorHandlingProvider
               enableGlobalErrorTracking={true}
               enableToastNotifications={true}
@@ -227,7 +227,7 @@ export default function RootLayout({
               <Analytics />
               <ServiceWorkerRegistration />
             </ErrorHandlingProvider>
-          </AnalyticsProvider>
+          </ConditionalAnalytics>
         </ThemeProvider>
       </body>
     </html>

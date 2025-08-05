@@ -70,9 +70,10 @@ export function ContactButton({
       <Button
         asChild
         className={cn(
-          "relative flex rounded-full px-4 py-1.5 items-center space-x-1 bg-background hover:bg-background/90 text-foreground border-0 shadow-md",
+          "relative flex rounded-full px-4 py-1.5 items-center space-x-1 bg-background hover:bg-background/90 text-foreground border-0 shadow-md conversion-button",
           fullWidth && "w-full justify-center"
         )}
+        data-conversion="true"
       >
         <Link href={href} onClick={onClick}>
           <Mail className="w-4 h-4 mr-2 text-teal-500 transition-colors duration-300 group-hover:text-blue-500" />

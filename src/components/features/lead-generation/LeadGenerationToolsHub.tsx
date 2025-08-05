@@ -288,7 +288,7 @@ export default function LeadGenerationToolsHub({ onLeadCapture }: LeadGeneration
                 <p className="text-green-700 text-sm mt-1">
                   You've completed all career planning tools. Ready to take the next step?
                 </p>
-                <Button className="mt-3" size="sm">
+                <Button className="mt-3 conversion-button" size="sm" data-conversion="true" data-analytics-event="career_consultation_request" data-analytics-source="lead_generation_tools">
                   Schedule Career Consultation
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
@@ -377,14 +377,14 @@ export default function LeadGenerationToolsHub({ onLeadCapture }: LeadGeneration
         </CardHeader>
         <CardContent>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" className="flex-1 sm:flex-none">
+            <Button size="lg" className="flex-1 sm:flex-none conversion-button" data-conversion="true" data-analytics-event="consultation_request" data-analytics-source="lead_generation_page">
               Schedule Free Consultation
               <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
-            <Button variant="outline" size="lg" className="flex-1 sm:flex-none">
+            <Button variant="outline" size="lg" className="flex-1 sm:flex-none conversion-button" data-conversion="true" data-analytics-event="guide_download" data-analytics-source="lead_generation_page">
               Download Career Guide
             </Button>
-            <Button variant="outline" size="lg" className="flex-1 sm:flex-none">
+            <Button variant="outline" size="lg" className="flex-1 sm:flex-none conversion-button" data-conversion="true" data-analytics-event="phone_click" data-analytics-source="lead_generation_page">
               Call: +91-XXXX-XXXX
             </Button>
           </div>

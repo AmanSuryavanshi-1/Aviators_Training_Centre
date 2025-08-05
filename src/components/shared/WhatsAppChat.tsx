@@ -154,10 +154,13 @@ const WhatsAppChat: React.FC = () => {
         {/* Main button */}
         <motion.button
           onClick={() => setIsOpen(!isOpen)}
-          className="relative w-16 h-16 bg-gradient-to-r from-green-500 to-green-600 rounded-full shadow-lg hover:shadow-xl flex items-center justify-center group overflow-hidden whatsapp-float"
+          className="relative w-16 h-16 bg-gradient-to-r from-green-500 to-green-600 rounded-full shadow-lg hover:shadow-xl flex items-center justify-center group overflow-hidden whatsapp-float conversion-button"
           variants={buttonVariants}
           whileHover="hover"
           whileTap="tap"
+          data-conversion="true"
+          data-analytics-event="whatsapp_chat_open"
+          data-analytics-source="floating_button"
         >
           {/* Background gradient animation */}
           <div className="absolute inset-0 bg-gradient-to-r from-green-400 to-green-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />

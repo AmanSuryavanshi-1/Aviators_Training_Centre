@@ -89,8 +89,11 @@ export default function HomePageClient() {
             >
               <Link 
                 href="/blog/pilot-salary-india-2024-career-earnings-guide"
-                className="inline-flex items-center px-6 py-3 text-sm font-medium text-teal-700 bg-teal-50 rounded-lg hover:bg-teal-100 transition-colors duration-200 dark:bg-teal-900/20 dark:text-teal-300 dark:hover:bg-teal-900/30"
+                className="inline-flex items-center px-6 py-3 text-sm font-medium text-teal-700 bg-teal-50 rounded-lg hover:bg-teal-100 transition-colors duration-200 dark:bg-teal-900/20 dark:text-teal-300 dark:hover:bg-teal-900/30 conversion-button"
                 onClick={() => handleCTAClick('Discover Pilot Salary Potential', '/blog/pilot-salary-india-2024-career-earnings-guide')}
+                data-conversion="true"
+                data-analytics-event="blog_link_click"
+                data-analytics-source="homepage"
               >
                 <TrendingUp className="w-4 h-4 mr-2" />
                 Discover Pilot Salary Potential in India

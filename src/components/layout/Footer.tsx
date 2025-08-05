@@ -89,19 +89,19 @@ const Footer: React.FC = () => {
               <li className="flex items-center space-x-3 text-sm text-gray-200">
                 <Phone className="flex-shrink-0 w-5 h-5 text-teal-300" />
                 <div className="flex flex-col">
-                  <a href="tel:+919485687609" className="transition-colors hover:text-white">+91 94856 87609</a>
-                  <a href="tel:+917842401155" className="transition-colors hover:text-white">+91 7842401155</a>
+                  <a href="tel:+919485687609" className="transition-colors hover:text-white conversion-button" data-conversion="true" data-analytics-event="phone_click" data-analytics-source="footer">+91 94856 87609</a>
+                  <a href="tel:+917842401155" className="transition-colors hover:text-white conversion-button" data-conversion="true" data-analytics-event="phone_click" data-analytics-source="footer">+91 7842401155</a>
                 </div>
               </li>
               <li className="flex items-center space-x-3 text-sm text-gray-200">
                 <Mail className="flex-shrink-0 w-5 h-5 text-teal-300" />
                 <div className="flex flex-col">
-                  <a href="mailto:aviatorstrainingcentre@gmail.com" className="break-all transition-colors hover:text-white">aviatorstrainingcentre@gmail.com</a>
+                  <a href="mailto:aviatorstrainingcentre@gmail.com" className="break-all transition-colors hover:text-white conversion-button" data-conversion="true" data-analytics-event="email_click" data-analytics-source="footer">aviatorstrainingcentre@gmail.com</a>
                 </div>
               </li>
               <li className="flex items-center space-x-3 text-sm text-gray-200">
                 <MessageCircle className="flex-shrink-0 w-5 h-5 text-teal-300" />
-                <a href={whatsappLink} target="_blank" rel="noopener noreferrer" className="transition-colors hover:text-white">WhatsApp</a>
+                <a href={whatsappLink} target="_blank" rel="noopener noreferrer" className="transition-colors hover:text-white conversion-button" data-conversion="true" data-analytics-event="whatsapp_click" data-analytics-source="footer">WhatsApp</a>
               </li>
             </ul>
           </div>

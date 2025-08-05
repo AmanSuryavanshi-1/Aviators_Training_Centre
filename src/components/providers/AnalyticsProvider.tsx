@@ -13,6 +13,35 @@ export const AnalyticsProvider: React.FC<AnalyticsProviderProps> = ({ children }
     if (GA_MEASUREMENT_ID && typeof window !== 'undefined') {
       initGA();
     }
+
+    // Initialize custom analytics tracker
+    if (typeof window !== 'undefined') {
+      // Add a small delay to ensure DOM is ready
+      setTimeout(() => {
+        import('@/lib/analytics/realAnalyticsTracker').then(({ initializeAnalytics, getAnalyticsTracker }) => {
+          console.log('🔧 Initializing custom analytics tracker...');
+          const tracker = initializeAnalytics();
+          
+          // Make tracker globally available for testing
+          (window as any).analyticsTracker = tracker;
+          (window as any).getAnalyticsTracker = getAnalyticsTracker;
+          
+          console.log('✅ Custom analytics tracker initialized and made globally available');
+          console.log('🔍 Tracker available at window.analyticsTracker');
+          
+          // Verify tracker is working
+          if (tracker && typeof tracker.trackPageView === 'function') {
+            console.log('✅ Tracker methods verified');
+          } else {
+            console.error('❌ Tracker methods not available');
+          }
+          
+        }).catch(error => {
+          console.error('❌ Failed to initialize custom analytics tracker:', error);
+          console.error('   Error details:', error.stack);
+        });
+      }, 100);
+    }
   }, []);
 
   return (

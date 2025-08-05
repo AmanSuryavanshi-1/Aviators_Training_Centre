@@ -547,7 +547,7 @@ export default function CourseRecommendationQuiz({
                 ))}
               </ul>
               <div className="flex gap-4 pt-4">
-                <Button size="lg" className="flex-1">
+                <Button size="lg" className="flex-1 conversion-button" data-conversion="true" data-analytics-event="consultation_request" data-analytics-source="course_recommendation_quiz">
                   Schedule Free Consultation
                 </Button>
                 <Button variant="outline" size="lg">

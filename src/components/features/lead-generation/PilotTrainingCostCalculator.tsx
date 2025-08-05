@@ -491,7 +491,7 @@ export default function PilotTrainingCostCalculator({
             <div className="space-y-4">
               <p>Our financial advisors can help you plan your training investment:</p>
               <div className="flex gap-4">
-                <Button size="lg" className="flex-1">
+                <Button size="lg" className="flex-1 conversion-button" data-conversion="true" data-analytics-event="financial_consultation_request" data-analytics-source="cost_calculator">
                   <Phone className="mr-2 h-4 w-4" />
                   Schedule Financial Consultation
                 </Button>

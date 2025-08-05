@@ -3,7 +3,7 @@
     "lib": [
       "dom",
       "dom.iterable",
-      "es6"
+      "es2018"
     ],
     "allowJs": true,
     "skipLibCheck": true,
@@ -37,7 +37,7 @@
     "noImplicitOverride": false,
     "exactOptionalPropertyTypes": false,
     "noUncheckedIndexedAccess": false,
-    "target": "ES2017"
+    "target": "ES2018"
   },
   "include": [
     "next-env.d.ts",

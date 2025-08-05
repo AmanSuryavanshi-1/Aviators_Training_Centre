@@ -142,7 +142,10 @@ export default function About() {
             </p>
             <Link 
               href="/blog/airline-pilot-interview-questions-expert-answers"
-              className="inline-flex items-center text-sm font-medium text-green-600 hover:text-green-700 dark:text-green-400 dark:hover:text-green-300"
+              className="inline-flex items-center text-sm font-medium text-green-600 hover:text-green-700 dark:text-green-400 dark:hover:text-green-300 conversion-button"
+              data-conversion="true"
+              data-analytics-event="blog_link_click"
+              data-analytics-source="about_page"
             >
               Ace Your Pilot Interview
               <ArrowRight className="w-3 h-3 ml-1" />
@@ -159,7 +162,10 @@ export default function About() {
             </p>
             <Link 
               href="/blog/pilot-training-cost-india-complete-financial-guide"
-              className="inline-flex items-center text-sm font-medium text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300"
+              className="inline-flex items-center text-sm font-medium text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 conversion-button"
+              data-conversion="true"
+              data-analytics-event="blog_link_click"
+              data-analytics-source="about_page"
             >
               Understanding Training Costs
               <ArrowRight className="w-3 h-3 ml-1" />

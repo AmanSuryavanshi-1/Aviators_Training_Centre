@@ -258,7 +258,10 @@ const Courses: React.FC = () => {
                             <h4 className="font-semibold text-teal-800 dark:text-teal-300 mb-2 text-xs">📚 Study Guide</h4>
                             <Link 
                               href="/blog/dgca-ground-school-technical-general-vs-specific"
-                              className="inline-flex items-center text-xs font-medium text-teal-600 hover:text-teal-700 dark:text-teal-400 dark:hover:text-teal-300"
+                              className="inline-flex items-center text-xs font-medium text-teal-600 hover:text-teal-700 dark:text-teal-400 dark:hover:text-teal-300 conversion-button"
+                              data-conversion="true"
+                              data-analytics-event="blog_link_click"
+                              data-analytics-source="courses_page"
                             >
                               Technical General vs Specific Guide
                               <ExternalLink className="w-3 h-3 ml-1" />
@@ -271,7 +274,10 @@ const Courses: React.FC = () => {
                             <h4 className="font-semibold text-blue-800 dark:text-blue-300 mb-2 text-xs">✈️ Complete Guide</h4>
                             <Link 
                               href="/blog/dgca-cpl-complete-guide-2024"
-                              className="inline-flex items-center text-xs font-medium text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300"
+                              className="inline-flex items-center text-xs font-medium text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 conversion-button"
+                              data-conversion="true"
+                              data-analytics-event="blog_link_click"
+                              data-analytics-source="courses_page"
                             >
                               DGCA CPL Complete Guide 2024
                               <ExternalLink className="w-3 h-3 ml-1" />

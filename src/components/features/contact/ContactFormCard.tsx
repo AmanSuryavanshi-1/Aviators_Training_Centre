@@ -279,7 +279,7 @@ const ContactFormCard: React.FC<ContactFormCardProps> = ({inquirySubjects}) => {
           errors={validation.errors} 
           show={showValidationSummary}
         />
-        <form onSubmit={handleFormSubmit} className="space-y-5">
+        <form onSubmit={handleFormSubmit} className="space-y-5 contact-form" id="contact-form">
           <div className="grid grid-cols-1 gap-5">
             <div className="space-y-1.5">
               <Label htmlFor="name" className="text-sm font-medium">Full Name</Label>
@@ -412,12 +412,13 @@ const ContactFormCard: React.FC<ContactFormCardProps> = ({inquirySubjects}) => {
               type="submit"
               size="lg"
               className={cn(
-                'flex gap-2 justify-center items-center w-full',
+                'flex gap-2 justify-center items-center w-full conversion-button',
                 'overflow-hidden relative text-white bg-teal-600 rounded-full shadow-md transition-all duration-300 ease-out group hover:bg-teal-700 hover:shadow-lg dark:bg-teal-500 dark:hover:bg-teal-600',
                 'focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500',
                 'disabled:opacity-50 disabled:cursor-not-allowed'
               )}
               disabled={loading}
+              data-conversion="true"
             >
               {loading ? (
                 <>

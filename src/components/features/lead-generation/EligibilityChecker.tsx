@@ -563,7 +563,7 @@ export default function EligibilityChecker({
               ))}
             </div>
             <div className="flex gap-4 pt-6">
-              <Button size="lg" className="flex-1">
+              <Button size="lg" className="flex-1 conversion-button" data-conversion="true" data-analytics-event="eligibility_consultation_request" data-analytics-source="eligibility_checker">
                 <Phone className="mr-2 h-4 w-4" />
                 Schedule Eligibility Consultation
               </Button>

@@ -280,7 +280,7 @@ function CTACardVariant({ template, onInteraction, className }: { template: CTAT
           <motion.a
             href={`${template.primaryButton.url}?subject=Demo%20Request%3A%20${encodeURIComponent(template.title)}&courseName=${encodeURIComponent(template.title)}&message=${encodeURIComponent('I would like to book a demo for the ' + template.title + ' course. Please contact me to schedule a time.')}#contact-form`}
             onClick={() => handleClick('primary')}
-            className={cn(
+            className={cn("conversion-button",
               'flex-1 flex items-center justify-center px-6 py-3 rounded-xl font-semibold text-white transition-all duration-300',
               template.primaryButton.style === 'urgent' 
                 ? 'bg-gradient-to-r from-red-500 to-orange-500 hover:from-red-600 hover:to-orange-600'
