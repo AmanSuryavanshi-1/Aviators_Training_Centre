@@ -17,6 +17,19 @@ export default function ConditionalLayout({ children }: ConditionalLayoutProps) 
   
   if (isStudioRoute) {
     // Studio layout: Full height, no header, no footer, no WhatsApp chat
+    // Allow scrolling for admin routes but keep overflow hidden for Sanity studio
+    const isAdminRoute = pathname?.includes('/admin');
+    
+    if (isAdminRoute) {
+      return (
+        <div className="min-h-screen overflow-y-auto bg-background text-foreground">
+          <main className="min-h-screen">
+            {children}
+          </main>
+        </div>
+      );
+    }
+    
     return (
       <div className="h-screen overflow-hidden bg-background text-foreground">
         <main className="h-full">

@@ -26,6 +26,7 @@ import {
   DollarSign
 } from 'lucide-react';
 import { Alert, AlertDescription } from '@/components/ui/alert';
+import AdminLayout from '@/components/admin/AdminLayout';
 
 interface DetailedAnalyticsData {
   totalPosts: number;
@@ -120,88 +121,78 @@ const DetailedAnalyticsPage: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-background">
-        <div className="container mx-auto px-4 py-8 max-w-7xl">
-          <div className="flex items-center justify-center p-8">
-            <RefreshCw className="w-8 h-8 animate-spin text-primary mr-3" />
-            <span className="text-lg">Loading detailed analytics...</span>
-          </div>
+      <AdminLayout title="Analytics Dashboard" description="Loading analytics data...">
+        <div className="flex items-center justify-center p-8">
+          <RefreshCw className="w-8 h-8 animate-spin text-primary mr-3" />
+          <span className="text-lg">Loading detailed analytics...</span>
         </div>
-      </div>
+      </AdminLayout>
     );
   }
 
   if (error) {
     return (
-      <div className="min-h-screen bg-background">
-        <div className="container mx-auto px-4 py-8 max-w-7xl">
-          <Alert variant="destructive" className="mb-6">
-            <AlertTriangle className="h-4 w-4" />
-            <AlertDescription>{error}</AlertDescription>
-          </Alert>
-          <Button onClick={fetchDetailedAnalytics} variant="outline">
-            <RefreshCw className="w-4 h-4 mr-2" />
-            Retry
-          </Button>
-        </div>
-      </div>
+      <AdminLayout title="Analytics Dashboard" description="Error loading analytics">
+        <Alert variant="destructive" className="mb-6">
+          <AlertTriangle className="h-4 w-4" />
+          <AlertDescription>{error}</AlertDescription>
+        </Alert>
+        <Button onClick={fetchDetailedAnalytics} variant="outline">
+          <RefreshCw className="w-4 h-4 mr-2" />
+          Retry
+        </Button>
+      </AdminLayout>
     );
   }
 
   if (!analyticsData) {
     return (
-      <div className="min-h-screen bg-background">
-        <div className="container mx-auto px-4 py-8 max-w-7xl">
-          <div className="text-center p-8">
-            <AlertTriangle className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-            <p className="text-lg text-muted-foreground">No analytics data available</p>
-          </div>
+      <AdminLayout title="Analytics Dashboard" description="No data available">
+        <div className="text-center p-8">
+          <AlertTriangle className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+          <p className="text-lg text-muted-foreground">No analytics data available</p>
         </div>
-      </div>
+      </AdminLayout>
     );
   }
 
   return (
-    <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 py-8 max-w-7xl">
-        {/* Header */}
-        <div className="mb-8">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <Button variant="outline" size="sm" asChild>
-                <Link href="/studio/admin">
-                  <ArrowLeft className="w-4 h-4 mr-2" />
-                  Back to Admin
-                </Link>
-              </Button>
-              <div>
-                <h1 className="text-3xl font-bold text-foreground">Detailed Analytics</h1>
-                <p className="text-muted-foreground">
-                  Comprehensive analytics overview for Aviators Training Centre
-                </p>
-              </div>
-            </div>
+    <AdminLayout 
+      title="Analytics Dashboard" 
+      description="Comprehensive analytics overview for Aviators Training Centre"
+    >
+      {/* Header Controls */}
+      <div className="mb-8">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            <Button variant="outline" size="sm" asChild>
+              <Link href="/studio/admin">
+                <ArrowLeft className="w-4 h-4 mr-2" />
+                Back to Admin
+              </Link>
+            </Button>
+          </div>
+          
+          <div className="flex items-center gap-4">
+            <Select value={timeframe} onValueChange={(value: any) => setTimeframe(value)}>
+              <SelectTrigger className="w-32">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="day">Today</SelectItem>
+                <SelectItem value="week">This Week</SelectItem>
+                <SelectItem value="month">This Month</SelectItem>
+                <SelectItem value="all">All Time</SelectItem>
+              </SelectContent>
+            </Select>
             
-            <div className="flex items-center gap-4">
-              <Select value={timeframe} onValueChange={(value: any) => setTimeframe(value)}>
-                <SelectTrigger className="w-32">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="day">Today</SelectItem>
-                  <SelectItem value="week">This Week</SelectItem>
-                  <SelectItem value="month">This Month</SelectItem>
-                  <SelectItem value="all">All Time</SelectItem>
-                </SelectContent>
-              </Select>
-              
-              <Button onClick={fetchDetailedAnalytics} variant="outline" size="sm">
-                <RefreshCw className="w-4 h-4 mr-2" />
-                Refresh
-              </Button>
-            </div>
+            <Button onClick={fetchDetailedAnalytics} variant="outline" size="sm">
+              <RefreshCw className="w-4 h-4 mr-2" />
+              Refresh
+            </Button>
           </div>
         </div>
+      </div>
 
         {/* Analytics Configuration Status */}
         <div className="mb-8">
@@ -487,24 +478,23 @@ const DetailedAnalyticsPage: React.FC = () => {
           </CardContent>
         </Card>
 
-        {/* Footer */}
-        <div className="mt-8 pt-8 border-t">
-          <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
-            <p className="text-sm text-muted-foreground">
-              Last updated: {new Date().toLocaleString()}
-            </p>
-            <div className="flex gap-2">
-              <Button variant="outline" size="sm" asChild>
-                <Link href="/studio/admin">Back to Admin Dashboard</Link>
-              </Button>
-              <Button variant="outline" size="sm" asChild>
-                <Link href="/studio">Back to Studio</Link>
-              </Button>
-            </div>
+      {/* Footer */}
+      <div className="mt-8 pt-8 border-t">
+        <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
+          <p className="text-sm text-muted-foreground">
+            Last updated: {new Date().toLocaleString()}
+          </p>
+          <div className="flex gap-2">
+            <Button variant="outline" size="sm" asChild>
+              <Link href="/studio/admin">Back to Admin Dashboard</Link>
+            </Button>
+            <Button variant="outline" size="sm" asChild>
+              <Link href="/studio">Back to Studio</Link>
+            </Button>
           </div>
         </div>
       </div>
-    </div>
+    </AdminLayout>
   );
 };
 

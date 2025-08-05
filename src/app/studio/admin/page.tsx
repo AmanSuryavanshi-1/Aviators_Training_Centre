@@ -12,6 +12,7 @@ import {
   ExternalLink,
   AlertTriangle
 } from 'lucide-react';
+import AdminLayout from '@/components/admin/AdminLayout';
 import ContentManagement from "@/components/features/admin/ContentManagement";
 import SimpleAnalyticsDashboard from "@/components/features/admin/SimpleAnalyticsDashboard";
 import AnalyticsVerification from "@/components/admin/AnalyticsVerification";
@@ -81,44 +82,40 @@ export default function StudioAdminDashboard() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 py-8 max-w-7xl">
-        <div className="admin-content overflow-y-auto max-h-screen pb-16">
-        {/* Header */}
-        <div className="mb-12">
-          <div className="bg-gradient-to-r from-aviation-primary to-aviation-primary/80 rounded-2xl p-8 text-white">
-            <div className="flex items-center justify-between">
-              <div>
-                <h1 className="text-4xl font-bold mb-3">
-                  ATC Admin Dashboard
-                </h1>
-                <p className="text-aviation-primary/20 text-lg">
-                  Manage your aviation training content with unified Sanity Studio authentication
-                </p>
-                <div className="flex items-center gap-4 mt-4">
-                  <div className="flex items-center gap-2">
-                    <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-                    <span className="text-sm">System Online</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Shield className="w-4 h-4" />
-                    <span className="text-sm">Sanity Studio Auth</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Link href="/studio" className="text-sm hover:underline">
-                      ← Back to Studio
-                    </Link>
-                  </div>
+    <AdminLayout 
+      title="ATC Admin Dashboard" 
+      description="Manage your aviation training content and analytics"
+    >
+      {/* Welcome Header */}
+      <div className="mb-8">
+        <div className="bg-gradient-to-r from-aviation-primary to-aviation-primary/80 rounded-2xl p-8 text-white">
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-3xl font-bold mb-3">
+                Welcome to Admin Dashboard
+              </h1>
+              <p className="text-white/80 text-lg">
+                Manage your aviation training content and monitor system performance
+              </p>
+              <div className="flex items-center gap-4 mt-4">
+                <div className="flex items-center gap-2">
+                  <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                  <span className="text-sm">System Online</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Shield className="w-4 h-4" />
+                  <span className="text-sm">Secure Access</span>
                 </div>
               </div>
-              <div className="hidden md:block">
-                <div className="w-24 h-24 bg-white/10 rounded-full flex items-center justify-center">
-                  <Settings className="w-12 h-12 text-white/80" />
-                </div>
+            </div>
+            <div className="hidden md:block">
+              <div className="w-20 h-20 bg-white/10 rounded-full flex items-center justify-center">
+                <Settings className="w-10 h-10 text-white/80" />
               </div>
             </div>
           </div>
         </div>
+      </div>
 
         {/* Content Management Panel */}
         <div className="mb-8">
@@ -195,37 +192,35 @@ export default function StudioAdminDashboard() {
           </div>
         </div>
 
-        {/* Footer */}
-        <div className="mt-12 pt-8 border-t border-gray-200">
-          <div className="bg-gray-50 rounded-xl p-6">
-            <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
-              <div>
-                <p className="font-semibold text-gray-900">
-                  ATC Admin Dashboard - Aviators Training Centre
-                </p>
-                <p className="text-sm text-muted-foreground mt-1">
-                  Last updated: {new Date().toLocaleString()}
-                </p>
-              </div>
-              <div className="flex gap-3">
-                <Button variant="outline" size="sm" asChild className="hover:bg-aviation-primary hover:text-white transition-colors">
-                  <Link href="/studio">
-                    <PlusCircle className="w-4 h-4 mr-2" />
-                    Back to Studio
-                  </Link>
-                </Button>
-                <Button variant="outline" size="sm" asChild className="hover:bg-aviation-primary hover:text-white transition-colors">
-                  <Link href="/blog">
-                    <Edit className="w-4 h-4 mr-2" />
-                    View Blog
-                  </Link>
-                </Button>
-              </div>
+      {/* Quick Navigation */}
+      <div className="mt-8">
+        <div className="bg-gray-50 rounded-xl p-6">
+          <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div>
+              <p className="font-semibold text-gray-900">
+                Quick Navigation
+              </p>
+              <p className="text-sm text-muted-foreground mt-1">
+                Access key areas of your system
+              </p>
+            </div>
+            <div className="flex gap-3">
+              <Button variant="outline" size="sm" asChild className="hover:bg-aviation-primary hover:text-white transition-colors">
+                <Link href="/studio">
+                  <PlusCircle className="w-4 h-4 mr-2" />
+                  Back to Studio
+                </Link>
+              </Button>
+              <Button variant="outline" size="sm" asChild className="hover:bg-aviation-primary hover:text-white transition-colors">
+                <Link href="/blog">
+                  <Edit className="w-4 h-4 mr-2" />
+                  View Blog
+                </Link>
+              </Button>
             </div>
           </div>
         </div>
-        </div>
       </div>
-    </div>
+    </AdminLayout>
   );
 }

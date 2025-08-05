@@ -97,9 +97,16 @@
   * {
     @apply border-border;
   }
+  html {
+    overflow-y: auto;
+    height: auto;
+  }
   body {
     @apply antialiased bg-background text-foreground;
     font-family: var(--body-font, 'Roboto'), system-ui, sans-serif;
+    overflow-y: auto;
+    height: auto;
+    min-height: 100vh;
   }
   h1, h2, h3, h4, h5, h6 {
     @apply font-semibold tracking-tight font-heading;
@@ -220,6 +227,37 @@
   /* Admin page content scrolling fix */
   .admin-content {
     @apply overflow-y-auto max-h-screen;
+  }
+  
+  /* Ensure admin layout allows scrolling */
+  .admin-layout-container {
+    overflow-y: auto !important;
+    height: auto !important;
+    min-height: 100vh !important;
+  }
+  
+  /* Fix for admin main content */
+  .admin-main-content {
+    overflow-y: auto !important;
+    max-height: none !important;
+    height: auto !important;
+  }
+  
+  /* Force scrolling on admin pages */
+  .admin-page-wrapper {
+    overflow-y: auto !important;
+    height: auto !important;
+    min-height: 100vh !important;
+  }
+  
+  /* Ensure no fixed heights prevent scrolling */
+  .admin-layout-container * {
+    max-height: none !important;
+  }
+  
+  .admin-layout-container .flex-1 {
+    overflow-y: auto !important;
+    height: auto !important;
   }
 }
 
