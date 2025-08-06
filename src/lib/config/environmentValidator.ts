@@ -137,9 +137,9 @@ export class EnvironmentValidator {
         errorMessage: 'Must be a valid Firebase API key',
       },
       {
-        key: 'FIREBASE_PROJECT_ID',
+        key: 'NEXT_PUBLIC_FIREBASE_PROJECT_ID',
         required: true,
-        description: 'Firebase project ID',
+        description: 'Firebase project ID (public)',
         category: 'firebase',
         validator: (value) => /^[a-z0-9-]+$/.test(value),
         errorMessage: 'Must be a valid Firebase project ID (lowercase, numbers, hyphens)',
@@ -313,7 +313,7 @@ export class EnvironmentValidator {
         hasToken: !!process.env.SANITY_API_TOKEN,
       },
       firebase: {
-        configured: !!(process.env.FIREBASE_API_KEY && process.env.FIREBASE_PROJECT_ID),
+        configured: !!(process.env.NEXT_PUBLIC_FIREBASE_API_KEY && process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID),
         hasAdminCredentials: !!(process.env.FIREBASE_PRIVATE_KEY && process.env.FIREBASE_CLIENT_EMAIL),
       },
       authentication: {
