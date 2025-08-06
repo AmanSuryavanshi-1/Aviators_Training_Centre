@@ -146,14 +146,16 @@ export class ConfigurationService {
         ].filter(Boolean) as string[],
       },
       firebase: {
-        apiKey: this.getRequiredEnv('FIREBASE_API_KEY'),
-        authDomain: this.getRequiredEnv('FIREBASE_AUTH_DOMAIN'),
-        databaseURL: this.getRequiredEnv('FIREBASE_DATABASE_URL'),
-        projectId: this.getRequiredEnv('FIREBASE_PROJECT_ID'),
-        storageBucket: this.getRequiredEnv('FIREBASE_STORAGE_BUCKET'),
-        messagingSenderId: this.getRequiredEnv('FIREBASE_MESSAGING_SENDER_ID'),
-        appId: this.getRequiredEnv('FIREBASE_APP_ID'),
-        measurementId: process.env.FIREBASE_MEASUREMENT_ID,
+        // Using NEXT_PUBLIC_ variables for client-side Firebase configuration
+        // These are safe to expose as they're meant for client-side Firebase initialization
+        apiKey: this.getRequiredEnv('NEXT_PUBLIC_FIREBASE_API_KEY'),
+        authDomain: this.getRequiredEnv('NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN'),
+        databaseURL: this.getRequiredEnv('NEXT_PUBLIC_FIREBASE_DATABASE_URL'),
+        projectId: this.getRequiredEnv('NEXT_PUBLIC_FIREBASE_PROJECT_ID'),
+        storageBucket: this.getRequiredEnv('NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET'),
+        messagingSenderId: this.getRequiredEnv('NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID'),
+        appId: this.getRequiredEnv('NEXT_PUBLIC_FIREBASE_APP_ID'),
+        measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
         adminCredentials: process.env.FIREBASE_PRIVATE_KEY && process.env.FIREBASE_CLIENT_EMAIL ? {
           privateKey: process.env.FIREBASE_PRIVATE_KEY,
           clientEmail: process.env.FIREBASE_CLIENT_EMAIL,

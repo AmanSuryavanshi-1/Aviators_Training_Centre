@@ -91,13 +91,18 @@ NEXT_PUBLIC_SITE_URL=https://your-domain.com
 # Authentication
 JWT_SECRET=your_jwt_secret_here
 
-# Optional: Firebase Configuration
-FIREBASE_API_KEY=your_firebase_api_key
-FIREBASE_AUTH_DOMAIN=your-project.firebaseapp.com
-FIREBASE_PROJECT_ID=your-firebase-project-id
-FIREBASE_STORAGE_BUCKET=your-project.appspot.com
-FIREBASE_MESSAGING_SENDER_ID=123456789
-FIREBASE_APP_ID=1:123456789:web:abcdef123456
+# Optional: Firebase Configuration (Client-side - use NEXT_PUBLIC_ prefix)
+NEXT_PUBLIC_FIREBASE_API_KEY=your_firebase_api_key
+NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=your-project.firebaseapp.com
+NEXT_PUBLIC_FIREBASE_PROJECT_ID=your-firebase-project-id
+NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=your-project.appspot.com
+NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=123456789
+NEXT_PUBLIC_FIREBASE_APP_ID=1:123456789:web:abcdef123456
+NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID=G-XXXXXXXXXX
+
+# Firebase Server Configuration (Private - for admin operations)
+FIREBASE_PRIVATE_KEY="your_firebase_private_key"
+FIREBASE_CLIENT_EMAIL=your-service-account@project.iam.gserviceaccount.com
 
 # Optional: Email Configuration
 RESEND_API_KEY=your_resend_api_key

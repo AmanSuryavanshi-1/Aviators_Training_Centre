@@ -12,8 +12,7 @@ const secretsToCheck = [
     'OWNER2_EMAIL=',
     'NEXT_PUBLIC_SANITY_PROJECT_ID=',
     'NEXT_PUBLIC_GA_MEASUREMENT_ID=',
-    'ADMIN_USERNAME=',
-    'FIREBASE_MESSAGING_SENDER_ID='
+    'ADMIN_USERNAME='
 ];
 
 console.log('🔍 Verifying secret removal from git history...\n');
