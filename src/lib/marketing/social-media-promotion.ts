@@ -373,11 +373,11 @@ Subscribe for more aviation training content!
   }
 
   private generateCampaignId(): string {
-    return `social_campaign_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    return `social_campaign_${Date.now()}_${crypto.randomUUID().slice(0, 8)}`;
   }
 
   private generatePostId(): string {
-    return `social_post_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    return `social_post_${Date.now()}_${crypto.randomUUID().slice(0, 8)}`;
   }
 }
 

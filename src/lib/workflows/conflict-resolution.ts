@@ -156,7 +156,7 @@ export class ConflictResolutionService {
       }
 
       resolutions.push({
-        conflictId: `conflict_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+        conflictId: `conflict_${Date.now()}_${crypto.randomUUID().slice(0, 9)}`,
         changes: relatedConflicts,
         resolutionStrategy,
         finalValue,

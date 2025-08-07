@@ -259,7 +259,7 @@ export class NotificationService {
     const textContent = this.compileTemplate(template.textTemplate, variables)
 
     const notification: Notification = {
-      id: `notif_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+      id: `notif_${Date.now()}_${crypto.randomUUID().slice(0, 9)}`,
       recipientId,
       recipientEmail,
       type: templateId,
@@ -329,7 +329,7 @@ export class NotificationService {
   ): Promise<TeamCommunication> {
     const teamAnnouncement: TeamCommunication = {
       ...announcement,
-      id: `announce_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+      id: `announce_${Date.now()}_${crypto.randomUUID().slice(0, 9)}`,
       createdAt: new Date().toISOString(),
       comments: [],
       reactions: [],
@@ -376,7 +376,7 @@ export class NotificationService {
     } = {}
   ): Promise<ActivityLog> {
     const activity: ActivityLog = {
-      id: `activity_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+      id: `activity_${Date.now()}_${crypto.randomUUID().slice(0, 9)}`,
       userId,
       action,
       category,

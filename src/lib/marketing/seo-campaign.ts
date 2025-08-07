@@ -204,11 +204,11 @@ export class SEOCampaignManager {
       performance: {
         keywordRankings: campaign.targetKeywords.map(keyword => ({
           keyword,
-          position: Math.floor(Math.random() * 20) + 1, // Mock data
-          change: Math.floor(Math.random() * 10) - 5,
+          position: null, // Use genuine SEO data or display NA
+          change: null, // Use genuine SEO data or display NA
         })),
-        trafficGrowth: 45.2, // Mock data
-        conversionRate: 3.8, // Mock data
+        trafficGrowth: null, // Use genuine analytics data or display NA
+        conversionRate: null, // Use genuine analytics data or display NA
         recommendations: [
           'Focus on long-tail keyword optimization',
           'Improve page loading speed',
@@ -221,7 +221,7 @@ export class SEOCampaignManager {
   }
 
   private generateCampaignId(): string {
-    return `seo_campaign_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    return `seo_campaign_${Date.now()}_${crypto.randomUUID().slice(0, 9)}`;
   }
 }
 

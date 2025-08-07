@@ -324,12 +324,12 @@ function htmlToPortableText(html: string): PortableTextBlock[] {
         const text = match[2].replace(/<[^>]*>/g, '').trim();
         blocks.push({
           _type: 'block',
-          _key: `heading_${Date.now()}_${Math.random()}`,
+          _key: `heading_${Date.now()}_${crypto.randomUUID().slice(0, 8)}`,
           style: `h${level}`,
           children: [
             {
               _type: 'span',
-              _key: `span_${Date.now()}_${Math.random()}`,
+              _key: `span_${Date.now()}_${crypto.randomUUID().slice(0, 8)}`,
               text,
               marks: []
             }
@@ -343,12 +343,12 @@ function htmlToPortableText(html: string): PortableTextBlock[] {
         const text = match[1].replace(/<[^>]*>/g, '').trim();
         blocks.push({
           _type: 'block',
-          _key: `blockquote_${Date.now()}_${Math.random()}`,
+          _key: `blockquote_${Date.now()}_${crypto.randomUUID().slice(0, 8)}`,
           style: 'blockquote',
           children: [
             {
               _type: 'span',
-              _key: `span_${Date.now()}_${Math.random()}`,
+              _key: `span_${Date.now()}_${crypto.randomUUID().slice(0, 8)}`,
               text,
               marks: []
             }
@@ -363,12 +363,12 @@ function htmlToPortableText(html: string): PortableTextBlock[] {
         if (text) {
           blocks.push({
             _type: 'block',
-            _key: `paragraph_${Date.now()}_${Math.random()}`,
+            _key: `paragraph_${Date.now()}_${crypto.randomUUID().slice(0, 8)}`,
             style: 'normal',
             children: [
               {
                 _type: 'span',
-                _key: `span_${Date.now()}_${Math.random()}`,
+                _key: `span_${Date.now()}_${crypto.randomUUID().slice(0, 8)}`,
                 text,
                 marks: []
               }
@@ -381,12 +381,12 @@ function htmlToPortableText(html: string): PortableTextBlock[] {
       // Plain text content
       blocks.push({
         _type: 'block',
-        _key: `paragraph_${Date.now()}_${Math.random()}`,
+        _key: `paragraph_${Date.now()}_${crypto.randomUUID().slice(0, 8)}`,
         style: 'normal',
         children: [
           {
             _type: 'span',
-            _key: `span_${Date.now()}_${Math.random()}`,
+            _key: `span_${Date.now()}_${crypto.randomUUID().slice(0, 8)}`,
             text: element.trim(),
             marks: []
           }
@@ -402,12 +402,12 @@ function htmlToPortableText(html: string): PortableTextBlock[] {
     if (plainText) {
       blocks.push({
         _type: 'block',
-        _key: `paragraph_${Date.now()}_${Math.random()}`,
+        _key: `paragraph_${Date.now()}_${crypto.randomUUID().slice(0, 8)}`,
         style: 'normal',
         children: [
           {
             _type: 'span',
-            _key: `span_${Date.now()}_${Math.random()}`,
+            _key: `span_${Date.now()}_${crypto.randomUUID().slice(0, 8)}`,
             text: plainText,
             marks: []
           }

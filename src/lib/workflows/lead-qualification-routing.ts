@@ -657,7 +657,7 @@ class LeadQualificationRoutingEngine {
     rule: LeadRoutingRule
   ): Promise<LeadWorkflowExecution> {
     const execution: LeadWorkflowExecution = {
-      id: `workflow_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+      id: `workflow_${Date.now()}_${crypto.randomUUID().slice(0, 9)}`,
       leadId: leadProfile.id,
       userId: leadProfile.userId,
       ruleId: rule.id,
@@ -791,7 +791,7 @@ class LeadQualificationRoutingEngine {
       : config.assignedTo;
 
     const task = {
-      id: `task_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+      id: `task_${Date.now()}_${crypto.randomUUID().slice(0, 9)}`,
       title: config.title,
       description: `Lead: ${leadProfile.name || leadProfile.email} (Score: ${leadScore.totalScore})`,
       assignedTo: assignedUserId,
@@ -831,7 +831,7 @@ class LeadQualificationRoutingEngine {
     const assignedUserId = this.leadAssignments.get(leadProfile.id);
     
     const call = {
-      id: `call_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+      id: `call_${Date.now()}_${crypto.randomUUID().slice(0, 9)}`,
       type: config.type,
       leadId: leadProfile.id,
       assignedTo: assignedUserId,
@@ -937,7 +937,7 @@ class LeadQualificationRoutingEngine {
   private async startNurtureSequence(leadProfile: LeadProfile, sequence: LeadNurtureSequence, startDelay: number): Promise<any> {
     // Implementation for starting nurture sequence
     return {
-      id: `nurture_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+      id: `nurture_${Date.now()}_${crypto.randomUUID().slice(0, 9)}`,
       sequenceId: sequence.id,
       leadId: leadProfile.id,
       startedAt: new Date()
@@ -958,7 +958,7 @@ class LeadQualificationRoutingEngine {
 
   // Public methods for managing rules and sequences
   addRoutingRule(rule: Omit<LeadRoutingRule, 'id' | 'createdAt' | 'updatedAt'>): string {
-    const id = `rule_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    const id = `rule_${Date.now()}_${crypto.randomUUID().slice(0, 9)}`;
     const fullRule: LeadRoutingRule = {
       ...rule,
       id,
@@ -993,7 +993,7 @@ class LeadQualificationRoutingEngine {
   }
 
   addNurtureSequence(sequence: Omit<LeadNurtureSequence, 'id' | 'createdAt' | 'updatedAt'>): string {
-    const id = `sequence_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    const id = `sequence_${Date.now()}_${crypto.randomUUID().slice(0, 9)}`;
     const fullSequence: LeadNurtureSequence = {
       ...sequence,
       id,

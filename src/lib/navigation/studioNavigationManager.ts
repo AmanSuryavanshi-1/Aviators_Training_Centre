@@ -291,8 +291,8 @@ export class StudioNavigationManager {
    * Generate unique session ID
    */
   private static generateSessionId(): string {
-    return Math.random().toString(36).substring(2, 15) + 
-           Math.random().toString(36).substring(2, 15);
+    return crypto.randomUUID().slice(0, 15) + 
+           crypto.randomUUID().slice(0, 15);
   }
 
   /**

@@ -37,7 +37,7 @@ export class ComprehensiveBlogErrorBoundary extends Component<Props, State> {
 
   static getDerivedStateFromError(error: Error): Partial<State> {
     // Generate unique error ID for tracking
-    const errorId = `blog-error-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+    const errorId = `blog-error-${Date.now()}-${crypto.randomUUID().slice(0, 8)}`;
     
     return {
       hasError: true,

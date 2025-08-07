@@ -30,7 +30,7 @@ export interface CTAAnalyticsResponse {
 export async function trackCTAInteraction(data: CTAInteractionData): Promise<CTAAnalyticsResponse> {
   try {
     // Generate unique interaction ID
-    const interactionId = `cta_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    const interactionId = `cta_${Date.now()}_${crypto.randomUUID().slice(0, 9)}`;
     const timestamp = new Date().toISOString();
     
     // Enhance data with browser information
@@ -108,7 +108,7 @@ function getUserId(): string {
   
   let userId = localStorage.getItem('atc_user_id');
   if (!userId) {
-    userId = `user_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    userId = `user_${Date.now()}_${crypto.randomUUID().slice(0, 9)}`;
     localStorage.setItem('atc_user_id', userId);
   }
   return userId;
@@ -120,7 +120,7 @@ function getSessionId(): string {
   
   let sessionId = sessionStorage.getItem('atc_session_id');
   if (!sessionId) {
-    sessionId = `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    sessionId = `session_${Date.now()}_${crypto.randomUUID().slice(0, 9)}`;
     sessionStorage.setItem('atc_session_id', sessionId);
   }
   return sessionId;

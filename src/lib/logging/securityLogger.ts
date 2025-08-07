@@ -462,7 +462,7 @@ export class SecurityLogger {
    * Generate unique event ID
    */
   private generateEventId(): string {
-    return `sec_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    return `sec_${Date.now()}_${crypto.randomUUID().slice(0, 9)}`;
   }
 
   /**

@@ -293,7 +293,7 @@ export class ApprovalWorkflowService {
     }))
 
     return {
-      id: `workflow_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+      id: `workflow_${Date.now()}_${crypto.randomUUID().slice(0, 9)}`,
       contentId,
       contentType,
       currentStage: 0,

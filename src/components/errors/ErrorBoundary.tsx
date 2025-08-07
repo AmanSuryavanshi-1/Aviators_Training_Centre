@@ -41,7 +41,7 @@ export class ErrorBoundary extends Component<Props, State> {
     return {
       hasError: true,
       error,
-      errorId: `err_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+      errorId: `err_${Date.now()}_${crypto.randomUUID().slice(0, 8)}`,
     };
   }
 

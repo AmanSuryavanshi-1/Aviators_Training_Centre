@@ -400,6 +400,11 @@ class RealAnalyticsTracker {
   }
 
   private updateSession() {
+    // Skip session updates if we don't have a valid session ID
+    if (!this.sessionId) {
+      return;
+    }
+
     const sessionData = {
       sessionId: this.sessionId,
       lastActivity: this.lastActivityTime,
@@ -415,7 +420,11 @@ class RealAnalyticsTracker {
       },
       body: JSON.stringify(sessionData),
     }).catch(error => {
-      console.error('Failed to update session:', error);
+      // Silently handle session update errors to avoid console spam
+      // This is not critical for the user experience
+      if (process.env.NODE_ENV === 'development') {
+        console.warn('Session update failed (non-critical):', error.message);
+      }
     });
   }
 

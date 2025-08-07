@@ -131,6 +131,7 @@
     "health-check:analytics": "curl -f $NEXT_PUBLIC_SITE_URL/api/health/analytics || exit 1"
   },
   "dependencies": {
+    "@google-analytics/data": "^5.2.0",
     "@hookform/resolvers": "^3.9.0",
     "@portabletext/react": "^3.2.1",
     "@portabletext/types": "^2.0.13",
@@ -195,6 +196,7 @@
     "firebase-admin": "^13.4.0",
     "firebase-functions": "^6.3.2",
     "framer-motion": "^12.7.3",
+    "googleapis": "^155.0.0",
     "gray-matter": "^4.0.3",
     "input-otp": "^1.2.4",
     "is-hotkey": "^0.2.0",

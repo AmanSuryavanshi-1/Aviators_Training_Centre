@@ -166,7 +166,7 @@ class WebhookMonitor {
    * Generate a unique ID for events
    */
   private generateId(): string {
-    return `webhook_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
+    return `webhook_${Date.now()}_${crypto.randomUUID().slice(0, 9)}`
   }
   
   /**

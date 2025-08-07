@@ -1,482 +1,277 @@
-// Data Export and Reporting Service
+'use client';
 
-import { format } from 'date-fns';
-
-export interface ExportConfig {
-  format: 'csv' | 'excel' | 'json' | 'pdf';
-  dateRange: { from: Date; to: Date };
-  filters: any;
-  metrics: string[];
-  groupBy?: string[];
-  includeCharts?: boolean;
-  template?: string;
+// Define FilterOptions interface locally to avoid circular imports
+export interface FilterOptions {
+  timeframe: 'day' | 'week' | 'month' | 'all' | 'custom';
+  dateRange?: {
+    from: Date;
+    to: Date;
+  };
+  sourceCategory?: string[];
+  pageCategory?: string[];
+  deviceType?: string[];
+  location?: string[];
+  validOnly: boolean;
+  includeAI: boolean;
+  includeBots: boolean;
+  searchQuery?: string;
 }
 
-export interface ReportTemplate {
-  id: string;
-  name: string;
-  description: string;
-  config: ExportConfig;
-  schedule?: {
-    frequency: 'daily' | 'weekly' | 'monthly';
-    time: string;
-    recipients: string[];
+export interface ExportData {
+  overview: {
+    totalPageviews: number;
+    uniqueUsers: number;
+    ctaClicks: number;
+    contactVisits: number;
+    formSubmissions: number;
+    totalEvents: number;
+    conversionRate: number;
+  };
+  trafficSources: Array<{
+    source: string;
+    visitors: number;
+    percentage: number;
+  }>;
+  topPages: Array<{
+    path: string;
+    title: string;
+    views: number;
+    uniqueUsers: number;
+    avgTimeOnPage: string;
+    bounceRate: number;
+    conversions: number;
+  }>;
+  deviceTypes: Array<{
+    device: string;
+    users: number;
+    percentage: number;
+  }>;
+  conversionFunnel: {
+    visitors: number;
+    blogReaders: number;
+    contactViews: number;
+    formSubmissions: number;
+    conversionRate: number;
   };
 }
 
-export class AnalyticsExportService {
-  private templates: Map<string, ReportTemplate> = new Map();
-
-  constructor() {
-    this.initializeDefaultTemplates();
-  }
-
+class AnalyticsExportService {
   /**
-   * Export analytics data in specified format
+   * Export analytics data to CSV format
    */
-  async exportData(config: ExportConfig): Promise<Blob> {
-    const data = await this.fetchAnalyticsData(config);
-    
-    switch (config.format) {
-      case 'csv':
-        return this.exportToCSV(data, config);
-      case 'excel':
-        return this.exportToExcel(data, config);
-      case 'json':
-        return this.exportToJSON(data, config);
-      case 'pdf':
-        return this.exportToPDF(data, config);
-      default:
-        throw new Error(`Unsupported export format: ${config.format}`);
+  async exportToCSV(data: ExportData, filters: FilterOptions): Promise<void> {
+    try {
+      const csvContent = this.generateCSVContent(data, filters);
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const filename = this.generateFilename('csv', filters);
+      this.downloadFile(blob, filename);
+    } catch (error) {
+      console.error('CSV export error:', error);
+      throw new Error('Failed to export CSV file');
     }
   }
 
   /**
-   * Generate CSV export
+   * Export analytics data to Excel format
    */
-  private async exportToCSV(data: any[], config: ExportConfig): Promise<Blob> {
-    if (data.length === 0) {
-      return new Blob(['No data available for the selected criteria'], { type: 'text/csv' });
+  async exportToExcel(data: ExportData, filters: FilterOptions): Promise<void> {
+    try {
+      // For Excel export, we'll create a more structured format
+      const workbookData = this.generateExcelContent(data, filters);
+      const csvContent = workbookData; // Simplified - in production, use a proper Excel library
+      const blob = new Blob([csvContent], { type: 'application/vnd.ms-excel;charset=utf-8;' });
+      const filename = this.generateFilename('xlsx', filters);
+      this.downloadFile(blob, filename);
+    } catch (error) {
+      console.error('Excel export error:', error);
+      throw new Error('Failed to export Excel file');
     }
-
-    // Get headers from first data item
-    const headers = Object.keys(data[0]);
-    
-    // Create CSV content
-    const csvContent = [
-      // Header row
-      headers.join(','),
-      // Data rows
-      ...data.map(row => 
-        headers.map(header => {
-          const value = row[header];
-          // Escape commas and quotes
-          if (typeof value === 'string' && (value.includes(',') || value.includes('"'))) {
-            return `"${value.replace(/"/g, '""')}"`;
-          }
-          return value || '';
-        }).join(',')
-      )
-    ].join('\n');
-
-    return new Blob([csvContent], { type: 'text/csv;charset=utf-8' });
   }
 
   /**
-   * Generate Excel export
+   * Generate CSV content from analytics data
    */
-  private async exportToExcel(data: any[], config: ExportConfig): Promise<Blob> {
-    // For a real implementation, you would use a library like xlsx
-    // For now, we'll create a simple tab-separated format that Excel can read
+  private generateCSVContent(data: ExportData, filters: FilterOptions): string {
+    const lines: string[] = [];
     
-    if (data.length === 0) {
-      return new Blob(['No data available for the selected criteria'], { type: 'application/vnd.ms-excel' });
+    // Header with export info
+    lines.push('# Aviators Training Centre - Analytics Export');
+    lines.push(`# Generated: ${new Date().toISOString()}`);
+    lines.push(`# Timeframe: ${filters.timeframe}`);
+    if (filters.dateRange) {
+      lines.push(`# Date Range: ${filters.dateRange.from.toISOString()} to ${filters.dateRange.to.toISOString()}`);
     }
+    lines.push('');
 
-    const headers = Object.keys(data[0]);
-    
-    const excelContent = [
-      // Header row
-      headers.join('\t'),
-      // Data rows
-      ...data.map(row => 
-        headers.map(header => row[header] || '').join('\t')
-      )
-    ].join('\n');
+    // Overview Metrics
+    lines.push('## Overview Metrics');
+    lines.push('Metric,Value');
+    lines.push(`Total Pageviews,${data.overview.totalPageviews}`);
+    lines.push(`Unique Users,${data.overview.uniqueUsers}`);
+    lines.push(`CTA Clicks,${data.overview.ctaClicks}`);
+    lines.push(`Contact Visits,${data.overview.contactVisits}`);
+    lines.push(`Form Submissions,${data.overview.formSubmissions}`);
+    lines.push(`Total Events,${data.overview.totalEvents}`);
+    lines.push(`Conversion Rate,${data.overview.conversionRate}%`);
+    lines.push('');
 
-    return new Blob([excelContent], { type: 'application/vnd.ms-excel' });
+    // Traffic Sources
+    lines.push('## Traffic Sources');
+    lines.push('Source,Visitors,Percentage');
+    data.trafficSources.forEach(source => {
+      lines.push(`${source.source},${source.visitors},${source.percentage}%`);
+    });
+    lines.push('');
+
+    // Top Pages
+    lines.push('## Top Pages');
+    lines.push('Path,Title,Views,Unique Users,Avg Time on Page,Bounce Rate,Conversions');
+    data.topPages.forEach(page => {
+      const title = `"${page.title.replace(/"/g, '""')}"`;
+      lines.push(`${page.path},${title},${page.views},${page.uniqueUsers},${page.avgTimeOnPage},${page.bounceRate}%,${page.conversions}`);
+    });
+    lines.push('');
+
+    // Device Types
+    lines.push('## Device Types');
+    lines.push('Device,Users,Percentage');
+    data.deviceTypes.forEach(device => {
+      lines.push(`${device.device},${device.users},${device.percentage}%`);
+    });
+    lines.push('');
+
+    // Conversion Funnel
+    lines.push('## Conversion Funnel');
+    lines.push('Stage,Count');
+    lines.push(`Visitors,${data.conversionFunnel.visitors}`);
+    lines.push(`Blog Readers,${data.conversionFunnel.blogReaders}`);
+    lines.push(`Contact Views,${data.conversionFunnel.contactViews}`);
+    lines.push(`Form Submissions,${data.conversionFunnel.formSubmissions}`);
+    lines.push(`Conversion Rate,${data.conversionFunnel.conversionRate}%`);
+
+    return lines.join('\n');
   }
 
   /**
-   * Generate JSON export
+   * Generate Excel content (simplified CSV format for now)
    */
-  private async exportToJSON(data: any[], config: ExportConfig): Promise<Blob> {
-    const exportData = {
-      metadata: {
-        exportDate: new Date().toISOString(),
-        dateRange: {
-          from: config.dateRange.from.toISOString(),
-          to: config.dateRange.to.toISOString()
-        },
-        filters: config.filters,
-        metrics: config.metrics,
-        recordCount: data.length
-      },
-      data: data
-    };
+  private generateExcelContent(data: ExportData, filters: FilterOptions): string {
+    // In a production environment, you would use a library like xlsx or exceljs
+    // For now, we'll return a tab-separated format that Excel can read
+    const lines: string[] = [];
+    
+    // Create multiple sheets in tab-separated format
+    lines.push('Aviators Training Centre - Analytics Export');
+    lines.push(`Generated: ${new Date().toLocaleString()}`);
+    lines.push(`Timeframe: ${filters.timeframe}`);
+    lines.push('');
 
-    return new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
+    // Overview sheet
+    lines.push('OVERVIEW METRICS');
+    lines.push('Metric\tValue');
+    lines.push(`Total Pageviews\t${data.overview.totalPageviews}`);
+    lines.push(`Unique Users\t${data.overview.uniqueUsers}`);
+    lines.push(`CTA Clicks\t${data.overview.ctaClicks}`);
+    lines.push(`Contact Visits\t${data.overview.contactVisits}`);
+    lines.push(`Form Submissions\t${data.overview.formSubmissions}`);
+    lines.push(`Total Events\t${data.overview.totalEvents}`);
+    lines.push(`Conversion Rate\t${data.overview.conversionRate}%`);
+    lines.push('');
+
+    // Traffic Sources sheet
+    lines.push('TRAFFIC SOURCES');
+    lines.push('Source\tVisitors\tPercentage');
+    data.trafficSources.forEach(source => {
+      lines.push(`${source.source}\t${source.visitors}\t${source.percentage}%`);
+    });
+    lines.push('');
+
+    // Top Pages sheet
+    lines.push('TOP PAGES');
+    lines.push('Path\tTitle\tViews\tUnique Users\tAvg Time on Page\tBounce Rate\tConversions');
+    data.topPages.forEach(page => {
+      lines.push(`${page.path}\t${page.title}\t${page.views}\t${page.uniqueUsers}\t${page.avgTimeOnPage}\t${page.bounceRate}%\t${page.conversions}`);
+    });
+
+    return lines.join('\n');
   }
 
   /**
-   * Generate PDF export
+   * Generate filename based on filters and current date
    */
-  private async exportToPDF(data: any[], config: ExportConfig): Promise<Blob> {
-    // For a real implementation, you would use a library like jsPDF or Puppeteer
-    // For now, we'll create a simple HTML-based PDF
-    
-    const htmlContent = this.generateHTMLReport(data, config);
-    
-    // In a real implementation, you would convert HTML to PDF
-    // For now, return HTML as blob
-    return new Blob([htmlContent], { type: 'text/html' });
+  private generateFilename(extension: string, filters: FilterOptions): string {
+    const date = new Date().toISOString().split('T')[0];
+    const timeframe = filters.timeframe;
+    return `aviators-analytics-${timeframe}-${date}.${extension}`;
   }
 
   /**
-   * Generate HTML report content
+   * Download file to user's device
    */
-  private generateHTMLReport(data: any[], config: ExportConfig): string {
-    const dateRange = `${format(config.dateRange.from, 'MMM dd, yyyy')} - ${format(config.dateRange.to, 'MMM dd, yyyy')}`;
+  private downloadFile(blob: Blob, filename: string): void {
+    const link = document.createElement('a');
+    const url = URL.createObjectURL(blob);
     
-    return `
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Analytics Report - ${dateRange}</title>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 20px; }
-        .header { border-bottom: 2px solid #333; padding-bottom: 10px; margin-bottom: 20px; }
-        .summary { background: #f5f5f5; padding: 15px; margin-bottom: 20px; border-radius: 5px; }
-        table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
-        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
-        th { background-color: #f2f2f2; font-weight: bold; }
-        .metric { display: inline-block; margin: 10px; padding: 10px; background: #e9f4ff; border-radius: 5px; }
-        .footer { margin-top: 30px; padding-top: 10px; border-top: 1px solid #ccc; font-size: 12px; color: #666; }
-    </style>
-</head>
-<body>
-    <div class="header">
-        <h1>Analytics Report</h1>
-        <p><strong>Date Range:</strong> ${dateRange}</p>
-        <p><strong>Generated:</strong> ${format(new Date(), 'MMM dd, yyyy HH:mm')}</p>
-    </div>
+    link.setAttribute('href', url);
+    link.setAttribute('download', filename);
+    link.style.visibility = 'hidden';
     
-    <div class="summary">
-        <h2>Summary</h2>
-        <div class="metric">
-            <strong>Total Records:</strong> ${data.length.toLocaleString()}
-        </div>
-        <div class="metric">
-            <strong>Export Format:</strong> ${config.format.toUpperCase()}
-        </div>
-        <div class="metric">
-            <strong>Metrics:</strong> ${config.metrics.join(', ')}
-        </div>
-    </div>
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
     
-    ${data.length > 0 ? this.generateDataTable(data) : '<p>No data available for the selected criteria.</p>'}
-    
-    <div class="footer">
-        <p>Generated by Aviators Training Centre Analytics Dashboard</p>
-    </div>
-</body>
-</html>`;
+    // Clean up the URL object
+    URL.revokeObjectURL(url);
   }
 
   /**
-   * Generate HTML table from data
+   * Fetch current analytics data for export
    */
-  private generateDataTable(data: any[]): string {
-    if (data.length === 0) return '';
-
-    const headers = Object.keys(data[0]);
-    
-    return `
-<table>
-    <thead>
-        <tr>
-            ${headers.map(header => `<th>${header}</th>`).join('')}
-        </tr>
-    </thead>
-    <tbody>
-        ${data.slice(0, 100).map(row => `
-            <tr>
-                ${headers.map(header => `<td>${row[header] || ''}</td>`).join('')}
-            </tr>
-        `).join('')}
-    </tbody>
-</table>
-${data.length > 100 ? `<p><em>Showing first 100 of ${data.length} records</em></p>` : ''}`;
-  }
-
-  /**
-   * Fetch analytics data based on config
-   */
-  private async fetchAnalyticsData(config: ExportConfig): Promise<any[]> {
+  async fetchExportData(filters: FilterOptions): Promise<ExportData> {
     try {
       const params = new URLSearchParams({
-        type: 'events',
-        start: config.dateRange.from.toISOString(),
-        end: config.dateRange.to.toISOString(),
-        ...config.filters
+        timeframe: filters.timeframe,
+        export: 'true'
       });
 
-      const response = await fetch(`/api/analytics/advanced?${params}`);
-      
-      if (!response.ok) {
-        throw new Error(`Failed to fetch data: ${response.statusText}`);
+      if (filters.dateRange) {
+        params.append('from', filters.dateRange.from.toISOString());
+        params.append('to', filters.dateRange.to.toISOString());
       }
 
+      if (filters.sourceCategory?.length) {
+        params.append('sources', filters.sourceCategory.join(','));
+      }
+
+      if (filters.pageCategory?.length) {
+        params.append('pages', filters.pageCategory.join(','));
+      }
+
+      if (filters.deviceType?.length) {
+        params.append('devices', filters.deviceType.join(','));
+      }
+
+      if (filters.location?.length) {
+        params.append('locations', filters.location.join(','));
+      }
+
+      params.append('validOnly', filters.validOnly.toString());
+      params.append('includeAI', filters.includeAI.toString());
+      params.append('includeBots', filters.includeBots.toString());
+
+      const response = await fetch(`/api/analytics/export?${params.toString()}`);
       const result = await response.json();
-      return result.data || [];
-    } catch (error) {
-      console.error('Error fetching analytics data for export:', error);
-      return [];
-    }
-  }
 
-  /**
-   * Save report template
-   */
-  saveTemplate(template: ReportTemplate): void {
-    this.templates.set(template.id, template);
-    
-    // In a real implementation, you would save to a database
-    try {
-      const templates = Array.from(this.templates.values());
-      localStorage.setItem('analytics_report_templates', JSON.stringify(templates));
-    } catch (error) {
-      console.error('Failed to save report template:', error);
-    }
-  }
-
-  /**
-   * Get all report templates
-   */
-  getTemplates(): ReportTemplate[] {
-    return Array.from(this.templates.values());
-  }
-
-  /**
-   * Get template by ID
-   */
-  getTemplate(id: string): ReportTemplate | undefined {
-    return this.templates.get(id);
-  }
-
-  /**
-   * Delete template
-   */
-  deleteTemplate(id: string): boolean {
-    const deleted = this.templates.delete(id);
-    
-    if (deleted) {
-      try {
-        const templates = Array.from(this.templates.values());
-        localStorage.setItem('analytics_report_templates', JSON.stringify(templates));
-      } catch (error) {
-        console.error('Failed to update stored templates:', error);
+      if (!result.success) {
+        throw new Error(result.error || 'Failed to fetch export data');
       }
-    }
-    
-    return deleted;
-  }
 
-  /**
-   * Generate report from template
-   */
-  async generateFromTemplate(templateId: string, overrides?: Partial<ExportConfig>): Promise<Blob> {
-    const template = this.getTemplate(templateId);
-    if (!template) {
-      throw new Error(`Template not found: ${templateId}`);
-    }
-
-    const config = { ...template.config, ...overrides };
-    return this.exportData(config);
-  }
-
-  /**
-   * Schedule report generation
-   */
-  scheduleReport(templateId: string, schedule: ReportTemplate['schedule']): void {
-    const template = this.getTemplate(templateId);
-    if (!template) {
-      throw new Error(`Template not found: ${templateId}`);
-    }
-
-    template.schedule = schedule;
-    this.saveTemplate(template);
-
-    // In a real implementation, you would set up a cron job or similar
-    console.log(`Report scheduled: ${template.name}`, schedule);
-  }
-
-  /**
-   * Send report via email
-   */
-  async sendReport(templateId: string, recipients: string[]): Promise<void> {
-    const template = this.getTemplate(templateId);
-    if (!template) {
-      throw new Error(`Template not found: ${templateId}`);
-    }
-
-    const reportBlob = await this.generateFromTemplate(templateId);
-    
-    // In a real implementation, you would integrate with an email service
-    console.log(`Sending report "${template.name}" to:`, recipients);
-    console.log('Report size:', reportBlob.size, 'bytes');
-    
-    // Mock email sending
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        console.log('Report sent successfully');
-        resolve();
-      }, 1000);
-    });
-  }
-
-  /**
-   * Initialize default report templates
-   */
-  private initializeDefaultTemplates(): void {
-    // Load templates from localStorage
-    try {
-      const stored = localStorage.getItem('analytics_report_templates');
-      if (stored) {
-        const templates = JSON.parse(stored) as ReportTemplate[];
-        templates.forEach(template => {
-          this.templates.set(template.id, template);
-        });
-        return;
-      }
+      return result.data;
     } catch (error) {
-      console.error('Failed to load stored templates:', error);
-    }
-
-    // Create default templates
-    const defaultTemplates: ReportTemplate[] = [
-      {
-        id: 'weekly_summary',
-        name: 'Weekly Summary Report',
-        description: 'Comprehensive weekly analytics summary',
-        config: {
-          format: 'pdf',
-          dateRange: {
-            from: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
-            to: new Date()
-          },
-          filters: { validOnly: true },
-          metrics: ['pageViews', 'conversions', 'trafficSources', 'userJourneys'],
-          includeCharts: true
-        }
-      },
-      {
-        id: 'traffic_sources_csv',
-        name: 'Traffic Sources Export',
-        description: 'Detailed traffic source data in CSV format',
-        config: {
-          format: 'csv',
-          dateRange: {
-            from: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000),
-            to: new Date()
-          },
-          filters: {},
-          metrics: ['trafficSources'],
-          groupBy: ['source', 'category']
-        }
-      },
-      {
-        id: 'conversion_analysis',
-        name: 'Conversion Analysis Report',
-        description: 'Detailed conversion tracking and attribution analysis',
-        config: {
-          format: 'excel',
-          dateRange: {
-            from: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000),
-            to: new Date()
-          },
-          filters: { outcomeType: 'conversion' },
-          metrics: ['conversions', 'attribution', 'journeys'],
-          includeCharts: true
-        }
-      }
-    ];
-
-    defaultTemplates.forEach(template => {
-      this.templates.set(template.id, template);
-    });
-
-    // Save default templates
-    try {
-      localStorage.setItem('analytics_report_templates', JSON.stringify(defaultTemplates));
-    } catch (error) {
-      console.error('Failed to save default templates:', error);
-    }
-  }
-
-  /**
-   * Get export statistics
-   */
-  getExportStats(): {
-    totalTemplates: number;
-    scheduledReports: number;
-    lastExportDate?: Date;
-  } {
-    const templates = Array.from(this.templates.values());
-    const scheduledReports = templates.filter(t => t.schedule).length;
-
-    return {
-      totalTemplates: templates.length,
-      scheduledReports,
-      lastExportDate: new Date() // In a real implementation, track actual last export
-    };
-  }
-}
-
-// Global instance
-let globalExportService: AnalyticsExportService | null = null;
-
-export function getExportService(): AnalyticsExportService {
-  if (!globalExportService) {
-    globalExportService = new AnalyticsExportService();
-  }
-  return globalExportService;
-}
-
-// Convenience functions
-export async function exportAnalyticsData(config: ExportConfig): Promise<Blob> {
-  return getExportService().exportData(config);
-}
-
-export function saveReportTemplate(template: ReportTemplate): void {
-  getExportService().saveTemplate(template);
-}
-
-export function getReportTemplates(): ReportTemplate[] {
-  return getExportService().getTemplates();
-}
-
-export async function generateScheduledReports(): Promise<void> {
-  const service = getExportService();
-  const templates = service.getTemplates().filter(t => t.schedule);
-
-  for (const template of templates) {
-    try {
-      if (template.schedule?.recipients) {
-        await service.sendReport(template.id, template.schedule.recipients);
-      }
-    } catch (error) {
-      console.error(`Failed to generate scheduled report: ${template.name}`, error);
+      console.error('Export data fetch error:', error);
+      throw error;
     }
   }
 }
+
+export const analyticsExportService = new AnalyticsExportService();

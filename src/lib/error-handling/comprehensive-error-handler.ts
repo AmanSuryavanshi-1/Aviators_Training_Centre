@@ -414,7 +414,7 @@ class ComprehensiveErrorHandler {
   }
 
   private generateErrorId(): string {
-    return `error_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    return `error_${Date.now()}_${crypto.randomUUID().slice(0, 9)}`;
   }
 
   private logError(error: ComprehensiveError): void {

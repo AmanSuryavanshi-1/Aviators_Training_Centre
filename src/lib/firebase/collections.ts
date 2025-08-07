@@ -1,9 +1,12 @@
 // Firebase Collections for Real Analytics Data
+// Updated to use enhanced Firebase authentication
 
-import { getAdminFirestore } from './admin';
+import { getAdminFirestoreSync } from './admin';
 import { Timestamp, FieldValue } from 'firebase-admin/firestore';
+import { errorHandler } from '../analytics/ErrorHandler';
 
-const db = getAdminFirestore();
+// Use synchronous version for backward compatibility
+const db = getAdminFirestoreSync();
 
 // Analytics Events Collection
 export class AnalyticsEventsService {
@@ -46,12 +49,23 @@ export class AnalyticsEventsService {
       flags: string[];
     };
   }) {
-    const docRef = await this.collection.add({
-      ...eventData,
-      timestamp: Timestamp.fromDate(eventData.timestamp),
-      createdAt: FieldValue.serverTimestamp(),
-    });
-    return docRef.id;
+    try {
+      const docRef = await this.collection.add({
+        ...eventData,
+        timestamp: Timestamp.fromDate(eventData.timestamp),
+        createdAt: FieldValue.serverTimestamp(),
+      });
+      return docRef.id;
+    } catch (error) {
+      const authError = errorHandler.createErrorResponse(error, {
+        service: 'firebase',
+        operation: 'create_event',
+        timestamp: new Date()
+      });
+
+      console.error('Failed to create analytics event:', authError.userMessage);
+      throw new Error(authError.userMessage);
+    }
   }
 
   static async getEvents(filters: {
@@ -62,34 +76,45 @@ export class AnalyticsEventsService {
     validOnly?: boolean;
     limit?: number;
   }) {
-    let query = this.collection
-      .where('timestamp', '>=', Timestamp.fromDate(filters.startDate))
-      .where('timestamp', '<=', Timestamp.fromDate(filters.endDate));
+    try {
+      let query = this.collection
+        .where('timestamp', '>=', Timestamp.fromDate(filters.startDate))
+        .where('timestamp', '<=', Timestamp.fromDate(filters.endDate));
 
-    if (filters.eventType) {
-      query = query.where('event.type', '==', filters.eventType);
+      if (filters.eventType) {
+        query = query.where('event.type', '==', filters.eventType);
+      }
+
+      if (filters.sourceCategory) {
+        query = query.where('source.category', '==', filters.sourceCategory);
+      }
+
+      if (filters.validOnly) {
+        query = query.where('validation.isValid', '==', true);
+      }
+
+      query = query.orderBy('timestamp', 'desc');
+
+      if (filters.limit) {
+        query = query.limit(filters.limit);
+      }
+
+      const snapshot = await query.get();
+      return snapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data(),
+        timestamp: doc.data().timestamp.toDate(),
+      }));
+    } catch (error) {
+      const authError = errorHandler.createErrorResponse(error, {
+        service: 'firebase',
+        operation: 'get_events',
+        timestamp: new Date()
+      });
+
+      console.error('Failed to get analytics events:', authError.userMessage);
+      return []; // Return empty array as fallback
     }
-
-    if (filters.sourceCategory) {
-      query = query.where('source.category', '==', filters.sourceCategory);
-    }
-
-    if (filters.validOnly) {
-      query = query.where('validation.isValid', '==', true);
-    }
-
-    query = query.orderBy('timestamp', 'desc');
-
-    if (filters.limit) {
-      query = query.limit(filters.limit);
-    }
-
-    const snapshot = await query.get();
-    return snapshot.docs.map(doc => ({
-      id: doc.id,
-      ...doc.data(),
-      timestamp: doc.data().timestamp.toDate(),
-    }));
   }
 
   static async getUniqueVisitors(startDate: Date, endDate: Date) {

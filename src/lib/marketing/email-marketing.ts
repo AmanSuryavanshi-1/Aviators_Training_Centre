@@ -132,7 +132,7 @@ export class EmailMarketingManager {
     // Find matching template based on blog slug
     for (const [key, templates] of Object.entries(subjectTemplates)) {
       if (blogSlug.includes(key)) {
-        return templates[Math.floor(Math.random() * templates.length)];
+        return templates[Date.now() % templates.length]; // Deterministic selection based on timestamp
       }
     }
 
@@ -192,7 +192,7 @@ export class EmailMarketingManager {
       '🚁 This Week\'s Top Aviation Content',
     ];
 
-    return subjects[Math.floor(Math.random() * subjects.length)];
+    return subjects[Date.now() % subjects.length]; // Deterministic selection
   }
 
   /**
@@ -508,7 +508,7 @@ export class EmailMarketingManager {
   }
 
   private generateCampaignId(): string {
-    return `email_campaign_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    return `email_campaign_${Date.now()}_${crypto.randomUUID().slice(0, 9)}`;
   }
 }
 

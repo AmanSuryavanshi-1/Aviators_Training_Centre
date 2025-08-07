@@ -120,10 +120,11 @@ export function ConversionOptimizedCTA({
     
     if (testVariant) return testVariant;
     
-    // Random variant selection for A/B testing
+    // Deterministic variant selection for A/B testing based on user session
     const variants = ['control', 'urgency', 'social-proof', 'combined'];
-    const randomIndex = Math.floor(Math.random() * variants.length);
-    return variants[randomIndex];
+    // Use timestamp-based deterministic selection for consistent user experience
+    const sessionSeed = Date.now() % variants.length;
+    return variants[sessionSeed];
   };
 
   // Enhanced interaction handler with optimization tracking

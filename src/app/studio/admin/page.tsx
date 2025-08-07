@@ -1,8 +1,10 @@
 'use client';
 
 import Link from 'next/link';
-import { Card, CardContent } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { 
   BarChart3, 
   Settings, 
@@ -12,9 +14,9 @@ import {
   ExternalLink,
   AlertTriangle
 } from 'lucide-react';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 import AdminLayout from '@/components/admin/AdminLayout';
 import ContentManagement from "@/components/features/admin/ContentManagement";
-import SimpleAnalyticsDashboard from "@/components/features/admin/SimpleAnalyticsDashboard";
 import AnalyticsVerification from "@/components/admin/AnalyticsVerification";
 import CacheInvalidation from "@/components/admin/CacheInvalidation";
 import { urlGenerator } from '@/lib/utils/urlGenerator';
@@ -29,6 +31,8 @@ interface QuickAction {
   external: boolean;
   warning?: string;
 }
+
+
 
 // Generate URLs using the URL generator
 const getQuickActions = (): QuickAction[] => {
@@ -53,17 +57,17 @@ const getQuickActions = (): QuickAction[] => {
       external: false,
     },
     {
-      title: 'Detailed Analytics',
-      description: 'View comprehensive analytics',
+      title: 'Analytics Dashboard',
+      description: 'View comprehensive analytics and insights',
       icon: BarChart3,
-      href: '/studio/admin/analytics',
+      href: '/admin/analytics',
       color: 'bg-purple-500',
       external: false,
     },
     {
       title: 'Website Home',
       description: 'Go to main website',
-      icon: Settings,
+      icon: ExternalLink,
       href: '/',
       color: 'bg-orange-500',
       external: false,
@@ -137,13 +141,44 @@ export default function StudioAdminDashboard() {
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-xl font-semibold">Analytics Overview</h2>
             <Button asChild variant="outline">
-              <Link href="/studio/admin/analytics">
+              <Link href="/admin/analytics">
                 <BarChart3 className="w-4 h-4 mr-2" />
-                View Detailed Analytics
+                View Full Analytics Dashboard
               </Link>
             </Button>
           </div>
-          <SimpleAnalyticsDashboard />
+          <Card className="border-l-4 border-l-blue-500">
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h3 className="font-semibold text-lg">Comprehensive Analytics Available</h3>
+                  <p className="text-muted-foreground mt-2">
+                    Access detailed analytics including real-time metrics, traffic sources, conversion funnels, 
+                    AI platform referrals, and comprehensive reporting tools.
+                  </p>
+                  <div className="flex items-center gap-4 mt-4">
+                    <div className="flex items-center gap-2">
+                      <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                      <span className="text-sm">Real-time Data</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <BarChart3 className="w-4 h-4" />
+                      <span className="text-sm">5 Dashboard Tabs</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Shield className="w-4 h-4" />
+                      <span className="text-sm">Advanced Filtering</span>
+                    </div>
+                  </div>
+                </div>
+                <div className="hidden md:block">
+                  <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center">
+                    <BarChart3 className="w-8 h-8 text-blue-600" />
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
         </div>
 
         {/* URL Configuration Status */}

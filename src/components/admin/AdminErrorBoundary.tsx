@@ -35,7 +35,7 @@ export default class AdminErrorBoundary extends Component<Props, State> {
     return {
       hasError: true,
       error,
-      errorId: `admin-error-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`
+      errorId: `admin-error-${Date.now()}-${crypto.randomUUID().slice(0, 8)}`
     };
   }
 
