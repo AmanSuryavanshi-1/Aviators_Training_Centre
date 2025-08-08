@@ -7,7 +7,7 @@
 
 import { FirebaseAuthHandler } from './FirebaseAuthHandler';
 import { errorHandler } from './ErrorHandler';
-import { admin } from 'firebase-admin';
+import admin from 'firebase-admin';
 
 export interface DailySummary {
   date: string;

@@ -5,7 +5,7 @@
  * Implements permission validation for Firestore and Analytics access.
  */
 
-import { admin } from 'firebase-admin';
+import admin from 'firebase-admin';
 import { errorHandler } from './ErrorHandler';
 
 export interface PermissionCheck {
