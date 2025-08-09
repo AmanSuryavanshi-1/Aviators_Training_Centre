@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { easingFunctions } from '@/lib/animations/easing';
 // import { Button } from "@/components/ui/button"; // Replaced with custom buttons
 import { SolidButton } from "@/components/shared/SolidButton"; // Corrected: Use named import
 import { TransparentButton } from "@/components/shared/TransparentButton"; // Corrected: Use named import
@@ -10,7 +11,7 @@ import { MessageCircle, HelpCircle, Phone, Smartphone } from 'lucide-react'; // 
 // --- Animation Variants (keep existing variants) ---
 const sectionVariants = {
     hidden: { opacity: 0, y: 50 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: easingFunctions.easeOut } }
 };
 
 const fadeInVariants = {

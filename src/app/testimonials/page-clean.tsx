@@ -8,7 +8,6 @@ import TestimonialsSection from '@/components/testimonials/TestimonialsSection';
 import TestimonialControls, { FilterOptions } from '@/components/testimonials/TestimonialControls';
 import TestimonialsCTA from '@/components/testimonials/TestimonialsCTA';
 import TestimonialsBreadcrumb from '@/components/testimonials/TestimonialsBreadcrumb';
-
 // Dynamic imports for better performance
 const VideoGrid = dynamic(() => import('@/components/testimonials/VideoGrid'), { 
   ssr: false,
@@ -24,21 +23,13 @@ const VideoGrid = dynamic(() => import('@/components/testimonials/VideoGrid'), {
 import { youtubeShorts, studentsData } from '@/lib/testimonials/data';
 import { generateTestimonialsPageSchema } from './jsonLd';
 import { testimonialsAnalytics } from '@/lib/testimonials/analytics';
+import { commonVariants } from '@/lib/animations/easing';
 
-// Define consistent animation variants
-const sectionVariants = {
-  hidden: { opacity: 0, y: 50 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut", staggerChildren: 0.1 } }
-};
-
-const itemVariants = {
-  hidden: { opacity: 0, scale: 0.9, y: 20 },
-  visible: { opacity: 1, scale: 1, y: 0, transition: { duration: 0.4, ease: "easeOut" } }
-};
+// Use consistent animation variants with proper easing
+const { sectionVariants, itemVariants } = commonVariants;
 
 // Define aviation colors
 const aviationPrimary = 'text-teal-700 dark:text-teal-300';
-const aviationSecondary = 'text-teal-600 dark:text-teal-400';
 
 export default function TestimonialsPageClean() {
   const [searchQuery, setSearchQuery] = useState('');

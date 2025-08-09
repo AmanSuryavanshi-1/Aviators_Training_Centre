@@ -6,6 +6,7 @@ import { cn } from '@/lib/utils';
 import { youtubeShorts, studentsData, generateEmbedUrl } from '@/lib/testimonials/data';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
 import VideoCardSkeleton from './VideoCardSkeleton';
+import { easingFunctions } from '@/lib/animations/easing';
 
 // Performance-optimized animation variants with GPU acceleration
 const carouselVariants = {
@@ -243,7 +244,7 @@ const VideoCard: React.FC<VideoCardProps> = ({
                         transition={{
                           duration: 3,
                           repeat: Infinity,
-                          ease: "easeInOut"
+                          ease: easingFunctions.easeInOut
                         }}
                       >
                         <div className="w-12 h-12 rounded-full bg-teal-600/20 backdrop-blur-sm flex items-center justify-center border border-teal-500/30">
@@ -258,7 +259,7 @@ const VideoCard: React.FC<VideoCardProps> = ({
                         transition={{
                           duration: 4,
                           repeat: Infinity,
-                          ease: "linear"
+                          ease: easingFunctions.linear
                         }}
                       />
                       <motion.div
@@ -267,7 +268,7 @@ const VideoCard: React.FC<VideoCardProps> = ({
                         transition={{
                           duration: 6,
                           repeat: Infinity,
-                          ease: "linear"
+                          ease: easingFunctions.linear
                         }}
                       />
                       
@@ -281,7 +282,7 @@ const VideoCard: React.FC<VideoCardProps> = ({
                         transition={{
                           duration: 2,
                           repeat: Infinity,
-                          ease: "easeInOut"
+                          ease: easingFunctions.easeInOut
                         }}
                       />
                     </div>
@@ -295,7 +296,7 @@ const VideoCard: React.FC<VideoCardProps> = ({
                       transition={{
                         duration: 1.5,
                         repeat: Infinity,
-                        ease: "easeInOut"
+                        ease: easingFunctions.easeInOut
                       }}
                     >
                       Loading testimonial...
@@ -315,7 +316,7 @@ const VideoCard: React.FC<VideoCardProps> = ({
                             duration: 1,
                             repeat: Infinity,
                             delay: i * 0.2,
-                            ease: "easeInOut"
+                            ease: easingFunctions.easeInOut
                           }}
                         />
                       ))}
@@ -340,7 +341,7 @@ const VideoCard: React.FC<VideoCardProps> = ({
                             duration: 3,
                             repeat: Infinity,
                             delay: i * 0.5,
-                            ease: "easeInOut"
+                            ease: easingFunctions.easeInOut
                           }}
                         />
                       ))}

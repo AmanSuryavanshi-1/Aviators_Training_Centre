@@ -3,6 +3,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence, useInView } from 'framer-motion';
 import { Quote, Star, Plane, ChevronLeft, ChevronRight } from 'lucide-react';
 import { cn } from '@/components/ui/utils';
+import { easingFunctions } from '@/lib/animations/easing';
 
 // Sample text testimonials data
 const textTestimonials = [
@@ -95,14 +96,14 @@ const cardVariants = {
     boxShadow: "0 25px 50px rgba(6, 182, 212, 0.3)",
     transition: { 
       duration: 0.4,
-      ease: "easeOut"
+      ease: easingFunctions.easeOut
     }
   },
   flip: {
     rotateY: 180,
     transition: { 
       duration: 0.6,
-      ease: "easeInOut"
+      ease: easingFunctions.easeInOut
     }
   }
 };
@@ -112,7 +113,7 @@ const propellerVariants = {
     rotate: 360,
     transition: {
       duration: 0.5,
-      ease: "linear",
+      ease: easingFunctions.linear,
       repeat: 3
     }
   }
@@ -125,7 +126,7 @@ const starsVariants = {
     transition: {
       duration: 1.5,
       repeat: Infinity,
-      ease: "easeInOut"
+      ease: easingFunctions.easeInOut
     }
   }
 };
@@ -257,7 +258,7 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({
                   transition={{
                     duration: 3,
                     repeat: Infinity,
-                    ease: "linear"
+                    ease: easingFunctions.linear
                   }}
                 >
                   <Plane className="w-8 h-8 text-white" />
@@ -280,7 +281,7 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({
                       duration: 2,
                       repeat: Infinity,
                       delay: i * 0.3,
-                      ease: "easeInOut"
+                      ease: easingFunctions.easeInOut
                     }}
                   />
                 ))}
@@ -393,7 +394,7 @@ export default function TextTestimonialsCarousel() {
             transition={{
               duration: 6 + i,
               repeat: Infinity,
-              ease: "easeInOut",
+              ease: easingFunctions.easeInOut,
               delay: i * 0.8
             }}
           >
@@ -463,7 +464,7 @@ export default function TextTestimonialsCarousel() {
           initial={{ opacity: 0, x: 100 }}
           animate={{ opacity: 1, x: 0 }}
           exit={{ opacity: 0, x: -100 }}
-          transition={{ duration: 0.6, ease: "easeInOut" }}
+          transition={{ duration: 0.6, ease: easingFunctions.easeInOut }}
         >
           {visibleTestimonials.map((testimonial, index) => (
             <TestimonialCard

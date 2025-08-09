@@ -7,6 +7,7 @@ import { cn } from "./../ui/utils";
 import { BookDemoButton } from '@/components/shared/BookDemoButton';
 import { SolidButton } from '@/components/shared/SolidButton'; // Import the new SolidButton
 import { TransparentButton } from '@/components/shared/TransparentButton';
+import { easingFunctions } from '@/lib/animations/easing';
 // Optional: import { TransparentButton } from '@/components/shared/TransparentButton'; // Import if needed for secondary button
 
 // --- Configuration ---
@@ -58,11 +59,11 @@ const slideVariants = {
 };
 const contentVariants = {
   hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0, transition: { staggerChildren: 0.15, delayChildren: 0.2, duration: 0.6, ease: "easeOut" } }
+  visible: { opacity: 1, y: 0, transition: { staggerChildren: 0.15, delayChildren: 0.2, duration: 0.6, ease: easingFunctions.easeOut } }
 };
 const itemVariants = {
   hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } }
+  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: easingFunctions.easeOut } }
 };
 
 const HeroSection = () => {

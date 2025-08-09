@@ -5,6 +5,7 @@ import { cn } from '@/components/ui/utils';
 import { Star, Quote, User } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { TextTestimonial, Student } from '@/lib/testimonials/types';
+import { easingFunctions } from '@/lib/animations/easing';
 
 interface TestimonialsSectionProps {
   testimonials?: TextTestimonial[];
@@ -104,7 +105,7 @@ export default function TestimonialsSection({
       y: 0,
       transition: { 
         duration: 0.5, 
-        ease: "easeOut" 
+        ease: easingFunctions.easeOut 
       }
     }
   };

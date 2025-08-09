@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button"; // Keep Button for specific cas
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { CalendarClock, ArrowRight } from 'lucide-react';
+import { easingFunctions } from '@/lib/animations/easing';
 // import { CountdownTimer } from '@/components/shared/CountdownTimer'; // Import actual timer when ready
 
 // --- Configuration ---
@@ -13,7 +14,7 @@ const urgencyButtonBorderGradient = 'bg-gradient-to-r from-[#0C6E72] to-[#56A7B0
 // --- Animation Variants ---
 const itemVariants = {
   hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } }
+  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: easingFunctions.easeOut } }
 };
 
 interface UrgencyCTAProps {

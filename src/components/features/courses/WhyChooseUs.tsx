@@ -3,6 +3,7 @@ import React from 'react';
 import { UsersRound, CalendarClock, Award, Headset, GraduationCap, RadioTower } from 'lucide-react';
 import { cn } from '@/components/ui/utils';
 import { motion } from 'framer-motion';
+import { easingFunctions } from '@/lib/animations/easing';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"; // Import Card components
 
 // --- Configuration (Matching other pages) ---
@@ -12,17 +13,17 @@ const aviationSecondary = 'text-teal-600 dark:text-teal-400';
 // --- Animation Variants (Define or import from shared location) ---
 const sectionVariants = {
   hidden: { opacity: 0, y: 50 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut", staggerChildren: 0.1 } }
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: easingFunctions.easeOut, staggerChildren: 0.1 } }
 };
 
 const itemVariants = {
   hidden: { opacity: 0, scale: 0.9, y: 20 },
-  visible: { opacity: 1, scale: 1, y: 0, transition: { duration: 0.4, ease: "easeOut" } }
+  visible: { opacity: 1, scale: 1, y: 0, transition: { duration: 0.4, ease: easingFunctions.easeOut } }
 };
 
 const cardHoverEffect = {
   rest: { y: 0, boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.08)" },
-  hover: { y: -5, boxShadow: "0px 10px 20px rgba(0, 0, 0, 0.12)", transition: { duration: 0.3, ease: "circOut" } }
+  hover: { y: -5, boxShadow: "0px 10px 20px rgba(0, 0, 0, 0.12)", transition: { duration: 0.3, ease: easingFunctions.circOut } }
 };
 
 // --- Feature Data (Updated to reflect core offerings) ---

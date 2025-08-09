@@ -2,6 +2,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
+import { easingFunctions } from '@/lib/animations/easing';
 
 interface HeroProps {
   variant?: 'standard' | 'compact';
@@ -22,7 +23,7 @@ export default function Hero({
       )}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      transition={{ duration: 1.2, ease: "easeOut" }}
+      transition={{ duration: 1.2, ease: easingFunctions.easeOut }}
     >
       {/* Background Image with Overlay */}
       <div className="absolute inset-0 z-0">

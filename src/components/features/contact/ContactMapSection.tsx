@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { cn } from "@/components/ui/utils";
+import { easingFunctions } from '@/lib/animations/easing';
 
 // --- Configuration ---
 const aviationPrimary = 'text-teal-700 dark:text-teal-300';
@@ -8,7 +9,7 @@ const aviationPrimary = 'text-teal-700 dark:text-teal-300';
 // --- Animation Variants ---
 const itemVariants = {
     hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeInOut" } },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: easingFunctions.easeInOut } },
 };
 
 const ContactMapSection: React.FC = () => {

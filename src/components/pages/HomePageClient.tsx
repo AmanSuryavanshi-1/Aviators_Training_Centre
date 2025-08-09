@@ -13,17 +13,10 @@ import { cn } from "@/components/ui/utils";
 import { Plane, Target, Radio, GraduationCap, TrendingUp, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 import { useAnalytics } from '@/hooks/useAnalytics';
+import { commonVariants } from '@/lib/animations/easing';
 
-// Define consistent animation variants
-const sectionVariants = {
-  hidden: { opacity: 0, y: 50 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut", staggerChildren: 0.1 } }
-};
-
-const itemVariants = {
-  hidden: { opacity: 0, scale: 0.9, y: 20 },
-  visible: { opacity: 1, scale: 1, y: 0, transition: { duration: 0.4, ease: "easeOut" } }
-};
+// Use consistent animation variants with proper easing
+const { sectionVariants, itemVariants } = commonVariants;
 
 // Define primary color for consistent heading usage
 const aviationPrimary = 'text-teal-700 dark:text-teal-300';

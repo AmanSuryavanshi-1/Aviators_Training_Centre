@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import Image from 'next/image';
 import { FileSignature, ArrowRight } from 'lucide-react';
 import { SolidButton } from '@/components/shared/SolidButton';
+import { easingFunctions } from '@/lib/animations/easing';
 
 interface AboutSectionProps {
     title: string;
@@ -15,7 +16,7 @@ const AboutSection: React.FC<AboutSectionProps> = ({ title, content, image, reve
     // Animation variants
     const sectionVariants = {
         hidden: { opacity: 0, y: 50 },
-        visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeInOut" } }
+        visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: easingFunctions.easeInOut } }
     };
 
     const itemVariants = {

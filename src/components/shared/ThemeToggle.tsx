@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button"
 import { useTheme } from 'next-themes';
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
+import { easingFunctions } from '@/lib/animations/easing';
 
 export function ThemeToggle() {
   const { theme, setTheme } = useTheme();
@@ -40,7 +41,7 @@ export function ThemeToggle() {
         }} 
         transition={{
           duration: 0.4,
-          ease: "easeInOut",   
+          ease: easingFunctions.easeInOut,   
           scale: { duration: 0.2 }
         }}
         className="relative flex items-center justify-center w-5 h-5"

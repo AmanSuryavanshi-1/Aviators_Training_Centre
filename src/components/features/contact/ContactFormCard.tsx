@@ -14,6 +14,7 @@ import { trackFormSubmission } from '@/lib/analytics/client';
 import { useFormValidation, FormData } from '@/hooks/use-form-validation';
 import ValidationError, { FormValidationSummary, FieldWrapper } from './ValidationError';
 import { useContactAnalytics } from '@/hooks/useAnalytics';
+import { easingFunctions } from '@/lib/animations/easing';
 
 interface ContactFormCardProps {
   inquirySubjects: string[];
@@ -425,7 +426,7 @@ const ContactFormCard: React.FC<ContactFormCardProps> = ({inquirySubjects}) => {
                   <motion.div
                     className="w-5 h-5 rounded-full border-2 border-white border-t-transparent"
                     animate={{ rotate: 360 }}
-                    transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                    transition={{ duration: 1, repeat: Infinity, ease: easingFunctions.linear }}
                   />
                   <span className="ml-2">{isDemoBooking ? 'Submitting Request...' : 'Sending...'}</span>
                 </>

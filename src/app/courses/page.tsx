@@ -11,6 +11,7 @@ import { UrgencyCTA } from '@/components/shared/UrgencyCTA';
 import { TransparentButton } from '@/components/shared/TransparentButton';
 import { cn } from '@/components/ui/utils'
 import Image from 'next/image';
+import { commonVariants } from '@/lib/animations/easing';
 // Note: SEO Metadata is now in metadata.ts
 
 // --- Configuration (Removed button style variables) ---
@@ -32,21 +33,8 @@ const TYPE_RATING_IMAGE = "/Courses/TypeRatingPrep.webp";
 const ONE_ON_ONE_IMAGE = "/Courses/one-on-one-classes.webp";
 const INTERVIEW_PREP_IMAGE = "/HomePage/Hero4.webp";
 
-// --- Animation Variants (Unchanged) ---
-const sectionVariants = {
-  hidden: { opacity: 0, y: 50 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut", staggerChildren: 0.1 } }
-};
-
-const itemVariants = {
-  hidden: { opacity: 0, scale: 0.9, y: 20 },
-  visible: { opacity: 1, scale: 1, y: 0, transition: { duration: 0.4, ease: "easeOut" } }
-};
-
-const cardHoverEffect = {
-  rest: { y: 0, boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.08)" },
-  hover: { y: -5, boxShadow: "0px 10px 20px rgba(0, 0, 0, 0.12)", transition: { duration: 0.3, ease: "circOut" } }
-};
+// Use consistent animation variants with proper easing
+const { sectionVariants, itemVariants, cardHoverEffect } = commonVariants;
 
 // --- Course Data (Unchanged) ---
 const groundSchoolSubjects = [

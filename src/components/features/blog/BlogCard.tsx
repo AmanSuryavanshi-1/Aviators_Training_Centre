@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
 import { sanitySimpleService } from '@/lib/sanity/client.simple';
+import { easingFunctions } from '@/lib/animations/easing';
 
 // Type definition for compatibility
 interface BlogPost {
@@ -51,7 +52,7 @@ const cardVariants = {
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.5, ease: "easeOut" },
+    transition: { duration: 0.5, ease: easingFunctions.easeOut },
   },
 };
 

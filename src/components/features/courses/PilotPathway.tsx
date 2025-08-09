@@ -13,6 +13,7 @@ import { Button } from "@/components/ui/button";
 import { Link } from 'react-router-dom'; // Added Link
 // import { CountdownTimer } from '@/components/shared/CountdownTimer'; // Assuming CountdownTimer component exists
 import { UrgencyCTA } from '@/components/shared/UrgencyCTA';
+import { easingFunctions } from '@/lib/animations/easing';
 
 // --- Configuration ---
 const aviationPrimary = 'text-teal-700 dark:text-teal-300';
@@ -23,12 +24,12 @@ const aviationSecondary = 'text-teal-600 dark:text-teal-400';
 // --- Animation Variants ---
 const sectionVariants = {
   hidden: { opacity: 0, y: 50 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut", staggerChildren: 0.1 } }
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: easingFunctions.easeOut, staggerChildren: 0.1 } }
 };
 
 const itemVariants = {
   hidden: { opacity: 0, x: 0, y: 20 },
-  visible: { opacity: 1, x: 0, y: 0, transition: { duration: 0.5, ease: "easeOut" } }
+  visible: { opacity: 1, x: 0, y: 0, transition: { duration: 0.5, ease: easingFunctions.easeOut } }
 };
 
 const timelineItemVariant = (index: number) => ({
@@ -41,7 +42,7 @@ const timelineItemVariant = (index: number) => ({
     x: 0,
     transition: {
       duration: 0.6,
-      ease: "easeOut",
+      ease: easingFunctions.easeOut,
     },
   },
 });

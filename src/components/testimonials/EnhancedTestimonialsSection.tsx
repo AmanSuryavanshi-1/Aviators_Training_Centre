@@ -5,6 +5,7 @@ import { ChevronRight, Play, Pause, X, ChevronLeft, Maximize2, Volume2, VolumeX 
 import { cn } from '@/components/ui/utils';
 import { youtubeShorts, studentsData, generateEmbedUrl } from '@/lib/testimonials/data';
 import { useIntersectionObserver } from '@/hooks/useIntersectionObserver';
+import { easingFunctions } from '@/lib/animations/easing';
 
 // Aviation-inspired animation variants
 const cloudParticleVariants = {
@@ -15,7 +16,7 @@ const cloudParticleVariants = {
     transition: {
       duration: 4,
       repeat: Infinity,
-      ease: "easeInOut"
+      ease: easingFunctions.easeInOut
     }
   }
 };
@@ -55,7 +56,7 @@ const videoCardVariants = {
     boxShadow: "0 25px 50px rgba(6, 182, 212, 0.25)",
     transition: { 
       duration: 0.4,
-      ease: "easeOut"
+      ease: easingFunctions.easeOut
     }
   }
 };
@@ -81,7 +82,7 @@ const modalVariants = {
     y: 100,
     transition: { 
       duration: 0.3,
-      ease: "easeIn"
+      ease: easingFunctions.easeIn
     }
   }
 };

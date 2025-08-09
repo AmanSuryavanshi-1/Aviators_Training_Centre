@@ -5,12 +5,13 @@ import { Phone, Mail, MapPin, Clock, Facebook, Instagram, Twitter } from 'lucide
 import { motion } from 'framer-motion';
 import { cn } from "@/components/ui/utils";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { easingFunctions } from '@/lib/animations/easing';
 
 const aviationPrimary = 'text-teal-700 dark:text-teal-300';
 const aviationSecondary = 'text-teal-600 dark:text-teal-400';
 const itemVariants = {
     hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeInOut" } },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: easingFunctions.easeInOut } },
 };
 
 const ContactDetailsCard: React.FC = () => {

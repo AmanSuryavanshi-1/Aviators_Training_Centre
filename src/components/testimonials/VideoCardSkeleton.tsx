@@ -3,6 +3,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { cn } from '@/components/ui/utils';
 import { Plane } from 'lucide-react';
+import { easingFunctions } from '@/lib/animations/easing';
 
 interface VideoCardSkeletonProps {
   position?: 'center' | 'adjacent' | 'distant' | 'hidden';
@@ -61,7 +62,7 @@ export default function VideoCardSkeleton({ position = 'center' }: VideoCardSkel
             transition={{
               duration: 3,
               repeat: Infinity,
-              ease: "easeInOut"
+              ease: easingFunctions.easeInOut
             }}
           >
             <div className={cn(
@@ -85,7 +86,7 @@ export default function VideoCardSkeleton({ position = 'center' }: VideoCardSkel
               transition={{
                 duration: 2,
                 repeat: Infinity,
-                ease: "easeOut"
+                ease: easingFunctions.easeOut
               }}
             />
             <motion.div
@@ -97,7 +98,7 @@ export default function VideoCardSkeleton({ position = 'center' }: VideoCardSkel
               transition={{
                 duration: 2,
                 repeat: Infinity,
-                ease: "easeOut",
+                ease: easingFunctions.easeOut,
                 delay: 0.5
               }}
             />
@@ -114,7 +115,7 @@ export default function VideoCardSkeleton({ position = 'center' }: VideoCardSkel
             transition={{
               duration: 1.5,
               repeat: Infinity,
-              ease: "easeInOut"
+              ease: easingFunctions.easeInOut
             }}
           >
             Loading testimonial...
@@ -177,7 +178,7 @@ export default function VideoCardSkeleton({ position = 'center' }: VideoCardSkel
                 duration: 3,
                 repeat: Infinity,
                 delay: i * 0.8,
-                ease: "easeInOut"
+                ease: easingFunctions.easeInOut
               }}
             />
           ))}

@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { MessageCircle, X, Send, Plane, Star, Zap } from 'lucide-react';
 import { usePathname } from 'next/navigation';
+import { easingFunctions } from '@/lib/animations/easing';
 
 const WhatsAppChat: React.FC = () => {
   // All hooks must be declared first before any conditional logic
@@ -106,7 +107,7 @@ const WhatsAppChat: React.FC = () => {
       transition: {
         duration: 2,
         repeat: Infinity,
-        ease: "easeInOut"
+        ease: easingFunctions.easeInOut
       }
     }
   };
@@ -243,7 +244,7 @@ const WhatsAppChat: React.FC = () => {
                   transition={{
                     duration: 1,
                     repeat: Infinity,
-                    ease: "easeInOut"
+                    ease: easingFunctions.easeInOut
                   }}
                 />
               </motion.div>
