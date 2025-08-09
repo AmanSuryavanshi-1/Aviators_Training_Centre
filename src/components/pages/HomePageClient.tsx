@@ -7,6 +7,7 @@ import FeaturedBlogSection from "@/components/features/courses/FeaturedBlogSecti
 import PilotPathway from "@/components/features/courses/PilotPathway";
 import FAQ from "@/components/shared/FAQ";
 import CTASection from "@/components/features/courses/CTASection";
+import HomepageTestimonialsSection from "@/components/testimonials/HomepageTestimonialsSection";
 import { motion } from 'framer-motion';
 import { cn } from "@/components/ui/utils";
 import { Plane, Target, Radio, GraduationCap, TrendingUp, ArrowRight } from 'lucide-react';
@@ -110,6 +111,9 @@ export default function HomePageClient() {
 
           {/* Courses Section */}
           <CoursesSection />
+
+          {/* Testimonials Section */}
+          <HomepageTestimonialsSection />
 
           {/* FAQ Section */}
           <FAQ showAll={false} />
