@@ -7,7 +7,7 @@ import FeaturedBlogSection from "@/components/features/courses/FeaturedBlogSecti
 import PilotPathway from "@/components/features/courses/PilotPathway";
 import FAQ from "@/components/shared/FAQ";
 import CTASection from "@/components/features/courses/CTASection";
-import HomepageTestimonialsSection from "@/components/testimonials/HomepageTestimonialsSection";
+import InfiniteVideoCarousel from "@/components/testimonials/InfiniteVideoCarousel";
 import { motion } from 'framer-motion';
 import { cn } from "@/components/ui/utils";
 import { Plane, Target, Radio, GraduationCap, TrendingUp, ArrowRight } from 'lucide-react';
@@ -112,8 +112,27 @@ export default function HomePageClient() {
           {/* Courses Section */}
           <CoursesSection />
 
-          {/* Testimonials Section */}
-          <HomepageTestimonialsSection />
+          {/* Testimonials Section - Infinite Scroll */}
+          <motion.section 
+            className="py-16 md:py-20"
+            variants={sectionVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.3 }}
+          >
+            <motion.div 
+              className="text-center space-y-6 mb-12"
+              variants={itemVariants}
+            >
+              <h2 className={cn("text-3xl md:text-4xl lg:text-5xl font-bold", aviationPrimary)}>
+                Success Stories from Our Graduates
+              </h2>
+              <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+                Watch authentic testimonials from our successful DGCA CPL graduates who transformed their aviation dreams into reality through our comprehensive training programs.
+              </p>
+            </motion.div>
+            <InfiniteVideoCarousel />
+          </motion.section>
 
           {/* FAQ Section */}
           <FAQ showAll={false} />
