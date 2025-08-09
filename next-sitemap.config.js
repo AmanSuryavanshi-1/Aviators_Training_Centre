@@ -35,6 +35,9 @@ const config = {
     } else if (path === '/courses') {
       priority = 0.9;
       changefreq = 'weekly';
+    } else if (path === '/testimonials') {
+      priority = 0.9;
+      changefreq = 'weekly'; // High priority for SEO - testimonials are valuable for search engines
     } else if (path === '/instructors') {
       priority = 0.8;
       changefreq = 'monthly';

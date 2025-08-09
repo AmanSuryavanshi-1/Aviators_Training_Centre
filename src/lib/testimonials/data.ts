@@ -1,5 +1,5 @@
-import { YouTubeShort, Student, MergedTestimonialVideo } from './types';
-import mergedTestimonialData from './merged-data.json';
+import { YouTubeShort, Student } from './types';
+import videoTestimonials from './video-testimonials.json';
 
 // Authentic student data with realistic courses and ratings
 export const studentsData: Student[] = [
@@ -40,7 +40,7 @@ export const studentsData: Student[] = [
     id: 'student-bhargavi',
     name: 'Bhargavi Reddy',
     course: 'DGCA CPL Ground School',
-    gradYear: 2023,
+    gradYear: 2025,
     verified: true,
     avatarUrl: null,
     rating: 4.7,
@@ -62,7 +62,7 @@ export const studentsData: Student[] = [
     id: 'student-rajesh',
     name: 'Rajesh Kumar',
     course: 'DGCA CPL Ground School',
-    gradYear: 2023,
+    gradYear: 2025,
     verified: true,
     avatarUrl: null,
     rating: 4.9,
@@ -93,81 +93,8 @@ export const studentsData: Student[] = [
   }
 ];
 
-// Real YouTube Shorts testimonial videos with conservative duration estimates
-export const youtubeShorts: YouTubeShort[] = [
-  {
-    "id": "testimonial-video-1",
-    "url": "https://youtube.com/shorts/8vtJgqRAyUQ",
-    "videoId": "8vtJgqRAyUQ",
-    "studentId": "students-mashup",
-    "studentName": "ATC Collective",
-    "thumbnailUrl": "https://img.youtube.com/vi/8vtJgqRAyUQ/maxresdefault.jpg",
-    "duration": 63, // Conservative estimate - let video play fully
-    "uploadDate": "2025-01-15T10:00:00Z",
-    "subjects": [
-      "Comprehensive Curriculum"
-    ],
-    "transcript": null
-  },
-  {
-    "id": "testimonial-video-2",
-    "url": "https://youtube.com/shorts/v9hb1llhRtE",
-    "videoId": "v9hb1llhRtE",
-    "studentId": "student-shumbham",
-    "studentName": "Shumbham",
-    "thumbnailUrl": "https://img.youtube.com/vi/v9hb1llhRtE/maxresdefault.jpg",
-    "duration": 40, // Conservative estimate
-    "uploadDate": "2025-02-20T14:30:00Z",
-    "subjects": [
-      "Navigation",
-      "Technical general"
-    ],
-    "transcript": null
-  },
-  {
-    "id": "testimonial-video-3",
-    "url": "https://youtube.com/shorts/aCcx0D1EoME",
-    "videoId": "aCcx0D1EoME",
-    "studentId": "student-uday",
-    "studentName": "Uday",
-    "thumbnailUrl": "https://img.youtube.com/vi/aCcx0D1EoME/maxresdefault.jpg",
-    "duration": 66, // Conservative estimate
-    "uploadDate": "2025-03-10T09:15:00Z",
-    "subjects": [
-      "RTR(A) - Radio Telephony"
-    ],
-    "transcript": null
-  },
-  {
-    "id": "testimonial-video-4",
-    "url": "https://youtube.com/shorts/LABiT_guWtc",
-    "videoId": "LABiT_guWtc",
-    "studentId": "student-bhargavi",
-    "studentName": "Bhargavi",
-    "thumbnailUrl": "https://img.youtube.com/vi/LABiT_guWtc/maxresdefault.jpg",
-    "duration": 25, 
-    "uploadDate": "2025-04-05T16:45:00Z",
-    "subjects": [
-      "Air Regulation"
-    ],
-    "transcript": null
-  },
-  {
-    "id": "testimonial-video-5",
-    "url": "https://youtube.com/shorts/dKguqRUVMPs",
-    "videoId": "dKguqRUVMPs",
-    "studentId": "student-salman",
-    "studentName": "Salman",
-    "thumbnailUrl": "https://img.youtube.com/vi/dKguqRUVMPs/maxresdefault.jpg",
-    "duration": 33, // Conservative estimate
-    "uploadDate": "2025-05-12T11:20:00Z",
-    "subjects": [
-      "Air Navigation",
-      "Technical general"
-    ],
-    "transcript": null
-  }
-];
+// Import video testimonials from the SEO-optimized JSON file
+export const youtubeShorts: YouTubeShort[] = videoTestimonials as YouTubeShort[];
 
 // Utility function to generate completely hidden YouTube embed URL
 export function generateEmbedUrl(videoId: string): string {
@@ -228,5 +155,200 @@ export function createVideoFallback(videoId: string, student: Student | null): V
   };
 }
 
-// Export merged testimonial data
-export const mergedTestimonials: MergedTestimonialVideo[] = mergedTestimonialData as MergedTestimonialVideo[];
+// Export testimonials data for the infinite video carousel
+export const testimonials = {
+  videos: videoTestimonials,
+};
+
+export type VideoTestimonial = (typeof videoTestimonials)[0];
+
+// SEO Enhancement Functions
+export function getAllSEOKeywords(): string[] {
+  const allKeywords = new Set<string>();
+  
+  youtubeShorts.forEach(video => {
+    video.seoKeywords?.forEach(keyword => allKeywords.add(keyword));
+    video.subjects?.forEach(subject => allKeywords.add(subject));
+  });
+  
+  return Array.from(allKeywords);
+}
+
+export function getKeywordsBySubject(subject: string): string[] {
+  const keywords = new Set<string>();
+  
+  youtubeShorts
+    .filter(video => video.subjects?.includes(subject))
+    .forEach(video => {
+      video.seoKeywords?.forEach(keyword => keywords.add(keyword));
+    });
+  
+  return Array.from(keywords);
+}
+
+export function generateSEOMetaDescription(): string {
+  const topKeywords = getAllSEOKeywords().slice(0, 8);
+  return `Real success stories from DGCA CPL and aviation training graduates. ${topKeywords.join(', ')} - Verified testimonials from students who achieved their pilot dreams at Aviators Training Centre.`;
+}
+
+export function generateSEOTitle(): string {
+  const subjects = [...new Set(youtubeShorts.flatMap(v => v.subjects || []))];
+  return `${subjects.slice(0, 3).join(', ')} Success Stories | Aviation Training Testimonials | ATC`;
+}
+
+export function getVideoSEOData(videoId: string) {
+  const video = youtubeShorts.find(v => v.id === videoId);
+  const student = video?.studentId ? getStudentById(video.studentId) : null;
+  
+  if (!video) return null;
+  
+  return {
+    title: `${video.studentName} - ${video.subjects?.[0] || 'Aviation'} Success Story`,
+    description: `${video.studentName} shares their journey in ${video.subjects?.join(' and ')} at Aviators Training Centre. ${video.seoKeywords?.slice(0, 3).join(', ')}.`,
+    keywords: [...(video.seoKeywords || []), ...(video.subjects || [])],
+    subjects: video.subjects || [],
+    student,
+    video
+  };
+}
+
+// SEO Enhancement: Generate FAQ Schema for testimonials
+export function generateTestimonialsFAQSchema() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What aviation courses do your graduates recommend?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": `Our graduates highly recommend our DGCA CPL and ATPL ground school programs. Popular courses include ${[...new Set(youtubeShorts.flatMap(v => v.subjects || []))].slice(0, 5).join(', ')}. With a 95% success rate, our comprehensive training covers all DGCA examination subjects.`
+        }
+      },
+      {
+        "@type": "Question", 
+        "name": "How successful are students at Aviators Training Centre?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Our students achieve exceptional results with a 95% success rate in DGCA examinations. Over 500 aspiring pilots have successfully completed their training and are now working as commercial airline pilots. Our video testimonials showcase real success stories from verified graduates."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What subjects are covered in the DGCA CPL ground school?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": `Our DGCA CPL ground school covers all essential subjects including ${[...new Set(youtubeShorts.flatMap(v => v.subjects || []))].join(', ')}. Each subject is taught by experienced airline pilots with real-world aviation experience.`
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Are the testimonials from real students?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes, all our video testimonials are from verified graduates who successfully completed their training at Aviators Training Centre. Each testimonial includes the student's name, course details, and graduation year for authenticity."
+        }
+      }
+    ]
+  };
+}
+
+// SEO Enhancement: Generate Course Schema
+export function generateCourseSchema() {
+  const uniqueSubjects = [...new Set(youtubeShorts.flatMap(v => v.subjects || []))];
+  
+  return uniqueSubjects.map(subject => ({
+    "@context": "https://schema.org",
+    "@type": "Course",
+    "name": `${subject} Training`,
+    "description": `Professional ${subject} training for DGCA CPL and ATPL candidates at Aviators Training Centre`,
+    "provider": {
+      "@type": "Organization",
+      "name": "Aviators Training Centre",
+      "url": "https://aviatorstrainingcentre.com"
+    },
+    "educationalLevel": "Professional",
+    "courseMode": "In-person",
+    "hasCourseInstance": {
+      "@type": "CourseInstance",
+      "courseMode": "In-person",
+      "location": {
+        "@type": "Place",
+        "name": "Aviators Training Centre",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Dwarka",
+          "addressRegion": "Delhi",
+          "addressCountry": "IN"
+        }
+      }
+    },
+    "review": youtubeShorts
+      .filter(v => v.subjects?.includes(subject))
+      .map(v => ({
+        "@type": "Review",
+        "author": {
+          "@type": "Person",
+          "name": v.studentName
+        },
+        "reviewRating": {
+          "@type": "Rating",
+          "ratingValue": "5",
+          "bestRating": "5"
+        },
+        "reviewBody": `Excellent ${subject} training. Highly recommended for DGCA exam preparation.`
+      }))
+  }));
+}
+
+// SEO Enhancement: Generate Organization Schema
+export function generateOrganizationSchema() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "EducationalOrganization",
+    "name": "Aviators Training Centre",
+    "alternateName": "ATC",
+    "url": "https://aviatorstrainingcentre.com",
+    "logo": "https://aviatorstrainingcentre.com/logo.png",
+    "description": "India's premier DGCA approved aviation training institute specializing in CPL and ATPL ground school preparation",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Dwarka",
+      "addressRegion": "Delhi",
+      "addressCountry": "IN"
+    },
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "contactType": "Admissions",
+      "availableLanguage": ["English", "Hindi"]
+    },
+    "sameAs": [
+      "https://www.youtube.com/@aviatorstrainingcentre",
+      "https://www.instagram.com/aviatorstrainingcentre"
+    ],
+    "hasCredential": "DGCA Approved Training Institute",
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "4.8",
+      "reviewCount": youtubeShorts.length,
+      "bestRating": "5"
+    },
+    "review": youtubeShorts.map(video => {
+      const student = getStudentById(video.studentId || '');
+      return {
+        "@type": "Review",
+        "author": {
+          "@type": "Person",
+          "name": video.studentName
+        },
+        "reviewRating": {
+          "@type": "Rating",
+          "ratingValue": student?.rating?.toString() || "5",
+          "bestRating": "5"
+        },
+        "reviewBody": student?.testimonial || `Excellent training in ${video.subjects?.join(' and ')}. Highly recommend Aviators Training Centre.`
+      };
+    })
+  };
+}

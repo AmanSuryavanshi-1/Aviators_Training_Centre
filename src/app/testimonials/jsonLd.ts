@@ -35,18 +35,31 @@ export interface ReviewSchema {
 export function generateVideoObjectSchema(
   video: YouTubeShort,
   student: Student | null
-): VideoObjectSchema {
+): VideoObjectSchema & { keywords?: string; about?: any[] } {
+  // Create SEO-optimized description using keywords and subjects
+  const seoKeywords = video.seoKeywords || [];
+  const subjects = video.subjects || [];
+  const keywordString = [...seoKeywords, ...subjects].join(', ');
+  
+  const seoDescription = `${student?.name || video.studentName} shares their success story about ${subjects.join(' and ')} training at Aviators Training Centre. ${seoKeywords.slice(0, 3).join(', ')} - Real testimonial from ${student?.course || 'aviation training'} graduate.`;
+
   return {
     '@type': 'VideoObject',
-    name: `${student?.name || 'Student'} - Aviation Training Testimonial`,
-    description: `Success story from ${student?.course || 'aviation training'} graduate`,
+    name: `${student?.name || video.studentName} - ${subjects[0] || 'Aviation Training'} Success Story | ATC Testimonial`,
+    description: seoDescription,
     thumbnailUrl: video.thumbnailUrl || `https://img.youtube.com/vi/${video.videoId}/maxresdefault.jpg`,
     uploadDate: video.uploadDate || new Date().toISOString(),
     contentUrl: video.url,
     embedUrl: `https://www.youtube-nocookie.com/embed/${video.videoId}`,
+    keywords: keywordString,
+    about: subjects.map(subject => ({
+      '@type': 'Thing',
+      name: subject,
+      description: `Aviation training in ${subject}`
+    })),
     author: {
       '@type': 'Person',
-      name: student?.name || 'Aviation Training Graduate'
+      name: student?.name || video.studentName || 'Aviation Training Graduate'
     }
   };
 }

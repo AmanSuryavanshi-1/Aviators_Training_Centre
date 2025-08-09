@@ -15,9 +15,14 @@ export interface YouTubeShort {
   url: string;
   videoId: string;
   studentId?: string | null;
+  studentName: string;
   thumbnailUrl?: string | null;
   duration?: number | null;
   uploadDate?: string | null;
+  subjects: string[];
+  gradYear: number;
+  verified: boolean;
+  seoKeywords: string[];
   transcript?: string | null;
 }
 
@@ -32,16 +37,3 @@ export interface TextTestimonial {
   generatedAt: string; // ISO
 }
 
-export interface MergedTestimonialVideo {
-  id: string;
-  url: string;
-  videoId: string;
-  studentId?: string | null;
-  studentName: string;
-  thumbnailUrl?: string | null;
-  duration?: number | null;
-  uploadDate?: string | null;
-  subjects: string[];
-  transcript?: string | null;
-  student: Student;
-}

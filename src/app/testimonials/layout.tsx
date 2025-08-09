@@ -1,11 +1,18 @@
 import { Metadata } from 'next';
+import { getAllSEOKeywords, generateSEOMetaDescription, generateSEOTitle } from '@/lib/testimonials/data';
 
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://aviatorstrainingcentre.com';
 
+// Generate dynamic SEO keywords from video testimonials
+const dynamicKeywords = getAllSEOKeywords();
+const seoDescription = generateSEOMetaDescription();
+const seoTitle = generateSEOTitle();
+
 export const metadata: Metadata = {
-  title: 'Student Success Stories & Testimonials | Aviators Training Centre',
-  description: 'Real testimonials from DGCA CPL graduates and aviation training success stories. Discover how our comprehensive ground school training helped aspiring pilots achieve their dreams.',
+  title: seoTitle || 'Student Success Stories & Testimonials | Aviators Training Centre',
+  description: seoDescription || 'Real testimonials from DGCA CPL graduates and aviation training success stories. Discover how our comprehensive ground school training helped aspiring pilots achieve their dreams.',
   keywords: [
+    ...dynamicKeywords,
     'DGCA CPL success stories',
     'pilot training testimonials',
     'aviation training reviews',
@@ -28,8 +35,8 @@ export const metadata: Metadata = {
   
   // Open Graph metadata for social sharing
   openGraph: {
-    title: 'Student Success Stories & Testimonials | Aviators Training Centre',
-    description: 'Real testimonials from DGCA CPL graduates and aviation training success stories. See how our students achieved their pilot dreams.',
+    title: seoTitle || 'Student Success Stories & Testimonials | Aviators Training Centre',
+    description: seoDescription || 'Real testimonials from DGCA CPL graduates and aviation training success stories. See how our students achieved their pilot dreams.',
     url: `${baseUrl}/testimonials`,
     siteName: 'Aviators Training Centre',
     images: [
@@ -47,8 +54,8 @@ export const metadata: Metadata = {
   // Twitter Card metadata
   twitter: {
     card: 'summary_large_image',
-    title: 'Student Success Stories & Testimonials | Aviators Training Centre',
-    description: 'Real testimonials from DGCA CPL graduates and aviation training success stories.',
+    title: seoTitle || 'Student Success Stories & Testimonials | Aviators Training Centre',
+    description: seoDescription || 'Real testimonials from DGCA CPL graduates and aviation training success stories.',
     images: [`${baseUrl}/HomePage/Hero4.webp`],
     creator: '@AviatorsTCentre',
   },

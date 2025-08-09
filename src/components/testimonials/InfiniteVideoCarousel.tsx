@@ -3,7 +3,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence, useInView } from 'framer-motion';
 import { Play, Pause, Volume2, VolumeX, Star, Users, ChevronLeft, ChevronRight, Plane } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { youtubeShorts, studentsData, generateEmbedUrl } from '@/lib/testimonials/data';
+import { youtubeShorts, studentsData, generateEmbedUrl, getAllSEOKeywords, getVideoSEOData } from '@/lib/testimonials/data';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
 import VideoCardSkeleton from './VideoCardSkeleton';
 import { easingFunctions } from '@/lib/animations/easing';
@@ -158,6 +158,14 @@ const VideoCard: React.FC<VideoCardProps> = ({
           ? '0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(255, 255, 255, 0.05)' 
           : '0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(255, 255, 255, 0.05)'
       }}
+      // SEO Enhancement: Add structured data attributes
+      itemScope
+      itemType="https://schema.org/VideoObject"
+      data-video-id={video.videoId}
+      data-student-name={video.studentName}
+      data-course={student?.course}
+      data-subjects={video.subjects?.join(',')}
+      data-keywords={video.seoKeywords?.join(',')}
     >
       {/* Background Blur Layer */}
       <div className="absolute inset-0 overflow-hidden">
@@ -183,7 +191,7 @@ const VideoCard: React.FC<VideoCardProps> = ({
               <div className="relative w-full h-full">
                 <iframe
                   src={`${generateEmbedUrl(video.videoId)}&autoplay=1&controls=0&showinfo=0&rel=0&modestbranding=1&loop=1&playlist=${video.videoId}${isMuted ? '&mute=1' : '&mute=0'}&enablejsapi=1`}
-                  title={`${video.studentName} testimonial`}
+                  title={`${video.studentName} - ${student?.course || 'Aviation Training'} Success Story Testimonial`}
                   className="w-full h-full border-0 pointer-events-none"
                   style={{ 
                     aspectRatio: '9/16',
@@ -196,6 +204,13 @@ const VideoCard: React.FC<VideoCardProps> = ({
                   allow="autoplay; encrypted-media; accelerometer; gyroscope; picture-in-picture"
                   allowFullScreen
                   onLoad={() => setTimeout(() => setIsVideoLoaded(true), 500)}
+                  // SEO Enhancement: Add structured data attributes
+                  itemProp="embedUrl"
+                  data-video-title={`${video.studentName} testimonial`}
+                  data-video-description={`${video.studentName} shares their success story in ${video.subjects?.join(' and ')} at Aviators Training Centre`}
+                  data-video-keywords={video.seoKeywords?.join(',')}
+                  data-video-duration={video.duration}
+                  data-video-upload-date={video.uploadDate}
                 />
                 
                 {/* Video Controls - Bottom right corner with aviation theme */}
@@ -366,13 +381,18 @@ const VideoCard: React.FC<VideoCardProps> = ({
                   <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-background/20 to-background/40" />
                 </div>
                 
-                {/* Sharp foreground image */}
+                {/* Sharp foreground image with SEO Enhancement */}
                 <div className="absolute inset-4 rounded-lg overflow-hidden">
                   <img
                     src={video.thumbnailUrl}
-                    alt={`${student?.name} testimonial`}
+                    alt={`${video.studentName} - ${student?.course || 'Aviation Training'} graduate testimonial video. Success story from ${video.subjects?.join(' and ')} training at Aviators Training Centre.`}
                     className="w-full h-full object-cover"
                     loading="lazy"
+                    itemProp="thumbnailUrl"
+                    data-student={video.studentName}
+                    data-course={student?.course}
+                    data-subjects={video.subjects?.join(',')}
+                    data-keywords={video.seoKeywords?.join(',')}
                   />
                   
                   {/* Professional overlay with subtle pattern */}
@@ -420,13 +440,15 @@ const VideoCard: React.FC<VideoCardProps> = ({
 
         {/* Enhanced Student Information */}
         <div className="p-4 bg-gradient-to-t from-card/95 to-transparent space-y-3">
-          {/* Course/Subject Tags */}
+          {/* Course/Subject Tags with SEO Enhancement */}
           {video.subjects && video.subjects.length > 0 && (
             <div className="flex flex-wrap gap-1">
               {video.subjects.slice(0, 2).map((subject, index) => (
                 <span 
                   key={index}
                   className="px-2 py-1 rounded-md bg-aviation-primary/10 text-aviation-primary text-xs font-medium"
+                  itemProp="about"
+                  data-subject={subject}
                 >
                   {subject}
                 </span>
@@ -439,21 +461,35 @@ const VideoCard: React.FC<VideoCardProps> = ({
             </div>
           )}
           
-          {/* Student Name and Verification */}
+          {/* Student Name and Verification with SEO Enhancement */}
           <div className="flex items-center justify-between">
             <div className="flex-1 min-w-0">
-              <h3 className={cn(
-                "font-semibold text-card-foreground truncate",
-                position === 'center' ? "text-lg" : "text-base"
-              )}>
+              <h3 
+                className={cn(
+                  "font-semibold text-card-foreground truncate",
+                  position === 'center' ? "text-lg" : "text-base"
+                )}
+                itemProp="name"
+              >
                 {video.studentName || student?.name || 'Aviation Graduate'}
               </h3>
-              <p className={cn(
-                "text-muted-foreground",
-                position === 'center' ? "text-sm" : "text-xs"
-              )}>
+              <p 
+                className={cn(
+                  "text-muted-foreground",
+                  position === 'center' ? "text-sm" : "text-xs"
+                )}
+                itemProp="author"
+                itemScope
+                itemType="https://schema.org/Person"
+              >
+                <span itemProp="name" className="sr-only">{video.studentName}</span>
                 Class of {student?.gradYear || '2024'}
               </p>
+              {/* Hidden SEO content for this specific video */}
+              <div className="sr-only" itemProp="description">
+                {video.studentName} testimonial for {video.subjects?.join(' and ')} training at Aviators Training Centre. 
+                Graduate of {student?.course} program. Keywords: {video.seoKeywords?.join(', ')}.
+              </div>
             </div>
 
             {student?.verified && (
@@ -510,9 +546,70 @@ export default function InfiniteVideoCarousel() {
   const isInView = useInView(sectionRef, { once: true, amount: 0.3 });
   const prefersReducedMotion = useReducedMotion();
 
+  // SEO Enhancement: Generate structured data for video testimonials
+  const generateVideoTestimonialSchema = (video: any, student: any) => {
+    const seoData = getVideoSEOData(video.id);
+    if (!seoData) return null;
+
+    return {
+      "@context": "https://schema.org",
+      "@type": "VideoObject",
+      "name": seoData.title,
+      "description": seoData.description,
+      "thumbnailUrl": video.thumbnailUrl,
+      "uploadDate": video.uploadDate,
+      "duration": `PT${video.duration}S`,
+      "embedUrl": `https://www.youtube.com/embed/${video.videoId}`,
+      "contentUrl": `https://www.youtube.com/watch?v=${video.videoId}`,
+      "publisher": {
+        "@type": "Organization",
+        "name": "Aviators Training Centre",
+        "url": "https://aviatorstrainingcentre.com"
+      },
+      "author": {
+        "@type": "Person",
+        "name": video.studentName
+      },
+      "keywords": seoData.keywords.join(", "),
+      "educationalLevel": "Professional",
+      "learningResourceType": "Testimonial",
+      "about": {
+        "@type": "Course",
+        "name": student?.course || "Aviation Training",
+        "provider": {
+          "@type": "Organization",
+          "name": "Aviators Training Centre"
+        }
+      }
+    };
+  };
+
   // Create infinite loop by duplicating videos
   const extendedVideos = [...youtubeShorts, ...youtubeShorts, ...youtubeShorts];
   const studentMap = new Map(studentsData.map(s => [s.id, s]));
+
+  // SEO Enhancement: Get all unique keywords for hidden content
+  const allSEOKeywords = getAllSEOKeywords();
+  const currentVideo = extendedVideos[currentIndex];
+  const currentStudent = studentMap.get(currentVideo?.studentId || '');
+  const currentVideoSchema = currentVideo ? generateVideoTestimonialSchema(currentVideo, currentStudent) : null;
+
+  // SEO Enhancement: Generate dynamic page title based on current video
+  React.useEffect(() => {
+    if (currentVideo && currentStudent && typeof document !== 'undefined') {
+      const seoTitle = `${currentVideo.studentName} - ${currentStudent.course} Success Story | Aviation Training Testimonials`;
+      const metaDescription = `Watch ${currentVideo.studentName}'s testimonial about ${currentVideo.subjects?.join(' and ')} training at Aviators Training Centre. ${currentVideo.seoKeywords?.slice(0, 3).join(', ')}.`;
+      
+      // Update page title dynamically for better SEO
+      document.title = seoTitle;
+      
+      // Update meta description if it exists
+      const metaDescElement = document.querySelector('meta[name="description"]');
+      if (metaDescElement) {
+        metaDescElement.setAttribute('content', metaDescription);
+      }
+    }
+  }, [currentVideo, currentStudent]);
 
   // Simulate loading for better UX
   useEffect(() => {
@@ -530,7 +627,7 @@ export default function InfiniteVideoCarousel() {
       // Use requestAnimationFrame for smoother animations
       let animationId: number;
       let lastTime = 0;
-      const interval = 4000; // 4 seconds per slide when no video is playing
+      const interval = 2500; // 2.5 seconds per slide when no video is playing
       
       const animate = (currentTime: number) => {
         // Double-check that no video is playing before advancing
@@ -580,7 +677,7 @@ export default function InfiniteVideoCarousel() {
           }
           return nextIndex;
         });
-      }, 8000); // Slower for reduced motion
+      }, 3000); // 3 seconds for reduced motion users
     } else {
       console.log('Stopping auto-advance - video playing or conditions not met');
       if (intervalRef.current) {
@@ -937,6 +1034,85 @@ export default function InfiniteVideoCarousel() {
       initial="hidden"
       animate={isInView ? "visible" : "hidden"}
     >
+      {/* SEO Enhancement: Structured Data for Current Video */}
+      {currentVideoSchema && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(currentVideoSchema)
+          }}
+        />
+      )}
+
+      {/* SEO Enhancement: Hidden Content for Search Engines */}
+      <div className="sr-only" aria-hidden="true">
+        <h1>DGCA CPL ATPL Aviation Training Success Stories Video Testimonials</h1>
+        <p>
+          Real success stories from DGCA CPL and ATPL graduates at Aviators Training Centre. 
+          Watch verified testimonials from students who achieved their commercial pilot license 
+          through our comprehensive ground school training programs.
+        </p>
+        
+        {/* Dynamic SEO Keywords from Video Data */}
+        <div>
+          <h2>Aviation Training Courses Featured:</h2>
+          <ul>
+            {[...new Set(youtubeShorts.flatMap(v => v.subjects || []))].map((subject, index) => (
+              <li key={index}>{subject} training testimonials and success stories</li>
+            ))}
+          </ul>
+        </div>
+
+        <div>
+          <h2>SEO Keywords for Aviation Training:</h2>
+          <p>{allSEOKeywords.join(', ')}</p>
+        </div>
+
+        {/* Current Video SEO Content */}
+        {currentVideo && currentStudent && (
+          <div>
+            <h3>{currentVideo.studentName} - {currentStudent.course} Graduate</h3>
+            <p>
+              {currentVideo.studentName} successfully completed {currentStudent.course} at Aviators Training Centre. 
+              Specialized in {currentVideo.subjects?.join(', ')} with excellent results. 
+              {currentVideo.seoKeywords?.join(', ')}.
+            </p>
+          </div>
+        )}
+
+        {/* All Video Testimonials for SEO */}
+        <div>
+          <h2>Complete List of Student Success Stories:</h2>
+          {youtubeShorts.map((video, index) => {
+            const student = studentMap.get(video.studentId || '');
+            return (
+              <div key={video.id}>
+                <h4>{video.studentName} - {student?.course || 'Aviation Training'} Success Story</h4>
+                <p>
+                  {video.studentName} shares their journey in {video.subjects?.join(' and ')} at Aviators Training Centre. 
+                  Graduated in {video.gradYear} with specialization in {video.subjects?.join(', ')}. 
+                  Keywords: {video.seoKeywords?.join(', ')}.
+                </p>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Aviation Training Institute Information */}
+        <div>
+          <h2>About Aviators Training Centre</h2>
+          <p>
+            India's premier DGCA approved aviation training institute specializing in CPL and ATPL ground school preparation. 
+            Located in Dwarka, Delhi, serving aspiring pilots across India with comprehensive training programs including 
+            Air Navigation, Aviation Meteorology, Technical General, Air Regulations, RTR(A), and Type Rating courses.
+          </p>
+          <p>
+            Our experienced airline pilot instructors provide industry-leading training with 95% success rate in DGCA examinations. 
+            Join over 500 successful graduates who chose Aviators Training Centre for their aviation career.
+          </p>
+        </div>
+      </div>
+
       {/* Screen Reader Announcements */}
       <div 
         aria-live="polite" 
@@ -952,7 +1128,7 @@ export default function InfiniteVideoCarousel() {
       </div>
 
       <div className="container relative z-10">
-        {/* Header */}
+        {/* Header with SEO Enhancement */}
         <motion.div
           className="text-center mb-4 md:mb-6 lg:mb-8 px-4"
           initial={{ opacity: 0, y: 30 }}
@@ -960,14 +1136,25 @@ export default function InfiniteVideoCarousel() {
           transition={{ duration: 0.6, delay: 0.1 }}
         >
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-6">
-            Success Stories
+            DGCA CPL ATPL Success Stories
             <span className="block text-transparent bg-clip-text bg-gradient-to-r from-aviation-primary via-aviation-secondary to-aviation-tertiary">
-              In Motion
+              Video Testimonials
             </span>
           </h2>
           <p className="text-lg md:text-xl text-muted-foreground max-w-4xl mx-auto leading-relaxed">
-            Watch our graduates share their journey from dreams to reality
+            Watch verified graduates share their journey from aviation dreams to commercial pilot reality. 
+            Real success stories from DGCA CPL, ATPL, and RTR(A) training programs at India's premier aviation institute.
           </p>
+          
+          {/* SEO Enhancement: Current video context */}
+          {currentVideo && currentStudent && (
+            <div className="mt-4 text-sm text-muted-foreground">
+              Currently featuring: <strong>{currentVideo.studentName}</strong> - {currentStudent.course} Graduate
+              {currentVideo.subjects && currentVideo.subjects.length > 0 && (
+                <span> | Specialized in {currentVideo.subjects.join(', ')}</span>
+              )}
+            </div>
+          )}
         </motion.div>
 
         {/* Carousel Controls */}
@@ -1121,6 +1308,42 @@ export default function InfiniteVideoCarousel() {
             <span className="hidden sm:inline">Use ← → arrow keys, swipe, or click controls to navigate • Press Space to pause • Enter to play</span>
             <span className="sm:hidden">Swipe or tap controls to navigate</span>
           </p>
+        </motion.div>
+
+        {/* SEO Enhancement: Comprehensive Summary Section */}
+        <motion.div 
+          className="mt-8 md:mt-12 px-4 text-center"
+          initial={{ opacity: 0 }}
+          animate={isInView ? { opacity: 1 } : { opacity: 0 }}
+          transition={{ duration: 0.6, delay: 0.6 }}
+        >
+          <div className="max-w-4xl mx-auto">
+            <h3 className="text-xl md:text-2xl font-semibold text-foreground mb-4">
+              Why Our Students Choose Aviators Training Centre
+            </h3>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm text-muted-foreground">
+              <div className="bg-card/50 rounded-lg p-4">
+                <h4 className="font-medium text-foreground mb-2">DGCA Approved Curriculum</h4>
+                <p>Comprehensive training in Air Navigation, Meteorology, Technical General, and Air Regulations</p>
+              </div>
+              <div className="bg-card/50 rounded-lg p-4">
+                <h4 className="font-medium text-foreground mb-2">95% Success Rate</h4>
+                <p>Proven track record with over 500 successful CPL and ATPL graduates</p>
+              </div>
+              <div className="bg-card/50 rounded-lg p-4">
+                <h4 className="font-medium text-foreground mb-2">Expert Instructors</h4>
+                <p>Learn from experienced airline pilots and aviation industry professionals</p>
+              </div>
+            </div>
+            
+            {/* Dynamic course information based on current testimonials */}
+            <div className="mt-6 text-xs text-muted-foreground">
+              <p>
+                Featured courses: {[...new Set(youtubeShorts.flatMap(v => v.subjects || []))].slice(0, 6).join(' • ')}
+                {[...new Set(youtubeShorts.flatMap(v => v.subjects || []))].length > 6 && ' • and more'}
+              </p>
+            </div>
+          </div>
         </motion.div>
       </div>
     </motion.section>

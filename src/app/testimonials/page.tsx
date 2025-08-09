@@ -11,7 +11,7 @@ import InfiniteVideoCarousel from '@/components/testimonials/InfiniteVideoCarous
 
 
 
-import { youtubeShorts, studentsData } from '@/lib/testimonials/data';
+import { youtubeShorts, studentsData, generateTestimonialsFAQSchema, generateCourseSchema, generateOrganizationSchema } from '@/lib/testimonials/data';
 import { generateTestimonialsPageSchema } from './jsonLd';
 import { testimonialsAnalytics } from '@/lib/testimonials/analytics';
 
@@ -41,10 +41,15 @@ export default function TestimonialsPage() {
     }
   }, []);
 
-  // Generate JSON-LD structured data safely
+  // Generate comprehensive JSON-LD structured data safely
   let jsonLdSchemas: any[] = [];
   try {
-    jsonLdSchemas = generateTestimonialsPageSchema(youtubeShorts, [], studentsData);
+    jsonLdSchemas = [
+      ...generateTestimonialsPageSchema(youtubeShorts, [], studentsData),
+      generateTestimonialsFAQSchema(),
+      generateOrganizationSchema(),
+      ...generateCourseSchema()
+    ];
   } catch (error) {
     console.warn('JSON-LD generation failed:', error);
     jsonLdSchemas = [];
