@@ -1,401 +1,63 @@
 # Dependencies
 node_modules/
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-lerna-debug.log*
-bun.lockb
 
-# Next.js
+# Build & Caches
 .next/
-out/
-build/
-dist/
-dist-ssr/
-
-# Environment files - CRITICAL SECURITY
-.env
-.env.local
-.env.development
-.env.production
-.env.*.local
-*.env
-
-# Kiro AI IDE sensitive configurations
-.kiro/settings/secrets.json
-.kiro/settings/*-secrets.json
-.kiro/settings/*-keys.json
-
-# Documentation that might contain secrets
-*_DEPLOYMENT_*.md
-*_SECRETS_*.md
-*_CREDENTIALS_*.md
-*_KEYS_*.md
-*SECRET*
-*KEY*
-*CREDENTIAL*
-.env.development.local
-.env.test
-.env.test.local
-.env.production
-.env.production.local
-.env.staging
-.env.staging.local
-*.env
-.env.*
-
-# Logs
-logs/
-*.log
-
-# Runtime data
-pids/
-*.pid
-*.seed
-*.pid.lock
-
-# Coverage directory used by tools like istanbul
-coverage/
-*.lcov
-
-# nyc test coverage
-.nyc_output/
-
-# Dependency directories
-jspm_packages/
-
-# TypeScript cache
-*.tsbuildinfo
-.tsbuildinfo
-
-# Optional npm cache directory
-.npm
-
-# Optional eslint cache
-.eslintcache
-
-# Microbundle cache
-.rpt2_cache/
-.rts2_cache_cjs/
-.rts2_cache_es/
-.rts2_cache_umd/
-
-# Optional REPL history
-.node_repl_history
-
-# Output of 'npm pack'
-*.tgz
-
-# Yarn Integrity file
-.yarn-integrity
-
-# parcel-bundler cache (https://parceljs.org/)
-.cache/
-.parcel-cache/
-
-# Temporary folders
-tmp/
-temp/
-.tmp/
-.temp/
-
-# Editor directories and files
-.vscode/*
-!.vscode/extensions.json
-!.vscode/settings.json
-.idea/
-*.swp
-*.swo
-*~
-
-# OS generated files
-.DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-ehthumbs.db
-Thumbs.db
-Desktop.ini
-
-# Test files and temporary scripts
-tests/temp-*
-tests/debug-*
-*.test.local.*
-
-# Development artifacts
-.development/
-.staging/
-.testing/
-
-# Build artifacts
-.next/
-out/
-build/
-dist/
-
-# Runtime files
-*.pid
-*.seed
-*.pid.lock
-
-# Coverage and reports
-coverage/
-.nyc_output/
+.vercel/
 test-results/
-playwright-report/
+*.tsbuildinfo
 
-# IDE and editor files
-.vscode/settings.json
-.vscode/launch.json
-*.swp
-*.swo
-*~
-
-# OS generated files
-.DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-ehthumbs.db
-Thumbs.db
-Desktop.ini
-$RECYCLE.BIN/
-
-# Backup and temporary files
-*.backup
-*.bak
-*.tmp
-*.temp
-*~
-
-# Logs and monitoring
-logs/
-*.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-lerna-debug.log*
-
-# Health check reports
-health-check-report.json
-performance-report.json
-
-# Deployment artifacts
-.deployment/
-deployment-*.json
-
-# Vercel
-.vercel
-
-# Turbo
-.turbo
-
-# ===== CRITICAL ADDITIONS =====
-
-# Environment and Secrets (CRITICAL - Contains API keys/tokens)
+# Secrets
 .env.local
 .env.*.local
-.env.development
-.env.staging
-.env.test
-*.env
-.env.backup
+studio/.env.local
 
-# TypeScript Build Cache (Already partially covered but missing variants)
-tsconfig.tsbuildinfo
-*.tsbuildinfo
-.tsbuildinfo
-
-# Development Test Files (Should not be in production)
-test-*.ts
-test-*.js
-test-*.mjs
-test-*.cjs
-**/test-*
-**/*test*
-
-# IDE and Editor Specific Files
-.vscode/
-!.vscode/extensions.json
-!.vscode/settings.json
-.idea/
-.fleet/
-.sublime-project
-.sublime-workspace
-*.sublime-*
-.atom/
-.brackets.json
-*.swp
-*.swo
-*~
-.project
-.settings/
-.classpath
-
-# Development Artifacts and Staging
-.deployment-staging/
-.monitoring/
-.workflows/
-deployment-*.json
-deployment-*.log
-health-check-*.json
-performance-report-*.json
-
-# Kiro IDE Specific (Development tool artifacts)
-.kiro/
-*.kiro
+# Ignored Directories
 .continue/
-*.continue
+.kiro/
+.vscode/
+docs/
+scripts/
+tests/
+tools/
+studio/
 
-# Documentation and Summary Files (Development artifacts - may contain secrets)
-*_SUMMARY.md
-*_IMPLEMENTATION*.md
-*_FIXES*.md
-*_GUIDE*.md
-*_COMPLETE*.md
-*_ANALYSIS*.md
-*_REPORT*.md
-*_UPDATE*.md
-*_CHECKLIST*.md
-*_READY.md
-*_SETUP*.md
-*_SUCCESS.md
-PROJECT_ORGANIZATION_*.md
-PRODUCTION_DEPLOYMENT_*.md
-PRODUCTION_BUILD_*.md
-SANITY_WEBHOOK_*.md
-CONTENT_SYNC_*.md
-DEPLOYMENT_GUIDE_*.md
+# Test file patterns
+*.test.js
+*.test.jsx
+*.test.ts
+*.test.tsx
+*.spec.js
+*.spec.jsx
+*.spec.ts
+*.spec.tsx
 
-# Any files that might contain API keys or secrets
-*API_KEYS*
-*SECRETS*
-*CREDENTIALS*
-*TOKENS*
-
-# Coverage and test artifacts (may contain code snippets with secrets)
-coverage/
-test-results/
-*.tsbuildinfo
-
-# Build and distribution artifacts
-studio/dist/
-.next/
-dist/
-build/
-
-# Test files that might contain example secrets
-src/**/*.test.ts
-src/**/*.test.tsx
-**/__tests__/**
-
-# Lock Files (Keep only one package manager)
-# Uncomment the ones you DON'T use:
-# package-lock.json  # If using yarn or pnpm
-# yarn.lock          # If using npm or pnpm
-# pnpm-lock.yaml     # If using npm or yarn
-bun.lockb            # If not using bun
-
-# Runtime and Process Files
-*.pid
-*.seed
-*.pid.lock
-.pids/
-
-# Database and Cache Files
-*.db
-*.sqlite
-*.sqlite3
-.cache/
-.parcel-cache/
-.eslintcache
-.stylelintcache
-
-# Backup Files
+# Other artifacts
+*.log
+*.md
 *.backup
-*.bak
-*.orig
-*.rej
-*~
-*.swp
-*.swo
 
-# OS Specific Files (Enhanced)
-.DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-ehthumbs.db
-Thumbs.db
-Desktop.ini
-$RECYCLE.BIN/
-.fseventsd/
-.VolumeIcon.icns
-.com.apple.timemachine.donotpresent
+# Specific test directories
+src/app/api/test/
+src/app/api/testing/
+src/app/api/admin/test/
+src/app/api/admin/testing/
 
-# Security and Sensitive Files
-*.pem
-*.key
-*.crt
-*.p12
-*.pfx
-auth.json
-credentials.json
-service-account*.json
+// ... existing code ...
+# Specific test directories
+src/app/api/test/
+src/app/api/testing/
+src/app/api/admin/test/
+src/app/api/admin/testing/
 
-# Analytics and Tracking
-.analytics/
-analytics-*.json
-tracking-*.json
-
-# Temporary Directories
-tmp/
-temp/
-.tmp/
-.temp/
-.temporary/
-
-# Build and Distribution (Enhanced)
-.next/
-out/
-build/
-dist/
-.output/
-.nuxt/
-.vuepress/dist/
-.serverless/
-.fusebox/
-
-# Testing (Enhanced)
-coverage/
-.nyc_output/
-test-results/
-playwright-report/
-cypress/videos/
-cypress/screenshots/
-.jest/
-junit.xml
-
-# Storybook
-storybook-static/
-.storybook/build/
-
-# Webpack
-.webpack/
-
-# Rollup
-.rollup.cache/
-
-# Vite
-.vite/
-
-# SvelteKit
-.svelte-kit/
-
-# Astro
-.astro/
+# Custom test files and folders
+/test-env.js
+/test-blog-api.js
+/.github/workflows/comprehensive-tests.yml
+/public/test-analytics.html
+/src/app/api/**/test-*/
+/src/app/test-*/
+/src/components/shared/MetaPixelTest.tsx
+/src/lib/blog/ab-testing.ts
+/src/lib/testing/
+/src/lib/blog-test.ts
