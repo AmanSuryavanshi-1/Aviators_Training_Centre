@@ -197,11 +197,7 @@ const AnimatedTimelineItem: React.FC<{ step: typeof pathwaySteps[0]; index: numb
 };
 
 const PilotPathway: React.FC = () => {
-    // --- Urgency Data (Example) ---
-    // In a real app, this date would come from Firebase or a config
-    const offerEndDate = new Date();
-    offerEndDate.setDate(offerEndDate.getDate() + 7); // Example: 7 days from now
-    const formattedEndDate = offerEndDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+
 
   return (
     <motion.section
@@ -244,11 +240,8 @@ const PilotPathway: React.FC = () => {
       <motion.div variants={itemVariants} className="max-w-4xl mx-auto mt-16 md:mt-20">
          <UrgencyCTA
             title="Limited Time Offer: Enroll Now!"
-            description={`Special discount available for the next batch starting soon. Secure your spot before ${formattedEndDate}.`}
-            buttonLabel="Book a Free Demo Class"
+            description="Special discount available for the next batch starting soon. Secure your spot today!"
             buttonIcon={CalendarClock}
-            offerEndDate={offerEndDate}
-            formattedEndDate={formattedEndDate}
             buttonClassName="min-h-[48px]" // Ensure button height
          />
       </motion.div>

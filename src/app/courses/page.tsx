@@ -123,9 +123,7 @@ const Courses: React.FC = () => {
     }
   };
 
-  const offerEndDate = new Date();
-  offerEndDate.setDate(offerEndDate.getDate() + 14);
-  const formattedEndDate = offerEndDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+
 
   // Add JSON-LD Schema for SEO
   const jsonLd = {
@@ -371,8 +369,8 @@ const Courses: React.FC = () => {
             </div>
         </motion.section>
 
-        {/* Urgency CTA Section (Unchanged) */}
-        <UrgencyCTA offerEndDate={offerEndDate} formattedEndDate={formattedEndDate} />
+        {/* Urgency CTA Section */}
+        <UrgencyCTA />
 
         {/* ATC Features Section - Responsive Optimized */}
         <motion.section

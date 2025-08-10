@@ -17,9 +17,7 @@ const aviationPrimary = 'text-teal-700 dark:text-teal-300';
 const aviationSecondary = 'text-teal-600 dark:text-teal-400';
 
 export default function TestimonialsCTA({ className, variant = 'primary' }: TestimonialsCTAProps) {
-  const offerEndDate = new Date();
-  offerEndDate.setDate(offerEndDate.getDate() + 14);
-  const formattedEndDate = offerEndDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+
 
   if (variant === 'secondary') {
     return (
@@ -117,10 +115,7 @@ export default function TestimonialsCTA({ className, variant = 'primary' }: Test
         </motion.div>
 
         {/* Urgency CTA */}
-          <UrgencyCTA 
-            offerEndDate={offerEndDate} 
-            formattedEndDate={formattedEndDate}
-          />
+          <UrgencyCTA />
       </div>
     </motion.section>
   );

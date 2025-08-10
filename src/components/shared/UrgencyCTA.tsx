@@ -2,8 +2,9 @@ import { cn } from "../ui/utils";
 import { Button } from "@/components/ui/button"; // Keep Button for specific cases
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { CalendarClock, ArrowRight } from 'lucide-react';
+import { CalendarClock } from 'lucide-react';
 import { easingFunctions } from '@/lib/animations/easing';
+import { getUrgencyOfferDate } from '@/lib/utils/urgency-date';
 // import { CountdownTimer } from '@/components/shared/CountdownTimer'; // Import actual timer when ready
 
 // --- Configuration ---
@@ -18,8 +19,6 @@ const itemVariants = {
 };
 
 interface UrgencyCTAProps {
-    offerEndDate: Date;
-    formattedEndDate: string;
     className?: string;
     title?: string;
     description?: string;
@@ -29,15 +28,20 @@ interface UrgencyCTAProps {
 }
 
 export const UrgencyCTA: React.FC<UrgencyCTAProps> = ({ 
-    offerEndDate, 
-    formattedEndDate, 
     className,
-    title = "Limited Time Offer!",
-    description = `Enroll in any of our ground school batches by ${formattedEndDate} and secure a 20% discount on your course fees. Start your journey today!`,
-    buttonLabel = `Enroll by ${formattedEndDate} for 20% Off`,
+    title,
+    description,
+    buttonLabel,
     buttonIcon: Icon = CalendarClock,
     buttonClassName
 }) => {
+    // Get consistent date internally - always 7 days from today
+    const { formattedEndDate } = getUrgencyOfferDate();
+    
+    // Set default values that use the consistent date
+    const finalTitle = title || "Limited Time Offer!";
+    const finalDescription = description || `Enroll in any of our ground school batches by ${formattedEndDate} and secure a 20% discount on your course fees. Start your journey today!`;
+    const finalButtonLabel = buttonLabel || `Enroll by ${formattedEndDate} for 20% Off`;
 
   return (
     <motion.div
@@ -46,14 +50,14 @@ export const UrgencyCTA: React.FC<UrgencyCTAProps> = ({
         whileInView="visible"
         viewport={{ once: true, amount: 0.2 }}
         className={cn(
-            "mt-16 md:mt-20 max-w-2xl mx-auto text-center p-6 bg-card border border-border/80 rounded-lg shadow-md",
+            "mt-32 max-md:mt-20 max-w-2xl mx-auto text-center p-8 md:px-10 md:py-14 bg-card border border-border/80 rounded-3xl shadow-lg",
             className
         )}
     >
        {/* Adjusted primary text color reference if needed, or remove if not used */}
-       <h3 className={cn("text-2xl font-semibold mb-3", 'text-teal-700 dark:text-teal-300')}>{title}</h3>
-       <p className="mb-6 text-foreground/80">
-           {description}
+       <h3 className={cn("text-2xl font-semibold mb-3", 'text-teal-700 dark:text-teal-300')}>{finalTitle}</h3>
+       <p className="mb-8 text-foreground/80">
+           {finalDescription}
        </p>
 
        {/* Gradient Button - Adapted inner button style */}
@@ -77,7 +81,7 @@ export const UrgencyCTA: React.FC<UrgencyCTAProps> = ({
              >
                  <Link href="/courses">
                       <CalendarClock className="mr-2 h-5 w-5" />
-                     Enroll by {formattedEndDate} for 20% Off
+                     {finalButtonLabel}
                 </Link>
              </Button>
        </div>
@@ -85,7 +89,7 @@ export const UrgencyCTA: React.FC<UrgencyCTAProps> = ({
        {/* Countdown Timer (Placeholder) */}
        <div className="mb-6">
           {/* <CountdownTimer targetDate={offerEndDate} /> */}
-          <p className="text-sm text-foreground/60">(Offer expires soon!)</p>
+          <p className="text-sm text-foreground/60">( Offer expires soon! )</p>
        </div>
 
        {/* Secondary Link Button - Kept as variant="link" */}
