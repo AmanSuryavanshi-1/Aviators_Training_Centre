@@ -124,55 +124,6 @@ export default function About() {
           reverse
         />
 
-        {/* Internal Links Section */}
-        <motion.section
-          variants={sectionVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.1 }}
-          className="grid grid-cols-1 md:grid-cols-2 gap-6"
-        >
-          <div className="p-6 bg-green-50 rounded-lg dark:bg-green-900/20">
-            <h4 className="font-semibold text-green-800 dark:text-green-300 mb-2 flex items-center gap-2">
-              <UserCheck className="w-5 h-5" />
-              Success Stories & Interview Tips
-            </h4>
-            <p className="text-sm text-green-700 dark:text-green-400 mb-3">
-              Learn from our experts how to excel in airline pilot interviews with proven strategies from successful candidates.
-            </p>
-            <Link 
-              href="/blog/airline-pilot-interview-questions-expert-answers"
-              className="inline-flex items-center text-sm font-medium text-green-600 hover:text-green-700 dark:text-green-400 dark:hover:text-green-300 conversion-button"
-              data-conversion="true"
-              data-analytics-event="blog_link_click"
-              data-analytics-source="about_page"
-            >
-              Ace Your Pilot Interview
-              <ArrowRight className="w-3 h-3 ml-1" />
-            </Link>
-          </div>
-
-          <div className="p-6 bg-blue-50 rounded-lg dark:bg-blue-900/20">
-            <h4 className="font-semibold text-blue-800 dark:text-blue-300 mb-2 flex items-center gap-2">
-              <BadgeDollarSign className="w-5 h-5" />
-              Training Investment Guide
-            </h4>
-            <p className="text-sm text-blue-700 dark:text-blue-400 mb-3">
-              Understand the complete financial aspects of pilot training and make informed decisions about your aviation career investment.
-            </p>
-            <Link 
-              href="/blog/pilot-training-cost-india-complete-financial-guide"
-              className="inline-flex items-center text-sm font-medium text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 conversion-button"
-              data-conversion="true"
-              data-analytics-event="blog_link_click"
-              data-analytics-source="about_page"
-            >
-              Understanding Training Costs
-              <ArrowRight className="w-3 h-3 ml-1" />
-            </Link>
-          </div>
-        </motion.section>
-
         <AboutSection
           title="Our Vision"
           content={ourVisionContent}

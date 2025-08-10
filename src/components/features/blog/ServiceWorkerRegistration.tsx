@@ -16,6 +16,12 @@ const ServiceWorkerRegistration: React.FC = () => {
 
   const registerServiceWorker = async () => {
     try {
+      // Check if service worker is supported
+      if (!('serviceWorker' in navigator)) {
+        console.log('Service Worker not supported');
+        return;
+      }
+
       const registration = await navigator.serviceWorker.register('/sw.js', {
         scope: '/',
         updateViaCache: 'imports', // Cache imports for better performance
@@ -108,6 +114,19 @@ const ServiceWorkerRegistration: React.FC = () => {
 
     } catch (error) {
       console.error('Service Worker registration failed:', error);
+      
+      // If registration fails, try to clear any existing problematic service workers
+      if ('serviceWorker' in navigator) {
+        try {
+          const registrations = await navigator.serviceWorker.getRegistrations();
+          for (const registration of registrations) {
+            await registration.unregister();
+            console.log('Unregistered problematic service worker:', registration.scope);
+          }
+        } catch (cleanupError) {
+          console.error('Failed to cleanup service workers:', cleanupError);
+        }
+      }
     }
   };
 

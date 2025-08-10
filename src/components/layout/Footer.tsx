@@ -57,6 +57,8 @@ const Footer: React.FC = () => {
               <li><NextLink href="/about" className="flex items-center text-sm text-gray-200 transition-colors hover:text-white"><span className="mr-2">›</span>About Us</NextLink></li>
               <li><NextLink href="/courses" className="flex items-center text-sm text-gray-200 transition-colors hover:text-white"><span className="mr-2">›</span>Training Programs</NextLink></li>
               <li><NextLink href="/instructors" className="flex items-center text-sm text-gray-200 transition-colors hover:text-white"><span className="mr-2">›</span>Instructors</NextLink></li>
+              <li><NextLink href="/testimonials" className="flex items-center text-sm text-gray-200 transition-colors hover:text-white"><span className="mr-2">›</span>Testimonials</NextLink></li>
+              <li><NextLink href="/blog" className="flex items-center text-sm text-gray-200 transition-colors hover:text-white"><span className="mr-2">›</span>Blog</NextLink></li>
                <li><NextLink href="/faq" className="flex items-center text-sm text-gray-200 transition-colors hover:text-white"><span className="mr-2">›</span>FAQ</NextLink></li>
               <li><NextLink href="/contact" className="flex items-center text-sm text-gray-200 transition-colors hover:text-white"><span className="mr-2">›</span>Contact</NextLink></li>
             </ul>

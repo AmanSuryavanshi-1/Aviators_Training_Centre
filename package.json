@@ -28,6 +28,7 @@
     "build:analyze": "npm run build && npm run analyze:bundle",
     "validate:startup": "node scripts/production-startup.js",
     "validate:deployment": "node scripts/validate-deployment.js",
+    "fix:sw": "node scripts/fix-sw-production.js",
     "validate:pre-deploy": "tsx tools/scripts/deploy/pre-deployment-validation.ts",
     "test": "npm run type-check && npm run lint",
     "test:comprehensive": "node scripts/test-runner.js",

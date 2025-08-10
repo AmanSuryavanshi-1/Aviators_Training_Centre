@@ -1,5 +1,5 @@
 // Enhanced Service Worker for Core Web Vitals Optimization
-const CACHE_VERSION = 'v2';
+const CACHE_VERSION = 'v1754837742123';
 const STATIC_CACHE_NAME = `aviators-static-${CACHE_VERSION}`;
 const DYNAMIC_CACHE_NAME = `aviators-dynamic-${CACHE_VERSION}`;
 const IMAGE_CACHE_NAME = `aviators-images-${CACHE_VERSION}`;
@@ -64,23 +64,53 @@ self.addEventListener('install', (event) => {
   console.log('Enhanced Service Worker installing for Core Web Vitals...');
   
   event.waitUntil(
-    Promise.all([
+    Promise.allSettled([
       // Cache critical assets first for LCP optimization
-      caches.open(STATIC_CACHE_NAME).then((cache) => {
+      caches.open(STATIC_CACHE_NAME).then(async (cache) => {
         console.log('Caching critical assets for LCP...');
-        return cache.addAll(CRITICAL_ASSETS);
-      }),
-      // Cache additional static assets
-      caches.open(STATIC_CACHE_NAME).then((cache) => {
-        console.log('Caching additional static assets...');
-        return cache.addAll(STATIC_ASSETS).catch((error) => {
-          console.warn('Some static assets failed to cache:', error);
-          // Don't fail the entire installation for non-critical assets
+        const cachePromises = CRITICAL_ASSETS.map(async (asset) => {
+          try {
+            const response = await fetch(asset);
+            if (response.ok) {
+              await cache.put(asset, response);
+              console.log('Cached:', asset);
+            } else {
+              console.warn('Failed to fetch asset:', asset, response.status);
+            }
+          } catch (error) {
+            console.warn('Error caching asset:', asset, error.message);
+          }
         });
+        
+        await Promise.allSettled(cachePromises);
+        return 'critical-assets-cached';
+      }),
+      
+      // Cache additional static assets
+      caches.open(STATIC_CACHE_NAME).then(async (cache) => {
+        console.log('Caching additional static assets...');
+        const cachePromises = STATIC_ASSETS.map(async (asset) => {
+          try {
+            const response = await fetch(asset);
+            if (response.ok) {
+              await cache.put(asset, response);
+              console.log('Cached static asset:', asset);
+            } else {
+              console.warn('Static asset not found:', asset, response.status);
+            }
+          } catch (error) {
+            console.warn('Error caching static asset:', asset, error.message);
+          }
+        });
+        
+        await Promise.allSettled(cachePromises);
+        return 'static-assets-cached';
       })
     ])
-    .then(() => {
-      console.log('Service Worker installation completed successfully');
+    .then((results) => {
+      console.log('Service Worker installation completed');
+      console.log('Installation results:', results);
+      
       // Report installation success for monitoring
       self.clients.matchAll().then(clients => {
         clients.forEach(client => {
@@ -92,10 +122,12 @@ self.addEventListener('install', (event) => {
           });
         });
       });
+      
       return self.skipWaiting();
     })
     .catch((error) => {
       console.error('Service Worker installation failed:', error);
+      
       // Report installation failure
       self.clients.matchAll().then(clients => {
         clients.forEach(client => {
@@ -107,6 +139,9 @@ self.addEventListener('install', (event) => {
           });
         });
       });
+      
+      // Don't prevent installation, just log the error
+      return self.skipWaiting();
     })
   );
 });
@@ -234,25 +269,54 @@ async function clearAllCaches() {
 // Fetch event - implement caching strategies
 self.addEventListener('fetch', (event) => {
   const { request } = event;
-  const url = new URL(request.url);
   
-  // Skip non-GET requests
-  if (request.method !== 'GET') {
-    return;
-  }
-  
-  // Skip chrome-extension and other non-http requests
-  if (!url.protocol.startsWith('http')) {
-    return;
-  }
+  try {
+    const url = new URL(request.url);
+    
+    // Skip non-GET requests
+    if (request.method !== 'GET') {
+      return;
+    }
+    
+    // Skip chrome-extension and other non-http requests
+    if (!url.protocol.startsWith('http')) {
+      return;
+    }
+    
+    // Skip requests with no-cache headers
+    if (request.headers.get('cache-control') === 'no-cache') {
+      return;
+    }
+    
+    // Skip requests to localhost during development
+    if (url.hostname === 'localhost' && url.port !== '3000') {
+      return;
+    }
 
-  event.respondWith(handleRequest(request));
+    event.respondWith(handleRequest(request));
+  } catch (error) {
+    console.error('Error in fetch event listener:', error);
+    // Let the browser handle the request if there's an error
+    return;
+  }
 });
 
 async function handleRequest(request) {
   const url = new URL(request.url);
   
   try {
+    // Skip requests to chrome-extension, moz-extension, etc.
+    if (!url.protocol.startsWith('http')) {
+      return fetch(request);
+    }
+    
+    // Skip requests to different origins unless it's a known CDN
+    if (url.origin !== self.location.origin && 
+        !url.hostname.includes('cdn.sanity.io') && 
+        !url.hostname.includes('images.unsplash.com')) {
+      return fetch(request);
+    }
+    
     // Static assets - Cache first
     if (matchesPattern(url.href, CACHE_STRATEGIES.static)) {
       return await cacheFirst(request, STATIC_CACHE_NAME);
@@ -260,12 +324,12 @@ async function handleRequest(request) {
     
     // Images - Cache first with fallback
     if (matchesPattern(url.href, CACHE_STRATEGIES.images)) {
-      return await cacheFirstWithFallback(request, DYNAMIC_CACHE_NAME);
+      return await cacheFirstWithFallback(request, IMAGE_CACHE_NAME);
     }
     
     // API calls - Network first
     if (matchesPattern(url.href, CACHE_STRATEGIES.api)) {
-      return await networkFirst(request, DYNAMIC_CACHE_NAME);
+      return await networkFirst(request, API_CACHE_NAME);
     }
     
     // Blog pages - Stale while revalidate
@@ -273,11 +337,24 @@ async function handleRequest(request) {
       return await staleWhileRevalidate(request, DYNAMIC_CACHE_NAME);
     }
     
-    // Default - Network first
-    return await networkFirst(request, DYNAMIC_CACHE_NAME);
+    // Default - Network first with timeout
+    return await networkFirstWithTimeout(request, DYNAMIC_CACHE_NAME, 5000);
     
   } catch (error) {
     console.error('Service Worker fetch error:', error);
+    
+    // Try to return a cached response as fallback
+    try {
+      const cache = await caches.open(DYNAMIC_CACHE_NAME);
+      const cachedResponse = await cache.match(request);
+      if (cachedResponse) {
+        return cachedResponse;
+      }
+    } catch (cacheError) {
+      console.error('Cache fallback failed:', cacheError);
+    }
+    
+    // Final fallback - let the browser handle it
     return fetch(request);
   }
 }
@@ -292,13 +369,29 @@ async function cacheFirst(request, cacheName) {
   }
   
   try {
-    const networkResponse = await fetch(request);
+    const networkResponse = await fetch(request, {
+      mode: 'cors',
+      credentials: 'same-origin'
+    });
+    
     if (networkResponse.ok) {
-      cache.put(request, networkResponse.clone());
+      // Clone before caching to avoid consuming the response
+      const responseToCache = networkResponse.clone();
+      cache.put(request, responseToCache);
     }
     return networkResponse;
   } catch (error) {
-    console.error('Network request failed:', error);
+    console.error('Network request failed for:', request.url, error);
+    
+    // Return a fallback response for critical assets
+    if (request.url.includes('fonts/') || request.url.includes('logo')) {
+      return new Response('', { 
+        status: 404, 
+        statusText: 'Asset not found',
+        headers: { 'Content-Type': 'text/plain' }
+      });
+    }
+    
     throw error;
   }
 }
@@ -322,8 +415,14 @@ async function networkFirst(request, cacheName) {
   const cache = await caches.open(cacheName);
   
   try {
-    const networkResponse = await fetch(request);
+    const networkResponse = await fetch(request, {
+      mode: 'cors',
+      credentials: 'same-origin',
+      cache: 'default'
+    });
+    
     if (networkResponse.ok) {
+      // Only cache successful responses
       cache.put(request, networkResponse.clone());
     }
     return networkResponse;
@@ -333,7 +432,18 @@ async function networkFirst(request, cacheName) {
     if (cachedResponse) {
       return cachedResponse;
     }
-    throw error;
+    
+    // Return a fallback response instead of throwing
+    if (request.destination === 'image') {
+      return new Response('', { status: 404, statusText: 'Image not found' });
+    }
+    
+    // For other resources, return a minimal response
+    return new Response('Offline', { 
+      status: 503, 
+      statusText: 'Service Unavailable',
+      headers: { 'Content-Type': 'text/plain' }
+    });
   }
 }
 
@@ -343,7 +453,10 @@ async function staleWhileRevalidate(request, cacheName) {
   const cachedResponse = await cache.match(request);
   
   // Always try to fetch from network in background
-  const networkResponsePromise = fetch(request)
+  const networkResponsePromise = fetch(request, {
+    mode: 'cors',
+    credentials: 'same-origin'
+  })
     .then((networkResponse) => {
       if (networkResponse.ok) {
         cache.put(request, networkResponse.clone());
@@ -352,15 +465,67 @@ async function staleWhileRevalidate(request, cacheName) {
     })
     .catch((error) => {
       console.log('Background fetch failed:', error);
+      return null;
     });
   
   // Return cached response immediately if available
   if (cachedResponse) {
+    // Don't await the network promise, let it update in background
+    networkResponsePromise.catch(() => {}); // Prevent unhandled rejection
     return cachedResponse;
   }
   
   // If no cached response, wait for network
-  return await networkResponsePromise;
+  const networkResponse = await networkResponsePromise;
+  if (networkResponse) {
+    return networkResponse;
+  }
+  
+  // Final fallback
+  return new Response('Content not available', { 
+    status: 503, 
+    statusText: 'Service Unavailable',
+    headers: { 'Content-Type': 'text/plain' }
+  });
+}
+
+// Network first with timeout strategy
+async function networkFirstWithTimeout(request, cacheName, timeout = 5000) {
+  const cache = await caches.open(cacheName);
+  
+  try {
+    // Create a timeout promise
+    const timeoutPromise = new Promise((_, reject) => {
+      setTimeout(() => reject(new Error('Network timeout')), timeout);
+    });
+    
+    // Race between network request and timeout
+    const networkResponse = await Promise.race([
+      fetch(request, {
+        mode: 'cors',
+        credentials: 'same-origin'
+      }),
+      timeoutPromise
+    ]);
+    
+    if (networkResponse.ok) {
+      cache.put(request, networkResponse.clone());
+    }
+    return networkResponse;
+  } catch (error) {
+    console.log('Network request timed out or failed, trying cache:', request.url);
+    const cachedResponse = await cache.match(request);
+    if (cachedResponse) {
+      return cachedResponse;
+    }
+    
+    // Return a fallback response
+    return new Response('Service temporarily unavailable', { 
+      status: 503, 
+      statusText: 'Service Unavailable',
+      headers: { 'Content-Type': 'text/plain' }
+    });
+  }
 }
 
 // Helper function to match URL patterns

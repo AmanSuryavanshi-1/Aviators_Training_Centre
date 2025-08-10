@@ -97,7 +97,7 @@ const InstructorsPage: React.FC = () => {
 
       {/* Hero Section - Styled like other pages */}
       <motion.section
-        className="relative h-[50vh] md:h-[70vh] flex items-center justify-center text-center text-white overflow-hidden"
+        className="relative h-[50vh] md:h-[60vh] flex items-center justify-center text-center text-white overflow-hidden"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.8 }}
