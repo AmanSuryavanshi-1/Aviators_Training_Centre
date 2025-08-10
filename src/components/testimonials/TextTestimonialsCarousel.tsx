@@ -1,524 +1,359 @@
 "use client"
 import React, { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence, useInView } from 'framer-motion';
-import { Quote, Star, Plane, ChevronLeft, ChevronRight } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { Quote, Star, ChevronLeft, ChevronRight, Play, MapPin } from 'lucide-react';
 import { cn } from '@/components/ui/utils';
-import { easingFunctions } from '@/lib/animations/easing';
+import { testimonials } from '@/lib/testimonials/data';
+import { Card, CardContent } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { useReducedMotion } from '@/hooks/useReducedMotion';
 
-// Sample text testimonials data
-const textTestimonials = [
-  {
-    id: 'text-1',
-    text: "The instructors at Aviators Training Centre are exceptional. Captain Ankit Kumar's teaching methodology made complex aviation concepts crystal clear. I cleared my DGCA CPL exams in the first attempt with excellent scores.",
-    author: "Rajesh Kumar",
-    course: "DGCA CPL Ground School",
-    rating: 5,
-    gradYear: 2024,
-    verified: true,
-    location: "Mumbai"
-  },
-  {
-    id: 'text-2',
-    text: "Outstanding training quality! The comprehensive study material and personalized attention helped me understand every aspect of aviation theory. The mock tests were incredibly helpful for exam preparation.",
-    author: "Ananya Sharma",
-    course: "ATPL Theory",
-    rating: 5,
-    gradYear: 2024,
-    verified: true,
-    location: "Delhi"
-  },
-  {
-    id: 'text-3',
-    text: "Best decision I made for my aviation career. The Type Rating preparation was thorough and practical. Captain Dhruv's real-world experience made all the difference in my understanding.",
-    author: "Karthik Reddy",
-    course: "Type Rating Preparation",
-    rating: 5,
-    gradYear: 2023,
-    verified: true,
-    location: "Bangalore"
-  },
-  {
-    id: 'text-4',
-    text: "Excellent RTR(A) training program. The communication skills and radio procedures were taught with great detail. I'm now confidently working as a commercial pilot thanks to ATC's training.",
-    author: "Priya Mehta",
-    course: "RTR(A) Training",
-    rating: 5,
-    gradYear: 2024,
-    verified: true,
-    location: "Pune"
-  },
-  {
-    id: 'text-5',
-    text: "The online learning platform is user-friendly and comprehensive. 24/7 doubt clearing sessions were a game-changer. I highly recommend ATC to anyone serious about their aviation career.",
-    author: "Arjun Patel",
-    course: "DGCA CPL Ground School",
-    rating: 5,
-    gradYear: 2023,
-    verified: true,
-    location: "Ahmedabad"
-  },
-  {
-    id: 'text-6',
-    text: "Professional training with personal touch. The instructors genuinely care about student success. The interview preparation sessions helped me land my dream job with a major airline.",
-    author: "Sneha Gupta",
-    course: "Interview Preparation",
-    rating: 5,
-    gradYear: 2024,
-    verified: true,
-    location: "Chennai"
-  }
-];
+// Use the actual text testimonials data
+const textTestimonials = testimonials.text.map((testimonial: any) => ({
+  id: testimonial.id,
+  text: testimonial.testimonial,
+  author: testimonial.studentName,
+  course: testimonial.course,
+  rating: typeof testimonial.rating === 'number' ? testimonial.rating : 5,
+  gradYear: testimonial.gradYear,
+  verified: testimonial.verified,
+  location: testimonial.location,
+  subjects: testimonial.subjects || [],
+  specificFeedback: testimonial.specificFeedback
+}));
 
-// Aviation-inspired 3D flip card variants
-const cardVariants = {
-  hidden: { 
-    opacity: 0, 
-    rotateY: -90,
-    scale: 0.8,
-    z: -100
-  },
-  visible: { 
-    opacity: 1, 
-    rotateY: 0,
-    scale: 1,
-    z: 0,
-    transition: { 
-      duration: 0.8,
-      ease: [0.25, 0.46, 0.45, 0.94],
-      type: "spring",
-      stiffness: 100
-    }
-  },
-  hover: {
-    rotateY: 5,
-    scale: 1.05,
-    z: 50,
-    boxShadow: "0 25px 50px rgba(6, 182, 212, 0.3)",
-    transition: { 
-      duration: 0.4,
-      ease: easingFunctions.easeOut
-    }
-  },
-  flip: {
-    rotateY: 180,
-    transition: { 
-      duration: 0.6,
-      ease: easingFunctions.easeInOut
-    }
-  }
+// StarRating component with clean design
+const StarRating: React.FC<{ rating: number }> = ({ rating }) => {
+  const safeRating = Math.max(0, Math.min(5, typeof rating === 'number' ? rating : 5));
+  const fullStars = Math.floor(safeRating);
+  const hasPartialStar = safeRating % 1 !== 0;
+  const partialStarWidth = (safeRating % 1) * 100;
+
+  return (
+    <div className="flex items-center gap-1">
+      {[...Array(fullStars)].map((_, i) => (
+        <Star key={i} className="w-3.5 h-3.5 text-yellow-500 fill-current" />
+      ))}
+      {hasPartialStar && (
+        <div className="relative">
+          <Star className="w-3.5 h-3.5 text-gray-300" />
+          <div 
+            className="absolute top-0 left-0 overflow-hidden"
+            style={{ width: `${partialStarWidth}%` }}
+          >
+            <Star className="w-3.5 h-3.5 text-yellow-500 fill-current" />
+          </div>
+        </div>
+      )}
+      {[...Array(Math.max(0, 5 - Math.ceil(safeRating)))].map((_, i) => (
+        <Star key={`empty-${i}`} className="w-3.5 h-3.5 text-gray-300" />
+      ))}
+      <span className="ml-1.5 text-xs font-medium text-muted-foreground">
+        {safeRating.toFixed(1)}
+      </span>
+    </div>
+  );
 };
 
-const propellerVariants = {
-  spin: {
-    rotate: 360,
-    transition: {
-      duration: 0.5,
-      ease: easingFunctions.linear,
-      repeat: 3
-    }
-  }
-};
-
-const starsVariants = {
-  twinkle: {
-    scale: [1, 1.2, 1],
-    opacity: [1, 0.7, 1],
-    transition: {
-      duration: 1.5,
-      repeat: Infinity,
-      ease: easingFunctions.easeInOut
-    }
-  }
-};
-
-interface TestimonialCardProps {
-  testimonial: any;
+// Modern testimonial card component
+const TestimonialCard: React.FC<{ 
+  testimonial: any; 
   index: number;
-  isActive: boolean;
-  onHover: () => void;
-  onLeave: () => void;
-}
-
-const TestimonialCard: React.FC<TestimonialCardProps> = ({ 
-  testimonial, 
-  index, 
-  isActive, 
-  onHover, 
-  onLeave 
-}) => {
-  const [isFlipped, setIsFlipped] = useState(false);
-  const [showPropeller, setShowPropeller] = useState(false);
-
-  const handleCardClick = () => {
-    setIsFlipped(!isFlipped);
-    setShowPropeller(true);
-    setTimeout(() => setShowPropeller(false), 1500);
-  };
+}> = ({ testimonial, index }) => {
+  const prefersReducedMotion = useReducedMotion();
 
   return (
     <motion.div
-      className="relative w-full h-80 cursor-pointer perspective-1000"
-      variants={cardVariants}
-      initial="hidden"
-      animate="visible"
-      whileHover="hover"
-      onHoverStart={onHover}
-      onHoverEnd={onLeave}
-      onClick={handleCardClick}
-      style={{
-        transformStyle: "preserve-3d"
+      initial={{ opacity: 0, y: 20, scale: 0.95 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      transition={{ 
+        delay: index * 0.1, 
+        duration: prefersReducedMotion ? 0.1 : 0.5,
+        ease: [0.25, 0.46, 0.45, 0.94], // Smooth easing
+        scale: { duration: prefersReducedMotion ? 0.1 : 0.4 }
       }}
+      whileHover={prefersReducedMotion ? {} : { 
+        y: -2, 
+        transition: { duration: 0.2, ease: "easeOut" }
+      }}
+      className="h-full"
     >
-      {/* Card Container */}
-      <motion.div
-        className="relative w-full h-full transition-transform duration-600 preserve-3d"
-        animate={{ rotateY: isFlipped ? 180 : 0 }}
-        style={{
-          transformStyle: "preserve-3d"
-        }}
-      >
-        {/* Front Side */}
-        <div className="absolute inset-0 w-full h-full backface-hidden">
-          <div className="w-full h-full bg-gradient-to-br from-card via-card/90 to-card/80 rounded-2xl shadow-lg border border-border/50 p-6 flex flex-col backdrop-blur-sm">
-            {/* Header */}
-            <div className="flex items-start justify-between mb-4">
-              <div className="flex items-center gap-2">
-                <Quote className="w-6 h-6 text-teal-600 dark:text-teal-400" />
-                {showPropeller && (
-                  <motion.div
-                    variants={propellerVariants}
-                    animate="spin"
-                    className="w-5 h-5"
-                  >
-                    <Plane className="w-full h-full text-teal-600 dark:text-teal-400" />
-                  </motion.div>
-                )}
-              </div>
-              
-              {/* Rating Stars */}
-              <div className="flex gap-1">
-                {[...Array(testimonial.rating)].map((_, i) => (
-                  <motion.div
-                    key={i}
-                    variants={starsVariants}
-                    animate={isActive ? "twinkle" : ""}
-                    style={{ animationDelay: `${i * 0.2}s` }}
-                  >
-                    <Star className="w-4 h-4 text-yellow-500 fill-current" />
-                  </motion.div>
-                ))}
-              </div>
-            </div>
-
-            {/* Testimonial Text */}
-            <div className="flex-1 mb-4">
-              <p className="text-foreground/90 leading-relaxed text-sm md:text-base">
-                "{testimonial.text}"
-              </p>
-            </div>
-
-            {/* Author Info */}
-            <div className="border-t border-border/50 pt-4">
-              <div className="flex items-center justify-between">
-                <div>
-                  <h4 className="font-semibold text-foreground">
-                    {testimonial.author}
-                  </h4>
-                  <p className="text-sm text-aviation-primary">
-                    {testimonial.course}
-                  </p>
-                </div>
-                {testimonial.verified && (
-                  <div className="px-2 py-1 rounded-full bg-green-500/20 text-green-600 dark:text-green-400 text-xs font-medium">
-                    ✓ Verified
-                  </div>
-                )}
-              </div>
-            </div>
-
-            {/* Click hint */}
-            <div className="absolute bottom-2 right-2 text-xs text-muted-foreground/60">
-              Click to flip
-            </div>
+      <Card className="h-full bg-card border border-border shadow-sm hover:shadow-lg transition-shadow duration-300 group">
+        <CardContent className="p-5 h-full flex flex-col">
+          {/* Quote and Rating */}
+          <div className="flex items-start justify-between mb-3">
+            <Quote className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
+            <StarRating rating={testimonial.rating} />
           </div>
-        </div>
 
-        {/* Back Side */}
-        <div className="absolute inset-0 w-full h-full backface-hidden rotate-y-180">
-          <div className="w-full h-full bg-gradient-to-br from-teal-600 via-teal-700 to-cyan-700 rounded-2xl shadow-lg p-6 flex flex-col text-white">
-            {/* Aviation Graphics */}
-            <div className="flex items-center justify-center mb-6">
-              <div className="relative">
-                <motion.div
-                  className="w-16 h-16 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center"
-                  animate={{
-                    rotate: [0, 360],
-                    scale: [1, 1.1, 1]
-                  }}
-                  transition={{
-                    duration: 3,
-                    repeat: Infinity,
-                    ease: easingFunctions.linear
-                  }}
-                >
-                  <Plane className="w-8 h-8 text-white" />
-                </motion.div>
-                
-                {/* Floating particles */}
-                {[...Array(6)].map((_, i) => (
-                  <motion.div
-                    key={i}
-                    className="absolute w-1 h-1 bg-white/40 rounded-full"
-                    style={{
-                      left: `${20 + Math.cos(i * 60 * Math.PI / 180) * 30}px`,
-                      top: `${20 + Math.sin(i * 60 * Math.PI / 180) * 30}px`,
-                    }}
-                    animate={{
-                      scale: [0, 1, 0],
-                      opacity: [0, 1, 0]
-                    }}
-                    transition={{
-                      duration: 2,
-                      repeat: Infinity,
-                      delay: i * 0.3,
-                      ease: easingFunctions.easeInOut
-                    }}
-                  />
-                ))}
-              </div>
-            </div>
+          {/* Testimonial Text */}
+          <div className="flex-1 mb-4">
+            <p className="text-foreground leading-relaxed text-sm">
+              "{testimonial.text}"
+            </p>
+          </div>
 
-            {/* Additional Info */}
-            <div className="flex-1 space-y-4">
-              <div className="text-center">
-                <h3 className="text-xl font-bold mb-2">Success Details</h3>
-                <div className="space-y-2">
-                  <div className="flex justify-between items-center">
-                    <span className="text-white/80">Graduation Year:</span>
-                    <span className="font-semibold">{testimonial.gradYear}</span>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span className="text-white/80">Location:</span>
-                    <span className="font-semibold">{testimonial.location}</span>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span className="text-white/80">Rating:</span>
-                    <span className="font-semibold">{testimonial.rating}/5 ⭐</span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="text-center">
-                <div className="w-full h-px bg-white/20 mb-4" />
-                <p className="text-white/90 text-sm italic">
-                  "Transformed my aviation dreams into reality"
+          {/* Author Info */}
+          <div className="border-t border-border pt-3 mt-auto">
+            <div className="flex items-center justify-between mb-2">
+              <div className="flex-1 min-w-0">
+                <h4 className="font-medium text-foreground text-sm truncate">
+                  {testimonial.author}
+                </h4>
+                <p className="text-xs text-primary truncate mt-0.5">
+                  {testimonial.course}
                 </p>
               </div>
+              {testimonial.verified && (
+                <div className="ml-2 px-2 py-0.5 bg-primary/10 text-primary text-xs rounded-full font-medium flex-shrink-0">
+                  ✓
+                </div>
+              )}
             </div>
 
-            {/* Click hint */}
-            <div className="absolute bottom-2 right-2 text-xs text-white/60">
-              Click to flip back
+            {/* Location */}
+            <div className="flex items-center text-xs text-muted-foreground mb-2">
+              <MapPin className="w-3 h-3 mr-1 flex-shrink-0" />
+              <span className="truncate">{testimonial.location}</span>
             </div>
+            
+            {/* Subjects */}
+            {testimonial.subjects && testimonial.subjects.length > 0 && (
+              <div className="flex flex-wrap gap-1">
+                {testimonial.subjects.slice(0, 2).map((subject: string, idx: number) => (
+                  <span
+                    key={idx}
+                    className="px-2 py-0.5 text-xs bg-primary/10 text-primary rounded-full"
+                  >
+                    {subject}
+                  </span>
+                ))}
+                {testimonial.subjects.length > 2 && (
+                  <span className="px-2 py-0.5 text-xs bg-muted text-muted-foreground rounded-full">
+                    +{testimonial.subjects.length - 2}
+                  </span>
+                )}
+              </div>
+            )}
           </div>
-        </div>
-      </motion.div>
+        </CardContent>
+      </Card>
     </motion.div>
   );
 };
 
+/**
+ * TextTestimonialsCarousel - A clean, modern testimonials carousel component
+ * Designed to fit within 100vh with professional styling
+ */
 export default function TextTestimonialsCarousel() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
-  const [hoveredCard, setHoveredCard] = useState<number | null>(null);
+  const [isDragging, setIsDragging] = useState(false);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const sectionRef = useRef<HTMLDivElement>(null);
-  const isInView = useInView(sectionRef, { once: true, amount: 0.3 });
+  const totalPages = Math.ceil(textTestimonials.length / 3);
+  const prefersReducedMotion = useReducedMotion();
 
-  // Auto-advance functionality
+  // Auto-advance functionality - Always enabled by default
   useEffect(() => {
-    if (isAutoPlaying && hoveredCard === null) {
+    if (isAutoPlaying && !isDragging && totalPages > 1) {
       intervalRef.current = setInterval(() => {
-        setCurrentIndex((prev) => (prev + 1) % Math.ceil(textTestimonials.length / 3));
-      }, 2000);
+        setCurrentIndex((prev) => (prev + 1) % totalPages);
+      }, 3000); // 3 seconds interval
     } else {
       if (intervalRef.current) {
         clearInterval(intervalRef.current);
+        intervalRef.current = null;
       }
     }
 
     return () => {
       if (intervalRef.current) {
         clearInterval(intervalRef.current);
+        intervalRef.current = null;
       }
     };
-  }, [isAutoPlaying, hoveredCard]);
+  }, [isAutoPlaying, isDragging, totalPages]);
 
   const handlePrevious = () => {
-    setCurrentIndex((prev) => (prev - 1 + Math.ceil(textTestimonials.length / 3)) % Math.ceil(textTestimonials.length / 3));
+    const newIndex = (currentIndex - 1 + totalPages) % totalPages;
+    setCurrentIndex(newIndex);
   };
 
   const handleNext = () => {
-    setCurrentIndex((prev) => (prev + 1) % Math.ceil(textTestimonials.length / 3));
+    const newIndex = (currentIndex + 1) % totalPages;
+    setCurrentIndex(newIndex);
+  };
+
+  // Keyboard navigation
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'ArrowLeft') {
+        event.preventDefault();
+        handlePrevious();
+      } else if (event.key === 'ArrowRight') {
+        event.preventDefault();
+        handleNext();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
+  // Touch gesture handlers
+  const handleDragStart = () => {
+    setIsDragging(true);
+  };
+
+  const handleDragEnd = (_event: any, info: any) => {
+    setIsDragging(false);
+    
+    const { offset } = info;
+    const threshold = 50;
+
+    if (Math.abs(offset.x) > threshold) {
+      if (offset.x > 0) {
+        handlePrevious();
+      } else {
+        handleNext();
+      }
+    }
   };
 
   const visibleTestimonials = textTestimonials.slice(currentIndex * 3, (currentIndex + 1) * 3);
 
   return (
-    <motion.section
+    <section
       ref={sectionRef}
-      className="py-10 md:py-12 relative overflow-hidden"
-      initial={{ opacity: 0 }}
-      animate={isInView ? { opacity: 1 } : { opacity: 0 }}
-      transition={{ duration: 0.8 }}
+      className="max-h-screen py-8 md:py-12 relative overflow-hidden bg-background"
+      aria-label="Student testimonials carousel. Use left and right arrow keys to navigate."
+      role="region"
+      tabIndex={0}
     >
-      {/* Background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-background/50 via-card/30 to-background/80" />
-
-      {/* Floating aviation elements */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {[...Array(8)].map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute"
-            style={{
-              left: `${10 + i * 12}%`,
-              top: `${15 + (i % 3) * 25}%`,
-            }}
-            animate={{
-              y: [-20, 20, -20],
-              x: [-10, 10, -10],
-              rotate: [0, 180, 360],
-              opacity: [0.1, 0.3, 0.1]
-            }}
-            transition={{
-              duration: 6 + i,
-              repeat: Infinity,
-              ease: easingFunctions.easeInOut,
-              delay: i * 0.8
-            }}
-          >
-            <Plane className="w-4 h-4 text-aviation-primary/30" />
-          </motion.div>
-        ))}
-      </div>
-
-      <div className="container relative z-10">
-        {/* Header */}
+      <div className="container relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Header - Compact */}
         <motion.div
-          className="text-center mb-16"
-          initial={{ opacity: 0, y: 50 }}
-          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
+          className="text-center mb-8"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
         >
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-6">
-            What Our
-            <span className="block text-transparent bg-clip-text bg-gradient-to-r from-aviation-primary via-aviation-secondary to-aviation-tertiary">
-              Graduates Say
-            </span>
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-primary mb-4">
+            Student Success Stories
           </h2>
-          <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto">
-            Real experiences from pilots who transformed their careers with our comprehensive training programs
+          <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+            Authentic testimonials from DGCA CPL graduates who achieved their pilot dreams
           </p>
         </motion.div>
 
-        {/* Controls */}
-        <div className="flex items-center justify-center gap-4 mb-8">
-          <button
+        {/* Controls - Compact */}
+        <div className="flex items-center justify-center gap-3 mb-6">
+          <Button
+            variant="outline"
+            size="sm"
             onClick={handlePrevious}
-            className="p-3 rounded-full bg-card/80 backdrop-blur-sm hover:bg-card text-card-foreground border border-border shadow-sm hover:shadow-xl hover:text-aviation-primary transition-all duration-300 hover:scale-110"
+            className="rounded-full w-8 h-8 p-0 bg-card/80 backdrop-blur-sm hover:bg-card border-border shadow-sm"
             aria-label="Previous testimonials"
           >
-            <ChevronLeft className="w-5 h-5" />
-          </button>
+            <ChevronLeft className="w-4 h-4" />
+          </Button>
           
-          <div className="flex gap-2">
-            {Array.from({ length: Math.ceil(textTestimonials.length / 3) }).map((_, index) => (
-              <button
+          <div className="flex gap-1.5" role="tablist" aria-label="Testimonial pages">
+            {Array.from({ length: totalPages }).map((_, index) => (
+              <motion.div
                 key={index}
-                onClick={() => setCurrentIndex(index)}
-                className={cn(
-                  "w-3 h-3 rounded-full transition-all duration-300",
-                  index === currentIndex 
-                    ? "bg-aviation-primary w-8" 
-                    : "bg-muted-foreground/30 hover:bg-muted-foreground/50"
-                )}
-                aria-label={`Go to testimonial set ${index + 1}`}
-              />
+                initial={false}
+                animate={{
+                  scale: index === currentIndex ? 1.1 : 1,
+                  opacity: index === currentIndex ? 1 : 0.7
+                }}
+                transition={{
+                  duration: prefersReducedMotion ? 0.1 : 0.3,
+                  ease: "easeInOut"
+                }}
+              >
+                <Button
+                  variant={index === currentIndex ? "default" : "ghost"}
+                  size="sm"
+                  onClick={() => setCurrentIndex(index)}
+                  className={cn(
+                    "rounded-full transition-all duration-300 relative overflow-hidden",
+                    index === currentIndex 
+                      ? "bg-primary hover:bg-primary/90 text-primary-foreground w-3 h-3 p-0" 
+                      : "bg-muted hover:bg-muted/80 w-2.5 h-2.5 p-0"
+                  )}
+                  aria-label={`Go to testimonial page ${index + 1}`}
+                  aria-selected={index === currentIndex}
+                  role="tab"
+                >
+                  {/* Auto-play progress indicator for current page */}
+                  {index === currentIndex && isAutoPlaying && (
+                    <motion.div
+                      className="absolute inset-0 bg-primary-foreground/20 rounded-full"
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      transition={{
+                        duration: 3,
+                        ease: "linear",
+                        repeat: Infinity
+                      }}
+                    />
+                  )}
+                </Button>
+              </motion.div>
             ))}
           </div>
 
-          <button
+          <Button
+            variant="outline"
+            size="sm"
             onClick={handleNext}
-            className="p-3 rounded-full bg-card/80 backdrop-blur-sm hover:bg-card text-card-foreground border border-border shadow-sm hover:shadow-xl hover:text-aviation-primary transition-all duration-300 hover:scale-110"
+            className="rounded-full w-8 h-8 p-0 bg-card/80 backdrop-blur-sm hover:bg-card border-border shadow-sm"
             aria-label="Next testimonials"
           >
-            <ChevronRight className="w-5 h-5" />
-          </button>
+            <ChevronRight className="w-4 h-4" />
+          </Button>
         </div>
 
-        {/* Testimonials Grid */}
+        {/* Testimonials Grid - Enhanced with smooth auto-scroll animations */}
         <motion.div
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 max-w-6xl mx-auto cursor-grab active:cursor-grabbing"
           key={currentIndex}
-          initial={{ opacity: 0, x: 100 }}
+          initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
-          exit={{ opacity: 0, x: -100 }}
-          transition={{ duration: 0.6, ease: easingFunctions.easeInOut }}
+          exit={{ opacity: 0, x: -20 }}
+          transition={{ 
+            duration: prefersReducedMotion ? 0.2 : 0.6, 
+            ease: [0.25, 0.46, 0.45, 0.94], // Custom easing for smooth feel
+            opacity: { duration: prefersReducedMotion ? 0.1 : 0.4 },
+            x: { duration: prefersReducedMotion ? 0.1 : 0.5 }
+          }}
+          drag="x"
+          dragConstraints={{ left: 0, right: 0 }}
+          dragElastic={0.2}
+          onDragStart={handleDragStart}
+          onDragEnd={handleDragEnd}
+          whileDrag={{ scale: 0.98 }}
+          role="group"
+          aria-label={`Testimonials page ${currentIndex + 1} of ${totalPages}`}
+          style={{
+            height: '320px', // Fixed height to prevent overflow
+            touchAction: 'pan-y pinch-zoom'
+          }}
         >
           {visibleTestimonials.map((testimonial, index) => (
             <TestimonialCard
               key={testimonial.id}
               testimonial={testimonial}
               index={index}
-              isActive={hoveredCard === index}
-              onHover={() => setHoveredCard(index)}
-              onLeave={() => setHoveredCard(null)}
             />
           ))}
         </motion.div>
 
-        {/* Auto-play indicator */}
-        <div className="flex items-center justify-center mt-8">
-          <button
-            onClick={() => setIsAutoPlaying(!isAutoPlaying)}
-            className={cn(
-              "flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all duration-300",
-              isAutoPlaying 
-                ? "bg-aviation-primary text-white shadow-lg" 
-                : "bg-card/80 backdrop-blur-sm text-card-foreground hover:bg-card border border-border"
-            )}
-          >
-            {isAutoPlaying ? (
-              <>
-                <div className="w-2 h-2 bg-white rounded-full animate-pulse" />
-                Auto-playing
-              </>
-            ) : (
-              <>
-                <div className="w-2 h-2 bg-muted-foreground rounded-full" />
-                Paused
-              </>
-            )}
-          </button>
-        </div>
-      </div>
 
-      {/* Custom CSS for 3D effects */}
-      <style jsx>{`
-        .perspective-1000 {
-          perspective: 1000px;
-        }
-        .preserve-3d {
-          transform-style: preserve-3d;
-        }
-        .backface-hidden {
-          backface-visibility: hidden;
-        }
-        .rotate-y-180 {
-          transform: rotateY(180deg);
-        }
-      `}</style>
-    </motion.section>
+      </div>
+    </section>
   );
 }

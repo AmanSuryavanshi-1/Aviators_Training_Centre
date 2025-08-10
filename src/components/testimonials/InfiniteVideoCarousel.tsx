@@ -1029,7 +1029,7 @@ export default function InfiniteVideoCarousel() {
   return (
     <motion.section
       ref={sectionRef}
-      className="py-16 md:py-20 lg:py-24 relative overflow-visible bg-gradient-to-br from-background via-card/30 to-background min-h-screen flex flex-col justify-center"
+      className="relative overflow-visible bg-gradient-to-br from-background via-card/30 to-background min-h-screen flex flex-col justify-center"
       variants={carouselVariants}
       initial="hidden"
       animate={isInView ? "visible" : "hidden"}
@@ -1135,13 +1135,13 @@ export default function InfiniteVideoCarousel() {
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
           transition={{ duration: 0.6, delay: 0.1 }}
         >
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-6">
+          <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
             DGCA CPL ATPL Success Stories
-            <span className="block text-transparent bg-clip-text bg-gradient-to-r from-aviation-primary via-aviation-secondary to-aviation-tertiary">
+            <span className="block text-transparent mb-2 bg-clip-text bg-gradient-to-r from-aviation-primary via-aviation-secondary to-aviation-tertiary">
               Video Testimonials
             </span>
           </h2>
-          <p className="text-lg md:text-xl text-muted-foreground max-w-4xl mx-auto leading-relaxed">
+          <p className="text-md md:text-lg text-muted-foreground max-w-4xl mx-auto leading-relaxed">
             Watch verified graduates share their journey from aviation dreams to commercial pilot reality. 
             Real success stories from DGCA CPL, ATPL, and RTR(A) training programs at India's premier aviation institute.
           </p>
@@ -1158,11 +1158,11 @@ export default function InfiniteVideoCarousel() {
         </motion.div>
 
         {/* Carousel Controls */}
-        <div className="flex items-center justify-center gap-2 sm:gap-4 mb-2 md:mb-2 lg:mb-3 px-4">
+        <div className="flex items-center justify-center gap-2 sm:gap-4 mb-2 px-4">
           <button
             onClick={handlePrevious}
             className={cn(
-              "p-3 rounded-full bg-card/80 backdrop-blur-sm hover:bg-card text-card-foreground border border-border shadow-sm",
+              "p-3 rounded-full bg-card/80 backdrop-blur-sm hover:bg-card text-card-foreground border-2 border-border shadow-sm",
               prefersReducedMotion 
                 ? "transition-colors duration-200" 
                 : "transition-all duration-300 hover:scale-105"
@@ -1191,7 +1191,7 @@ export default function InfiniteVideoCarousel() {
           <button
             onClick={handleNext}
             className={cn(
-              "p-3 rounded-full bg-card/80 backdrop-blur-sm hover:bg-card text-card-foreground border border-border shadow-sm",
+              "p-3 rounded-full bg-card/80 backdrop-blur-sm hover:bg-card text-card-foreground border-2 border-border shadow-sm",
               prefersReducedMotion 
                 ? "transition-colors duration-200" 
                 : "transition-all duration-300 hover:scale-105"
@@ -1312,7 +1312,7 @@ export default function InfiniteVideoCarousel() {
 
         {/* SEO Enhancement: Comprehensive Summary Section */}
         <motion.div 
-          className="mt-8 md:mt-12 px-4 text-center"
+          className="sr-only mt-8 md:mt-12 px-4 text-center"
           initial={{ opacity: 0 }}
           animate={isInView ? { opacity: 1 } : { opacity: 0 }}
           transition={{ duration: 0.6, delay: 0.6 }}

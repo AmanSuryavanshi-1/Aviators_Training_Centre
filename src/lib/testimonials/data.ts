@@ -1,97 +1,21 @@
 import { YouTubeShort, Student } from './types';
 import videoTestimonials from './video-testimonials.json';
+import textTestimonials from './text-testimonials.json';
 
-// Authentic student data with realistic courses and ratings
-export const studentsData: Student[] = [
-  {
-    id: 'students-mashup',
-    name: 'ATC Collective',
-    course: 'DGCA CPL Ground School',
-    gradYear: 2025,
-    verified: true,
-    avatarUrl: null,
-    rating: 4.8,
-    subjects: ['Air Navigation', 'Aviation Meteorology', 'Technical General', 'Air Regulation'],
-    testimonial: "The comprehensive approach at ATC really helped me understand complex aviation concepts. The instructors break down difficult topics like navigation and meteorology in a way that actually makes sense. Passed my CPL on the first attempt!"
-  },
-  {
-    id: 'student-shumbham',
-    name: 'Shumbham Patel',
-    course: 'DGCA CPL Ground School',
-    gradYear: 2025,
-    verified: true,
-    avatarUrl: null,
-    rating: 4.5,
-    subjects: ['Air Navigation', 'Technical General', 'Aviation Meteorology'],
-    testimonial: "Coming from a non-aviation background, I was worried about the technical subjects. But the way they teach here is amazing - lots of practical examples and real-world scenarios. Navigation was my weakest subject but now it's one of my strongest!"
-  },
-  {
-    id: 'student-uday',
-    name: 'Uday Krishnan',
-    course: 'RTR(A) - Radio Telephony',
-    gradYear: 2025,
-    verified: true,
-    avatarUrl: null,
-    rating: 5.0,
-    subjects: ['Radio Telephony', 'Communication Procedures', 'Emergency Procedures'],
-    testimonial: "The RTR course here is top-notch. They don't just teach you to memorize procedures - they help you understand the why behind every communication protocol. The mock sessions with real ATC scenarios were incredibly helpful."
-  },
-  {
-    id: 'student-bhargavi',
-    name: 'Bhargavi Reddy',
-    course: 'DGCA CPL Ground School',
-    gradYear: 2025,
-    verified: true,
-    avatarUrl: null,
-    rating: 4.7,
-    subjects: ['Air Regulation', 'Aviation Meteorology', 'Technical General'],
-    testimonial: "As one of the few women in my batch, I really appreciated the supportive environment here. The air regulation classes were particularly well-structured. The faculty always made time for doubts and the study material is excellent."
-  },
-  {
-    id: 'student-salman',
-    name: 'Salman Ahmed',
-    course: 'ATPL Ground School',
-    gradYear: 2025,
-    verified: true,
-    avatarUrl: null,
-    rating: 4.3,
-    subjects: ['Air Navigation', 'Technical General', 'Flight Planning', 'Human Performance'],
-    testimonial: "The ATPL course is intense but the teaching methodology here makes it manageable. Flight planning sessions were especially good - they use real route examples which helps a lot. Some subjects could use more practice questions though."
-  },
-  {
-    id: 'student-rajesh',
-    name: 'Rajesh Kumar',
-    course: 'DGCA CPL Ground School',
-    gradYear: 2025,
-    verified: true,
-    avatarUrl: null,
-    rating: 4.9,
-    subjects: ['Aviation Meteorology', 'Air Navigation', 'Technical General'],
-    testimonial: "Best decision I made for my aviation career! The meteorology classes here are phenomenal - they use actual weather data and case studies. Cleared all subjects in first attempt with good margins. Highly recommend to anyone serious about aviation."
-  },
-  {
-    id: 'student-priya',
-    name: 'Priya Sharma',
-    course: 'Type Rating - A320',
-    gradYear: 2025,
-    verified: true,
-    avatarUrl: null,
-    rating: 4.6,
-    subjects: ['Aircraft Systems', 'Flight Management', 'Emergency Procedures'],
-    testimonial: "The A320 type rating course exceeded my expectations. The systems knowledge they provide is very detailed and the emergency procedures training is thorough. The instructors have real airline experience which shows in their teaching."
-  },
-  {
-    id: 'student-arjun',
-    name: 'Arjun Nair',
-    course: 'DGCA CPL Ground School',
-    gradYear: 2025,
-    verified: true,
-    avatarUrl: null,
-    rating: 4.4,
-    subjects: ['Technical General', 'Air Regulation', 'Aviation Meteorology'],
-    testimonial: "Good overall experience. The technical general subject was well-covered with plenty of diagrams and practical examples. Air regulation can be dry but they make it interesting with real case studies. Would have liked more mock tests though."
-  }
-];
+// Convert text testimonials to Student data format
+export const studentsData: Student[] = textTestimonials.map((testimonial: any) => ({
+  id: testimonial.id.replace('text-testimonial-', 'student-'),
+  name: testimonial.studentName,
+  course: testimonial.course,
+  gradYear: testimonial.gradYear,
+  verified: testimonial.verified,
+  avatarUrl: null,
+  rating: testimonial.rating,
+  subjects: testimonial.subjects,
+  testimonial: testimonial.testimonial,
+  location: testimonial.location,
+  specificFeedback: testimonial.specificFeedback
+}));
 
 // Import video testimonials from the SEO-optimized JSON file
 export const youtubeShorts: YouTubeShort[] = videoTestimonials as YouTubeShort[];
@@ -158,9 +82,11 @@ export function createVideoFallback(videoId: string, student: Student | null): V
 // Export testimonials data for the infinite video carousel
 export const testimonials = {
   videos: videoTestimonials,
+  text: textTestimonials,
 };
 
 export type VideoTestimonial = (typeof videoTestimonials)[0];
+export type TextTestimonial = (typeof textTestimonials)[0];
 
 // SEO Enhancement Functions
 export function getAllSEOKeywords(): string[] {

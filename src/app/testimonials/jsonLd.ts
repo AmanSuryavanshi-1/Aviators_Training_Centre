@@ -68,12 +68,12 @@ export function generateReviewSchema(
   testimonial: TextTestimonial,
   student: Student | null
 ): ReviewSchema {
-  // Map confidence score (0-1) to rating (1-5)
-  const rating = Math.max(1, Math.min(5, Math.round(testimonial.confidenceScore * 4 + 1)));
+  // Use the rating from testimonial data
+  const rating = testimonial.rating || 5;
   
   return {
     '@type': 'Review',
-    reviewBody: testimonial.text,
+    reviewBody: testimonial.testimonial,
     reviewRating: {
       '@type': 'Rating',
       ratingValue: rating,
@@ -81,7 +81,7 @@ export function generateReviewSchema(
     },
     author: {
       '@type': 'Person',
-      name: student?.name || 'Aviation Training Graduate'
+      name: testimonial.studentName || student?.name || 'Aviation Training Graduate'
     },
     itemReviewed: {
       '@type': 'EducationalOrganization',
@@ -102,9 +102,7 @@ export function generateTestimonialsPageSchema(
   );
   
   const reviewObjects = testimonials.map(testimonial => {
-    const student = testimonial.sourceVideoId 
-      ? studentMap.get(videos.find(v => v.id === testimonial.sourceVideoId)?.studentId || '') || null
-      : null;
+    const student = studentMap.get(testimonial.id) || null;
     return generateReviewSchema(testimonial, student);
   });
 

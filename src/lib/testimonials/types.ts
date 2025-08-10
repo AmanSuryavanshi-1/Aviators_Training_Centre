@@ -8,6 +8,8 @@ export interface Student {
   rating?: number;
   subjects?: string[];
   testimonial?: string;
+  location?: string;
+  specificFeedback?: string;
 }
 
 export interface YouTubeShort {
@@ -28,12 +30,16 @@ export interface YouTubeShort {
 
 export interface TextTestimonial {
   id: string;
-  text: string;
-  short: string;
-  detail?: string | null;
-  sourceVideoId?: string | null;
-  confidenceScore: number; // 0-1
-  needsReview?: boolean;
-  generatedAt: string; // ISO
+  studentName: string;
+  location: string;
+  course: string;
+  subjects: string[];
+  rating: number;
+  gradYear: number;
+  verified: boolean;
+  testimonial: string;
+  specificFeedback?: string;
+  seoKeywords: string[];
+  createdAt: string;
 }
 
