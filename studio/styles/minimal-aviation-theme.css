@@ -1,0 +1,30 @@
+/**
+ * Minimal Aviation Theme for Sanity Studio
+ * Safe, minimal styling that preserves all functionality
+ */
+
+/* Only override primary button colors to match aviation theme */
+[data-ui="Button"][data-tone="primary"] {
+  background-color: #075E68 !important;
+  border-color: #075E68 !important;
+}
+
+[data-ui="Button"][data-tone="primary"]:hover {
+  background-color: #219099 !important;
+  border-color: #219099 !important;
+}
+
+/* Minimal navbar branding */
+[data-ui="Navbar"] {
+  border-bottom: 1px solid #075E68 !important;
+}
+
+/* Subtle aviation accent for selected items */
+[data-ui="Tree"] [data-ui="TreeItem"][data-selected="true"] {
+  border-left: 3px solid #075E68 !important;
+}
+
+/* Aviation color for focus states */
+*:focus-visible {
+  outline-color: #075E68 !important;
+}

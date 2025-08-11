@@ -1,0 +1,321 @@
+/**
+ * Enhanced Responsive Design for Sanity Studio
+ * Mobile-first approach with proper touch targets and accessibility
+ */
+
+/* ===== MOBILE-FIRST BASE STYLES ===== */
+/* Ensure all interactive elements meet WCAG AA guidelines */
+[data-ui="Button"],
+[data-ui="MenuItem"],
+[data-ui="TreeItem"],
+[role="button"],
+button {
+  min-height: 44px !important;
+  min-width: 44px !important;
+  touch-action: manipulation !important;
+}
+
+/* ===== MOBILE STYLES (320px - 768px) ===== */
+@media (max-width: 768px) {
+  /* Mobile-optimized dialogs */
+  [data-ui="DialogCard"] {
+    margin: 8px !important;
+    max-width: calc(100vw - 16px) !important;
+    max-height: calc(100vh - 16px) !important;
+    border-radius: 8px !important;
+    overflow: hidden !important;
+  }
+
+  /* Stack dialog buttons vertically on mobile */
+  [data-ui="DialogCard"] [data-ui="Flex"]:has([data-ui="Button"]) {
+    flex-direction: column !important;
+    gap: 8px !important;
+  }
+
+  [data-ui="DialogCard"] [data-ui="Button"] {
+    width: 100% !important;
+    min-height: 48px !important;
+    font-size: 16px !important; /* Prevent iOS zoom */
+  }
+
+  /* Mobile-friendly sidebar */
+  [data-ui="RootLayout"] > div:first-child {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    z-index: 1000 !important;
+    transform: translateX(-100%) !important;
+    transition: transform 0.3s ease !important;
+  }
+
+  [data-ui="RootLayout"] > div:first-child[data-open="true"] {
+    transform: translateX(0) !important;
+  }
+
+  /* Mobile navigation improvements */
+  [data-ui="NavbarLayout"] {
+    padding: 8px 12px !important;
+    min-height: 56px !important;
+  }
+
+  /* Touch-friendly form inputs */
+  [data-ui="TextInput"],
+  [data-ui="TextArea"],
+  input,
+  textarea,
+  select {
+    min-height: 44px !important;
+    font-size: 16px !important; /* Prevent iOS zoom */
+    padding: 12px !important;
+    border-radius: 6px !important;
+  }
+
+  /* Mobile-optimized cards */
+  [data-ui="Card"] {
+    margin: 8px !important;
+    padding: 16px !important;
+    border-radius: 8px !important;
+  }
+
+  /* Touch-friendly menu items */
+  [data-ui="MenuItem"] {
+    min-height: 48px !important;
+    padding: 12px 16px !important;
+    font-size: 16px !important;
+  }
+
+  /* Mobile document list */
+  [data-ui="DocumentListPane"] [data-ui="Card"] {
+    margin: 4px 8px !important;
+    padding: 12px !important;
+  }
+
+  /* Mobile toolbar */
+  [data-ui="DocumentToolbar"] {
+    flex-wrap: wrap !important;
+    gap: 8px !important;
+    padding: 8px !important;
+  }
+
+  [data-ui="DocumentToolbar"] [data-ui="Button"] {
+    min-width: auto !important;
+    padding: 8px 12px !important;
+  }
+}
+
+/* ===== TABLET STYLES (769px - 1023px) ===== */
+@media (min-width: 769px) and (max-width: 1023px) {
+  /* Tablet-optimized spacing */
+  [data-ui="Card"] {
+    padding: 20px !important;
+    margin: 12px !important;
+  }
+
+  [data-ui="Button"] {
+    min-height: 44px !important;
+    padding: 10px 16px !important;
+  }
+
+  /* Tablet sidebar - collapsed by default */
+  [data-ui="RootLayout"] > div:first-child {
+    width: 60px !important;
+    transition: width 0.3s ease !important;
+  }
+
+  [data-ui="RootLayout"] > div:first-child:hover,
+  [data-ui="RootLayout"] > div:first-child:focus-within {
+    width: 280px !important;
+  }
+
+  /* Tablet dialog sizing */
+  [data-ui="DialogCard"] {
+    max-width: 90vw !important;
+    max-height: 90vh !important;
+    margin: 5vh auto !important;
+  }
+}
+
+/* ===== DESKTOP STYLES (1024px+) ===== */
+@media (min-width: 1024px) {
+  /* Desktop hover effects */
+  [data-ui="Button"]:hover:not(:disabled) {
+    transform: translateY(-1px) !important;
+    box-shadow: 0 4px 8px rgba(7, 94, 104, 0.15) !important;
+    transition: all 0.2s ease !important;
+  }
+
+  [data-ui="TreeItem"]:hover {
+    transform: translateX(2px) !important;
+    transition: transform 0.2s ease !important;
+  }
+
+  [data-ui="MenuItem"]:hover {
+    background-color: rgba(7, 94, 104, 0.05) !important;
+    transition: background-color 0.2s ease !important;
+  }
+
+  /* Desktop-optimized dialogs */
+  [data-ui="DialogCard"] {
+    max-width: 800px !important;
+    max-height: 80vh !important;
+    border-radius: 12px !important;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15) !important;
+  }
+}
+
+/* ===== HIGH DPI DISPLAY OPTIMIZATIONS ===== */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  /* Crisp borders on high DPI displays */
+  [data-ui="Card"],
+  [data-ui="Button"],
+  [data-ui="TextInput"] {
+    border-width: 0.5px !important;
+  }
+
+  /* Optimized shadows for retina displays */
+  [data-ui="DialogCard"] {
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12), 0 4px 8px rgba(0, 0, 0, 0.08) !important;
+  }
+}
+
+/* ===== ACCESSIBILITY ENHANCEMENTS ===== */
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  [data-ui="Button"],
+  [data-ui="Card"],
+  [data-ui="TextInput"] {
+    border-width: 2px !important;
+    border-color: currentColor !important;
+  }
+
+  [data-ui="Button"]:focus,
+  [data-ui="MenuItem"]:focus {
+    outline: 3px solid #075E68 !important;
+    outline-offset: 2px !important;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  [data-ui="Button"]:hover,
+  [data-ui="TreeItem"]:hover {
+    transform: none !important;
+  }
+}
+
+/* ===== FOCUS MANAGEMENT ===== */
+/* Enhanced focus indicators */
+[data-ui="Button"]:focus-visible,
+[data-ui="MenuItem"]:focus-visible,
+[data-ui="TreeItem"]:focus-visible,
+[data-ui="TextInput"]:focus-visible {
+  outline: 2px solid #075E68 !important;
+  outline-offset: 2px !important;
+  box-shadow: 0 0 0 4px rgba(7, 94, 104, 0.1) !important;
+}
+
+/* Skip to content link for keyboard users */
+.skip-to-content {
+  position: absolute !important;
+  top: -40px !important;
+  left: 6px !important;
+  background: #075E68 !important;
+  color: white !important;
+  padding: 8px !important;
+  text-decoration: none !important;
+  border-radius: 4px !important;
+  z-index: 9999 !important;
+  transition: top 0.3s ease !important;
+}
+
+.skip-to-content:focus {
+  top: 6px !important;
+}
+
+/* ===== TOUCH DEVICE OPTIMIZATIONS ===== */
+@media (hover: none) and (pointer: coarse) {
+  /* Remove hover effects on touch devices */
+  [data-ui="Button"]:hover,
+  [data-ui="TreeItem"]:hover,
+  [data-ui="MenuItem"]:hover {
+    transform: none !important;
+    background-color: initial !important;
+  }
+
+  /* Larger touch targets for touch devices */
+  [data-ui="Button"],
+  [data-ui="MenuItem"],
+  [role="button"] {
+    min-height: 48px !important;
+    min-width: 48px !important;
+  }
+
+  /* Touch-friendly scrollbars */
+  ::-webkit-scrollbar {
+    width: 12px !important;
+    height: 12px !important;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: rgba(7, 94, 104, 0.3) !important;
+    border-radius: 6px !important;
+    min-height: 40px !important;
+  }
+}
+
+/* ===== PRINT STYLES ===== */
+@media print {
+  /* Hide non-essential elements when printing */
+  [data-ui="NavbarLayout"],
+  [data-ui="Button"],
+  [role="button"] {
+    display: none !important;
+  }
+
+  /* Optimize content for printing */
+  [data-ui="Card"] {
+    border: 1px solid #000 !important;
+    box-shadow: none !important;
+    page-break-inside: avoid !important;
+  }
+
+  /* Ensure text is readable when printed */
+  * {
+    color: #000 !important;
+    background: transparent !important;
+  }
+}
+
+/* ===== LANDSCAPE ORIENTATION OPTIMIZATIONS ===== */
+@media (orientation: landscape) and (max-height: 500px) {
+  /* Optimize for landscape mobile devices */
+  [data-ui="DialogCard"] {
+    max-height: 95vh !important;
+    overflow-y: auto !important;
+  }
+
+  [data-ui="NavbarLayout"] {
+    min-height: 48px !important;
+    padding: 4px 8px !important;
+  }
+}
+
+/* ===== DARK MODE ENHANCEMENTS ===== */
+@media (prefers-color-scheme: dark) {
+  /* Enhanced dark mode support */
+  [data-ui="DialogCard"] {
+    background-color: #1a1a1a !important;
+    border: 1px solid #333 !important;
+  }
+
+  [data-ui="Button"]:hover {
+    box-shadow: 0 4px 8px rgba(255, 255, 255, 0.1) !important;
+  }
+}

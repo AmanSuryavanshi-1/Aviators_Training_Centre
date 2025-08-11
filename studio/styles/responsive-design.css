@@ -1,0 +1,588 @@
+/**
+ * Enhanced Responsive Design for Sanity Studio
+ * Mobile-first approach with proper touch targets and responsive dialogs
+ */
+
+/* ===== RESPONSIVE BREAKPOINTS ===== */
+:root {
+  --mobile-max: 767px;
+  --tablet-min: 768px;
+  --tablet-max: 1023px;
+  --desktop-min: 1024px;
+  --large-desktop-min: 1280px;
+}
+
+/* ===== BASE MOBILE STYLES (Default) ===== */
+/* Mobile-first approach - these are the default styles */
+
+/* Ensure touch targets are at least 44px */
+[data-ui="Button"],
+[data-ui="MenuItem"],
+[data-ui="TreeItem"] {
+  min-height: 44px !important;
+  min-width: 44px !important;
+  touch-action: manipulation !important;
+}
+
+/* Mobile-friendly input sizes */
+[data-ui="TextInput"],
+[data-ui="TextArea"],
+[data-ui="Select"],
+input,
+textarea,
+select {
+  min-height: 44px !important;
+  font-size: 16px !important; /* Prevents iOS zoom */
+  padding: 12px 16px !important;
+}
+
+/* ===== MOBILE STYLES (up to 767px) ===== */
+@media (max-width: 767px) {
+  /* Studio root adjustments */
+  [data-ui="RootTheme"] {
+    font-size: 14px !important;
+    line-height: 1.5 !important;
+  }
+  
+  /* Mobile navigation bar */
+  [data-ui="Navbar"] {
+    height: 56px !important;
+    padding: 0 16px !important;
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 1030 !important;
+    flex-wrap: wrap !important;
+  }
+  
+  /* Mobile sidebar - full overlay */
+  [data-ui="Card"]:has([data-ui="Tree"]) {
+    position: fixed !important;
+    top: 56px !important;
+    left: -100% !important;
+    width: 100% !important;
+    height: calc(100vh - 56px) !important;
+    z-index: 1050 !important;
+    transition: left 0.3s ease !important;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3) !important;
+    background-color: var(--atc-surface, #1E293B) !important;
+  }
+  
+  /* Mobile sidebar open state */
+  [data-ui="Card"]:has([data-ui="Tree"]).mobile-sidebar-open {
+    left: 0 !important;
+  }
+  
+  /* Mobile main content */
+  [data-ui="Card"]:not(:has([data-ui="Tree"])) {
+    width: 100% !important;
+    padding: 16px !important;
+    margin: 0 !important;
+    min-height: calc(100vh - 56px) !important;
+  }
+  
+  /* Mobile tree items - larger touch targets */
+  [data-ui="Tree"] [data-ui="TreeItem"] {
+    padding: 16px !important;
+    font-size: 16px !important;
+    min-height: 48px !important;
+    display: flex !important;
+    align-items: center !important;
+    border-radius: 8px !important;
+    margin-bottom: 4px !important;
+  }
+  
+  /* Mobile menu items */
+  [data-ui="MenuItem"] {
+    padding: 16px !important;
+    font-size: 16px !important;
+    min-height: 48px !important;
+    border-radius: 8px !important;
+  }
+  
+  /* Mobile buttons */
+  [data-ui="Button"] {
+    min-height: 48px !important;
+    padding: 12px 20px !important;
+    font-size: 16px !important;
+    border-radius: 8px !important;
+  }
+  
+  /* Mobile form fields */
+  [data-ui="FormField"] {
+    margin-bottom: 20px !important;
+  }
+  
+  [data-ui="Label"] {
+    font-size: 16px !important;
+    margin-bottom: 8px !important;
+    font-weight: 600 !important;
+  }
+  
+  /* Mobile cards */
+  [data-ui="Card"] {
+    margin-bottom: 16px !important;
+    border-radius: 12px !important;
+    padding: 16px !important;
+  }
+  
+  /* Mobile typography */
+  h1 { font-size: 24px !important; }
+  h2 { font-size: 20px !important; }
+  h3 { font-size: 18px !important; }
+  h4 { font-size: 16px !important; }
+  h5 { font-size: 16px !important; }
+  h6 { font-size: 14px !important; }
+  
+  /* Mobile document panel */
+  [data-ui="DocumentPanel"] {
+    padding: 16px !important;
+  }
+  
+  /* Mobile toolbar */
+  [data-ui="Toolbar"] {
+    padding: 8px 16px !important;
+    flex-wrap: wrap !important;
+    gap: 8px !important;
+  }
+  
+  /* Mobile search */
+  [data-ui="SearchBox"] {
+    width: 100% !important;
+    margin-bottom: 16px !important;
+  }
+  
+  [data-ui="SearchBox"] input {
+    font-size: 16px !important;
+    padding: 12px 16px !important;
+  }
+}
+
+/* ===== MOBILE DIALOG STYLES ===== */
+@media (max-width: 767px) {
+  /* Mobile dialogs */
+  [data-ui="DialogCard"] {
+    margin: 16px !important;
+    max-width: calc(100vw - 32px) !important;
+    max-height: calc(100vh - 32px) !important;
+    border-radius: 12px !important;
+    padding: 20px !important;
+  }
+  
+  /* Mobile dialog headers */
+  [data-ui="DialogCard"] [data-ui="DialogHeader"] {
+    padding: 0 0 16px 0 !important;
+    margin-bottom: 16px !important;
+  }
+  
+  /* Mobile dialog content */
+  [data-ui="DialogCard"] [data-ui="Text"],
+  [data-ui="DialogCard"] p {
+    font-size: 16px !important;
+    line-height: 1.5 !important;
+  }
+  
+  /* Mobile dialog buttons */
+  [data-ui="DialogCard"] [data-ui="DialogFooter"] {
+    flex-direction: column !important;
+    gap: 12px !important;
+    padding: 16px 0 0 0 !important;
+    margin-top: 16px !important;
+  }
+  
+  [data-ui="DialogCard"] [data-ui="Button"] {
+    width: 100% !important;
+    justify-content: center !important;
+    min-height: 48px !important;
+    font-size: 16px !important;
+  }
+  
+  /* Primary button first on mobile */
+  [data-ui="DialogCard"] [data-ui="Button"][data-tone="primary"] {
+    order: 1 !important;
+  }
+  
+  [data-ui="DialogCard"] [data-ui="Button"][data-tone="default"] {
+    order: 2 !important;
+  }
+  
+  [data-ui="DialogCard"] [data-ui="Button"][data-tone="critical"] {
+    order: 1 !important;
+  }
+}
+
+/* ===== TABLET STYLES (768px - 1023px) ===== */
+@media (min-width: 768px) and (max-width: 1023px) {
+  /* Tablet sidebar - collapsed */
+  [data-ui="Card"]:has([data-ui="Tree"]) {
+    width: 80px !important;
+    position: relative !important;
+    left: auto !important;
+    height: auto !important;
+    min-height: calc(100vh - 64px) !important;
+    overflow: hidden !important;
+  }
+  
+  /* Hide text in collapsed sidebar, show only icons */
+  [data-ui="Tree"] [data-ui="TreeItem"] span:not(:first-child) {
+    display: none !important;
+  }
+  
+  /* Center icons in collapsed sidebar */
+  [data-ui="Tree"] [data-ui="TreeItem"] {
+    justify-content: center !important;
+    padding: 16px 8px !important;
+    min-height: 48px !important;
+  }
+  
+  /* Tablet main content */
+  [data-ui="Card"]:not(:has([data-ui="Tree"])) {
+    flex: 1 !important;
+    padding: 24px !important;
+    min-height: calc(100vh - 64px) !important;
+  }
+  
+  /* Tablet dialogs */
+  [data-ui="DialogCard"] {
+    max-width: 600px !important;
+    margin: 24px !important;
+  }
+  
+  /* Tablet buttons */
+  [data-ui="Button"] {
+    min-height: 44px !important;
+    padding: 10px 20px !important;
+  }
+  
+  /* Tablet inputs */
+  [data-ui="TextInput"],
+  [data-ui="TextArea"],
+  [data-ui="Select"],
+  input,
+  textarea,
+  select {
+    min-height: 44px !important;
+    font-size: 16px !important;
+  }
+  
+  /* Tablet navbar */
+  [data-ui="Navbar"] {
+    height: 64px !important;
+    padding: 0 24px !important;
+  }
+}
+
+/* ===== DESKTOP STYLES (1024px+) ===== */
+@media (min-width: 1024px) {
+  /* Desktop sidebar - full width */
+  [data-ui="Card"]:has([data-ui="Tree"]) {
+    width: 280px !important;
+    position: relative !important;
+    left: auto !important;
+    height: auto !important;
+    min-height: calc(100vh - 64px) !important;
+  }
+  
+  /* Desktop main content */
+  [data-ui="Card"]:not(:has([data-ui="Tree"])) {
+    flex: 1 !important;
+    padding: 32px !important;
+    min-height: calc(100vh - 64px) !important;
+  }
+  
+  /* Desktop dialogs */
+  [data-ui="DialogCard"] {
+    max-width: 800px !important;
+    margin: 32px !important;
+  }
+  
+  /* Desktop hover effects */
+  [data-ui="Button"]:hover {
+    transform: translateY(-1px) !important;
+    transition: transform 0.2s ease !important;
+  }
+  
+  [data-ui="Card"]:hover {
+    transform: translateY(-2px) !important;
+    transition: transform 0.2s ease !important;
+  }
+  
+  [data-ui="Tree"] [data-ui="TreeItem"]:hover {
+    transform: translateX(4px) !important;
+    transition: transform 0.2s ease !important;
+  }
+  
+  /* Desktop navbar */
+  [data-ui="Navbar"] {
+    height: 64px !important;
+    padding: 0 32px !important;
+  }
+}
+
+/* ===== LARGE DESKTOP STYLES (1280px+) ===== */
+@media (min-width: 1280px) {
+  /* Large desktop main content */
+  [data-ui="Card"]:not(:has([data-ui="Tree"])) {
+    padding: 48px !important;
+  }
+  
+  /* Large desktop dialogs */
+  [data-ui="DialogCard"] {
+    max-width: 900px !important;
+  }
+  
+  /* Large desktop sidebar */
+  [data-ui="Card"]:has([data-ui="Tree"]) {
+    width: 320px !important;
+  }
+  
+  /* Large desktop typography */
+  [data-ui="RootTheme"] {
+    font-size: 16px !important;
+  }
+}
+
+/* ===== EXTRA LARGE DESKTOP STYLES (1536px+) ===== */
+@media (min-width: 1536px) {
+  /* Extra large desktop main content */
+  [data-ui="Card"]:not(:has([data-ui="Tree"])) {
+    padding: 64px !important;
+  }
+  
+  /* Extra large desktop dialogs */
+  [data-ui="DialogCard"] {
+    max-width: 1000px !important;
+  }
+}
+
+/* ===== TOUCH DEVICE OPTIMIZATIONS ===== */
+@media (hover: none) and (pointer: coarse) {
+  /* Touch device specific styles */
+  [data-ui="Button"],
+  [data-ui="MenuItem"],
+  [data-ui="TreeItem"] {
+    min-height: 48px !important;
+    min-width: 48px !important;
+  }
+  
+  /* Remove hover effects on touch devices */
+  [data-ui="Button"]:hover,
+  [data-ui="Card"]:hover,
+  [data-ui="Tree"] [data-ui="TreeItem"]:hover {
+    transform: none !important;
+  }
+  
+  /* Larger touch targets for small elements */
+  [data-ui="Checkbox"],
+  [data-ui="Radio"] {
+    width: 24px !important;
+    height: 24px !important;
+  }
+  
+  [data-ui="Switch"] {
+    width: 52px !important;
+    height: 28px !important;
+  }
+  
+  /* Touch-friendly scrollbars */
+  ::-webkit-scrollbar {
+    width: 12px !important;
+    height: 12px !important;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    border-radius: 6px !important;
+  }
+}
+
+/* ===== LANDSCAPE ORIENTATION ADJUSTMENTS ===== */
+@media (orientation: landscape) and (max-height: 600px) {
+  /* Landscape mobile adjustments */
+  [data-ui="Navbar"] {
+    height: 48px !important;
+  }
+  
+  [data-ui="Card"]:has([data-ui="Tree"]) {
+    top: 48px !important;
+    height: calc(100vh - 48px) !important;
+  }
+  
+  [data-ui="DialogCard"] {
+    max-height: calc(100vh - 16px) !important;
+    margin: 8px !important;
+  }
+  
+  /* Reduce padding in landscape */
+  [data-ui="Card"]:not(:has([data-ui="Tree"])) {
+    padding: 12px !important;
+  }
+}
+
+/* ===== HIGH DPI DISPLAYS ===== */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  /* High DPI optimizations */
+  [data-ui="Button"],
+  [data-ui="Card"],
+  [data-ui="DialogCard"] {
+    border-width: 0.5px !important;
+  }
+  
+  /* Sharper shadows on high DPI */
+  [data-ui="DialogCard"] {
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2), 
+                0 5px 10px -5px rgba(0, 0, 0, 0.1) !important;
+  }
+}
+
+/* ===== ACCESSIBILITY ENHANCEMENTS ===== */
+/* Focus indicators for keyboard navigation */
+@media (prefers-reduced-motion: no-preference) {
+  [data-ui="Button"]:focus-visible,
+  [data-ui="MenuItem"]:focus-visible,
+  [data-ui="TreeItem"]:focus-visible {
+    outline: 2px solid var(--atc-primary, #075E68) !important;
+    outline-offset: 2px !important;
+    transition: outline 0.2s ease !important;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  
+  [data-ui="Card"]:has([data-ui="Tree"]) {
+    transition: none !important;
+  }
+  
+  [data-ui="Button"]:hover,
+  [data-ui="Card"]:hover,
+  [data-ui="Tree"] [data-ui="TreeItem"]:hover {
+    transform: none !important;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  [data-ui="Button"],
+  [data-ui="Card"],
+  [data-ui="DialogCard"] {
+    border-width: 2px !important;
+    border-color: currentColor !important;
+  }
+  
+  [data-ui="Button"]:focus,
+  [data-ui="MenuItem"]:focus,
+  [data-ui="TreeItem"]:focus {
+    outline-width: 3px !important;
+    outline-color: currentColor !important;
+  }
+}
+
+/* ===== UTILITY CLASSES FOR RESPONSIVE BEHAVIOR ===== */
+.mobile-only {
+  display: block !important;
+}
+
+.tablet-only,
+.desktop-only {
+  display: none !important;
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .mobile-only,
+  .desktop-only {
+    display: none !important;
+  }
+  
+  .tablet-only {
+    display: block !important;
+  }
+}
+
+@media (min-width: 1024px) {
+  .mobile-only,
+  .tablet-only {
+    display: none !important;
+  }
+  
+  .desktop-only {
+    display: block !important;
+  }
+}
+
+/* Responsive spacing utilities */
+.responsive-padding {
+  padding: 16px !important;
+}
+
+@media (min-width: 768px) {
+  .responsive-padding {
+    padding: 24px !important;
+  }
+}
+
+@media (min-width: 1024px) {
+  .responsive-padding {
+    padding: 32px !important;
+  }
+}
+
+@media (min-width: 1280px) {
+  .responsive-padding {
+    padding: 48px !important;
+  }
+}
+
+/* Responsive text utilities */
+.responsive-text {
+  font-size: 14px !important;
+}
+
+@media (min-width: 768px) {
+  .responsive-text {
+    font-size: 16px !important;
+  }
+}
+
+@media (min-width: 1024px) {
+  .responsive-text {
+    font-size: 16px !important;
+  }
+}
+
+/* ===== PRINT STYLES ===== */
+@media print {
+  /* Hide interactive elements */
+  [data-ui="Button"],
+  [data-ui="Navbar"],
+  [data-ui="Card"]:has([data-ui="Tree"]) {
+    display: none !important;
+  }
+  
+  /* Print-friendly colors */
+  [data-ui="RootTheme"] {
+    background: white !important;
+    color: black !important;
+  }
+  
+  [data-ui="Card"] {
+    background: white !important;
+    border: 1px solid #ccc !important;
+    box-shadow: none !important;
+  }
+  
+  /* Print typography */
+  h1, h2, h3, h4, h5, h6 {
+    color: black !important;
+    page-break-after: avoid !important;
+  }
+  
+  /* Avoid page breaks in content */
+  [data-ui="FormField"],
+  [data-ui="Card"] {
+    page-break-inside: avoid !important;
+  }
+}

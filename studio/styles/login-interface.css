@@ -1,0 +1,375 @@
+/**
+ * Aviation-Branded Login Interface for Sanity Studio
+ * Professional login styling with ATC branding and accessibility
+ */
+
+/* ===== LOGIN PAGE CONTAINER ===== */
+
+/* Target Sanity's login page */
+[data-ui="LoginWrapper"],
+[data-ui="Card"]:has([data-ui="LoginForm"]),
+body:has([data-ui="LoginForm"]) {
+  background: linear-gradient(135deg, #0F172A 0%, #1E293B 50%, #075E68 100%) !important;
+  min-height: 100vh !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-family: 'Roboto', system-ui, sans-serif !important;
+}
+
+/* Login card styling */
+[data-ui="Card"]:has([data-ui="LoginForm"]),
+[data-ui="LoginForm"] {
+  background: rgba(255, 255, 255, 0.95) !important;
+  backdrop-filter: blur(10px) !important;
+  -webkit-backdrop-filter: blur(10px) !important;
+  border-radius: 16px !important;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 
+              0 10px 10px -5px rgba(0, 0, 0, 0.2) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  padding: 48px !important;
+  max-width: 400px !important;
+  width: 100% !important;
+  margin: 24px !important;
+}
+
+/* ===== BRANDING SECTION ===== */
+
+/* Add ATC logo and branding */
+[data-ui="LoginForm"]::before {
+  content: "" !important;
+  display: block !important;
+  width: 80px !important;
+  height: 80px !important;
+  background-image: url('/AVIATORS_TRAINING_CENTRE_LOGO_DarkMode.png') !important;
+  background-size: contain !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+  margin: 0 auto 24px auto !important;
+}
+
+/* Add company name */
+[data-ui="LoginForm"]::after {
+  content: "Aviators Training Centre" !important;
+  display: block !important;
+  text-align: center !important;
+  font-family: 'Montserrat', system-ui, sans-serif !important;
+  font-size: 24px !important;
+  font-weight: 700 !important;
+  color: #075E68 !important;
+  margin-bottom: 8px !important;
+}
+
+/* Add subtitle */
+[data-ui="LoginForm"] > *:first-child::before {
+  content: "Content Management System" !important;
+  display: block !important;
+  text-align: center !important;
+  font-family: 'Roboto', system-ui, sans-serif !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  color: #6B7280 !important;
+  margin-bottom: 32px !important;
+}
+
+/* ===== LOGIN FORM STYLING ===== */
+
+/* Form title */
+[data-ui="LoginForm"] [data-ui="Heading"],
+[data-ui="LoginForm"] h1,
+[data-ui="LoginForm"] h2 {
+  color: #075E68 !important;
+  font-family: 'Montserrat', system-ui, sans-serif !important;
+  font-size: 20px !important;
+  font-weight: 600 !important;
+  text-align: center !important;
+  margin-bottom: 24px !important;
+}
+
+/* Form description text */
+[data-ui="LoginForm"] [data-ui="Text"],
+[data-ui="LoginForm"] p {
+  color: #4B5563 !important;
+  font-family: 'Roboto', system-ui, sans-serif !important;
+  font-size: 14px !important;
+  line-height: 1.5 !important;
+  text-align: center !important;
+  margin-bottom: 24px !important;
+}
+
+/* ===== LOGIN PROVIDER BUTTONS ===== */
+
+/* All login provider buttons */
+[data-ui="LoginForm"] [data-ui="Button"],
+[data-ui="LoginForm"] button {
+  background: white !important;
+  border: 2px solid #E5E7EB !important;
+  border-radius: 12px !important;
+  color: #374151 !important;
+  font-family: 'Roboto', system-ui, sans-serif !important;
+  font-size: 16px !important;
+  font-weight: 500 !important;
+  padding: 16px 24px !important;
+  width: 100% !important;
+  margin-bottom: 12px !important;
+  min-height: 56px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 12px !important;
+  transition: all 0.2s ease !important;
+  cursor: pointer !important;
+}
+
+/* Hover states for login buttons */
+[data-ui="LoginForm"] [data-ui="Button"]:hover,
+[data-ui="LoginForm"] button:hover {
+  background: #F9FAFB !important;
+  border-color: #075E68 !important;
+  color: #075E68 !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 4px 12px rgba(7, 94, 104, 0.15) !important;
+}
+
+/* Focus states for accessibility */
+[data-ui="LoginForm"] [data-ui="Button"]:focus,
+[data-ui="LoginForm"] button:focus {
+  outline: 2px solid #075E68 !important;
+  outline-offset: 2px !important;
+  border-color: #075E68 !important;
+}
+
+/* Primary login button (if any) */
+[data-ui="LoginForm"] [data-ui="Button"][data-tone="primary"],
+[data-ui="LoginForm"] button[data-primary="true"] {
+  background: linear-gradient(135deg, #075E68 0%, #219099 100%) !important;
+  border-color: #075E68 !important;
+  color: white !important;
+}
+
+[data-ui="LoginForm"] [data-ui="Button"][data-tone="primary"]:hover,
+[data-ui="LoginForm"] button[data-primary="true"]:hover {
+  background: linear-gradient(135deg, #0C6E72 0%, #56A7B0 100%) !important;
+  border-color: #0C6E72 !important;
+  color: white !important;
+  box-shadow: 0 4px 12px rgba(7, 94, 104, 0.3) !important;
+}
+
+/* ===== PROVIDER-SPECIFIC STYLING ===== */
+
+/* Google login button */
+[data-ui="Button"]:has([data-sanity-icon="google"]),
+button:has([alt*="Google"]),
+button[aria-label*="Google"] {
+  border-color: #EA4335 !important;
+}
+
+[data-ui="Button"]:has([data-sanity-icon="google"]):hover,
+button:has([alt*="Google"]):hover,
+button[aria-label*="Google"]:hover {
+  border-color: #EA4335 !important;
+  background: rgba(234, 67, 53, 0.05) !important;
+}
+
+/* GitHub login button */
+[data-ui="Button"]:has([data-sanity-icon="github"]),
+button:has([alt*="GitHub"]),
+button[aria-label*="GitHub"] {
+  border-color: #24292e !important;
+}
+
+[data-ui="Button"]:has([data-sanity-icon="github"]):hover,
+button:has([alt*="GitHub"]):hover,
+button[aria-label*="GitHub"]:hover {
+  border-color: #24292e !important;
+  background: rgba(36, 41, 46, 0.05) !important;
+}
+
+/* Email/Password login button */
+[data-ui="Button"]:has([data-sanity-icon="envelope"]),
+button:has([alt*="email"]),
+button[aria-label*="email"] {
+  border-color: #075E68 !important;
+}
+
+[data-ui="Button"]:has([data-sanity-icon="envelope"]):hover,
+button:has([alt*="email"]):hover,
+button[aria-label*="email"]:hover {
+  border-color: #075E68 !important;
+  background: rgba(7, 94, 104, 0.05) !important;
+  color: #075E68 !important;
+}
+
+/* ===== FORM INPUTS (if any) ===== */
+
+/* Email and password inputs */
+[data-ui="LoginForm"] [data-ui="TextInput"],
+[data-ui="LoginForm"] input[type="email"],
+[data-ui="LoginForm"] input[type="password"] {
+  background: white !important;
+  border: 2px solid #E5E7EB !important;
+  border-radius: 8px !important;
+  color: #374151 !important;
+  font-family: 'Roboto', system-ui, sans-serif !important;
+  font-size: 16px !important;
+  padding: 16px !important;
+  width: 100% !important;
+  margin-bottom: 16px !important;
+  min-height: 56px !important;
+  transition: all 0.2s ease !important;
+}
+
+[data-ui="LoginForm"] [data-ui="TextInput"]:focus,
+[data-ui="LoginForm"] input[type="email"]:focus,
+[data-ui="LoginForm"] input[type="password"]:focus {
+  border-color: #075E68 !important;
+  box-shadow: 0 0 0 3px rgba(7, 94, 104, 0.1) !important;
+  outline: none !important;
+}
+
+/* Input labels */
+[data-ui="LoginForm"] [data-ui="Label"],
+[data-ui="LoginForm"] label {
+  color: #374151 !important;
+  font-family: 'Roboto', system-ui, sans-serif !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  margin-bottom: 8px !important;
+  display: block !important;
+}
+
+/* ===== FOOTER LINKS ===== */
+
+/* Footer links and text */
+[data-ui="LoginForm"] a,
+[data-ui="LoginForm"] [data-ui="Link"] {
+  color: #075E68 !important;
+  font-family: 'Roboto', system-ui, sans-serif !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  text-decoration: none !important;
+  transition: all 0.2s ease !important;
+}
+
+[data-ui="LoginForm"] a:hover,
+[data-ui="LoginForm"] [data-ui="Link"]:hover {
+  color: #219099 !important;
+  text-decoration: underline !important;
+}
+
+/* Sanity branding at bottom */
+[data-ui="LoginForm"] + * {
+  text-align: center !important;
+  margin-top: 24px !important;
+}
+
+[data-ui="LoginForm"] + * a {
+  color: rgba(255, 255, 255, 0.7) !important;
+  font-size: 12px !important;
+}
+
+[data-ui="LoginForm"] + * a:hover {
+  color: rgba(255, 255, 255, 0.9) !important;
+}
+
+/* ===== RESPONSIVE DESIGN ===== */
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+  [data-ui="Card"]:has([data-ui="LoginForm"]),
+  [data-ui="LoginForm"] {
+    padding: 32px 24px !important;
+    margin: 16px !important;
+    border-radius: 12px !important;
+  }
+  
+  [data-ui="LoginForm"]::before {
+    width: 60px !important;
+    height: 60px !important;
+    margin-bottom: 16px !important;
+  }
+  
+  [data-ui="LoginForm"]::after {
+    font-size: 20px !important;
+  }
+  
+  [data-ui="LoginForm"] [data-ui="Button"],
+  [data-ui="LoginForm"] button {
+    min-height: 48px !important;
+    font-size: 15px !important;
+  }
+}
+
+/* Tablet adjustments */
+@media (min-width: 769px) and (max-width: 1023px) {
+  [data-ui="Card"]:has([data-ui="LoginForm"]),
+  [data-ui="LoginForm"] {
+    max-width: 360px !important;
+  }
+}
+
+/* ===== ACCESSIBILITY ENHANCEMENTS ===== */
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  [data-ui="LoginForm"] [data-ui="Button"],
+  [data-ui="LoginForm"] button {
+    border-width: 3px !important;
+  }
+  
+  [data-ui="LoginForm"] [data-ui="Button"]:focus,
+  [data-ui="LoginForm"] button:focus {
+    outline-width: 3px !important;
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  [data-ui="LoginForm"] [data-ui="Button"],
+  [data-ui="LoginForm"] button,
+  [data-ui="LoginForm"] [data-ui="TextInput"],
+  [data-ui="LoginForm"] input {
+    transition: none !important;
+  }
+  
+  [data-ui="LoginForm"] [data-ui="Button"]:hover,
+  [data-ui="LoginForm"] button:hover {
+    transform: none !important;
+  }
+}
+
+/* ===== LOADING STATES ===== */
+
+/* Loading spinner styling */
+[data-ui="LoginForm"] [data-ui="Spinner"] {
+  color: #075E68 !important;
+}
+
+/* Loading button state */
+[data-ui="LoginForm"] [data-ui="Button"][data-loading="true"],
+[data-ui="LoginForm"] button[disabled] {
+  opacity: 0.6 !important;
+  cursor: not-allowed !important;
+  transform: none !important;
+}
+
+/* ===== ERROR STATES ===== */
+
+/* Error messages */
+[data-ui="LoginForm"] [data-ui="Text"][data-tone="critical"],
+[data-ui="LoginForm"] .error-message {
+  background: rgba(220, 38, 38, 0.1) !important;
+  border: 1px solid #DC2626 !important;
+  border-radius: 8px !important;
+  color: #DC2626 !important;
+  font-size: 14px !important;
+  padding: 12px 16px !important;
+  margin-bottom: 16px !important;
+}
+
+/* Error input states */
+[data-ui="LoginForm"] [data-ui="TextInput"][data-invalid="true"],
+[data-ui="LoginForm"] input[aria-invalid="true"] {
+  border-color: #DC2626 !important;
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1) !important;
+}

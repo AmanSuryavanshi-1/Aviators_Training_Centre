@@ -1,0 +1,383 @@
+/**
+ * Enhanced Dialog and Modal System
+ * Comprehensive fixes for delete confirmation overlay transparency and z-index issues
+ * Includes accessibility improvements and responsive design
+ */
+
+/* Import theme configuration */
+@import url('./theme-config.css');
+
+/* ===== ENHANCED DIALOG BACKDROP AND OVERLAY SYSTEM ===== */
+
+/* Fix dialog backdrop transparency - ensure proper z-index stacking */
+[data-ui="Portal"] {
+  z-index: var(--atc-z-modal-backdrop) !important;
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+}
+
+/* Enhanced dialog backdrop with proper opacity and blur - CRITICAL FIX */
+[data-ui="Portal"] > div[style*="position: fixed"],
+[data-ui="Portal"] > div[data-ui="Backdrop"],
+[data-ui="Portal"] > div {
+  background-color: rgba(15, 23, 42, 0.85) !important;
+  backdrop-filter: blur(8px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(8px) saturate(180%) !important;
+  z-index: var(--atc-z-modal-backdrop) !important;
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: var(--atc-spacing-md) !important;
+  animation: backdropFadeIn var(--atc-transition-normal) ease-out !important;
+}
+
+/* Force backdrop visibility for all portal overlays */
+[data-ui="Portal"] {
+  background-color: rgba(15, 23, 42, 0.85) !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
+}
+
+/* Ensure dialog container has correct z-index and positioning */
+[data-ui="Dialog"] {
+  z-index: var(--atc-z-modal) !important;
+  position: relative !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-height: 100vh !important;
+  padding: var(--atc-spacing-md) !important;
+}
+
+/* Enhanced dialog card styling with proper contrast and visibility */
+[data-ui="DialogCard"] {
+  background-color: var(--atc-surface-elevated) !important;
+  border: 1px solid var(--atc-border-light) !important;
+  border-radius: var(--atc-radius-xl) !important;
+  box-shadow: var(--atc-shadow-2xl) !important;
+  color: var(--atc-text) !important;
+  max-width: min(90vw, 600px) !important;
+  max-height: min(90vh, 800px) !important;
+  overflow: hidden !important;
+  position: relative !important;
+  animation: dialogSlideIn var(--atc-transition-normal) ease-out !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+/* Dialog content scrolling */
+[data-ui="DialogCard"] > div {
+  overflow-y: auto !important;
+  flex: 1 !important;
+}
+
+/* Dialog header styling */
+[data-ui="DialogCard"] [data-ui="DialogHeader"] {
+  background-color: transparent !important;
+  border-bottom: 1px solid var(--atc-border) !important;
+  padding: var(--atc-spacing-lg) !important;
+}
+
+/* Dialog content text with proper contrast */
+[data-ui="DialogCard"] [data-ui="Text"],
+[data-ui="DialogCard"] p,
+[data-ui="DialogCard"] span {
+  color: var(--atc-text) !important;
+  line-height: 1.6 !important;
+}
+
+/* Dialog headings */
+[data-ui="DialogCard"] h1,
+[data-ui="DialogCard"] h2,
+[data-ui="DialogCard"] h3 {
+  color: var(--atc-text) !important;
+  font-family: var(--atc-heading-family) !important;
+  font-weight: 600 !important;
+}
+
+/* Dialog footer with proper spacing */
+[data-ui="DialogCard"] [data-ui="DialogFooter"] {
+  background-color: transparent !important;
+  border-top: 1px solid var(--atc-border) !important;
+  padding: var(--atc-spacing-lg) !important;
+  display: flex !important;
+  gap: var(--atc-spacing-sm) !important;
+  justify-content: flex-end !important;
+}
+
+/* ===== DIALOG BUTTON STYLING ===== */
+
+/* Primary dialog buttons */
+[data-ui="DialogCard"] [data-ui="Button"][data-tone="primary"] {
+  background-color: var(--atc-primary) !important;
+  color: white !important;
+  border: 1px solid var(--atc-primary-dark) !important;
+  border-radius: var(--atc-border-radius) !important;
+  font-weight: 600 !important;
+  padding: 12px 24px !important;
+  transition: all 0.2s ease !important;
+}
+
+[data-ui="DialogCard"] [data-ui="Button"][data-tone="primary"]:hover {
+  background-color: var(--atc-secondary) !important;
+  border-color: var(--atc-tertiary) !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 4px 12px rgba(7, 94, 104, 0.3) !important;
+}
+
+/* Critical/Delete dialog buttons */
+[data-ui="DialogCard"] [data-ui="Button"][data-tone="critical"] {
+  background-color: var(--atc-error) !important;
+  color: white !important;
+  border: 1px solid hsl(0, 84%, 50%) !important;
+  border-radius: var(--atc-border-radius) !important;
+  font-weight: 600 !important;
+  padding: 12px 24px !important;
+  transition: all 0.2s ease !important;
+}
+
+[data-ui="DialogCard"] [data-ui="Button"][data-tone="critical"]:hover {
+  background-color: hsl(0, 84%, 55%) !important;
+  border-color: hsl(0, 84%, 45%) !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3) !important;
+}
+
+/* Secondary/Cancel dialog buttons */
+[data-ui="DialogCard"] [data-ui="Button"][data-tone="default"] {
+  background-color: var(--atc-surface) !important;
+  color: var(--atc-text) !important;
+  border: 1px solid var(--atc-border) !important;
+  border-radius: var(--atc-border-radius) !important;
+  font-weight: 500 !important;
+  padding: 12px 24px !important;
+  transition: all 0.2s ease !important;
+}
+
+[data-ui="DialogCard"] [data-ui="Button"][data-tone="default"]:hover {
+  background-color: var(--atc-surface-elevated) !important;
+  border-color: var(--atc-tertiary) !important;
+  color: var(--atc-text) !important;
+}
+
+/* ===== DIALOG CLOSE BUTTON ===== */
+
+/* Dialog close button (X) */
+[data-ui="DialogCard"] [data-ui="Button"][aria-label*="Close"] {
+  background-color: transparent !important;
+  color: var(--atc-text-muted) !important;
+  border: none !important;
+  border-radius: 50% !important;
+  width: 32px !important;
+  height: 32px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  transition: all 0.2s ease !important;
+}
+
+[data-ui="DialogCard"] [data-ui="Button"][aria-label*="Close"]:hover {
+  background-color: var(--atc-hover) !important;
+  color: var(--atc-text) !important;
+}
+
+/* ===== ACCESSIBILITY IMPROVEMENTS ===== */
+
+/* Focus states for dialog elements */
+[data-ui="DialogCard"] [data-ui="Button"]:focus-visible {
+  outline: 2px solid var(--atc-focus) !important;
+  outline-offset: 2px !important;
+}
+
+/* Ensure dialog is announced to screen readers */
+[data-ui="Dialog"][role="dialog"] {
+  /* Already has proper ARIA attributes from Sanity */
+}
+
+/* ===== RESPONSIVE DIALOG BEHAVIOR ===== */
+
+/* Mobile dialog adjustments */
+@media (max-width: 768px) {
+  [data-ui="DialogCard"] {
+    margin: var(--atc-spacing-md) !important;
+    max-width: calc(100vw - 32px) !important;
+    max-height: calc(100vh - 32px) !important;
+  }
+  
+  [data-ui="DialogCard"] [data-ui="DialogFooter"] {
+    flex-direction: column !important;
+    gap: var(--atc-spacing-sm) !important;
+  }
+  
+  [data-ui="DialogCard"] [data-ui="Button"] {
+    width: 100% !important;
+    justify-content: center !important;
+  }
+}
+
+/* ===== ENHANCED ANIMATION SYSTEM ===== */
+
+/* Backdrop fade-in animation */
+@keyframes backdropFadeIn {
+  from {
+    opacity: 0;
+    backdrop-filter: blur(0px);
+    -webkit-backdrop-filter: blur(0px);
+  }
+  to {
+    opacity: 1;
+    backdrop-filter: blur(8px) saturate(180%);
+    -webkit-backdrop-filter: blur(8px) saturate(180%);
+  }
+}
+
+/* Enhanced dialog slide-in animation */
+@keyframes dialogSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-32px) scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Dialog exit animation */
+@keyframes dialogSlideOut {
+  from {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-32px) scale(0.92);
+  }
+}
+
+/* Backdrop fade-out animation */
+@keyframes backdropFadeOut {
+  from {
+    opacity: 1;
+    backdrop-filter: blur(8px) saturate(180%);
+    -webkit-backdrop-filter: blur(8px) saturate(180%);
+  }
+  to {
+    opacity: 0;
+    backdrop-filter: blur(0px);
+    -webkit-backdrop-filter: blur(0px);
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  [data-ui="Portal"] > div[style*="position: fixed"],
+  [data-ui="DialogCard"] {
+    animation: none !important;
+  }
+  
+  [data-ui="Portal"] > div[style*="position: fixed"] {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+}
+
+/* ===== SPECIFIC DELETE CONFIRMATION FIXES ===== */
+
+/* Delete confirmation dialog specific styling - CRITICAL VISIBILITY FIX */
+[data-ui="Dialog"][aria-labelledby*="delete" i],
+[data-ui="Dialog"][aria-describedby*="delete" i],
+[data-ui="Dialog"]:has([data-tone="critical"]) {
+  /* Force maximum visibility for delete dialogs */
+  z-index: var(--atc-z-modal) !important;
+}
+
+/* Enhanced delete dialog card with maximum contrast */
+[data-ui="DialogCard"]:has([data-tone="critical"]),
+[data-ui="DialogCard"]:has([aria-label*="delete" i]),
+[data-ui="DialogCard"]:has([title*="delete" i]) {
+  background-color: var(--atc-surface-elevated) !important;
+  border: 2px solid var(--atc-error) !important;
+  border-left: 4px solid var(--atc-error) !important;
+  box-shadow: var(--atc-shadow-2xl), 0 0 0 1px rgba(220, 38, 38, 0.2) !important;
+  /* Ensure minimum contrast ratio of 4.5:1 */
+  color: var(--atc-text) !important;
+}
+
+/* Force visibility for delete dialog text */
+[data-ui="DialogCard"]:has([data-tone="critical"]) [data-ui="Text"],
+[data-ui="DialogCard"]:has([data-tone="critical"]) p,
+[data-ui="DialogCard"]:has([data-tone="critical"]) span,
+[data-ui="DialogCard"]:has([data-tone="critical"]) h1,
+[data-ui="DialogCard"]:has([data-tone="critical"]) h2,
+[data-ui="DialogCard"]:has([data-tone="critical"]) h3 {
+  color: var(--atc-text) !important;
+  font-weight: 500 !important;
+  opacity: 1 !important;
+}
+
+/* Warning icon styling in delete dialogs */
+[data-ui="DialogCard"]:has([data-tone="critical"])::before {
+  content: "⚠️ DELETE CONFIRMATION" !important;
+  display: block !important;
+  background-color: var(--atc-error) !important;
+  color: white !important;
+  padding: var(--atc-spacing-sm) var(--atc-spacing-md) !important;
+  font-size: var(--atc-text-sm) !important;
+  font-weight: 600 !important;
+  text-align: center !important;
+  border-radius: var(--atc-radius-xl) var(--atc-radius-xl) 0 0 !important;
+  margin: -1px -1px var(--atc-spacing-md) -1px !important;
+}
+
+/* Ensure delete buttons are always visible */
+[data-ui="DialogCard"] [data-ui="Button"][data-tone="critical"] {
+  background-color: var(--atc-error) !important;
+  color: white !important;
+  border: 2px solid #B91C1C !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+  min-height: 44px !important;
+  box-shadow: var(--atc-shadow-lg) !important;
+}
+
+[data-ui="DialogCard"] [data-ui="Button"][data-tone="critical"]:hover {
+  background-color: #B91C1C !important;
+  border-color: #991B1B !important;
+  transform: translateY(-2px) !important;
+  box-shadow: var(--atc-shadow-xl) !important;
+}
+
+/* Force backdrop for delete dialogs */
+[data-ui="Portal"]:has([data-tone="critical"]) {
+  background-color: rgba(15, 23, 42, 0.9) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+}
+
+/* Additional targeting for Sanity's delete dialogs */
+[data-ui="Dialog"]:has([data-testid*="delete"]),
+[data-ui="Dialog"]:has([data-testid*="remove"]),
+[data-ui="Dialog"]:has([aria-label*="Delete"]),
+[data-ui="Dialog"]:has([aria-label*="Remove"]) {
+  z-index: var(--atc-z-modal) !important;
+}
+
+[data-ui="Dialog"]:has([data-testid*="delete"]) [data-ui="DialogCard"],
+[data-ui="Dialog"]:has([data-testid*="remove"]) [data-ui="DialogCard"],
+[data-ui="Dialog"]:has([aria-label*="Delete"]) [data-ui="DialogCard"],
+[data-ui="Dialog"]:has([aria-label*="Remove"]) [data-ui="DialogCard"] {
+  background-color: var(--atc-surface-elevated) !important;
+  border: 2px solid var(--atc-error) !important;
+  box-shadow: var(--atc-shadow-2xl) !important;
+  opacity: 1 !important;
+}

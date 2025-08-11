@@ -1,0 +1,113 @@
+/* studio/styles/fixes/navbar-buttons.css */
+/* Scoped fixes for navbar/button regressions from Phase B */
+
+/* Fix topbar positioning and z-index */
+.atc-fix-topbar,
+[data-ui="NavbarLayout"],
+.atc-navbar-container {
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 1100 !important; /* header above content */
+  background: var(--sanity-color-bg, #0a1a1d) !important; /* opaque */
+  min-height: 49px !important;
+  height: 49px !important;
+}
+
+/* Ensure all navbar elements have pointer events */
+.atc-fix-topbar *,
+[data-ui="NavbarLayout"] *,
+.atc-navbar-container * {
+  pointer-events: auto !important;
+}
+
+/* Prevent parent transforms/overflow from breaking sticky */
+.atc-fix-root,
+[data-ui="RootLayout"] {
+  transform: none !important;
+  overflow: visible !important;
+}
+
+/* Restore button visibility & touch targets - navbar specific */
+.atc-fix-button,
+.atc-fix-topbar button,
+[data-ui="NavbarLayout"] button,
+[data-ui="NavbarLayout"] [data-ui="Button"] {
+  min-height: 32px !important; /* Override responsive 44px for navbar */
+  min-width: 32px !important;
+  padding: 0 12px !important;
+  pointer-events: auto !important;
+  opacity: 1 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  box-sizing: border-box !important;
+}
+
+/* Icon buttons specific sizing */
+[data-ui="NavbarLayout"] [data-ui="Button"][data-mode="ghost"] {
+  min-width: 32px !important;
+  width: 32px !important;
+  padding: 0 !important;
+}
+
+/* Focus states */
+.atc-fix-button:focus,
+[data-ui="NavbarLayout"] button:focus,
+[data-ui="NavbarLayout"] [data-ui="Button"]:focus {
+  outline: 3px solid rgba(7,94,104,0.25) !important;
+  outline-offset: 2px !important;
+}
+
+/* Fix hover states that may be broken */
+[data-ui="NavbarLayout"] button:hover,
+[data-ui="NavbarLayout"] [data-ui="Button"]:hover {
+  opacity: 1 !important;
+  pointer-events: auto !important;
+  visibility: visible !important;
+}
+
+/* Ensure navbar doesn't get affected by mobile transforms */
+@media (max-width: 768px) {
+  [data-ui="NavbarLayout"] {
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 1100 !important;
+    transform: none !important;
+  }
+  
+  /* Mobile button sizing - slightly larger but not 44px */
+  [data-ui="NavbarLayout"] button,
+  [data-ui="NavbarLayout"] [data-ui="Button"] {
+    min-height: 36px !important;
+  }
+  
+  [data-ui="NavbarLayout"] [data-ui="Button"][data-mode="ghost"] {
+    width: 36px !important;
+    min-width: 36px !important;
+  }
+}
+
+/* Fix any dropdown menus that might be affected */
+[data-ui="NavbarLayout"] [data-ui="Menu"] {
+  z-index: 1200 !important;
+  pointer-events: auto !important;
+}
+
+[data-ui="NavbarLayout"] [data-ui="MenuItem"] {
+  pointer-events: auto !important;
+  opacity: 1 !important;
+}
+
+/* Ensure publish button specifically works */
+[data-ui="NavbarLayout"] [data-ui="Button"][data-tone="primary"] {
+  background-color: #075e68 !important;
+  color: #f0f9ff !important;
+  border: 1px solid #0c6e72 !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+}
+
+[data-ui="NavbarLayout"] [data-ui="Button"][data-tone="primary"]:hover {
+  background-color: #219099 !important;
+  border-color: #56a7b0 !important;
+}

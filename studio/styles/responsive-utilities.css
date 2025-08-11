@@ -1,0 +1,445 @@
+/**
+ * Responsive Utilities for Sanity Studio
+ * Mobile-first responsive design utilities and breakpoint management
+ */
+
+/* ===== RESPONSIVE BREAKPOINT SYSTEM ===== */
+/* Mobile-first approach with progressive enhancement */
+
+/* Base styles (mobile-first) */
+:root {
+  --mobile-padding: var(--atc-spacing-md);
+  --mobile-font-size: var(--atc-text-sm);
+  --mobile-line-height: var(--atc-leading-normal);
+}
+
+/* ===== MOBILE STYLES (default) ===== */
+/* Mobile-optimized layout */
+@media (max-width: 767px) {
+  /* Studio root adjustments */
+  [data-ui="RootTheme"] {
+    font-size: var(--mobile-font-size) !important;
+    line-height: var(--mobile-line-height) !important;
+  }
+  
+  /* Mobile navigation */
+  [data-ui="Navbar"] {
+    height: 56px !important;
+    padding: 0 var(--mobile-padding) !important;
+    position: sticky !important;
+    top: 0 !important;
+    z-index: var(--atc-z-sticky) !important;
+  }
+  
+  /* Mobile sidebar - full overlay */
+  [data-ui="Card"]:has([data-ui="Tree"]) {
+    position: fixed !important;
+    top: 56px !important;
+    left: -100% !important;
+    width: 100% !important;
+    height: calc(100vh - 56px) !important;
+    z-index: var(--atc-z-modal) !important;
+    transition: left var(--atc-transition-normal) !important;
+    box-shadow: var(--atc-shadow-xl) !important;
+  }
+  
+  /* Mobile sidebar open state */
+  [data-ui="Card"]:has([data-ui="Tree"]).mobile-sidebar-open {
+    left: 0 !important;
+  }
+  
+  /* Mobile main content */
+  [data-ui="Card"]:not(:has([data-ui="Tree"])) {
+    width: 100% !important;
+    padding: var(--mobile-padding) !important;
+    margin: 0 !important;
+  }
+  
+  /* Mobile buttons - touch-friendly */
+  [data-ui="Button"] {
+    min-height: 44px !important;
+    min-width: 44px !important;
+    padding: var(--atc-spacing-sm) var(--atc-spacing-md) !important;
+    font-size: var(--atc-text-base) !important;
+    touch-action: manipulation !important;
+  }
+  
+  /* Mobile inputs - prevent zoom */
+  [data-ui="TextInput"],
+  [data-ui="TextArea"],
+  [data-ui="Select"],
+  input,
+  textarea,
+  select {
+    min-height: 44px !important;
+    font-size: 16px !important; /* Prevents iOS zoom */
+    padding: var(--atc-spacing-sm) var(--atc-spacing-md) !important;
+  }
+  
+  /* Mobile dialogs */
+  [data-ui="DialogCard"] {
+    margin: var(--atc-spacing-sm) !important;
+    max-width: calc(100vw - 32px) !important;
+    max-height: calc(100vh - 32px) !important;
+    border-radius: var(--atc-radius-lg) !important;
+  }
+  
+  /* Mobile dialog buttons */
+  [data-ui="DialogCard"] [data-ui="DialogFooter"] {
+    flex-direction: column !important;
+    gap: var(--atc-spacing-sm) !important;
+    padding: var(--atc-spacing-md) !important;
+  }
+  
+  [data-ui="DialogCard"] [data-ui="Button"] {
+    width: 100% !important;
+    justify-content: center !important;
+    order: 2 !important;
+  }
+  
+  [data-ui="DialogCard"] [data-ui="Button"][data-tone="primary"] {
+    order: 1 !important;
+  }
+  
+  /* Mobile tree items */
+  [data-ui="Tree"] [data-ui="TreeItem"] {
+    padding: var(--atc-spacing-md) !important;
+    font-size: var(--atc-text-base) !important;
+    min-height: 44px !important;
+    display: flex !important;
+    align-items: center !important;
+  }
+  
+  /* Mobile menu items */
+  [data-ui="MenuItem"] {
+    padding: var(--atc-spacing-md) !important;
+    font-size: var(--atc-text-base) !important;
+    min-height: 44px !important;
+  }
+  
+  /* Mobile tabs */
+  [data-ui="Tab"] {
+    padding: var(--atc-spacing-md) !important;
+    font-size: var(--atc-text-base) !important;
+    min-height: 44px !important;
+  }
+  
+  /* Mobile form fields */
+  [data-ui="FormField"] {
+    margin-bottom: var(--atc-spacing-lg) !important;
+  }
+  
+  [data-ui="Label"] {
+    font-size: var(--atc-text-base) !important;
+    margin-bottom: var(--atc-spacing-sm) !important;
+  }
+  
+  /* Mobile cards */
+  [data-ui="Card"] {
+    margin-bottom: var(--atc-spacing-md) !important;
+    border-radius: var(--atc-radius-lg) !important;
+  }
+  
+  /* Mobile typography */
+  h1 { font-size: var(--atc-text-2xl) !important; }
+  h2 { font-size: var(--atc-text-xl) !important; }
+  h3 { font-size: var(--atc-text-lg) !important; }
+  h4 { font-size: var(--atc-text-base) !important; }
+  h5 { font-size: var(--atc-text-base) !important; }
+  h6 { font-size: var(--atc-text-sm) !important; }
+}
+
+/* ===== TABLET STYLES ===== */
+@media (min-width: 768px) and (max-width: 1023px) {
+  /* Tablet sidebar - collapsed */
+  [data-ui="Card"]:has([data-ui="Tree"]) {
+    width: 80px !important;
+    position: relative !important;
+    left: auto !important;
+    height: auto !important;
+    min-height: calc(100vh - 64px) !important;
+  }
+  
+  /* Hide text in collapsed sidebar */
+  [data-ui="Tree"] [data-ui="TreeItem"] span:not(:first-child) {
+    display: none !important;
+  }
+  
+  /* Center icons in collapsed sidebar */
+  [data-ui="Tree"] [data-ui="TreeItem"] {
+    justify-content: center !important;
+    padding: var(--atc-spacing-md) var(--atc-spacing-sm) !important;
+  }
+  
+  /* Tablet main content */
+  [data-ui="Card"]:not(:has([data-ui="Tree"])) {
+    flex: 1 !important;
+    padding: var(--atc-spacing-lg) !important;
+  }
+  
+  /* Tablet dialogs */
+  [data-ui="DialogCard"] {
+    max-width: 600px !important;
+    margin: var(--atc-spacing-lg) !important;
+  }
+  
+  /* Tablet buttons */
+  [data-ui="Button"] {
+    min-height: 40px !important;
+    padding: var(--atc-spacing-sm) var(--atc-spacing-lg) !important;
+  }
+  
+  /* Tablet inputs */
+  [data-ui="TextInput"],
+  [data-ui="TextArea"],
+  [data-ui="Select"],
+  input,
+  textarea,
+  select {
+    min-height: 40px !important;
+    font-size: var(--atc-text-base) !important;
+  }
+}
+
+/* ===== DESKTOP STYLES ===== */
+@media (min-width: 1024px) {
+  /* Desktop sidebar - full width */
+  [data-ui="Card"]:has([data-ui="Tree"]) {
+    width: var(--atc-sidebar-width) !important;
+    position: relative !important;
+    left: auto !important;
+    height: auto !important;
+    min-height: calc(100vh - 64px) !important;
+  }
+  
+  /* Desktop main content */
+  [data-ui="Card"]:not(:has([data-ui="Tree"])) {
+    flex: 1 !important;
+    padding: var(--atc-spacing-xl) !important;
+  }
+  
+  /* Desktop dialogs */
+  [data-ui="DialogCard"] {
+    max-width: 800px !important;
+    margin: var(--atc-spacing-xl) !important;
+  }
+  
+  /* Desktop hover effects */
+  [data-ui="Button"]:hover {
+    transform: translateY(-1px) !important;
+  }
+  
+  [data-ui="Card"]:hover {
+    transform: translateY(-2px) !important;
+  }
+  
+  [data-ui="Tree"] [data-ui="TreeItem"]:hover {
+    transform: translateX(4px) !important;
+  }
+}
+
+/* ===== LARGE DESKTOP STYLES ===== */
+@media (min-width: 1280px) {
+  /* Large desktop main content */
+  [data-ui="Card"]:not(:has([data-ui="Tree"])) {
+    padding: var(--atc-spacing-2xl) !important;
+  }
+  
+  /* Large desktop dialogs */
+  [data-ui="DialogCard"] {
+    max-width: 900px !important;
+  }
+  
+  /* Large desktop typography */
+  [data-ui="RootTheme"] {
+    font-size: var(--atc-text-lg) !important;
+  }
+}
+
+/* ===== EXTRA LARGE DESKTOP STYLES ===== */
+@media (min-width: 1536px) {
+  /* Extra large desktop sidebar */
+  [data-ui="Card"]:has([data-ui="Tree"]) {
+    width: 320px !important;
+  }
+  
+  /* Extra large desktop main content */
+  [data-ui="Card"]:not(:has([data-ui="Tree"])) {
+    padding: var(--atc-spacing-3xl) !important;
+  }
+  
+  /* Extra large desktop dialogs */
+  [data-ui="DialogCard"] {
+    max-width: 1000px !important;
+  }
+}
+
+/* ===== RESPONSIVE UTILITIES ===== */
+/* Show/hide utilities */
+.mobile-only {
+  display: block !important;
+}
+
+.tablet-only,
+.desktop-only {
+  display: none !important;
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .mobile-only,
+  .desktop-only {
+    display: none !important;
+  }
+  
+  .tablet-only {
+    display: block !important;
+  }
+}
+
+@media (min-width: 1024px) {
+  .mobile-only,
+  .tablet-only {
+    display: none !important;
+  }
+  
+  .desktop-only {
+    display: block !important;
+  }
+}
+
+/* Responsive spacing */
+.responsive-padding {
+  padding: var(--mobile-padding) !important;
+}
+
+@media (min-width: 768px) {
+  .responsive-padding {
+    padding: var(--atc-spacing-lg) !important;
+  }
+}
+
+@media (min-width: 1024px) {
+  .responsive-padding {
+    padding: var(--atc-spacing-xl) !important;
+  }
+}
+
+@media (min-width: 1280px) {
+  .responsive-padding {
+    padding: var(--atc-spacing-2xl) !important;
+  }
+}
+
+/* Responsive text sizes */
+.responsive-text {
+  font-size: var(--mobile-font-size) !important;
+}
+
+@media (min-width: 768px) {
+  .responsive-text {
+    font-size: var(--atc-text-base) !important;
+  }
+}
+
+@media (min-width: 1024px) {
+  .responsive-text {
+    font-size: var(--atc-text-lg) !important;
+  }
+}
+
+/* ===== TOUCH DEVICE OPTIMIZATIONS ===== */
+@media (hover: none) and (pointer: coarse) {
+  /* Touch device specific styles */
+  [data-ui="Button"],
+  [data-ui="MenuItem"],
+  [data-ui="TreeItem"] {
+    min-height: 44px !important;
+    min-width: 44px !important;
+  }
+  
+  /* Remove hover effects on touch devices */
+  [data-ui="Button"]:hover,
+  [data-ui="Card"]:hover,
+  [data-ui="Tree"] [data-ui="TreeItem"]:hover {
+    transform: none !important;
+  }
+  
+  /* Larger touch targets */
+  [data-ui="Checkbox"],
+  [data-ui="Radio"] {
+    width: 24px !important;
+    height: 24px !important;
+  }
+  
+  [data-ui="Switch"] {
+    width: 52px !important;
+    height: 28px !important;
+  }
+}
+
+/* ===== LANDSCAPE ORIENTATION ===== */
+@media (orientation: landscape) and (max-height: 600px) {
+  /* Landscape mobile adjustments */
+  [data-ui="Navbar"] {
+    height: 48px !important;
+  }
+  
+  [data-ui="Card"]:has([data-ui="Tree"]) {
+    top: 48px !important;
+    height: calc(100vh - 48px) !important;
+  }
+  
+  [data-ui="DialogCard"] {
+    max-height: calc(100vh - 16px) !important;
+  }
+}
+
+/* ===== HIGH DPI DISPLAYS ===== */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  /* High DPI optimizations */
+  [data-ui="Button"],
+  [data-ui="Card"],
+  [data-ui="DialogCard"] {
+    border-width: 0.5px !important;
+  }
+  
+  /* Sharper shadows on high DPI */
+  [data-ui="DialogCard"] {
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2), 
+                0 5px 10px -5px rgba(0, 0, 0, 0.1) !important;
+  }
+}
+
+/* ===== PRINT STYLES ===== */
+@media print {
+  /* Hide interactive elements */
+  [data-ui="Button"],
+  [data-ui="Navbar"],
+  [data-ui="Card"]:has([data-ui="Tree"]) {
+    display: none !important;
+  }
+  
+  /* Print-friendly colors */
+  [data-ui="RootTheme"] {
+    background: white !important;
+    color: black !important;
+  }
+  
+  [data-ui="Card"] {
+    background: white !important;
+    border: 1px solid #ccc !important;
+    box-shadow: none !important;
+  }
+  
+  /* Print typography */
+  h1, h2, h3, h4, h5, h6 {
+    color: black !important;
+    page-break-after: avoid !important;
+  }
+  
+  /* Avoid page breaks in content */
+  [data-ui="FormField"],
+  [data-ui="Card"] {
+    page-break-inside: avoid !important;
+  }
+}

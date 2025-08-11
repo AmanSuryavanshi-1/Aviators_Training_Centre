@@ -1,0 +1,288 @@
+/**
+ * ATC Studio Design Tokens
+ * Aviation color palette mapped to Sanity UI tokens with feature flag support
+ * Exact colors from website: #075E68, #0C6E72, #219099, #56A7B0, #73B5BD
+ */
+
+/* ===== FEATURE FLAG CONTROL ===== */
+:root {
+  --enable-aviation-theme: 1; /* 1 = enabled, 0 = disabled */
+}
+
+/* ===== AVIATION COLOR PALETTE (Exact Website Match) ===== */
+:root {
+  /* Primary Aviation Colors */
+  --atc-primary: #075E68;           /* hsl(187, 87%, 22%) - Deep teal */
+  --atc-primary-dark: #0C6E72;      /* hsl(185, 80%, 25%) - Dark teal */
+  --atc-secondary: #219099;         /* hsl(184, 63%, 36%) - Medium teal */
+  --atc-tertiary: #56A7B0;          /* hsl(184, 35%, 51%) - Light teal */
+  --atc-light: #73B5BD;             /* hsl(184, 32%, 60%) - Pale teal */
+  
+  /* Surface Colors for Dark Studio Theme */
+  --atc-background: #0F172A;        /* Navy background */
+  --atc-surface: #1E293B;           /* Dark surface */
+  --atc-surface-elevated: #334155;  /* Elevated surface */
+  --atc-surface-hover: #475569;     /* Hover state */
+  
+  /* Text Colors */
+  --atc-text: #FFFFFF;              /* Primary text */
+  --atc-text-muted: rgba(255, 255, 255, 0.7);  /* Muted text */
+  --atc-text-subtle: rgba(255, 255, 255, 0.5); /* Subtle text */
+  --atc-text-on-primary: #FFFFFF;   /* Text on primary colors */
+  
+  /* Border Colors */
+  --atc-border: #374151;            /* Default border */
+  --atc-border-light: #4B5563;      /* Light border */
+  --atc-border-focus: var(--atc-primary); /* Focus border */
+  
+  /* State Colors */
+  --atc-success: #10B981;           /* Success green */
+  --atc-warning: #F59E0B;           /* Warning amber */
+  --atc-error: #DC2626;             /* Error red */
+  --atc-info: var(--atc-tertiary);  /* Info teal */
+  
+  /* Interactive States */
+  --atc-hover: rgba(7, 94, 104, 0.1);      /* Hover background */
+  --atc-selected: rgba(7, 94, 104, 0.2);   /* Selected background */
+  --atc-active: rgba(7, 94, 104, 0.3);     /* Active state */
+  --atc-focus: var(--atc-primary);         /* Focus ring */
+}
+
+/* ===== Z-INDEX MANAGEMENT SYSTEM ===== */
+:root {
+  --atc-z-base: 1;
+  --atc-z-dropdown: 1000;
+  --atc-z-sticky: 1020;
+  --atc-z-fixed: 1030;
+  --atc-z-modal-backdrop: 1040;
+  --atc-z-modal: 1050;
+  --atc-z-popover: 1060;
+  --atc-z-toast: 1070;
+  --atc-z-tooltip: 1080;
+}
+
+/* ===== TYPOGRAPHY SYSTEM ===== */
+:root {
+  --atc-font-body: 'Roboto', system-ui, sans-serif;
+  --atc-font-heading: 'Montserrat', system-ui, sans-serif;
+  --atc-font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+  
+  /* Font Sizes */
+  --atc-text-xs: 12px;
+  --atc-text-sm: 14px;
+  --atc-text-base: 16px;
+  --atc-text-lg: 18px;
+  --atc-text-xl: 20px;
+  --atc-text-2xl: 24px;
+  --atc-text-3xl: 32px;
+  
+  /* Line Heights */
+  --atc-leading-tight: 1.25;
+  --atc-leading-normal: 1.5;
+  --atc-leading-relaxed: 1.625;
+}
+
+/* ===== SPACING SYSTEM ===== */
+:root {
+  --atc-spacing-xs: 4px;
+  --atc-spacing-sm: 8px;
+  --atc-spacing-md: 16px;
+  --atc-spacing-lg: 24px;
+  --atc-spacing-xl: 32px;
+  --atc-spacing-2xl: 48px;
+  --atc-spacing-3xl: 64px;
+}
+
+/* ===== BORDER RADIUS SYSTEM ===== */
+:root {
+  --atc-radius-sm: 4px;
+  --atc-radius: 8px;
+  --atc-radius-lg: 12px;
+  --atc-radius-xl: 16px;
+  --atc-radius-full: 9999px;
+}
+
+/* ===== SHADOW SYSTEM ===== */
+:root {
+  --atc-shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --atc-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  --atc-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --atc-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --atc-shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  --atc-shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+/* ===== ANIMATION SYSTEM ===== */
+:root {
+  --atc-transition-fast: 150ms ease;
+  --atc-transition-normal: 200ms ease;
+  --atc-transition-slow: 300ms ease;
+  --atc-transition-bounce: 300ms cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+/* ===== SANITY UI TOKEN MAPPING ===== */
+/* Map aviation colors to Sanity's design tokens when feature flag is enabled */
+[data-ui="RootTheme"] {
+  /* Core theme tokens */
+  --card-bg-color: var(--atc-surface) !important;
+  --card-fg-color: var(--atc-text) !important;
+  --card-border-color: var(--atc-border) !important;
+  
+  /* Base colors */
+  --base-bg: var(--atc-background) !important;
+  --base-fg: var(--atc-text) !important;
+  
+  /* Primary colors mapped to aviation palette */
+  --blue-bg: var(--atc-primary) !important;
+  --blue-fg: var(--atc-text-on-primary) !important;
+  --blue-border: var(--atc-primary-dark) !important;
+  
+  /* Teal variations */
+  --teal-bg: var(--atc-secondary) !important;
+  --teal-fg: var(--atc-text-on-primary) !important;
+  --teal-border: var(--atc-tertiary) !important;
+  
+  /* Gray scale mapped to aviation surfaces */
+  --gray-bg: var(--atc-surface) !important;
+  --gray-fg: var(--atc-text-muted) !important;
+  --gray-border: var(--atc-border) !important;
+  --gray-50: var(--atc-surface-elevated) !important;
+  --gray-100: var(--atc-surface) !important;
+  --gray-200: var(--atc-border-light) !important;
+  --gray-300: var(--atc-border) !important;
+  --gray-400: var(--atc-text-subtle) !important;
+  --gray-500: var(--atc-text-muted) !important;
+  --gray-600: var(--atc-text) !important;
+  --gray-700: var(--atc-text) !important;
+  --gray-800: var(--atc-surface) !important;
+  --gray-900: var(--atc-background) !important;
+  --gray-950: var(--atc-background) !important;
+  
+  /* Form inputs */
+  --input-bg: var(--atc-surface) !important;
+  --input-fg: var(--atc-text) !important;
+  --input-border: var(--atc-border) !important;
+  --input-border-focus: var(--atc-border-focus) !important;
+  --input-placeholder-fg: var(--atc-text-muted) !important;
+  
+  /* Buttons */
+  --button-primary-bg: var(--atc-primary) !important;
+  --button-primary-fg: var(--atc-text-on-primary) !important;
+  --button-primary-border: var(--atc-primary-dark) !important;
+  --button-primary-hover-bg: var(--atc-secondary) !important;
+  --button-primary-hover-border: var(--atc-tertiary) !important;
+  
+  --button-secondary-bg: var(--atc-surface) !important;
+  --button-secondary-fg: var(--atc-text) !important;
+  --button-secondary-border: var(--atc-border) !important;
+  --button-secondary-hover-bg: var(--atc-surface-hover) !important;
+  --button-secondary-hover-border: var(--atc-border-light) !important;
+  
+  /* Ghost buttons */
+  --button-ghost-bg: transparent !important;
+  --button-ghost-fg: var(--atc-text-muted) !important;
+  --button-ghost-border: transparent !important;
+  --button-ghost-hover-bg: var(--atc-hover) !important;
+  --button-ghost-hover-fg: var(--atc-text) !important;
+  
+  /* Typography */
+  --radius: var(--atc-radius);
+  --font-sans: var(--atc-font-body);
+  --font-mono: var(--atc-font-mono);
+  
+  /* Focus states */
+  --focus-ring-color: var(--atc-focus) !important;
+  --focus-ring-width: 2px !important;
+  --focus-ring-offset: 2px !important;
+  
+  /* Interactive states */
+  --hover-bg: var(--atc-hover) !important;
+  --hover-fg: var(--atc-text) !important;
+  --selected-bg: var(--atc-selected) !important;
+  --selected-fg: var(--atc-text) !important;
+  --active-bg: var(--atc-active) !important;
+  --active-fg: var(--atc-text) !important;
+  
+  /* State colors */
+  --success-bg: var(--atc-success) !important;
+  --success-fg: var(--atc-text-on-primary) !important;
+  --warning-bg: var(--atc-warning) !important;
+  --warning-fg: var(--atc-background) !important;
+  --error-bg: var(--atc-error) !important;
+  --error-fg: var(--atc-text-on-primary) !important;
+  --info-bg: var(--atc-info) !important;
+  --info-fg: var(--atc-background) !important;
+}
+
+/* ===== FEATURE FLAG DISABLED STATE ===== */
+/* When feature flag is disabled, use default Sanity colors */
+:root[data-aviation-theme="false"] [data-ui="RootTheme"] {
+  /* Reset to default Sanity colors */
+  --card-bg-color: #f9fafb !important;
+  --card-fg-color: #111827 !important;
+  --card-border-color: #e5e7eb !important;
+  --base-bg: white !important;
+  --base-fg: #111827 !important;
+}
+
+/* ===== ACCESSIBILITY ENHANCEMENTS ===== */
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  :root {
+    --atc-border: #FFFFFF !important;
+    --atc-text-muted: #FFFFFF !important;
+    --atc-text-subtle: #CCCCCC !important;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --atc-transition-fast: 0ms !important;
+    --atc-transition-normal: 0ms !important;
+    --atc-transition-slow: 0ms !important;
+    --atc-transition-bounce: 0ms !important;
+  }
+}
+
+/* ===== UTILITY CLASSES ===== */
+/* Color utilities */
+.atc-text-primary { color: var(--atc-primary) !important; }
+.atc-text-secondary { color: var(--atc-secondary) !important; }
+.atc-text-tertiary { color: var(--atc-tertiary) !important; }
+.atc-text-muted { color: var(--atc-text-muted) !important; }
+.atc-text-subtle { color: var(--atc-text-subtle) !important; }
+
+.atc-bg-primary { background-color: var(--atc-primary) !important; }
+.atc-bg-secondary { background-color: var(--atc-secondary) !important; }
+.atc-bg-surface { background-color: var(--atc-surface) !important; }
+.atc-bg-surface-elevated { background-color: var(--atc-surface-elevated) !important; }
+
+.atc-border-primary { border-color: var(--atc-primary) !important; }
+.atc-border-secondary { border-color: var(--atc-secondary) !important; }
+.atc-border-default { border-color: var(--atc-border) !important; }
+
+/* Z-index utilities */
+.atc-z-base { z-index: var(--atc-z-base) !important; }
+.atc-z-dropdown { z-index: var(--atc-z-dropdown) !important; }
+.atc-z-sticky { z-index: var(--atc-z-sticky) !important; }
+.atc-z-fixed { z-index: var(--atc-z-fixed) !important; }
+.atc-z-modal-backdrop { z-index: var(--atc-z-modal-backdrop) !important; }
+.atc-z-modal { z-index: var(--atc-z-modal) !important; }
+.atc-z-popover { z-index: var(--atc-z-popover) !important; }
+.atc-z-toast { z-index: var(--atc-z-toast) !important; }
+.atc-z-tooltip { z-index: var(--atc-z-tooltip) !important; }
+
+/* Animation utilities */
+.atc-transition-fast { transition: var(--atc-transition-fast) !important; }
+.atc-transition-normal { transition: var(--atc-transition-normal) !important; }
+.atc-transition-slow { transition: var(--atc-transition-slow) !important; }
+.atc-transition-bounce { transition: var(--atc-transition-bounce) !important; }
+
+/* Shadow utilities */
+.atc-shadow-sm { box-shadow: var(--atc-shadow-sm) !important; }
+.atc-shadow { box-shadow: var(--atc-shadow) !important; }
+.atc-shadow-md { box-shadow: var(--atc-shadow-md) !important; }
+.atc-shadow-lg { box-shadow: var(--atc-shadow-lg) !important; }
+.atc-shadow-xl { box-shadow: var(--atc-shadow-xl) !important; }
+.atc-shadow-2xl { box-shadow: var(--atc-shadow-2xl) !important; }

@@ -1,0 +1,259 @@
+/**
+ * Hover State Fixes for Sanity Studio
+ * Fixes delete button disappearing on hover and other hover-related issues
+ */
+
+/* ===== DELETE BUTTON HOVER FIXES ===== */
+
+/* Ensure all menu items and buttons remain stable on hover */
+[data-ui="MenuItem"],
+[data-ui="MenuButton"],
+[data-ui="Button"] {
+  pointer-events: auto !important;
+  position: relative !important;
+  z-index: 1 !important;
+}
+
+/* Fix dropdown menu hover states */
+[data-ui="MenuButton"]:hover,
+[data-ui="MenuItem"]:hover {
+  pointer-events: auto !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+/* Ensure delete buttons in dropdowns remain visible */
+[data-ui="MenuItem"][data-tone="critical"],
+[data-ui="Button"][data-tone="critical"],
+[data-ui="MenuItem"]:has([data-sanity-icon="trash"]),
+[data-ui="Button"]:has([data-sanity-icon="trash"]) {
+  pointer-events: auto !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  z-index: 10 !important;
+}
+
+[data-ui="MenuItem"][data-tone="critical"]:hover,
+[data-ui="Button"][data-tone="critical"]:hover,
+[data-ui="MenuItem"]:has([data-sanity-icon="trash"]):hover,
+[data-ui="Button"]:has([data-sanity-icon="trash"]):hover {
+  background-color: rgba(220, 38, 38, 0.1) !important;
+  color: #DC2626 !important;
+  pointer-events: auto !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  transform: none !important;
+}
+
+/* Fix for action menu buttons */
+[data-ui="MenuButton"][aria-label*="Open menu"],
+[data-ui="Button"][aria-label*="Open menu"] {
+  pointer-events: auto !important;
+  z-index: 5 !important;
+}
+
+/* Ensure menu containers don't interfere with hover */
+[data-ui="Menu"],
+[data-ui="Popover"] {
+  pointer-events: auto !important;
+  z-index: 1000 !important;
+}
+
+/* Fix for document action buttons */
+[data-ui="DocumentPanel"] [data-ui="Button"],
+[data-ui="DocumentPanel"] [data-ui="MenuItem"] {
+  pointer-events: auto !important;
+  position: relative !important;
+}
+
+/* Specific fixes for Sanity's document actions */
+[data-testid*="action"],
+[data-testid*="delete"],
+[data-testid*="remove"] {
+  pointer-events: auto !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+[data-testid*="action"]:hover,
+[data-testid*="delete"]:hover,
+[data-testid*="remove"]:hover {
+  pointer-events: auto !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  background-color: rgba(220, 38, 38, 0.1) !important;
+}
+
+/* ===== KEYBOARD NAVIGATION FIXES ===== */
+
+/* Ensure keyboard focus works for delete buttons */
+[data-ui="MenuItem"][data-tone="critical"]:focus,
+[data-ui="Button"][data-tone="critical"]:focus,
+[data-ui="MenuItem"]:has([data-sanity-icon="trash"]):focus,
+[data-ui="Button"]:has([data-sanity-icon="trash"]):focus {
+  outline: 2px solid #DC2626 !important;
+  outline-offset: 2px !important;
+  background-color: rgba(220, 38, 38, 0.1) !important;
+  color: #DC2626 !important;
+}
+
+/* Keyboard navigation for Tab + Enter */
+[data-ui="MenuItem"][data-tone="critical"]:focus-visible,
+[data-ui="Button"][data-tone="critical"]:focus-visible {
+  outline: 2px solid #DC2626 !important;
+  outline-offset: 2px !important;
+  background-color: rgba(220, 38, 38, 0.2) !important;
+}
+
+/* ===== VISUAL FEEDBACK IMPROVEMENTS ===== */
+
+/* Enhanced hover feedback with aviation colors */
+[data-ui="MenuItem"]:hover {
+  background-color: rgba(7, 94, 104, 0.1) !important;
+  color: #075E68 !important;
+  transition: all 0.15s ease !important;
+}
+
+[data-ui="Button"]:hover:not([data-tone="critical"]) {
+  background-color: rgba(7, 94, 104, 0.1) !important;
+  border-color: #075E68 !important;
+  transition: all 0.15s ease !important;
+}
+
+/* Smooth transitions for all interactive elements */
+[data-ui="MenuItem"],
+[data-ui="Button"],
+[data-ui="MenuButton"] {
+  transition: all 0.15s ease !important;
+}
+
+/* ===== Z-INDEX MANAGEMENT ===== */
+
+/* Ensure proper stacking order */
+[data-ui="Menu"] {
+  z-index: 1000 !important;
+}
+
+[data-ui="Popover"] {
+  z-index: 1010 !important;
+}
+
+[data-ui="MenuItem"] {
+  z-index: 1001 !important;
+  position: relative !important;
+}
+
+[data-ui="Button"] {
+  z-index: 1 !important;
+  position: relative !important;
+}
+
+/* Critical actions get higher z-index */
+[data-ui="MenuItem"][data-tone="critical"],
+[data-ui="Button"][data-tone="critical"] {
+  z-index: 1002 !important;
+}
+
+/* ===== DROPDOWN MENU STABILITY ===== */
+
+/* Prevent dropdown menus from closing on hover */
+[data-ui="Menu"]:hover,
+[data-ui="Popover"]:hover {
+  pointer-events: auto !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+/* Ensure menu items remain clickable */
+[data-ui="Menu"] [data-ui="MenuItem"],
+[data-ui="Popover"] [data-ui="MenuItem"] {
+  pointer-events: auto !important;
+  cursor: pointer !important;
+}
+
+/* Fix for menu item content */
+[data-ui="MenuItem"] > *,
+[data-ui="Button"] > * {
+  pointer-events: none !important;
+}
+
+/* But allow the button/menu item itself to be clickable */
+[data-ui="MenuItem"],
+[data-ui="Button"] {
+  pointer-events: auto !important;
+}
+
+/* ===== ACCESSIBILITY ENHANCEMENTS ===== */
+
+/* Ensure screen readers can access delete buttons */
+[data-ui="MenuItem"][data-tone="critical"],
+[data-ui="Button"][data-tone="critical"] {
+  /* Maintain accessibility attributes */
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  [data-ui="MenuItem"][data-tone="critical"]:hover,
+  [data-ui="Button"][data-tone="critical"]:hover {
+    background-color: #DC2626 !important;
+    color: white !important;
+    border: 2px solid white !important;
+  }
+}
+
+/* ===== MOBILE TOUCH FIXES ===== */
+
+/* Ensure touch targets are large enough */
+@media (hover: none) and (pointer: coarse) {
+  [data-ui="MenuItem"],
+  [data-ui="Button"] {
+    min-height: 44px !important;
+    min-width: 44px !important;
+    padding: 12px !important;
+  }
+  
+  /* Remove hover effects on touch devices */
+  [data-ui="MenuItem"]:hover,
+  [data-ui="Button"]:hover {
+    background-color: transparent !important;
+  }
+  
+  /* But keep focus states for accessibility */
+  [data-ui="MenuItem"]:focus,
+  [data-ui="Button"]:focus {
+    background-color: rgba(7, 94, 104, 0.2) !important;
+  }
+}
+
+/* ===== SPECIFIC SANITY COMPONENT FIXES ===== */
+
+/* Fix for document header actions */
+[data-ui="DocumentPanel"] [data-ui="Flex"] [data-ui="Button"] {
+  pointer-events: auto !important;
+  z-index: 1 !important;
+}
+
+/* Fix for list item actions */
+[data-ui="Card"] [data-ui="Button"],
+[data-ui="Card"] [data-ui="MenuItem"] {
+  pointer-events: auto !important;
+  position: relative !important;
+}
+
+/* Fix for toolbar actions */
+[data-ui="Toolbar"] [data-ui="Button"],
+[data-ui="Toolbar"] [data-ui="MenuItem"] {
+  pointer-events: auto !important;
+  z-index: 1 !important;
+}
+
+/* ===== DEBUGGING HELPERS ===== */
+
+/* Uncomment for debugging hover issues */
+/*
+[data-ui="MenuItem"]:hover,
+[data-ui="Button"]:hover {
+  outline: 2px solid red !important;
+  outline-offset: 2px !important;
+}
+*/
