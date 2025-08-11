@@ -147,7 +147,7 @@ const WhatsAppChat: React.FC = () => {
       >
         {/* Pulse animation ring */}
         <motion.div
-          className="absolute inset-0 rounded-full bg-green-500"
+          className="absolute inset-0 rounded-full bg-aviation-500/60 dark:bg-aviation-500/50"
           variants={pulseVariants}
           animate="animate"
         />
@@ -155,7 +155,7 @@ const WhatsAppChat: React.FC = () => {
         {/* Main button */}
         <motion.button
           onClick={() => setIsOpen(!isOpen)}
-          className="relative w-16 h-16 bg-gradient-to-r from-green-500 to-green-600 rounded-full shadow-lg hover:shadow-xl flex items-center justify-center group overflow-hidden whatsapp-float conversion-button"
+          className="relative w-16 h-16 bg-gradient-to-r from-aviation-700 to-aviation-500 dark:from-aviation-500 dark:to-aviation-400 text-white rounded-full shadow-lg hover:shadow-xl ring-1 ring-aviation-800/30 dark:ring-aviation-700/40 flex items-center justify-center group overflow-hidden whatsapp-float conversion-button"
           variants={buttonVariants}
           whileHover="hover"
           whileTap="tap"
@@ -163,12 +163,13 @@ const WhatsAppChat: React.FC = () => {
           data-analytics-event="whatsapp_chat_open"
           data-analytics-source="floating_button"
         >
-          {/* Background gradient animation */}
-          <div className="absolute inset-0 bg-gradient-to-r from-green-400 to-green-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+          {/* Background gradient animation - themed */}
+          <div className="absolute inset-0 bg-gradient-to-r from-aviation-800 to-aviation-600 dark:from-aviation-600 dark:to-aviation-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+          <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 mix-blend-overlay" />
           
           {/* Aviation-themed sparkle decorations */}
           <motion.div
-            className="absolute -top-2 -left-2 w-2 h-2 text-yellow-400"
+            className="absolute -top-2 -left-2 w-2 h-2 text-aviation-200"
             animate={{
               rotate: [0, 360],
               scale: [0.8, 1.2, 0.8],
@@ -184,7 +185,7 @@ const WhatsAppChat: React.FC = () => {
           </motion.div>
           
           <motion.div
-            className="absolute -bottom-2 -right-2 w-2 h-2 text-blue-400"
+            className="absolute -bottom-2 -right-2 w-2 h-2 text-aviation-300"
             animate={{
               rotate: [360, 0],
               scale: [0.6, 1.4, 0.6],
@@ -201,7 +202,7 @@ const WhatsAppChat: React.FC = () => {
           
           {/* Aviation-themed decorative elements */}
           <motion.div
-            className="absolute -top-1 -right-1 w-3 h-3 bg-teal-400 rounded-full opacity-60"
+            className="absolute -top-1 -right-1 w-3 h-3 bg-aviation-300 dark:bg-aviation-200 rounded-full opacity-60"
             animate={{
               scale: [1, 1.3, 1],
               opacity: [0.6, 1, 0.6]
@@ -237,7 +238,7 @@ const WhatsAppChat: React.FC = () => {
                 <MessageCircle className="w-7 h-7 text-white" />
                 {/* Small notification dot */}
                 <motion.div
-                  className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full border-2 border-white"
+                  className="absolute -top-1 -right-1 w-3 h-3 bg-aviation-300 dark:bg-aviation-400 rounded-full border-2 border-white/90"
                   animate={{
                     scale: [1, 1.2, 1],
                   }}
@@ -263,12 +264,12 @@ const WhatsAppChat: React.FC = () => {
             animate="visible"
             exit="hidden"
           >
-            <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-700 overflow-hidden">
+            <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-700 overflow-hidden">
               {/* Header */}
-              <div className="bg-gradient-to-r from-green-500 to-green-600 p-3 text-white">
+              <div className="bg-gradient-to-r from-aviation-700 to-aviation-500 dark:from-aviation-600 dark:to-aviation-500 p-3 text-white">
                 <div className="flex items-center space-x-2">
-                  <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
-                    <Plane className="w-4 h-4" />
+                  <div className="w-8 h-8 bg-white/20 dark:bg-white/15 rounded-full flex items-center justify-center">
+                    <Plane className="w-4 h-4 text-white" />
                   </div>
                   <div>
                     <h3 className="font-semibold text-xs">Aviators Training Centre</h3>
@@ -280,11 +281,11 @@ const WhatsAppChat: React.FC = () => {
               {/* Chat Content */}
               <div className="p-3 space-y-2">
                 <div className="flex items-start space-x-2">
-                  <div className="w-6 h-6 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center flex-shrink-0">
-                    <MessageCircle className="w-3 h-3 text-green-600 dark:text-green-400" />
+                  <div className="w-6 h-6 bg-aviation-100 dark:bg-aviation-500/20 rounded-full flex items-center justify-center flex-shrink-0">
+                    <MessageCircle className="w-3 h-3 text-aviation-700 dark:text-aviation-200" />
                   </div>
-                  <div className="bg-gray-100 dark:bg-gray-700 rounded-lg rounded-tl-md p-2 max-w-[180px]">
-                    <p className="text-xs text-gray-800 dark:text-gray-200">
+                  <div className="bg-gray-100 dark:bg-aviation-700/25 rounded-lg rounded-tl-md p-2 max-w-[180px]">
+                    <p className="text-xs text-gray-800 dark:text-aviation-50">
                       Hello! 👋 How can we help you today?
                     </p>
                   </div>
@@ -296,14 +297,14 @@ const WhatsAppChat: React.FC = () => {
                     <motion.button
                       key={key}
                       onClick={() => handleQuickAction(key as keyof typeof quickActions)}
-                      className="w-full text-left p-2 text-xs bg-gray-50 dark:bg-gray-700 hover:bg-green-50 dark:hover:bg-green-900/20 rounded-md transition-colors duration-150 border border-transparent hover:border-green-200 dark:hover:border-green-800 active:bg-green-100 dark:active:bg-green-900/30"
+                      className="w-full text-left p-2 text-xs bg-gray-50 dark:bg-aviation-700/20 hover:bg-aviation-50 dark:hover:bg-aviation-600/25 rounded-md transition-colors duration-150 border border-transparent dark:border-aviation-700/40 hover:border-aviation-200 dark:hover:border-aviation-500 active:bg-aviation-100 dark:active:bg-aviation-500/20"
                       whileHover={{ x: 2 }}
                       whileTap={{ scale: 0.98 }}
                       transition={{ duration: 0.15 }}
                     >
                       <span className="flex items-center space-x-2">
                         <span className="text-sm">{action.icon}</span>
-                        <span className="font-medium">{action.label}</span>
+                        <span className="font-medium text-gray-900 dark:text-aviation-50">{action.label}</span>
                       </span>
                     </motion.button>
                   ))}
@@ -314,7 +315,7 @@ const WhatsAppChat: React.FC = () => {
               <div className="p-3 border-t border-gray-200 dark:border-gray-700">
                 <motion.button
                   onClick={handleWhatsAppClick}
-                  className="w-full bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white rounded-lg py-2.5 px-3 flex items-center justify-center space-x-2 text-sm font-medium transition-all duration-200 hover:shadow-lg"
+                  className="w-full bg-gradient-to-r from-aviation-700 to-aviation-500 dark:from-aviation-600 dark:to-aviation-500 hover:from-aviation-800 hover:to-aviation-600 dark:hover:from-aviation-700 dark:hover:to-aviation-600 text-white rounded-lg py-2.5 px-3 flex items-center justify-center space-x-2 text-sm font-medium transition-all duration-200 hover:shadow-lg ring-1 ring-aviation-800/20 dark:ring-aviation-700/30"
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                 >

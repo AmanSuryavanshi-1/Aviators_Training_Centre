@@ -54,7 +54,7 @@ const Header: React.FC = () => {
 
   return (
     <header className={cn(
-      "sticky top-0 z-50 w-full transition-all duration-300",
+      "fixed top-0 left-0 right-0 z-50 w-full transition-all duration-300",
       scrolled
         ? "border-b shadow-sm backdrop-blur-xl border-border/40 bg-background/60 supports-[backdrop-filter]:bg-background/40 dark:bg-teal-950/85 dark:supports-[backdrop-filter]:bg-teal-950/75 dark:border-teal-800/60"
         : "backdrop-blur-xl bg-background/60 supports-[backdrop-filter]:bg-background/40 dark:bg-teal-950"

@@ -51,10 +51,10 @@ export default function HomePageClient() {
               Aviators Training Centre - India's Premier ATC Training Institute
             </motion.h1>
             <motion.p 
-              className="text-lg md:text-xl lg:text-xl text-muted-foreground max-w-4xl mx-auto leading-relaxed"
+              className="text-base sm:text-lg md:text-xl text-foreground/90 max-w-4xl mx-auto leading-relaxed"
               variants={itemVariants}
             >
-              Master DGCA exams with expert-led online ground school. Learn from experienced airline pilots like <strong>Ankit Kumar</strong>, <strong>Dhruv Shirkoli</strong>, and <strong>Saksham Khandelwal</strong>. Our ATC courses include comprehensive CPL/ATPL training, Type Rating preparation, and RTR(A) certification with 24/7 support and proven success rates.
+              <span className="font-semibold text-teal-700 dark:text-teal-300">Master DGCA exams with expert-led online ground school.</span> Learn from experienced airline pilots like <strong className="font-semibold text-teal-700 dark:text-teal-300">Ankit Kumar</strong>, <strong className="font-semibold text-teal-700 dark:text-teal-300">Dhruv Shirkoli</strong>, and <strong className="font-semibold text-teal-700 dark:text-teal-300">Saksham Khandelwal</strong>. Our <span className="font-semibold text-teal-700 dark:text-teal-300">ATC courses</span> include comprehensive <span className="font-semibold text-teal-700 dark:text-teal-300">CPL/ATPL</span> training, <span className="font-semibold text-teal-700 dark:text-teal-300">Type Rating</span> preparation, and <span className="font-semibold text-teal-700 dark:text-teal-300">RTR(A)</span> certification with 24/7 support and proven success rates.
             </motion.p>
             <motion.div 
               className="flex flex-wrap justify-center gap-3 sm:gap-4 md:gap-6 text-base md:text-lg px-2"

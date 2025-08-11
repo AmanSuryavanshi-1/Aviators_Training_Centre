@@ -69,6 +69,7 @@ const itemVariants = {
 const HeroSection = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [direction, setDirection] = useState(0);
+  const SWIPE_THRESHOLD_PX = 50;
 
   const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
     const target = e.target as HTMLImageElement;
@@ -85,6 +86,16 @@ const HeroSection = () => {
     }, 6000);
     return () => clearInterval(interval);
   }, []);
+
+  const goToNext = () => {
+    setDirection(1);
+    setCurrentSlide((prev) => (prev === slides.length - 1 ? 0 : prev + 1));
+  };
+
+  const goToPrev = () => {
+    setDirection(-1);
+    setCurrentSlide((prev) => (prev === 0 ? slides.length - 1 : prev - 1));
+  };
 
   const handleIndicatorClick = (index: number) => {
     setDirection(index > currentSlide ? 1 : -1);
@@ -114,7 +125,19 @@ const HeroSection = () => {
         </motion.div>
       </AnimatePresence>
 
-      <div className="flex relative z-10 justify-center items-center p-4 h-full bg-black/30 sm:p-8">
+      <motion.div
+        className="flex relative z-10 justify-center items-center p-4 h-full bg-black/30 sm:p-8 touch-pan-y sm:touch-auto cursor-grab active:cursor-grabbing sm:cursor-auto"
+        drag="x"
+        dragConstraints={{ left: 0, right: 0 }}
+        dragElastic={0.2}
+        onDragEnd={(_e, info) => {
+          if (info.offset.x <= -SWIPE_THRESHOLD_PX) {
+            goToNext();
+          } else if (info.offset.x >= SWIPE_THRESHOLD_PX) {
+            goToPrev();
+          }
+        }}
+      >
         <motion.div
           key={currentSlide + '-content'}
           variants={contentVariants}
@@ -163,7 +186,7 @@ const HeroSection = () => {
           {/* --- End Action Buttons --- */}
 
         </motion.div>
-      </div>
+      </motion.div>
 
       {/* Slide Indicators (unchanged) */}
       <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 z-20 flex space-x-2.5">

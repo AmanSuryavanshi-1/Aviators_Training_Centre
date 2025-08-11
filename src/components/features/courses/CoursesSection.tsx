@@ -73,8 +73,9 @@ const CoursesSection: React.FC = () => {
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, amount: 0.1 }}
+      className="px-4 md:px-16"
     >
-      <div className="mb-12 text-center md:mb-16">
+      <div className="mb-12 px-4 md:px-16 text-center md:mb-16">
         <motion.h2
           variants={itemVariants}
           className={cn("mb-4 text-3xl font-bold md:text-4xl", aviationPrimary)}
@@ -98,13 +99,13 @@ const CoursesSection: React.FC = () => {
             className="flex"
           >
             <motion.div
-              className="relative w-full h-full group"
+              className="relative w-full h-full group rounded-3xl"
               whileHover="hover"
               initial="rest"
               animate="rest"
               variants={cardHoverEffect}
             >
-              <Card className="flex overflow-hidden relative z-10 flex-col w-full h-full rounded-lg border shadow-sm transition-shadow duration-300 bg-card border-border">
+              <Card className="flex overflow-hidden relative z-10 flex-col w-full h-full rounded-3xl border shadow-sm transition-shadow duration-300 bg-card border-border">
                 <CardHeader className="relative p-0">
                     {/* Image Section - Fixed Height */}
                     <div className="overflow-hidden h-48"> {/* Fixed height */}
@@ -117,7 +118,7 @@ const CoursesSection: React.FC = () => {
                       />
                     </div>
                 </CardHeader>
-                <CardContent className="flex flex-col flex-grow p-5">
+                <CardContent className="flex flex-col flex-grow p-4">
                   {/* Title and Icon */}
                   <div className="flex items-center mb-3 space-x-3">
                       <div className={cn("flex-shrink-0 p-1.5 rounded-md bg-teal-100/70 dark:bg-teal-900/40", aviationSecondary)}>
