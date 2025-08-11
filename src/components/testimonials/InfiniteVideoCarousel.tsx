@@ -1128,34 +1128,6 @@ export default function InfiniteVideoCarousel() {
       </div>
 
       <div className="container relative z-10">
-        {/* Header with SEO Enhancement */}
-        <motion.div
-          className="text-center mb-4 md:mb-6 lg:mb-8 px-4"
-          initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-          transition={{ duration: 0.6, delay: 0.1 }}
-        >
-          <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-            DGCA CPL ATPL Success Stories
-            <span className="block text-transparent mb-2 bg-clip-text bg-gradient-to-r from-aviation-primary via-aviation-secondary to-aviation-tertiary">
-              Video Testimonials
-            </span>
-          </h2>
-          <p className="text-md md:text-lg text-muted-foreground max-w-4xl mx-auto leading-relaxed">
-            Watch verified graduates share their journey from aviation dreams to commercial pilot reality. 
-            Real success stories from DGCA CPL, ATPL, and RTR(A) training programs at India's premier aviation institute.
-          </p>
-          
-          {/* SEO Enhancement: Current video context */}
-          {currentVideo && currentStudent && (
-            <div className="mt-4 text-sm text-muted-foreground">
-              Currently featuring: <strong>{currentVideo.studentName}</strong> - {currentStudent.course} Graduate
-              {currentVideo.subjects && currentVideo.subjects.length > 0 && (
-                <span> | Specialized in {currentVideo.subjects.join(', ')}</span>
-              )}
-            </div>
-          )}
-        </motion.div>
 
         {/* Carousel Controls */}
         <div className="flex items-center justify-center gap-2 sm:gap-4 mb-2 px-4">

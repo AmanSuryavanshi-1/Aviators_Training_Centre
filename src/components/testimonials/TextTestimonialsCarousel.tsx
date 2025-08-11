@@ -30,25 +30,25 @@ const StarRating: React.FC<{ rating: number }> = ({ rating }) => {
   const partialStarWidth = (safeRating % 1) * 100;
 
   return (
-    <div className="flex items-center gap-1">
+    <div className="flex items-center gap-0.5 sm:gap-1">
       {[...Array(fullStars)].map((_, i) => (
-        <Star key={i} className="w-3.5 h-3.5 text-yellow-500 fill-current" />
+        <Star key={i} className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-yellow-500 fill-current" />
       ))}
       {hasPartialStar && (
         <div className="relative">
-          <Star className="w-3.5 h-3.5 text-gray-300" />
+          <Star className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-gray-300" />
           <div 
             className="absolute top-0 left-0 overflow-hidden"
             style={{ width: `${partialStarWidth}%` }}
           >
-            <Star className="w-3.5 h-3.5 text-yellow-500 fill-current" />
+            <Star className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-yellow-500 fill-current" />
           </div>
         </div>
       )}
       {[...Array(Math.max(0, 5 - Math.ceil(safeRating)))].map((_, i) => (
-        <Star key={`empty-${i}`} className="w-3.5 h-3.5 text-gray-300" />
+        <Star key={`empty-${i}`} className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-gray-300" />
       ))}
-      <span className="ml-1.5 text-xs font-medium text-muted-foreground">
+      <span className="ml-1 sm:ml-1.5 text-xs font-medium text-muted-foreground">
         {safeRating.toFixed(1)}
       </span>
     </div>
@@ -79,25 +79,25 @@ const TestimonialCard: React.FC<{
       className="h-full"
     >
       <Card className="h-full bg-card border border-border shadow-sm hover:shadow-lg transition-shadow duration-300 group">
-        <CardContent className="p-5 h-full flex flex-col">
+        <CardContent className="p-3 sm:p-4 md:p-5 h-full flex flex-col">
           {/* Quote and Rating */}
-          <div className="flex items-start justify-between mb-3">
-            <Quote className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
+          <div className="flex items-start justify-between mb-2 sm:mb-3">
+            <Quote className="w-4 h-4 sm:w-5 sm:h-5 text-primary flex-shrink-0 mt-0.5" />
             <StarRating rating={testimonial.rating} />
           </div>
 
           {/* Testimonial Text */}
-          <div className="flex-1 mb-4">
-            <p className="text-foreground leading-relaxed text-sm">
+          <div className="flex-1 mb-3 sm:mb-4">
+            <p className="text-foreground leading-relaxed text-xs sm:text-sm">
               "{testimonial.text}"
             </p>
           </div>
 
           {/* Author Info */}
-          <div className="border-t border-border pt-3 mt-auto">
-            <div className="flex items-center justify-between mb-2">
+          <div className="border-t border-border pt-2 sm:pt-3 mt-auto">
+            <div className="flex items-center justify-between mb-1.5 sm:mb-2">
               <div className="flex-1 min-w-0">
-                <h4 className="font-medium text-foreground text-sm truncate">
+                <h4 className="font-medium text-foreground text-xs sm:text-sm truncate">
                   {testimonial.author}
                 </h4>
                 <p className="text-xs text-primary truncate mt-0.5">
@@ -105,15 +105,15 @@ const TestimonialCard: React.FC<{
                 </p>
               </div>
               {testimonial.verified && (
-                <div className="ml-2 px-2 py-0.5 bg-primary/10 text-primary text-xs rounded-full font-medium flex-shrink-0">
+                <div className="ml-2 px-1.5 py-0.5 sm:px-2 bg-primary/10 text-primary text-xs rounded-full font-medium flex-shrink-0">
                   ✓
                 </div>
               )}
             </div>
 
             {/* Location */}
-            <div className="flex items-center text-xs text-muted-foreground mb-2">
-              <MapPin className="w-3 h-3 mr-1 flex-shrink-0" />
+            <div className="flex items-center text-xs text-muted-foreground mb-1.5 sm:mb-2">
+              <MapPin className="w-2.5 h-2.5 sm:w-3 sm:h-3 mr-1 flex-shrink-0" />
               <span className="truncate">{testimonial.location}</span>
             </div>
             
@@ -123,13 +123,13 @@ const TestimonialCard: React.FC<{
                 {testimonial.subjects.slice(0, 2).map((subject: string, idx: number) => (
                   <span
                     key={idx}
-                    className="px-2 py-0.5 text-xs bg-primary/10 text-primary rounded-full"
+                    className="px-1.5 py-0.5 sm:px-2 text-xs bg-primary/10 text-primary rounded-full"
                   >
                     {subject}
                   </span>
                 ))}
                 {testimonial.subjects.length > 2 && (
-                  <span className="px-2 py-0.5 text-xs bg-muted text-muted-foreground rounded-full">
+                  <span className="px-1.5 py-0.5 sm:px-2 text-xs bg-muted text-muted-foreground rounded-full">
                     +{testimonial.subjects.length - 2}
                   </span>
                 )}
@@ -152,8 +152,32 @@ export default function TextTestimonialsCarousel() {
   const [isDragging, setIsDragging] = useState(false);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const sectionRef = useRef<HTMLDivElement>(null);
-  const totalPages = Math.ceil(textTestimonials.length / 3);
+  const [itemsPerPage, setItemsPerPage] = useState(3);
+  const totalPages = Math.ceil(textTestimonials.length / itemsPerPage);
   const prefersReducedMotion = useReducedMotion();
+
+  // Responsive items per page calculation
+  useEffect(() => {
+    const updateItemsPerPage = () => {
+      const width = window.innerWidth;
+      if (width < 640) {
+        setItemsPerPage(1); // Mobile: 1 item
+      } else if (width < 1024) {
+        setItemsPerPage(2); // Tablet: 2 items
+      } else {
+        setItemsPerPage(3); // Desktop: 3 items
+      }
+    };
+
+    updateItemsPerPage();
+    window.addEventListener('resize', updateItemsPerPage);
+    return () => window.removeEventListener('resize', updateItemsPerPage);
+  }, []);
+
+  // Reset current index when items per page changes
+  useEffect(() => {
+    setCurrentIndex(0);
+  }, [itemsPerPage]);
 
   // Auto-advance functionality - Always enabled by default
   useEffect(() => {
@@ -222,45 +246,45 @@ export default function TextTestimonialsCarousel() {
     }
   };
 
-  const visibleTestimonials = textTestimonials.slice(currentIndex * 3, (currentIndex + 1) * 3);
+  const visibleTestimonials = textTestimonials.slice(currentIndex * itemsPerPage, (currentIndex + 1) * itemsPerPage);
 
   return (
     <section
       ref={sectionRef}
-      className="max-h-screen py-8 md:py-12 relative overflow-hidden bg-background"
+      className="max-h-screen py-4 sm:py-6 md:py-8 lg:py-12 relative overflow-hidden bg-background"
       aria-label="Student testimonials carousel. Use left and right arrow keys to navigate."
       role="region"
       tabIndex={0}
     >
-      <div className="container relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header - Compact */}
+      <div className="container relative z-10 max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8">
+        {/* Header - Responsive */}
         <motion.div
-          className="text-center mb-8"
+          className="text-center mb-4 sm:mb-6 md:mb-8"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-primary mb-4">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-primary mb-2 sm:mb-3 md:mb-4 px-2">
             Student Success Stories
           </h2>
-          <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+          <p className="text-sm sm:text-base md:text-lg lg:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed px-4">
             Authentic testimonials from DGCA CPL graduates who achieved their pilot dreams
           </p>
         </motion.div>
 
-        {/* Controls - Compact */}
-        <div className="flex items-center justify-center gap-3 mb-6">
+        {/* Controls - Responsive */}
+        <div className="flex items-center justify-center gap-2 sm:gap-3 mb-4 sm:mb-5 md:mb-6">
           <Button
             variant="outline"
             size="sm"
             onClick={handlePrevious}
-            className="rounded-full w-8 h-8 p-0 bg-card/80 backdrop-blur-sm hover:bg-card border-border shadow-sm"
+            className="rounded-full w-7 h-7 sm:w-8 sm:h-8 p-0 bg-card/80 backdrop-blur-sm hover:bg-card border-border shadow-sm"
             aria-label="Previous testimonials"
           >
-            <ChevronLeft className="w-4 h-4" />
+            <ChevronLeft className="w-3 h-3 sm:w-4 sm:h-4" />
           </Button>
           
-          <div className="flex gap-1.5" role="tablist" aria-label="Testimonial pages">
+          <div className="flex gap-1 sm:gap-1.5" role="tablist" aria-label="Testimonial pages">
             {Array.from({ length: totalPages }).map((_, index) => (
               <motion.div
                 key={index}
@@ -281,8 +305,8 @@ export default function TextTestimonialsCarousel() {
                   className={cn(
                     "rounded-full transition-all duration-300 relative overflow-hidden",
                     index === currentIndex 
-                      ? "bg-primary hover:bg-primary/90 text-primary-foreground w-3 h-3 p-0" 
-                      : "bg-muted hover:bg-muted/80 w-2.5 h-2.5 p-0"
+                      ? "bg-primary hover:bg-primary/90 text-primary-foreground w-2.5 h-2.5 sm:w-3 sm:h-3 p-0" 
+                      : "bg-muted hover:bg-muted/80 w-2 h-2 sm:w-2.5 sm:h-2.5 p-0"
                   )}
                   aria-label={`Go to testimonial page ${index + 1}`}
                   aria-selected={index === currentIndex}
@@ -310,16 +334,16 @@ export default function TextTestimonialsCarousel() {
             variant="outline"
             size="sm"
             onClick={handleNext}
-            className="rounded-full w-8 h-8 p-0 bg-card/80 backdrop-blur-sm hover:bg-card border-border shadow-sm"
+            className="rounded-full w-7 h-7 sm:w-8 sm:h-8 p-0 bg-card/80 backdrop-blur-sm hover:bg-card border-border shadow-sm"
             aria-label="Next testimonials"
           >
-            <ChevronRight className="w-4 h-4" />
+            <ChevronRight className="w-3 h-3 sm:w-4 sm:h-4" />
           </Button>
         </div>
 
-        {/* Testimonials Grid - Enhanced with smooth auto-scroll animations */}
+        {/* Testimonials Grid - Responsive with smooth auto-scroll animations */}
         <motion.div
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 max-w-6xl mx-auto cursor-grab active:cursor-grabbing"
+          className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 md:gap-5 lg:gap-6 max-w-6xl mx-auto cursor-grab active:cursor-grabbing"
           key={currentIndex}
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
@@ -339,7 +363,8 @@ export default function TextTestimonialsCarousel() {
           role="group"
           aria-label={`Testimonials page ${currentIndex + 1} of ${totalPages}`}
           style={{
-            height: '320px', // Fixed height to prevent overflow
+            height: 'auto', // Auto height for responsive design
+            minHeight: '280px', // Minimum height for consistency
             touchAction: 'pan-y pinch-zoom'
           }}
         >

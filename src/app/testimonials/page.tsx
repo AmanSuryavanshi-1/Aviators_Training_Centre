@@ -180,6 +180,26 @@ export default function TestimonialsPage() {
         
           {/* Infinite Video Carousel */}
           <section className="relative bg-gradient-to-br from-background via-muted/5 to-background">
+            {/* Header with SEO Enhancement */}
+            <motion.div
+              className="text-center mb-4 md:mb-6 lg:mb-8 px-4 pt-16 md:pt-20"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+            >
+              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+                DGCA CPL ATPL Success Stories
+                <span className="block text-transparent mb-2 bg-clip-text bg-gradient-to-r from-teal-600 via-teal-500 to-cyan-500">
+                  Video Testimonials
+                </span>
+              </h2>
+              <p className="text-md md:text-lg text-muted-foreground max-w-4xl mx-auto leading-relaxed">
+                Watch verified graduates share their journey from aviation dreams to commercial pilot reality. 
+                Real success stories from DGCA CPL, ATPL, and RTR(A) training programs at India's premier aviation institute.
+              </p>
+            </motion.div>
+            
             <InfiniteVideoCarousel />
           </section>
 

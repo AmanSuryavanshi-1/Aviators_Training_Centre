@@ -10,10 +10,12 @@ import CTASection from "@/components/features/courses/CTASection";
 import InfiniteVideoCarousel from "@/components/testimonials/InfiniteVideoCarousel";
 import { motion } from 'framer-motion';
 import { cn } from "@/components/ui/utils";
-import { Plane, Target, Radio, GraduationCap, TrendingUp, ArrowRight } from 'lucide-react';
+import { Plane, Target, Radio, GraduationCap, TrendingUp, ArrowRight, Users } from 'lucide-react';
 import Link from 'next/link';
 import { useAnalytics } from '@/hooks/useAnalytics';
 import { commonVariants } from '@/lib/animations/easing';
+import { SolidButton } from '@/components/shared/SolidButton';
+import { TransparentButton } from '@/components/shared/TransparentButton';
 
 // Use consistent animation variants with proper easing
 const { sectionVariants, itemVariants } = commonVariants;
@@ -124,7 +126,39 @@ export default function HomePageClient() {
                 Watch authentic testimonials from our successful DGCA CPL graduates who transformed their aviation dreams into reality through our comprehensive training programs.
               </p>
             </motion.div>
+            
             <InfiniteVideoCarousel />
+            
+            {/* Action Buttons */}
+            <motion.div 
+              className="text-center mt-12 space-y-6"
+              variants={itemVariants}
+            >
+              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                <div onClick={() => handleCTAClick('Browse All Testimonials', '/testimonials')}>
+                  <SolidButton
+                    href="/testimonials"
+                    icon={Users}
+                    label="Browse All Testimonials"
+                    className="data-[conversion=true]:conversion-button"
+                  />
+                </div>
+                
+                <div onClick={() => handleCTAClick('Contact Us', '/contact')}>
+                  <TransparentButton
+                    href="/contact"
+                    icon={GraduationCap}
+                    label="Contact Us"
+                    className="data-[conversion=true]:conversion-button"
+                  />
+                </div>
+              </div>
+              
+              <p className="text-sm text-muted-foreground max-w-2xl mx-auto">
+                Join over 500+ successful graduates who chose Aviators Training Centre for their aviation career. 
+                <strong className="text-teal-700 dark:text-teal-300"> Start your journey today!</strong>
+              </p>
+            </motion.div>
           </motion.section>
 
           {/* FAQ Section */}
