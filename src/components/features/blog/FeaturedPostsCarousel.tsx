@@ -4,6 +4,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight, Clock, User, Calendar, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { SolidButton } from '@/components/shared/SolidButton';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
@@ -91,7 +92,7 @@ const FeaturedPostsCarousel: React.FC<FeaturedPostsCarouselProps> = ({ posts }) 
   const currentPost = posts[currentIndex];
 
   return (
-    <div className="relative max-w-6xl mx-auto">
+    <div className="relative max-w-5xl mx-auto">
       {/* Main Carousel */}
       <div
         className="relative overflow-hidden rounded-2xl bg-card shadow-xl"
@@ -146,10 +147,10 @@ const FeaturedPostsCarousel: React.FC<FeaturedPostsCarouselProps> = ({ posts }) 
                       <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3">
                         <Badge 
                           variant="outline" 
-                          className="text-xs sm:text-sm font-medium w-fit"
+                          className="text-xs sm:text-sm font-medium w-fit bg-background/60 dark:bg-white/10 text-foreground whitespace-normal break-words"
                           style={{ 
                             borderColor: currentPost.category.color || 'hsl(var(--border))',
-                            color: currentPost.category.color || 'hsl(var(--foreground))'
+                            backgroundColor: currentPost.category.color ? `${currentPost.category.color}20` : undefined
                           }}
                         >
                           {currentPost.category.title}
@@ -214,12 +215,12 @@ const FeaturedPostsCarousel: React.FC<FeaturedPostsCarouselProps> = ({ posts }) 
 
                       {/* Read More Button */}
                       <div className="pt-1 sm:pt-2">
-                        <Button asChild className="group w-full sm:w-auto" size="sm">
-                          <Link href={`/blog/${currentPost.slug.current}`}>
-                            <span className="text-sm">Read Full Article</span>
-                            <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4 ml-1 sm:ml-2 transition-transform group-hover:translate-x-1" />
-                          </Link>
-                        </Button>
+                        <SolidButton
+                          href={`/blog/${currentPost.slug.current}`}
+                          icon={ArrowRight}
+                          label="Read Full Article"
+                          className="min-h-[40px] px-4 py-2 text-sm rounded-full"
+                        />
                       </div>
                     </div>
                   </div>
@@ -228,15 +229,19 @@ const FeaturedPostsCarousel: React.FC<FeaturedPostsCarouselProps> = ({ posts }) 
             </Card>
           </motion.div>
         </AnimatePresence>
-
-        {/* Navigation Arrows */}
+        {/* Navigation Arrows - positioned centered vertically within container */}
         {posts.length > 1 && (
           <>
             <Button
               variant="outline"
               size="icon"
               onClick={prevSlide}
-              className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 z-10 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-background/95 backdrop-blur-sm border-border shadow-lg hover:bg-accent hover:scale-105 transition-all duration-200 touch-manipulation"
+              className="absolute left-2 sm:left-3 md:left-4 top-1/2 -translate-y-1/2 z-10 w-10 h-10 sm:w-12 sm:h-12 rounded-full
+              bg-white/90 text-gray-900 border-black/10 backdrop-blur-md shadow-lg
+              hover:bg-white hover:text-gray-900 hover:scale-105
+              dark:bg-white/10 dark:text-white dark:border-white/20 dark:shadow-black/40 dark:hover:bg-white/20
+              focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background
+              transition-all duration-200 touch-manipulation"
               aria-label="Previous featured post"
             >
               <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5" />
@@ -245,7 +250,12 @@ const FeaturedPostsCarousel: React.FC<FeaturedPostsCarouselProps> = ({ posts }) 
               variant="outline"
               size="icon"
               onClick={nextSlide}
-              className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 z-10 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-background/95 backdrop-blur-sm border-border shadow-lg hover:bg-accent hover:scale-105 transition-all duration-200 touch-manipulation"
+              className="absolute right-2 sm:right-3 md:right-4 top-1/2 -translate-y-1/2 z-10 w-10 h-10 sm:w-12 sm:h-12 rounded-full
+              bg-white/90 text-gray-900 border-black/10 backdrop-blur-md shadow-lg
+              hover:bg-white hover:text-gray-900 hover:scale-105
+              dark:bg-white/10 dark:text-white dark:border-white/20 dark:shadow-black/40 dark:hover:bg-white/20
+              focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background
+              transition-all duration-200 touch-manipulation"
               aria-label="Next featured post"
             >
               <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5" />

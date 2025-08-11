@@ -9,13 +9,18 @@ import { structureTool } from 'sanity/structure';
 import { visionTool } from '@sanity/vision';
 import { schemaTypes } from './schemaTypes';
 import ATCAdminNavigator from './components/ATCAdminNavigator';
+import { clearFieldPlugin } from './plugins/clearFieldPlugin';
+import { keyboardShortcutsPlugin } from './plugins/keyboardShortcutsPlugin';
 
-// Import aviation theme styles
-import './styles/aviation-theme.css';
+// Import minimal aviation theme - safe styling that preserves functionality
+import './styles/minimal-aviation-theme.css';
+import './styles/enhanced-responsive.css';
+import './styles/navbar-fixes.css';
+import './styles/fixes/navbar-buttons.css'; // Final override for navbar/button fixes
 
 // TypeScript interfaces
 interface NavbarProps {
-  renderDefault: (props: NavbarProps) => React.ReactNode;
+  renderDefault: (props: any) => React.ReactNode;
 }
 
 // Environment-aware configuration
@@ -34,63 +39,39 @@ export default defineConfig({
   // Set proper basePath for studio routing
   basePath: '/studio',
   
-  // Aviation-themed Studio Configuration
+  // Clean Aviation-themed Studio Configuration
   studio: {
     components: {
+      // Remove Sanity logo/branding completely; keep default navbar functionality
+      logo: () => null,
       navbar: (props: NavbarProps) => {
         return React.createElement('div', {
-          style: { 
-            display: 'flex', 
-            alignItems: 'center', 
-            justifyContent: 'space-between', 
+          className: 'atc-navbar-container atc-fix-topbar',
+          style: {
+            display: 'flex',
+            alignItems: 'center',
             width: '100%',
+            height: '49px',
             backgroundColor: '#0a1a1d',
             borderBottom: '1px solid #1a3a42',
-            padding: '0 16px',
-            height: '52px'
+            padding: '0 12px',
+            gap: '8px',
+            boxSizing: 'border-box'
           }
         }, [
+          // Default Sanity Navbar - fills space; our CSS hides brand area
           React.createElement('div', {
-            key: 'left-section',
-            style: { 
-              display: 'flex', 
-              alignItems: 'center', 
-              gap: '16px'
+            key: 'sanity-navbar',
+            style: {
+              flex: 1,
+              display: 'flex',
+              alignItems: 'center',
+              minWidth: 0,
+              height: '100%'
             }
-          }, [
-            React.createElement('div', {
-              key: 'brand-section',
-              style: {
-                display: 'flex',
-                alignItems: 'center',
-                gap: '8px'
-              }
-            }, [
-              React.createElement('img', {
-                key: 'atc-logo',
-                src: '/AVIATORS_TRAINING_CENTRE_LOGO_DarkMode.png',
-                alt: 'ATC Logo',
-                style: {
-                  width: '24px',
-                  height: '24px',
-                  objectFit: 'contain'
-                }
-              }),
-              React.createElement('span', {
-                key: 'brand-text',
-                style: {
-                  color: '#73b5bd',
-                  fontSize: '14px',
-                  fontWeight: '600',
-                  fontFamily: 'Montserrat, sans-serif'
-                }
-              }, 'ATC Studio')
-            ]),
-            React.createElement('div', {
-              key: 'default-navbar',
-              style: { display: 'flex', alignItems: 'center' }
-            }, props.renderDefault(props))
-          ]),
+          }, props.renderDefault(props)),
+
+          // Compact Website button aligned right
           React.createElement('a', {
             key: 'back-link',
             href: '/',
@@ -98,33 +79,36 @@ export default defineConfig({
               color: '#f0f9ff',
               textDecoration: 'none',
               fontSize: '12px',
-              fontWeight: '500',
-              padding: '8px 12px',
-              borderRadius: '6px',
+              fontWeight: 500,
+              padding: '0 10px',
+              borderRadius: '4px',
               backgroundColor: '#075e68',
               border: '1px solid #0c6e72',
-              transition: 'all 0.2s ease',
+              transition: 'background-color 0.2s ease',
               display: 'inline-flex',
               alignItems: 'center',
               gap: '6px',
-              fontFamily: 'Roboto, sans-serif'
+              fontFamily: 'system-ui, sans-serif',
+              flexShrink: 0,
+              height: '32px',
+              lineHeight: 1
             },
             onMouseOver: (e: React.MouseEvent<HTMLAnchorElement>) => {
               e.currentTarget.style.backgroundColor = '#219099';
-              e.currentTarget.style.borderColor = '#56a7b0';
             },
             onMouseOut: (e: React.MouseEvent<HTMLAnchorElement>) => {
               e.currentTarget.style.backgroundColor = '#075e68';
-              e.currentTarget.style.borderColor = '#0c6e72';
             },
             title: 'Return to Website'
-          }, '← Back to Website')
+          }, 'Website')
         ]);
       }
     }
   },
   
   plugins: [
+    clearFieldPlugin(),
+    keyboardShortcutsPlugin({}),
     structureTool({
       structure: (S) =>
         S.list()

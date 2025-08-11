@@ -6,6 +6,7 @@ import { Clock, User, Calendar, ArrowRight, BookOpen, Tag } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { TransparentButton } from '@/components/shared/TransparentButton';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
 import { sanitySimpleService } from '@/lib/sanity/client.simple';
@@ -224,8 +225,8 @@ const BlogCard: React.FC<BlogCardProps> = ({
           "relative overflow-hidden bg-muted",
           isListView 
             ? "w-full sm:w-72 md:w-80 md:flex-shrink-0 aspect-[16/10] sm:aspect-[4/3]" 
-            : "aspect-[4/3]",
-          !isListView && (featured ? "aspect-[16/10]" : "aspect-[4/3]")
+            : "aspect-[16/10]",
+          !isListView && (featured ? "aspect-[16/10]" : "aspect-[16/10]")
         )}>
           <Link href={`/blog/${safePost.slug.current}`} className="block relative w-full h-full">
             <ProductionBlogImage
@@ -268,13 +269,13 @@ const BlogCard: React.FC<BlogCardProps> = ({
         )}>
           <CardHeader className="pb-3">
             {/* Category Badge - Clean Single Row */}
-            <div className="flex items-center justify-between gap-2 mb-3">
+            <div className="flex items-center justify-between gap-2 mb-3 flex-wrap">
               <Badge 
                 variant="outline" 
-                className="text-xs font-medium border-current px-2 py-1 flex-shrink-0 max-w-[120px] truncate"
+                className="text-xs font-medium border-current px-2 py-1 flex-shrink-0 bg-background/60 dark:bg-white/10 text-foreground whitespace-normal break-words"
                 style={{ 
                   borderColor: safePost.category.color || 'hsl(var(--border))',
-                  color: safePost.category.color || 'hsl(var(--foreground))'
+                  backgroundColor: safePost.category.color ? `${safePost.category.color}20` : undefined
                 }}
               >
                 {safePost.category.title}
@@ -316,7 +317,7 @@ const BlogCard: React.FC<BlogCardProps> = ({
             {showExcerpt && (
               <p className={cn(
                 "text-muted-foreground leading-relaxed mt-2",
-                isListView ? "line-clamp-3 text-base" : "line-clamp-3 text-sm",
+                isListView ? "line-clamp-3 text-base" : "line-clamp-2 text-sm",
                 isCompact && "line-clamp-2 text-sm"
               )}>
                 {safePost.excerpt}
@@ -327,20 +328,21 @@ const BlogCard: React.FC<BlogCardProps> = ({
           <CardContent className="pt-0 mt-auto">
             {/* Tags - Clean Single Row with Proper Spacing */}
             {safePost.tags && safePost.tags.length > 0 && (
-              <div className="flex items-center gap-2 mb-4 overflow-hidden">
+              <div className="flex items-center gap-2 mb-4">
                 <div className="flex items-center gap-1 flex-shrink-0">
                   <Tag className="w-3 h-3 text-muted-foreground" />
                 </div>
-                <div className="flex gap-1 overflow-hidden">
+                <div className="flex gap-1 flex-wrap">
                   {safePost.tags.slice(0, 2).map((tag, index) => (
                     <Badge 
                       key={`${tag.slug?.current || tag.title}-${index}`}
                       variant="secondary" 
-                      className="text-xs px-2 py-0.5 bg-muted/50 text-muted-foreground hover:bg-muted transition-colors flex-shrink-0 max-w-[80px] truncate"
+                      className="text-[11px] px-2 py-0.5 bg-muted/60 text-foreground hover:bg-muted transition-colors flex-shrink-0 border border-border/50 dark:bg-teal-400/10 dark:text-teal-100 dark:border-teal-400/20 whitespace-normal break-words"
                       style={{ 
                         backgroundColor: tag.color ? `${tag.color}20` : undefined,
                         borderColor: tag.color || undefined
                       }}
+                      title={tag.title}
                     >
                       {tag.title}
                     </Badge>
@@ -348,7 +350,7 @@ const BlogCard: React.FC<BlogCardProps> = ({
                   {safePost.tags.length > 2 && (
                     <Badge 
                       variant="secondary" 
-                      className="text-xs px-2 py-0.5 bg-muted/50 text-muted-foreground flex-shrink-0"
+                      className="text-[11px] px-2 py-0.5 bg-muted/60 text-foreground flex-shrink-0 border border-border/50 dark:bg-teal-400/10 dark:text-teal-100 dark:border-teal-400/20"
                     >
                       +{safePost.tags.length - 2}
                     </Badge>
@@ -377,18 +379,14 @@ const BlogCard: React.FC<BlogCardProps> = ({
               </div>
 
               {/* Read More Button */}
-              <Button 
-                asChild 
-                variant="ghost" 
-                size="sm"
-                className="group/btn text-primary hover:text-primary hover:bg-primary/10 transition-colors px-3 py-2 text-sm flex-shrink-0 ml-2"
-              >
-                <Link href={`/blog/${safePost.slug.current}`}>
-                  <BookOpen className="w-4 h-4 mr-1" />
-                  <span className="hidden sm:inline">Read</span>
-                  <ArrowRight className="w-3 h-3 ml-1 transition-transform group-hover/btn:translate-x-1" />
-                </Link>
-              </Button>
+              <div className="ml-2">
+                <TransparentButton
+                  href={`/blog/${safePost.slug.current}`}
+                  icon={ArrowRight}
+                  label="Read Article"
+                  className="h-9 px-3 py-2 text-sm rounded-full"
+                />
+              </div>
             </div>
           </CardContent>
         </div>
