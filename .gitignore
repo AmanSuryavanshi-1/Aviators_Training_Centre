@@ -27,6 +27,9 @@ studio/node_modules/
 studio/dist/
 studio/.next/
 studio/*.log
+studio/health-check-report.json
+studio/test-setup.js
+studio/test-studio.js
 
 # Test file patterns
 *.test.js
