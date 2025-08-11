@@ -101,23 +101,23 @@ const VideoCard: React.FC<VideoCardProps> = ({
   const getCardDimensions = () => {
     switch (position) {
       case 'center': return {
-        height: 'h-[80vh] md:h-[85vh]',
-        width: 'w-[240px] md:w-[260px]',
+        height: 'h-[70vh] sm:h-[75vh] md:h-[80vh] lg:h-[85vh]',
+        width: 'w-[85vw] sm:w-[70vw] md:w-[240px] lg:w-[260px] max-w-[260px]',
         aspectRatio: '9/16'
       };
       case 'adjacent': return {
-        height: 'h-[70vh] md:h-[75vh]',
-        width: 'w-[200px] md:w-[220px]',
+        height: 'h-[60vh] sm:h-[65vh] md:h-[70vh] lg:h-[75vh]',
+        width: 'w-[70vw] sm:w-[55vw] md:w-[200px] lg:w-[220px] max-w-[220px]',
         aspectRatio: '9/16'
       };
       case 'distant': return {
-        height: 'h-[60vh] md:h-[65vh]',
-        width: 'w-[160px] md:w-[180px]',
+        height: 'h-[50vh] sm:h-[55vh] md:h-[60vh] lg:h-[65vh]',
+        width: 'w-[55vw] sm:w-[45vw] md:w-[160px] lg:w-[180px] max-w-[180px]',
         aspectRatio: '9/16'
       };
       default: return {
-        height: 'h-[50vh] md:h-[55vh]',
-        width: 'w-[120px] md:w-[140px]',
+        height: 'h-[40vh] sm:h-[45vh] md:h-[50vh] lg:h-[55vh]',
+        width: 'w-[45vw] sm:w-[35vw] md:w-[120px] lg:w-[140px] max-w-[140px]',
         aspectRatio: '9/16'
       };
     }
@@ -1029,7 +1029,7 @@ export default function InfiniteVideoCarousel() {
   return (
     <motion.section
       ref={sectionRef}
-      className="relative overflow-visible bg-gradient-to-br from-background via-card/30 to-background min-h-screen flex flex-col justify-center"
+      className="relative overflow-hidden bg-gradient-to-br from-background via-card/30 to-background min-h-screen flex flex-col justify-center"
       variants={carouselVariants}
       initial="hidden"
       animate={isInView ? "visible" : "hidden"}
@@ -1127,7 +1127,7 @@ export default function InfiniteVideoCarousel() {
         <div className="absolute inset-0 bg-[linear-gradient(45deg,transparent_49%,hsl(var(--aviation-primary)/0.05)_50%,transparent_51%)] bg-[length:20px_20px]" />
       </div>
 
-      <div className="container relative z-10">
+      <div className="container relative z-10 max-w-full overflow-hidden px-2 sm:px-4 md:px-6">
 
         {/* Carousel Controls */}
         <div className="flex items-center justify-center gap-2 sm:gap-4 mb-2 px-4">
@@ -1176,7 +1176,7 @@ export default function InfiniteVideoCarousel() {
 
         {/* Infinite Carousel */}
         <div 
-          className="relative flex items-center justify-center py-8"
+          className="relative flex items-center justify-center py-8 sm:py-10 md:py-12 overflow-hidden"
           onTouchStart={handleTouchStart}
           onTouchMove={handleTouchMove}
           onTouchEnd={handleTouchEnd}
@@ -1187,27 +1187,28 @@ export default function InfiniteVideoCarousel() {
           style={{ 
             touchAction: 'pan-y pinch-zoom',
             WebkitOverflowScrolling: 'touch',
-            minHeight: '85vh'
+            minHeight: '75vh',
+            paddingBottom: '2rem' // Extra padding for center card shadow
           }}
         >
-          <div className="relative w-full max-w-6xl mx-auto overflow-visible">
-            <div className="flex items-center justify-center gap-6 lg:gap-8 xl:gap-10 px-4">
+          <div className="relative w-full max-w-full mx-auto overflow-hidden px-2 sm:px-4 pb-6 sm:pb-8 md:pb-10">
+            <div className="flex items-center justify-center gap-2 sm:gap-4 md:gap-6 lg:gap-8 xl:gap-10">
               {isLoading ? (
                 // Skeleton loading state
                 <>
-                  <div className="flex-shrink-0 hidden md:block" style={{ width: 'min(280px, 65vw)' }}>
+                  <div className="flex-shrink-0 hidden lg:block">
                     <VideoCardSkeleton position="distant" />
                   </div>
-                  <div className="flex-shrink-0" style={{ width: 'min(320px, 75vw)' }}>
+                  <div className="flex-shrink-0 hidden md:block">
                     <VideoCardSkeleton position="adjacent" />
                   </div>
-                  <div className="flex-shrink-0" style={{ width: 'min(400px, 90vw)' }}>
+                  <div className="flex-shrink-0">
                     <VideoCardSkeleton position="center" />
                   </div>
-                  <div className="flex-shrink-0" style={{ width: 'min(320px, 75vw)' }}>
+                  <div className="flex-shrink-0 hidden md:block">
                     <VideoCardSkeleton position="adjacent" />
                   </div>
-                  <div className="flex-shrink-0 hidden md:block" style={{ width: 'min(280px, 65vw)' }}>
+                  <div className="flex-shrink-0 hidden lg:block">
                     <VideoCardSkeleton position="distant" />
                   </div>
                 </>

@@ -35,7 +35,7 @@ export default function HomePageClient() {
       <HeroSection />
 
       <main>
-        <div className="container px-4 py-16 mx-auto space-y-20 sm:px-6 md:py-24 md:space-y-28">
+        <div className="container px-4 py-16 mx-auto space-y-20 sm:px-6 md:py-24 md:space-y-28 max-w-full overflow-hidden">
           {/* SEO-Optimized Content Section */}
           <motion.section 
             className="text-center space-y-8"
@@ -57,7 +57,7 @@ export default function HomePageClient() {
               Master DGCA exams with expert-led online ground school. Learn from experienced airline pilots like <strong>Ankit Kumar</strong>, <strong>Dhruv Shirkoli</strong>, and <strong>Saksham Khandelwal</strong>. Our ATC courses include comprehensive CPL/ATPL training, Type Rating preparation, and RTR(A) certification with 24/7 support and proven success rates.
             </motion.p>
             <motion.div 
-              className="flex flex-wrap justify-center gap-6 text-base md:text-lg"
+              className="flex flex-wrap justify-center gap-3 sm:gap-4 md:gap-6 text-base md:text-lg px-2"
               variants={itemVariants}
             >
               <span className="bg-teal-50 dark:bg-teal-900/20 px-4 py-3 rounded-full flex items-center gap-2 text-teal-700 dark:text-teal-300 font-medium">
@@ -153,11 +153,6 @@ export default function HomePageClient() {
                   />
                 </div>
               </div>
-              
-              <p className="text-sm text-muted-foreground max-w-2xl mx-auto">
-                Join over 500+ successful graduates who chose Aviators Training Centre for their aviation career. 
-                <strong className="text-teal-700 dark:text-teal-300"> Start your journey today!</strong>
-              </p>
             </motion.div>
           </motion.section>
 

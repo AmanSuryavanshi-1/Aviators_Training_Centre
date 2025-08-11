@@ -176,7 +176,7 @@ export default function TestimonialsPage() {
 
 
         {/* Main Content with consistent spacing patterns */}
-        <main className="container flex-grow px-4 py-16 mx-auto space-y-20 sm:px-6 md:py-24 md:space-y-28" role="main">
+        <main className="container flex-grow px-4 py-16 mx-auto space-y-20 sm:px-6 md:py-24 md:space-y-28 max-w-full overflow-hidden" role="main">
         
           {/* Infinite Video Carousel */}
           <section className="relative bg-gradient-to-br from-background via-muted/5 to-background">
@@ -231,7 +231,7 @@ export default function TestimonialsPage() {
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_60%,hsl(var(--aviation-secondary))_0%,transparent_50%)]" />
             </div>
 
-            <div className="container relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="container relative z-10 max-w-full mx-auto px-4 sm:px-6 lg:px-8 overflow-hidden">
 
               {/* Student Success Highlights - SEO Optimized */}
               <motion.div

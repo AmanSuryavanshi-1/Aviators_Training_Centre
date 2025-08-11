@@ -13,20 +13,20 @@ export default function VideoCardSkeleton({ position = 'center' }: VideoCardSkel
   const getCardDimensions = () => {
     switch (position) {
       case 'center': return {
-        height: 'h-[80vh] md:h-[85vh]',
-        width: 'w-[240px] md:w-[260px]'
+        height: 'h-[70vh] sm:h-[75vh] md:h-[80vh] lg:h-[85vh]',
+        width: 'w-[85vw] sm:w-[70vw] md:w-[240px] lg:w-[260px] max-w-[260px]'
       };
       case 'adjacent': return {
-        height: 'h-[70vh] md:h-[75vh]',
-        width: 'w-[200px] md:w-[220px]'
+        height: 'h-[60vh] sm:h-[65vh] md:h-[70vh] lg:h-[75vh]',
+        width: 'w-[70vw] sm:w-[55vw] md:w-[200px] lg:w-[220px] max-w-[220px]'
       };
       case 'distant': return {
-        height: 'h-[60vh] md:h-[65vh]',
-        width: 'w-[160px] md:w-[180px]'
+        height: 'h-[50vh] sm:h-[55vh] md:h-[60vh] lg:h-[65vh]',
+        width: 'w-[55vw] sm:w-[45vw] md:w-[160px] lg:w-[180px] max-w-[180px]'
       };
       default: return {
-        height: 'h-[50vh] md:h-[55vh]',
-        width: 'w-[120px] md:w-[140px]'
+        height: 'h-[40vh] sm:h-[45vh] md:h-[50vh] lg:h-[55vh]',
+        width: 'w-[45vw] sm:w-[35vw] md:w-[120px] lg:w-[140px] max-w-[140px]'
       };
     }
   };

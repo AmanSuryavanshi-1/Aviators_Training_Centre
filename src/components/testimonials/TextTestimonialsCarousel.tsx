@@ -256,7 +256,7 @@ export default function TextTestimonialsCarousel() {
       role="region"
       tabIndex={0}
     >
-      <div className="container relative z-10 max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8">
+      <div className="container relative z-10 max-w-full mx-auto px-3 sm:px-4 md:px-6 lg:px-8 overflow-hidden">
         {/* Header - Responsive */}
         <motion.div
           className="text-center mb-4 sm:mb-6 md:mb-8"
@@ -343,7 +343,7 @@ export default function TextTestimonialsCarousel() {
 
         {/* Testimonials Grid - Responsive with smooth auto-scroll animations */}
         <motion.div
-          className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 md:gap-5 lg:gap-6 max-w-6xl mx-auto cursor-grab active:cursor-grabbing"
+          className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 md:gap-5 lg:gap-6 max-w-full mx-auto cursor-grab active:cursor-grabbing overflow-hidden"
           key={currentIndex}
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}

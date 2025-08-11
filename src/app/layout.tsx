@@ -208,7 +208,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className="bg-background">
+      <body className="bg-background no-horizontal-overflow">
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
