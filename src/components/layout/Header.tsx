@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import NextLink from 'next/link';
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import { Sheet, SheetContent, SheetTrigger, SheetTitle } from '@/components/ui/sheet';
 import { Menu } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { cn } from '@/components/ui/utils';
@@ -13,7 +13,7 @@ import { useTheme } from 'next-themes';
 
 import { ThemeToggle } from '@/components/shared/ThemeToggle';
 import { ContactButton } from '@/components/shared/ContactButton';
-import { Home, Info, BookOpen, Users, HelpCircle, MessageSquare, Sun, Moon } from 'lucide-react'; // Added icons
+import { Home, Info, BookOpen, Users, HelpCircle, MessageSquare, Sun, Moon, X, Mail } from 'lucide-react';
 
 const Header: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -61,37 +61,131 @@ const Header: React.FC = () => {
     )}>
       {/* Reduced horizontal padding: px-2 sm:px-4 md:px-5 lg:px-6 */}
       <div className="container flex items-center justify-between px-2 mx-auto h-14 sm:h-16 sm:px-4 md:px-5 lg:px-6">
-        {/* Logo with Image */}
-        <NextLink href="/" className="flex items-center group shrink-0">
-          {/* Adjusted logo size slightly for better balance with reduced padding */}
-          <div className="relative h-8 overflow-hidden sm:h-10 md:h-12 lg:h-14 w-24 lg:w-36">
-            {mounted && ( // Conditionally render based on mounted state
-              <Image
-                src={theme === 'dark' ? '/AVIATORS_TRAINING_CENTRE_LOGO_DarkMode.png' : '/AVIATORS_TRAINING_CENTRE_LOGO_LightMode.png'}
-                alt="Aviators Training Centre Logo"
-                fill // Use fill for responsive sizing within the container
-                sizes="(max-width: 640px) 96px, (max-width: 768px) 128px, (max-width: 1024px) 160px, 192px" // Provide sizes hint
-                className="object-contain transition-transform duration-500 transform group-hover:scale-105"
-                priority
-              />
-            )}
-            {!mounted && ( // Optional: Render a placeholder or the light logo initially to prevent layout shift
-              <Image
-                src={'/AVIATORS_TRAINING_CENTRE_LOGO_LightMode.png'} // Default to light mode logo before mount
-                alt="Aviators Training Centre Logo"
-                fill
-                sizes="(max-width: 640px) 96px, (max-width: 768px) 128px, (max-width: 1024px) 160px, 192px"
-                className="object-contain transition-transform duration-500 transform group-hover:scale-105"
-                priority
-                aria-hidden="true" // Hide placeholder from screen readers
-              />
-            )}
+        {/* Left group: Hamburger (mobile only) + Logo */}
+        <div className="flex items-center gap-2">
+          {/* Mobile (<=1199px): Hamburger at extreme left */}
+          <div className="hidden max-[1199px]:block">
+            <Sheet open={isOpen} onOpenChange={setIsOpen}>
+              <SheetTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className={cn(
+                    "relative w-8 h-8",
+                    "text-foreground/90 dark:text-foreground/90",
+                    "hover:text-primary dark:hover:text-teal-300 transition-colors duration-150"
+                  )}
+                  aria-label={isOpen ? 'Close menu' : 'Open menu'}
+                >
+                  <motion.div
+                    initial={false}
+                    animate={{ rotate: isOpen ? 90 : 0, scale: isOpen ? 1.02 : 1 }}
+                    transition={{ type: 'spring', stiffness: 320, damping: 26 }}
+                    className="relative z-10"
+                  >
+                    {isOpen ? (
+                      <X className="w-5 h-5" />
+                    ) : (
+                      <Menu className="w-5 h-5" />
+                    )}
+                  </motion.div>
+                  <span className="sr-only">Toggle Menu</span>
+                </Button>
+              </SheetTrigger>
+              <SheetContent
+                side="left"
+                className="w-full max-w-[12rem] p-3 border-r bg-background dark:bg-teal-950 dark:border-teal-800/60 rounded-r-xl"
+                onOpenAutoFocus={(e) => e.preventDefault()}
+                aria-label="Main menu"
+              >
+                <div className="flex flex-col h-full">
+                  {/* Subtle header with small logo and title */}
+                  <div className="mb-2.5 pb-2 border-b border-border/40 dark:border-teal-800/60 flex items-center gap-2">
+                    <NextLink href="/" className="flex items-center">
+                      <div className="relative h-6 w-20 overflow-hidden">
+                        {mounted ? (
+                          <Image
+                            src={theme === 'dark' ? '/AVIATORS_TRAINING_CENTRE_LOGO_DarkMode.png' : '/AVIATORS_TRAINING_CENTRE_LOGO_LightMode.png'}
+                            alt="Aviators Training Centre"
+                            fill
+                            sizes="80px"
+                            className="object-contain"
+                            priority
+                          />
+                        ) : null}
+                      </div>
+                    </NextLink>
+                    <SheetTitle className="ml-1 text-[10px] uppercase tracking-wider text-foreground/60">ATC</SheetTitle>
+                  </div>
+
+                  <div className="flex flex-col flex-grow space-y-2.5 overflow-y-auto">
+                    {navLinks.map((link) => (
+                      <NextLink
+                        key={link.href}
+                        href={link.href}
+                        className={cn(
+                          "text-sm transition-colors py-1.5 flex items-center gap-2",
+                          pathname === link.href
+                            ? "text-primary font-semibold dark:text-teal-300"
+                            : "text-foreground/80 hover:text-primary dark:text-foreground/80 dark:hover:text-teal-300"
+                        )}
+                        onClick={() => setIsOpen(false)}>
+                        <link.icon className="w-4 h-4 opacity-80" />
+                        {link.label}
+                      </NextLink>
+                    ))}
+                    {/* Contact page link inside the sheet */}
+                    <NextLink
+                      href="/contact"
+                      className={cn(
+                        "text-sm transition-colors py-1.5 flex items-center gap-2",
+                        pathname === '/contact'
+                          ? "text-primary font-semibold dark:text-teal-300"
+                          : "text-foreground/80 hover:text-primary dark:text-foreground/80 dark:hover:text-teal-300"
+                      )}
+                      onClick={() => setIsOpen(false)}
+                    >
+                      <Mail className="w-4 h-4 opacity-80" />
+                      Contact
+                    </NextLink>
+                  </div>
+                </div>
+              </SheetContent>
+            </Sheet>
           </div>
-        </NextLink>
+
+          {/* Logo with Image */}
+          <NextLink href="/" className="flex items-center group shrink-0">
+            {/* Adjusted logo size slightly for better balance with reduced padding */}
+            <div className="relative h-8 overflow-hidden sm:h-10 md:h-12 lg:h-14 w-24 lg:w-36">
+              {mounted && ( // Conditionally render based on mounted state
+                <Image
+                  src={theme === 'dark' ? '/AVIATORS_TRAINING_CENTRE_LOGO_DarkMode.png' : '/AVIATORS_TRAINING_CENTRE_LOGO_LightMode.png'}
+                  alt="Aviators Training Centre Logo"
+                  fill // Use fill for responsive sizing within the container
+                  sizes="(max-width: 640px) 96px, (max-width: 768px) 128px, (max-width: 1024px) 160px, 192px" // Provide sizes hint
+                  className="object-contain transition-transform duration-500 transform group-hover:scale-105"
+                  priority
+                />
+              )}
+              {!mounted && ( // Optional: Render a placeholder or the light logo initially to prevent layout shift
+                <Image
+                  src={'/AVIATORS_TRAINING_CENTRE_LOGO_LightMode.png'} // Default to light mode logo before mount
+                  alt="Aviators Training Centre Logo"
+                  fill
+                  sizes="(max-width: 640px) 96px, (max-width: 768px) 128px, (max-width: 1024px) 160px, 192px"
+                  className="object-contain transition-transform duration-500 transform group-hover:scale-105"
+                  priority
+                  aria-hidden="true" // Hide placeholder from screen readers
+                />
+              )}
+            </div>
+          </NextLink>
+        </div>
 
         {/* Desktop Navigation - Hidden on mobile */}
         {/* Reduced spacing: space-x-2 md:space-x-3 lg:space-x-6 */}
-        <nav className="items-center hidden flex-grow justify-center space-x-2 text-sm font-medium md:space-x-3 lg:space-x-5 md:flex">
+        <nav className="items-center hidden flex-grow justify-center space-x-2 text-sm font-medium md:space-x-3 lg:space-x-5 min-[1200px]:flex">
           {navLinks.map((link) => (
             <NextLink
               key={link.href}
@@ -116,54 +210,20 @@ const Header: React.FC = () => {
           ))}
         </nav>
 
-        {/* Right side buttons */}
+        {/* Right side buttons - desktop only */}
         {/* Reduced gap: gap-1 sm:gap-1.5 md:gap-2 lg:gap-3 */}
-        <div className="flex items-center gap-1 sm:gap-1.5 md:gap-2 lg:gap-3">
+        <div className="hidden min-[1200px]:flex items-center gap-1 sm:gap-1.5 md:gap-2 lg:gap-3">
           <ThemeToggle />
           {/* Adjusted scale slightly */}
-          <ContactButton href="/contact" className="scale-80 sm:scale-90 md:scale-95 lg:scale-100" />
+          <ContactButton href="/contact" className="scale-95 lg:scale-100" />
         </div>
 
-        {/* Mobile Navigation Trigger - Shown only on mobile */}
-        <div className="flex items-center md:hidden">
-          <Sheet open={isOpen} onOpenChange={setIsOpen}>
-            <SheetTrigger asChild>
-              <Button variant="ghost" size="icon" className="w-8 h-8 sm:w-9 sm:h-9">
-                <Menu className="w-5 h-5 sm:w-5 sm:h-5 text-foreground dark:text-foreground/90" />
-                <span className="sr-only">Toggle Menu</span>
-              </Button>
-            </SheetTrigger>
-            <SheetContent
-              side="right"
-              className="w-full max-w-xs p-6 border-l bg-background dark:bg-teal-950 dark:border-teal-800/60"
-              onOpenAutoFocus={(e) => e.preventDefault()}
-            >
-              <div className="flex flex-col h-full">
-                <div className="flex flex-col flex-grow space-y-5 overflow-y-auto">
-                  {navLinks.map((link) => (
-                    <NextLink
-                      key={link.href}
-                      href={link.href}
-                      className={cn(
-                        "text-lg transition-colors py-2 flex items-center gap-2", // Added flex, items-center, gap
-                        pathname === link.href
-                          ? "text-primary font-semibold dark:text-teal-300"
-                          : "text-foreground/80 hover:text-primary dark:text-foreground/80 dark:hover:text-teal-300"
-                      )}
-                      onClick={() => setIsOpen(false)}>
-                      <link.icon className="w-5 h-5 opacity-80" /> {/* Added icon */}
-                      {link.label}
-                    </NextLink>
-                  ))}
-                </div>
-                {/* Optional: Add ThemeToggle/ContactButton to bottom of mobile menu */}
-                {/* <div className="pt-4 mt-auto border-t border-border/40 dark:border-teal-800/60 flex justify-between items-center">
-                  <ThemeToggle />
-                  <ContactButton href="/contact" onClick={() => setIsOpen(false)} />
-                </div> */}
-              </div>
-            </SheetContent>
-          </Sheet>
+        {/* Mobile controls: theme + contact (right side). Hamburger moved to far left. */}
+        <div className="hidden max-[1199px]:flex items-center gap-2 ml-auto">
+          <div className="scale-90">
+            <ThemeToggle />
+          </div>
+          <ContactButton href="/contact" className="scale-90" />
         </div>
       </div>
     </header>

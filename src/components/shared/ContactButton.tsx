@@ -35,7 +35,7 @@ export function ContactButton({
     >
       {/* Enhanced animated gradient border with glow effect */}
       <div 
-        className="absolute -inset-0.5 rounded-full bg-gradient-to-r from-teal-500 via-blue-400 to-blue-500 opacity-70 group-hover:opacity-100 blur-[3px] group-hover:blur-[5px] transition-all duration-300"
+        className="absolute -inset-0.5 rounded-full bg-gradient-to-r from-aviation-600 via-aviation-500 to-aviation-400 opacity-60 group-hover:opacity-90 blur-[3px] group-hover:blur-[5px] transition-all duration-300"
         style={{
           animation: '2s ease-in-out infinite',
           backgroundSize: '200% 200%',
@@ -46,7 +46,7 @@ export function ContactButton({
       
       {/* Additional inner glow for enhanced effect */}
       <div 
-        className="absolute -inset-0.5 rounded-full bg-gradient-to-r from-blue-500 to-teal-500 opacity-0 group-hover:opacity-60 blur-sm transition-all duration-500"
+        className="absolute -inset-0.5 rounded-full bg-gradient-to-r from-aviation-500 to-aviation-400 opacity-0 group-hover:opacity-50 blur-sm transition-all duration-500"
         style={{
           animation: '2s infinite',
           animationName: 'pulseAnimation'
@@ -70,15 +70,17 @@ export function ContactButton({
       <Button
         asChild
         className={cn(
-          "relative flex rounded-full px-4 py-1.5 items-center space-x-1 bg-background hover:bg-background/90 text-foreground border-0 shadow-md conversion-button",
+          "relative flex rounded-full items-center space-x-1 bg-background hover:bg-background/90 text-foreground border-0 shadow-md conversion-button",
+          // Slightly reduced vertical padding for mobile only
+          "px-3 py-0.5 text-xs sm:px-3.5 sm:py-1.5 sm:text-sm md:px-4 md:py-1.5 md:text-sm",
           fullWidth && "w-full justify-center"
         )}
         data-conversion="true"
       >
         <Link href={href} onClick={onClick}>
-          <Mail className="w-4 h-4 mr-2 text-teal-500 transition-colors duration-300 group-hover:text-blue-500" />
-          <span className="font-medium">{label}</span>
-          <ChevronRight className="w-4 h-4 ml-1 text-blue-500 transition-colors transition-transform duration-300 transform group-hover:text-teal-500 group-hover:translate-x-1" />
+          <Mail className="w-3.5 h-3.5 sm:w-4 sm:h-4 mr-1.5 sm:mr-2 text-aviation-600 transition-colors duration-300 group-hover:text-aviation-500" />
+          <span className="font-medium tracking-tight">{label}</span>
+          <ChevronRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 ml-1 text-aviation-500 transition-colors transition-transform duration-300 transform group-hover:text-aviation-600 group-hover:translate-x-1" />
         </Link>
       </Button>
     </motion.div>
