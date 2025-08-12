@@ -78,7 +78,7 @@ class ProductionMonitoringService {
   private configDir: string;
 
   constructor() {
-    this.baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://aviatorstrainingcentre.com';
+    this.baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.aviatorstrainingcentre.in';
     this.configDir = path.join(process.cwd(), '.monitoring');
     
     // Ensure monitoring directory exists

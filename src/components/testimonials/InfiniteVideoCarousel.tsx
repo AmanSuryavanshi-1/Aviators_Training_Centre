@@ -564,7 +564,7 @@ export default function InfiniteVideoCarousel() {
       "publisher": {
         "@type": "Organization",
         "name": "Aviators Training Centre",
-        "url": "https://aviatorstrainingcentre.com"
+        "url": "https://www.aviatorstrainingcentre.in"
       },
       "author": {
         "@type": "Person",

@@ -129,7 +129,7 @@ export default function TestimonialsPage() {
       "@context": "https://schema.org",
       "@type": "EducationalOrganization",
       "name": "Aviators Training Centre",
-      "url": "https://aviatorstrainingcentre.com",
+      "url": "https://www.aviatorstrainingcentre.in",
       "description": "India's premier DGCA CPL and ATPL ground school training institute",
       "address": {
         "@type": "PostalAddress",

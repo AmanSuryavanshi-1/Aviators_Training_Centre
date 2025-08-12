@@ -31,7 +31,7 @@ class AutomatedSitemapService {
   private outputDir: string;
 
   constructor() {
-    this.baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://aviatorstrainingcentre.com';
+    this.baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.aviatorstrainingcentre.in';
     this.outputDir = path.join(process.cwd(), 'public');
   }
 

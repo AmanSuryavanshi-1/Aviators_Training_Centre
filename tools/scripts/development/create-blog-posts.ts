@@ -435,7 +435,7 @@ async function createOrReplaceBlogPost(post: any, categoryRef: string, authorRef
         seoTitle: post.seoTitle,
         seoDescription: post.seoDescription,
         focusKeyword: post.focusKeyword,
-        canonicalUrl: `https://aviatorstrainingcentre.com/blog/${post.slug}`,
+        canonicalUrl: `https://www.aviatorstrainingcentre.in/blog/${post.slug}`,
         structuredData: {
           articleType: 'EducationalArticle',
           learningResourceType: 'Guide',

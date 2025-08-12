@@ -242,7 +242,7 @@ export default defineConfig({
     origin: [
       'http://localhost:3000',
       'http://localhost:3001',
-      'https://aviatorstrainingcentre.com',
+      'https://www.aviatorstrainingcentre.in',
       'https://www.aviatorstrainingcentre.com',
       'https://aviators-training-centre-blog.sanity.studio',
       /^https:\/\/.*\.vercel\.app$/,

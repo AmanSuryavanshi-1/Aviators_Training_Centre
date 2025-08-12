@@ -76,7 +76,7 @@ const components: PortableTextComponents = {
       const { children, value } = props;
       if (!value?.href) return <span>{children}</span>;
       
-      const isExternal = value.href.startsWith('http') && !value.href.includes('aviatorstrainingcentre.com');
+      const isExternal = value.href.startsWith('http') && !value.href.includes('aviatorstrainingcentre.in');
       
       if (isExternal) {
         return (

@@ -6,13 +6,13 @@ export const metadata: Metadata = {
   description: "Ace your CPL/ATPL exams with online coaching from airline-experienced instructors. 24/7 doubt support & interview prep.",
   keywords: "online CPL coaching, ATPL exam prep, pilot interview training, aviation training, DGCA ground school",
   alternates: {
-    canonical: "https://aviatorstrainingcentre.com/",
+    canonical: "https://www.aviatorstrainingcentre.in/",
   },
-  metadataBase: new URL('https://aviatorstrainingcentre.com'),
+  metadataBase: new URL('https://www.aviatorstrainingcentre.in'),
   openGraph: {
     title: "CPL/ATPL Exam Prep | Aviators Training Centre",
     description: "Ace your CPL/ATPL exams with online coaching from airline-experienced instructors. 24/7 doubt support & interview prep.",
-    url: "https://aviatorstrainingcentre.com/",
+    url: "https://www.aviatorstrainingcentre.in/",
     images: [{
       url: "/HomePage/Hero3.webp",
       width: 1200,

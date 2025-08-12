@@ -121,7 +121,7 @@ A comprehensive administration system for the Aviators Training Centre platform,
    ***REMOVED***
    NEXT_PUBLIC_SANITY_DATASET=production
    SANITY_API_TOKEN=your_sanity_api_token
-   NEXT_PUBLIC_SITE_URL=https://aviatorstrainingcentre.com
+   NEXT_PUBLIC_SITE_URL=https://www.aviatorstrainingcentre.in
    ```
 
 3. **Start Development Servers**

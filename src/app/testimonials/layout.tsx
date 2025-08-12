@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 import { getAllSEOKeywords, generateSEOMetaDescription, generateSEOTitle } from '@/lib/testimonials/data';
 
-const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://aviatorstrainingcentre.com';
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://www.aviatorstrainingcentre.in';
 
 // Generate dynamic SEO keywords from video testimonials
 const dynamicKeywords = getAllSEOKeywords();

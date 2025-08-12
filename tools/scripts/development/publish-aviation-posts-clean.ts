@@ -105,7 +105,7 @@ const blogPosts = [
       seoDescription: 'Comprehensive DGCA CPL guide covering requirements, costs, timeline, and exam preparation. Expert insights from certified flight instructors. Start your pilot career today.',
       focusKeyword: 'DGCA CPL',
       additionalKeywords: ['commercial pilot license india', 'DGCA exam preparation', 'pilot training cost', 'aviation career'],
-      canonicalUrl: 'https://aviatorstrainingcentre.com/blog/dgca-cpl-complete-guide-2024-commercial-pilot-license-india',
+      canonicalUrl: 'https://www.aviatorstrainingcentre.in/blog/dgca-cpl-complete-guide-2024-commercial-pilot-license-india',
     },
 
     body: [
@@ -277,7 +277,7 @@ const blogPosts = [
       seoDescription: 'Comprehensive guide to pilot salaries in India 2024. Learn about first officer, captain, and senior pilot earnings across domestic and international airlines.',
       focusKeyword: 'pilot salary india',
       additionalKeywords: ['commercial pilot salary', 'airline pilot earnings', 'aviation career income', 'pilot pay scale'],
-      canonicalUrl: 'https://aviatorstrainingcentre.com/blog/pilot-salary-india-2024-career-earnings-guide',
+      canonicalUrl: 'https://www.aviatorstrainingcentre.in/blog/pilot-salary-india-2024-career-earnings-guide',
     },
 
     body: [
@@ -430,7 +430,7 @@ const blogPosts = [
       seoDescription: 'Discover how flight simulator training accelerates pilot development, improves safety, and reduces costs. Learn why modern flight schools integrate advanced simulation.',
       focusKeyword: 'flight simulator training benefits',
       additionalKeywords: ['flight simulator training', 'pilot training technology', 'aviation simulation', 'flight training efficiency'],
-      canonicalUrl: 'https://aviatorstrainingcentre.com/blog/flight-simulator-training-benefits-student-pilots',
+      canonicalUrl: 'https://www.aviatorstrainingcentre.in/blog/flight-simulator-training-benefits-student-pilots',
     },
 
     body: [
@@ -569,7 +569,7 @@ const blogPosts = [
       seoDescription: 'Discover the latest aviation technology trends shaping the future of flying. AI, sustainable fuels, and advanced systems explained by aviation experts.',
       focusKeyword: 'aviation technology trends',
       additionalKeywords: ['future of aviation', 'aviation innovation', 'pilot technology', 'aircraft systems'],
-      canonicalUrl: 'https://aviatorstrainingcentre.com/blog/aviation-technology-trends-future-flying-2024',
+      canonicalUrl: 'https://www.aviatorstrainingcentre.in/blog/aviation-technology-trends-future-flying-2024',
     },
 
     body: [
@@ -717,7 +717,7 @@ const blogPosts = [
       seoDescription: 'Explore diverse airline industry career opportunities beyond piloting. Aviation management, technical roles, and growth paths explained by industry experts.',
       focusKeyword: 'airline industry careers',
       additionalKeywords: ['aviation careers', 'airline jobs', 'aviation management', 'airport careers'],
-      canonicalUrl: 'https://aviatorstrainingcentre.com/blog/airline-industry-career-opportunities-beyond-pilot-2024',
+      canonicalUrl: 'https://www.aviatorstrainingcentre.in/blog/airline-industry-career-opportunities-beyond-pilot-2024',
     },
 
     body: [

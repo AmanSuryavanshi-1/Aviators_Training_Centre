@@ -382,7 +382,7 @@ async function scheduleDelayedNotification(
  * Generates email content for notifications
  */
 function generateEmailContent(notification: EditorNotification): EmailNotificationData {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://aviatorstrainingcentre.com';
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://www.aviatorstrainingcentre.in';
   const actionUrl = notification.metadata?.actionUrl 
     ? `${baseUrl}${notification.metadata.actionUrl}`
     : `${baseUrl}/admin`;

@@ -192,7 +192,7 @@ export function generateCourseSchema() {
     "provider": {
       "@type": "Organization",
       "name": "Aviators Training Centre",
-      "url": "https://aviatorstrainingcentre.com"
+      "url": "https://www.aviatorstrainingcentre.in"
     },
     "educationalLevel": "Professional",
     "courseMode": "In-person",
@@ -235,8 +235,8 @@ export function generateOrganizationSchema() {
     "@type": "EducationalOrganization",
     "name": "Aviators Training Centre",
     "alternateName": "ATC",
-    "url": "https://aviatorstrainingcentre.com",
-    "logo": "https://aviatorstrainingcentre.com/logo.png",
+    "url": "https://www.aviatorstrainingcentre.in",
+    "logo": "https://www.aviatorstrainingcentre.in/logo.png",
     "description": "India's premier DGCA approved aviation training institute specializing in CPL and ATPL ground school preparation",
     "address": {
       "@type": "PostalAddress",

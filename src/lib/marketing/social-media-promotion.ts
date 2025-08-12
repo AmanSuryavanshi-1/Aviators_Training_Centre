@@ -62,7 +62,7 @@ export class SocialMediaPromotionManager {
     excerpt: string;
     category: string;
   }): Record<SocialMediaPost['platform'], Omit<SocialMediaPost, 'id' | 'engagement'>> {
-    const baseUrl = 'https://aviatorstrainingcentre.com/blog';
+    const baseUrl = 'https://www.aviatorstrainingcentre.in/blog';
     const postUrl = `${baseUrl}/${blogPost.slug}`;
 
     return {
@@ -158,7 +158,7 @@ Perfect for:
 ✅ Flight training students
 
 📖 Read the detailed blog post: ${postUrl}
-📞 Book a free consultation: https://aviatorstrainingcentre.com/contact
+📞 Book a free consultation: https://www.aviatorstrainingcentre.in/contact
 
 Subscribe for more aviation training content!
 

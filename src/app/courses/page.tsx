@@ -140,7 +140,7 @@ const Courses: React.FC = () => {
           "provider": {
             "@type": "Organization",
             "name": "Aviators Training Centre",
-            "sameAs": "https://aviatorstrainingcentre.com"
+            "sameAs": "https://www.aviatorstrainingcentre.in"
           }
         })),
         ...additionalServicesData.map((service) => ({
@@ -150,7 +150,7 @@ const Courses: React.FC = () => {
           "provider": {
             "@type": "Organization",
             "name": "Aviators Training Centre",
-            "sameAs": "https://aviatorstrainingcentre.com"
+            "sameAs": "https://www.aviatorstrainingcentre.in"
           }
         }))
       ]

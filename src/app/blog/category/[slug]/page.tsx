@@ -51,7 +51,7 @@ export async function generateMetadata({ params }: CategoryPageProps) {
         title,
         description,
         type: 'website',
-        url: `https://aviatorstrainingcentre.com/blog/category/${slug}`,
+        url: `https://www.aviatorstrainingcentre.in/blog/category/${slug}`,
       },
       twitter: {
         card: 'summary_large_image',
@@ -64,7 +64,7 @@ export async function generateMetadata({ params }: CategoryPageProps) {
           '@type': 'CollectionPage',
           name: title,
           description,
-          url: `https://aviatorstrainingcentre.com/blog/category/${slug}`,
+          url: `https://www.aviatorstrainingcentre.in/blog/category/${slug}`,
           mainEntity: {
             '@type': 'ItemList',
             name: `${category.title} Articles`,
@@ -77,19 +77,19 @@ export async function generateMetadata({ params }: CategoryPageProps) {
                 '@type': 'ListItem',
                 position: 1,
                 name: 'Home',
-                item: 'https://aviatorstrainingcentre.com'
+                item: 'https://www.aviatorstrainingcentre.in'
               },
               {
                 '@type': 'ListItem',
                 position: 2,
                 name: 'Blog',
-                item: 'https://aviatorstrainingcentre.com/blog'
+                item: 'https://www.aviatorstrainingcentre.in/blog'
               },
               {
                 '@type': 'ListItem',
                 position: 3,
                 name: category.title,
-                item: `https://aviatorstrainingcentre.com/blog/category/${slug}`
+                item: `https://www.aviatorstrainingcentre.in/blog/category/${slug}`
               }
             ]
           }

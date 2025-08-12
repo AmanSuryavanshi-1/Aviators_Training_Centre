@@ -117,5 +117,18 @@
     "NEXT_PUBLIC_SANITY_API_VERSION": "2024-01-01",
     "NEXT_PUBLIC_SITE_URL": "https://www.aviatorstrainingcentre.in",
     "NODE_ENV": "production"
-  }
+  },
+  "redirects": [
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "aviatorstrainingcentre.in"
+        }
+      ],
+      "destination": "https://www.aviatorstrainingcentre.in/:path*",
+      "permanent": true
+    }
+  ]
 }

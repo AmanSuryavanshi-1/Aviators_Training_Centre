@@ -400,7 +400,7 @@ export function generateBlogBreadcrumbs(
 // Generate structured data for blog posts (JSON-LD)
 export function generateBlogPostStructuredData(post: BlogPost): object {
   try {
-    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://aviatorstrainingcentre.com';
+    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.aviatorstrainingcentre.in';
     
     return {
       '@context': 'https://schema.org',

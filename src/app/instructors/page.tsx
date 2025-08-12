@@ -72,16 +72,16 @@ const InstructorsPage: React.FC = () => {
       "description": "Expert aviation instructors with airline experience teaching CPL/ATPL subjects, RTR(A), and providing interview preparation.",
       "itemListElement": instructors.map((instructor, index) => ({
         "@type": "Person",
-        "@id": `https://aviatorstrainingcentre.com/instructors#${instructor.name.toLowerCase().replace(/\s+/g, '-')}-${index}`,
+        "@id": `https://www.aviatorstrainingcentre.in/instructors#${instructor.name.toLowerCase().replace(/\s+/g, '-')}-${index}`,
         "name": instructor.name,
         // "jobTitle": instructor.title,
-        "image": `https://aviatorstrainingcentre.com${instructor.image}`, // Add image URL
+        "image": `https://www.aviatorstrainingcentre.in${instructor.image}`, // Add image URL
         "description": instructor.bio,
         // "knowsAbout": instructor.expertise,
         "worksFor": {
           "@type": "Organization",
           "name": "Aviators Training Centre",
-          "url": "https://aviatorstrainingcentre.com"
+          "url": "https://www.aviatorstrainingcentre.in"
         }
       }))
     })

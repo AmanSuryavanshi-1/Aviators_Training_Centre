@@ -19,7 +19,7 @@ export async function GET() {
     const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>${process.env.NEXT_PUBLIC_SITE_URL || 'https://aviatorstrainingcentre.com'}/blog</loc>
+    <loc>${process.env.NEXT_PUBLIC_SITE_URL || 'https://www.aviatorstrainingcentre.in'}/blog</loc>
     <lastmod>${new Date().toISOString()}</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
@@ -46,7 +46,7 @@ ${sitemapEntries.map(entry => `  <url>
     const fallbackSitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>${process.env.NEXT_PUBLIC_SITE_URL || 'https://aviatorstrainingcentre.com'}/blog</loc>
+    <loc>${process.env.NEXT_PUBLIC_SITE_URL || 'https://www.aviatorstrainingcentre.in'}/blog</loc>
     <lastmod>${new Date().toISOString()}</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>

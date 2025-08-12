@@ -3,12 +3,12 @@
   "@type": "ItemList",
   "name": "Aviation Training Courses",
   "description": "Comprehensive DGCA Ground School, Type Rating Prep, and Pilot Career Services offered by Aviators Training Centre.",
-  "url": "https://aviatorstrainingcentre.com/courses",
+  "url": "https://www.aviatorstrainingcentre.in/courses",
   "numberOfItems": 7,
   "itemListElement": [
     {
       "@type": "Course",
-      "@id": "https://aviatorstrainingcentre.com/courses/air-navigation",
+      "@id": "https://www.aviatorstrainingcentre.in/courses/air-navigation",
       "name": "Air Navigation",
       "description": "Mastering flight path calculations, chart reading, and navigational instruments.",
       "courseCode": "ATC-AN-001",
@@ -21,7 +21,7 @@
       "provider": {
         "@type": "Organization",
         "name": "Aviators Training Centre",
-        "sameAs": "https://aviatorstrainingcentre.com"
+        "sameAs": "https://www.aviatorstrainingcentre.in"
       },
       "educationalLevel": "Beginner to Advanced",
       "learningResourceType": "Course",
@@ -30,7 +30,7 @@
     },
     {
       "@type": "Course",
-      "@id": "https://aviatorstrainingcentre.com/courses/meteorology",
+      "@id": "https://www.aviatorstrainingcentre.in/courses/meteorology",
       "name": "Meteorology",
       "description": "Understanding atmospheric conditions, weather patterns, and forecasts.",
       "courseCode": "ATC-MET-002",
@@ -43,7 +43,7 @@
       "provider": {
         "@type": "Organization",
         "name": "Aviators Training Centre",
-        "sameAs": "https://aviatorstrainingcentre.com"
+        "sameAs": "https://www.aviatorstrainingcentre.in"
       },
       "educationalLevel": "Beginner to Advanced",
       "learningResourceType": "Course",
@@ -52,7 +52,7 @@
     },
     {
       "@type": "Course",
-      "@id": "https://aviatorstrainingcentre.com/courses/air-regulations",
+      "@id": "https://www.aviatorstrainingcentre.in/courses/air-regulations",
       "name": "Air Regulations",
       "description": "Knowledge of national (DGCA) and international aviation laws and procedures.",
       "courseCode": "ATC-AR-003",
@@ -65,7 +65,7 @@
       "provider": {
         "@type": "Organization",
         "name": "Aviators Training Centre",
-        "sameAs": "https://aviatorstrainingcentre.com"
+        "sameAs": "https://www.aviatorstrainingcentre.in"
       },
       "educationalLevel": "Intermediate to Advanced",
       "learningResourceType": "Course",
@@ -74,7 +74,7 @@
     },
     {
       "@type": "Course",
-      "@id": "https://aviatorstrainingcentre.com/courses/technical-general",
+      "@id": "https://www.aviatorstrainingcentre.in/courses/technical-general",
       "name": "Technical General",
       "description": "Fundamental principles of flight, aerodynamics, aircraft structures, and systems.",
       "courseCode": "ATC-TG-004",
@@ -87,7 +87,7 @@
       "provider": {
         "@type": "Organization",
         "name": "Aviators Training Centre",
-        "sameAs": "https://aviatorstrainingcentre.com"
+        "sameAs": "https://www.aviatorstrainingcentre.in"
       },
       "educationalLevel": "Beginner to Intermediate",
       "learningResourceType": "Course",
@@ -96,7 +96,7 @@
     },
     {
       "@type": "Course",
-      "@id": "https://aviatorstrainingcentre.com/courses/technical-specific",
+      "@id": "https://www.aviatorstrainingcentre.in/courses/technical-specific",
       "name": "Technical Specific",
       "description": "In-depth study of specific aircraft types systems and performance.",
       "courseCode": "ATC-TS-005",
@@ -109,7 +109,7 @@
       "provider": {
         "@type": "Organization",
         "name": "Aviators Training Centre",
-        "sameAs": "https://aviatorstrainingcentre.com"
+        "sameAs": "https://www.aviatorstrainingcentre.in"
       },
       "educationalLevel": "Advanced",
       "learningResourceType": "Course",
@@ -118,7 +118,7 @@
     },
     {
       "@type": "Course",
-      "@id": "https://aviatorstrainingcentre.com/courses/rtr-a",
+      "@id": "https://www.aviatorstrainingcentre.in/courses/rtr-a",
       "name": "RTR(A) - Radio Telephony",
       "description": "Specialized training to enhance communication skills for the RTR(A) license exam.",
       "courseCode": "ATC-RTR-006",
@@ -131,7 +131,7 @@
       "provider": {
         "@type": "Organization",
         "name": "Aviators Training Centre",
-        "sameAs": "https://aviatorstrainingcentre.com"
+        "sameAs": "https://www.aviatorstrainingcentre.in"
       },
       "educationalLevel": "All Levels",
       "learningResourceType": "Course",
@@ -140,7 +140,7 @@
     },
     {
       "@type": "Course",
-      "@id": "https://aviatorstrainingcentre.com/courses/type-rating-prep",
+      "@id": "https://www.aviatorstrainingcentre.in/courses/type-rating-prep",
       "name": "A320 & B737 Type Rating Prep",
       "description": "Intensive preparation for type rating exams, including major airlines like IndiGo.",
       "courseCode": "ATC-TRP-007",
@@ -153,7 +153,7 @@
       "provider": {
         "@type": "Organization",
         "name": "Aviators Training Centre",
-        "sameAs": "https://aviatorstrainingcentre.com"
+        "sameAs": "https://www.aviatorstrainingcentre.in"
       },
       "educationalLevel": "Advanced",
       "learningResourceType": "Course",

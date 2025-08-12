@@ -365,14 +365,14 @@ export class EmailMarketingManager {
               <li>{{keyPoint3}}</li>
             </ul>
             
-            <p>Have questions about your aviation career? <a href="https://aviatorstrainingcentre.com/contact" style="color: #0f766e;">Book a free consultation</a> with our experts.</p>
+            <p>Have questions about your aviation career? <a href="https://www.aviatorstrainingcentre.in/contact" style="color: #0f766e;">Book a free consultation</a> with our experts.</p>
             
             <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 30px 0;">
             
             <p style="font-size: 14px; color: #6b7280;">
               Best regards,<br>
               The Aviators Training Centre Team<br>
-              <a href="https://aviatorstrainingcentre.com" style="color: #0f766e;">aviatorstrainingcentre.com</a>
+              <a href="https://www.aviatorstrainingcentre.in" style="color: #0f766e;">aviatorstrainingcentre.in</a>
             </p>
             
             <p style="font-size: 12px; color: #9ca3af; text-align: center; margin-top: 30px;">
@@ -400,11 +400,11 @@ export class EmailMarketingManager {
         - {{keyPoint2}}
         - {{keyPoint3}}
         
-        Have questions about your aviation career? Book a free consultation with our experts: https://aviatorstrainingcentre.com/contact
+        Have questions about your aviation career? Book a free consultation with our experts: https://www.aviatorstrainingcentre.in/contact
         
         Best regards,
         The Aviators Training Centre Team
-        https://aviatorstrainingcentre.com
+        https://www.aviatorstrainingcentre.in
         
         You're receiving this email because you subscribed to our aviation training updates.
         Unsubscribe: {{unsubscribeUrl}}
@@ -454,7 +454,7 @@ export class EmailMarketingManager {
             </div>
             
             <div style="text-align: center; margin: 30px 0;">
-              <a href="https://aviatorstrainingcentre.com/blog" style="background: #0f766e; color: white; padding: 15px 30px; text-decoration: none; border-radius: 5px; font-weight: bold; display: inline-block;">Visit Our Blog</a>
+              <a href="https://www.aviatorstrainingcentre.in/blog" style="background: #0f766e; color: white; padding: 15px 30px; text-decoration: none; border-radius: 5px; font-weight: bold; display: inline-block;">Visit Our Blog</a>
             </div>
             
             <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 30px 0;">
@@ -462,7 +462,7 @@ export class EmailMarketingManager {
             <p style="font-size: 14px; color: #6b7280;">
               Best regards,<br>
               The Aviators Training Centre Team<br>
-              <a href="https://aviatorstrainingcentre.com" style="color: #0f766e;">aviatorstrainingcentre.com</a>
+              <a href="https://www.aviatorstrainingcentre.in" style="color: #0f766e;">aviatorstrainingcentre.com</a>
             </p>
             
             <p style="font-size: 12px; color: #9ca3af; text-align: center; margin-top: 30px;">
@@ -491,11 +491,11 @@ export class EmailMarketingManager {
         THIS WEEK'S TIP:
         {{weeklyTip}}
         
-        Visit our blog for more content: https://aviatorstrainingcentre.com/blog
+        Visit our blog for more content: https://www.aviatorstrainingcentre.in/blog
         
         Best regards,
         The Aviators Training Centre Team
-        https://aviatorstrainingcentre.com
+        https://www.aviatorstrainingcentre.in
         
         Unsubscribe: {{unsubscribeUrl}}
       `,

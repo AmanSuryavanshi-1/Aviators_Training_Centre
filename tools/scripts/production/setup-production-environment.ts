@@ -170,7 +170,7 @@ class ProductionEnvironmentSetup {
     console.log('\n🌐 Site Configuration:')
     this.config.NEXT_PUBLIC_SITE_URL = await this.promptForInput(
       'Production Site URL',
-      this.config.NEXT_PUBLIC_SITE_URL || 'https://aviatorstrainingcentre.com'
+      this.config.NEXT_PUBLIC_SITE_URL || 'https://www.aviatorstrainingcentre.in'
     )
     this.config.NEXT_PUBLIC_SITE_NAME = 'Aviators Training Centre'
     this.config.NEXT_PUBLIC_SITE_DESCRIPTION = 'Professional Aviation Training and Certification'

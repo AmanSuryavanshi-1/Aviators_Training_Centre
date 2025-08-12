@@ -11,7 +11,7 @@ export function generateBlogPostMetadata({ post, baseUrl }: BlogSEOProps): Metad
   const seoTitle = post.seoEnhancement?.seoTitle || `${post.title} | Aviators Training Centre`;
   const seoDescription = post.seoEnhancement?.seoDescription || post.excerpt;
   const canonicalUrl = post.seoEnhancement?.canonicalUrl || 
-    `https://aviatorstrainingcentre.com/blog/${post.slug.current}`;
+    `https://www.aviatorstrainingcentre.in/blog/${post.slug.current}`;
   
   const ogImage = post.seoEnhancement?.openGraphImage 
     ? getOptimizedImageUrl(post.seoEnhancement.openGraphImage, { width: 1200, height: 630, format: 'jpg' })
@@ -40,11 +40,11 @@ export function generateBlogPostMetadata({ post, baseUrl }: BlogSEOProps): Metad
       "name": "Aviators Training Centre",
       "logo": {
         "@type": "ImageObject",
-        "url": "https://aviatorstrainingcentre.com/AVIATORS_TRAINING_CENTRE_LOGO_LightMode.png",
+        "url": "https://www.aviatorstrainingcentre.in/AVIATORS_TRAINING_CENTRE_LOGO_LightMode.png",
         "width": 300,
         "height": 100
       },
-      "url": "https://aviatorstrainingcentre.com",
+      "url": "https://www.aviatorstrainingcentre.in",
       "sameAs": [
         "https://www.facebook.com/aviatorstrainingcentre",
         "https://www.instagram.com/aviatorstrainingcentre",
@@ -81,8 +81,8 @@ export function generateBlogPostMetadata({ post, baseUrl }: BlogSEOProps): Metad
     "@type": "EducationalOrganization",
     "name": "Aviators Training Centre",
     "alternateName": "ATC",
-    "url": "https://aviatorstrainingcentre.com",
-    "logo": "https://aviatorstrainingcentre.com/AVIATORS_TRAINING_CENTRE_LOGO_LightMode.png",
+    "url": "https://www.aviatorstrainingcentre.in",
+    "logo": "https://www.aviatorstrainingcentre.in/AVIATORS_TRAINING_CENTRE_LOGO_LightMode.png",
     "description": "Leading aviation training institute providing comprehensive pilot training, DGCA exam preparation, and professional aviation education in India.",
     "address": {
       "@type": "PostalAddress",

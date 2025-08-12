@@ -136,7 +136,7 @@ class MarkdownBlogReader {
       seoDescription: markdownPost.seoDescription,
       focusKeyword: markdownPost.focusKeyword,
       additionalKeywords: markdownPost.tags,
-      canonicalUrl: `https://aviatorstrainingcentre.com/blog/${markdownPost.slug}`,
+      canonicalUrl: `https://www.aviatorstrainingcentre.in/blog/${markdownPost.slug}`,
       structuredData: {
         articleType: 'EducationalArticle',
         learningResourceType: 'Guide',

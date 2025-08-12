@@ -47,7 +47,7 @@ interface SitemapEntry {
 
 class BlogSEOOptimizer {
   private static instance: BlogSEOOptimizer;
-  private readonly baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://aviatorstrainingcentre.com';
+  private readonly baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.aviatorstrainingcentre.in';
   private readonly siteName = 'Aviators Training Centre';
   private readonly twitterHandle = '@AviatorsTrain';
 

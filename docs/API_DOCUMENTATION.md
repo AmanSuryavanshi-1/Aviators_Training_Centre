@@ -5,7 +5,7 @@ This document provides comprehensive information about the Aviators Training Cen
 ## 🌐 Base URL
 
 - **Development:** `http://localhost:3000`
-- **Production:** `https://aviatorstrainingcentre.com`
+- **Production:** `https://www.aviatorstrainingcentre.in`
 
 ## 🔐 Authentication
 
@@ -64,7 +64,7 @@ Records a page visit for analytics.
 
 **Example:**
 ```bash
-curl -X POST https://aviatorstrainingcentre.com/api/analytics/pageview \
+curl -X POST https://www.aviatorstrainingcentre.in/api/analytics/pageview \
   -H "Content-Type: application/json" \
   -d '{
     "postSlug": "flight-training-basics",
@@ -102,7 +102,7 @@ Records a call-to-action button click.
 
 **Example:**
 ```bash
-curl -X POST https://aviatorstrainingcentre.com/api/analytics/cta \
+curl -X POST https://www.aviatorstrainingcentre.in/api/analytics/cta \
   -H "Content-Type: application/json" \
   -d '{
     "postSlug": "flight-training-basics",
@@ -477,7 +477,7 @@ Handles contact form submissions.
 
 **Example:**
 ```bash
-curl -X POST https://aviatorstrainingcentre.com/api/contact \
+curl -X POST https://www.aviatorstrainingcentre.in/api/contact \
   -H "Content-Type: application/json" \
   -d '{
     "name": "John Doe",
@@ -956,7 +956,7 @@ const getAnalyticsData = async (token, startDate, endDate) => {
 import { BlogAPI } from '@aviators/blog-sdk'
 
 const api = new BlogAPI({
-  baseURL: 'https://aviatorstrainingcentre.com',
+  baseURL: 'https://www.aviatorstrainingcentre.in',
   apiKey: 'your_api_key' // Optional for public endpoints
 })
 

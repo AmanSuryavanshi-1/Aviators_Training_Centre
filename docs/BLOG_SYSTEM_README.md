@@ -150,7 +150,7 @@ export const metadata: Metadata = {
     description:
       "Expert insights on flight training, aviation careers, and industry updates",
     type: "website",
-    url: "https://aviatorstrainingcentre.com/blog",
+    url: "https://www.aviatorstrainingcentre.in/blog",
   },
   twitter: {
     card: "summary_large_image",

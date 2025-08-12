@@ -169,12 +169,12 @@ function validateSEOImplementation() {
         title: post.seoTitle || post.title,
         description: post.seoDescription || post.excerpt,
         keywords: [post.focusKeyword, ...post.additionalKeywords].filter(Boolean).join(', '),
-        canonical: `https://aviatorstrainingcentre.com/blog/${post.slug.current}`,
+        canonical: `https://www.aviatorstrainingcentre.in/blog/${post.slug.current}`,
         openGraph: {
           title: post.seoTitle || post.title,
           description: post.seoDescription || post.excerpt,
           type: 'article',
-          url: `https://aviatorstrainingcentre.com/blog/${post.slug.current}`
+          url: `https://www.aviatorstrainingcentre.in/blog/${post.slug.current}`
         },
         twitter: {
           card: 'summary_large_image',

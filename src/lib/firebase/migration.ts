@@ -145,7 +145,7 @@ export class AnalyticsMigration {
           value: 1
         },
         page: {
-          url: 'https://aviatorstrainingcentre.com/',
+          url: 'https://www.aviatorstrainingcentre.in/',
           title: 'Aviators Training Centre - Professional Aviation Training',
           path: '/',
           category: 'home'

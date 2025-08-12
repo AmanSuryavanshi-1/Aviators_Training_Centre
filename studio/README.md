@@ -73,7 +73,7 @@ SANITY_STUDIO_PREVIEW_URL=http://localhost:3000
 SANITY_STUDIO_PREVIEW_SECRET=your-preview-secret-key
 
 # Production URLs
-SANITY_STUDIO_PRODUCTION_URL=https://aviatorstrainingcentre.com
+SANITY_STUDIO_PRODUCTION_URL=https://www.aviatorstrainingcentre.in
 SANITY_STUDIO_STAGING_URL=https://staging.aviatorstrainingcentre.com
 
 # Media Configuration

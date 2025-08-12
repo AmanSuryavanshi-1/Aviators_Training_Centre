@@ -124,8 +124,8 @@ export function generateTestimonialsPageSchema(
       '@type': 'EducationalOrganization',
       name: 'Aviators Training Centre',
       description: 'Premier aviation training institute in India specializing in DGCA CPL/ATPL ground school training',
-      url: 'https://aviatorstrainingcentre.com',
-      logo: 'https://aviatorstrainingcentre.com/AVIATORS_TRAINING_CENTRE_LOGO_LightMode.png',
+      url: 'https://www.aviatorstrainingcentre.in',
+      logo: 'https://www.aviatorstrainingcentre.in/AVIATORS_TRAINING_CENTRE_LOGO_LightMode.png',
       address: {
         '@type': 'PostalAddress',
         streetAddress: 'Ramphal Chowk Rd, Sector 7 Dwarka',
@@ -216,7 +216,7 @@ export function generateTestimonialsPageSchema(
       provider: {
         '@type': 'EducationalOrganization',
         name: 'Aviators Training Centre',
-        url: 'https://aviatorstrainingcentre.com'
+        url: 'https://www.aviatorstrainingcentre.in'
       },
       courseMode: 'online',
       educationalLevel: 'Professional',

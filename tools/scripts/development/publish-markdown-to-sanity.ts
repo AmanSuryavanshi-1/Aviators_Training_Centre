@@ -135,7 +135,7 @@ async function publishMarkdownPostsToSanity() {
             seoDescription: post.excerpt || '',
             focusKeyword: '',
             additionalKeywords: post.tags || [],
-            canonicalUrl: `https://aviatorstrainingcentre.com/blog/${post.slug.current}`,
+            canonicalUrl: `https://www.aviatorstrainingcentre.in/blog/${post.slug.current}`,
             structuredData: {
               articleType: 'EducationalArticle',
               learningResourceType: 'Guide',
