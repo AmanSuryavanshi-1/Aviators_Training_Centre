@@ -28,7 +28,7 @@ export async function generateBlogSitemapEntries(): Promise<SitemapEntry[]> {
     `);
 
     return posts.map(post => ({
-      url: `https://aviatorstrainingcentre.com/blog/${post.slug.current}`,
+      url: `https://aviatorstrainingcentre.in/blog/${post.slug.current}`,
       lastModified: post.lastModified || post.publishedAt,
       changeFrequency: 'weekly' as const,
       priority: post.featured ? 0.9 : 0.7
@@ -49,7 +49,7 @@ export async function generateBlogSitemap(): Promise<string> {
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <!-- Blog listing page -->
   <url>
-    <loc>https://aviatorstrainingcentre.com/blog</loc>
+    <loc>https://aviatorstrainingcentre.in/blog</loc>
     <lastmod>${new Date().toISOString()}</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
@@ -97,17 +97,17 @@ export async function generateBlogRSSFeed(): Promise<string> {
   <channel>
     <title>Aviators Training Centre Blog</title>
     <description>Latest insights, tips, and updates from India's leading aviation training institute</description>
-    <link>https://aviatorstrainingcentre.com/blog</link>
+    <link>https://aviatorstrainingcentre.in/blog</link>
     <language>en-us</language>
     <lastBuildDate>${new Date().toUTCString()}</lastBuildDate>
-    <atom:link href="https://aviatorstrainingcentre.com/blog/rss.xml" rel="self" type="application/rss+xml"/>
+    <atom:link href="https://aviatorstrainingcentre.in/blog/rss.xml" rel="self" type="application/rss+xml"/>
     
     ${posts.map(post => `
     <item>
       <title><![CDATA[${post.title}]]></title>
       <description><![CDATA[${post.excerpt}]]></description>
-      <link>https://aviatorstrainingcentre.com/blog/${post.slug.current}</link>
-      <guid>https://aviatorstrainingcentre.com/blog/${post.slug.current}</guid>
+      <link>https://aviatorstrainingcentre.in/blog/${post.slug.current}</link>
+      <guid>https://aviatorstrainingcentre.in/blog/${post.slug.current}</guid>
       <pubDate>${new Date(post.publishedAt).toUTCString()}</pubDate>
       <author>${post.author.name}</author>
       <category>${post.category.title}</category>

@@ -17,15 +17,14 @@ const customJestConfig = {
   // Setup files
   setupFilesAfterEnv: ['<rootDir>/src/__tests__/setup/testSetup.ts'],
 
-  // Module name mapping for absolute imports
+  // Module name mapping for absolute imports (aligned with tsconfig.json paths)
   moduleNameMapping: {
     '^@/(.*)$': '<rootDir>/src/$1',
     '^@/components/(.*)$': '<rootDir>/src/components/$1',
     '^@/lib/(.*)$': '<rootDir>/src/lib/$1',
-    '^@/contexts/(.*)$': '<rootDir>/src/contexts/$1',
     '^@/hooks/(.*)$': '<rootDir>/src/hooks/$1',
     '^@/types/(.*)$': '<rootDir>/src/types/$1',
-    '^@/styles/(.*)$': '<rootDir>/src/styles/$1',
+    '^@/app/(.*)$': '<rootDir>/src/app/$1',
   },
 
   // Test patterns

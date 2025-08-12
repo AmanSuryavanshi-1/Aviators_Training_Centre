@@ -42,6 +42,7 @@ A comprehensive, production-ready aviation training platform built for Aviators 
 - **Error Handling** - Multi-layered error boundaries with circuit breaker patterns
 - **Testing Suite** - Comprehensive unit, integration, and E2E testing
 - **Development Tools** - Hot reload, debugging, profiling, and validation scripts
+- **Organized Structure** - Clean project organization with categorized scripts and documentation
 
 ## 🛠 Tech Stack
 
@@ -131,7 +132,7 @@ npm run dev
 ## 📁 Project Structure
 
 ```
-your-project-directory/
+aviators-training-centre/
 ├── 📁 src/                          # Application source code
 │   ├── 📁 app/                      # Next.js App Router pages
 │   │   ├── 📁 admin/                # Admin dashboard
@@ -147,6 +148,33 @@ your-project-directory/
 │   │   ├── 📁 sanity/               # Sanity client and queries
 │   │   ├── 📁 firebase/             # Firebase configuration
 │   │   ├── 📁 analytics/            # Analytics utilities
+│   │   └── 📁 utils/                # General utilities
+│   ├── 📁 hooks/                    # Custom React hooks
+│   ├── 📁 contexts/                 # React context providers
+│   └── 📁 types/                    # TypeScript type definitions
+├── 📁 studio/                       # Sanity CMS Studio
+│   ├── 📁 schemaTypes/              # Content schemas
+│   ├── 📁 components/               # Studio components
+│   ├── 📁 config-templates/         # Alternative configurations
+│   └── 📄 sanity.config.ts          # Main studio config
+├── 📁 tools/                        # Development tools and scripts
+│   └── 📁 scripts/                  # Organized build and deployment scripts
+│       ├── 📁 build/                # Build-related scripts
+│       ├── 📁 deploy/               # Deployment scripts
+│       ├── 📁 development/          # Development utilities
+│       ├── 📁 maintenance/          # Maintenance scripts
+│       └── 📁 production/           # Production scripts
+├── 📁 docs/                         # Comprehensive documentation
+│   ├── 📁 setup/                    # Setup and configuration guides
+│   ├── 📁 api/                      # API documentation
+│   ├── 📁 deployment/               # Deployment guides
+│   ├── 📁 migration/                # Migration documentation
+│   └── 📄 README.md                 # Documentation index
+├── 📁 tests/                        # Test suites
+│   ├── 📁 e2e/                      # End-to-end tests
+│   └── 📁 integration/              # Integration tests
+├── 📁 public/                       # Static assets
+└── 📁 config/                       # Configuration files
 │   │   └── 📁 utils/                # General utilities
 │   ├── 📁 hooks/                    # Custom React hooks
 │   ├── 📁 types/                    # TypeScript definitions
@@ -220,6 +248,58 @@ This script will:
 - Guide you through configuration
 - Generate secure secrets
 - Create environment files
+
+## 🛠 Development Scripts
+
+The project uses an organized script structure for different development tasks:
+
+### Build & Development
+```bash
+npm run dev                    # Start development server
+npm run build                  # Production build
+npm run build:production       # Enhanced production build
+npm run start                  # Start production server
+```
+
+### Testing & Validation
+```bash
+npm run test                   # Run type checking and linting
+npm run type-check             # TypeScript validation
+npm run lint                   # ESLint validation
+npm run test:unit              # Unit tests
+npm run test:e2e               # End-to-end tests
+```
+
+### Content Management
+```bash
+npm run studio:dev             # Start Sanity Studio
+npm run studio:build           # Build Sanity Studio
+npm run studio:deploy          # Deploy Sanity Studio
+```
+
+### Production & Deployment
+```bash
+npm run production:check       # Pre-deployment validation
+npm run deploy:production      # Full production deployment
+npm run security:check         # Security validation
+npm run validate:deployment    # Post-deployment validation
+```
+
+### Analytics & Monitoring
+```bash
+npm run analytics:setup        # Setup analytics services
+npm run analytics:validate     # Validate analytics configuration
+npm run health:check           # System health check
+```
+
+### Maintenance
+```bash
+npm run cache:invalidate       # Clear application cache
+npm run cleanup                # Clean up temporary files
+npm run fix:production         # Fix production issues
+```
+
+All scripts are organized in the `tools/scripts/` directory by category for easy maintenance and discovery.
 - Update deployment settings
 
 ## 📚 Documentation
