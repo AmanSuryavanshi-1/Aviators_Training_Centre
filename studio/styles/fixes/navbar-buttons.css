@@ -2,112 +2,35 @@
 /* Scoped fixes for navbar/button regressions from Phase B */
 
 /* Fix topbar positioning and z-index */
-.atc-fix-topbar,
-[data-ui="NavbarLayout"],
-.atc-navbar-container {
-  position: sticky !important;
-  top: 0 !important;
-  z-index: 1100 !important; /* header above content */
-  background: var(--sanity-color-bg, #0a1a1d) !important; /* opaque */
-  min-height: 49px !important;
-  height: 49px !important;
-}
+/* Preserve Sanity default navbar behavior; remove forced sticky/height */
 
 /* Ensure all navbar elements have pointer events */
-.atc-fix-topbar *,
-[data-ui="NavbarLayout"] *,
-.atc-navbar-container * {
-  pointer-events: auto !important;
-}
+/* No pointer-events overrides */
 
 /* Prevent parent transforms/overflow from breaking sticky */
-.atc-fix-root,
-[data-ui="RootLayout"] {
-  transform: none !important;
-  overflow: visible !important;
-}
+/* Do not override root layout transforms/overflow */
 
 /* Restore button visibility & touch targets - navbar specific */
-.atc-fix-button,
-.atc-fix-topbar button,
-[data-ui="NavbarLayout"] button,
-[data-ui="NavbarLayout"] [data-ui="Button"] {
-  min-height: 32px !important; /* Override responsive 44px for navbar */
-  min-width: 32px !important;
-  padding: 0 12px !important;
-  pointer-events: auto !important;
-  opacity: 1 !important;
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  box-sizing: border-box !important;
-}
+/* No button sizing overrides */
 
 /* Icon buttons specific sizing */
-[data-ui="NavbarLayout"] [data-ui="Button"][data-mode="ghost"] {
-  min-width: 32px !important;
-  width: 32px !important;
-  padding: 0 !important;
-}
+/* No icon button sizing overrides */
 
 /* Focus states */
-.atc-fix-button:focus,
-[data-ui="NavbarLayout"] button:focus,
-[data-ui="NavbarLayout"] [data-ui="Button"]:focus {
-  outline: 3px solid rgba(7,94,104,0.25) !important;
-  outline-offset: 2px !important;
-}
+/* Use Sanity default focus rings */
 
 /* Fix hover states that may be broken */
-[data-ui="NavbarLayout"] button:hover,
-[data-ui="NavbarLayout"] [data-ui="Button"]:hover {
-  opacity: 1 !important;
-  pointer-events: auto !important;
-  visibility: visible !important;
-}
+/* No hover overrides */
 
 /* Ensure navbar doesn't get affected by mobile transforms */
-@media (max-width: 768px) {
-  [data-ui="NavbarLayout"] {
-    position: sticky !important;
-    top: 0 !important;
-    z-index: 1100 !important;
-    transform: none !important;
-  }
-  
-  /* Mobile button sizing - slightly larger but not 44px */
-  [data-ui="NavbarLayout"] button,
-  [data-ui="NavbarLayout"] [data-ui="Button"] {
-    min-height: 36px !important;
-  }
-  
-  [data-ui="NavbarLayout"] [data-ui="Button"][data-mode="ghost"] {
-    width: 36px !important;
-    min-width: 36px !important;
-  }
-}
+/* Remove mobile-specific navbar overrides */
 
 /* Fix any dropdown menus that might be affected */
-[data-ui="NavbarLayout"] [data-ui="Menu"] {
-  z-index: 1200 !important;
-  pointer-events: auto !important;
-}
+/* Keep menu z-index defaults */
 
-[data-ui="NavbarLayout"] [data-ui="MenuItem"] {
-  pointer-events: auto !important;
-  opacity: 1 !important;
-}
+/* Keep menu item defaults */
 
 /* Ensure publish button specifically works */
-[data-ui="NavbarLayout"] [data-ui="Button"][data-tone="primary"] {
-  background-color: #075e68 !important;
-  color: #f0f9ff !important;
-  border: 1px solid #0c6e72 !important;
-  opacity: 1 !important;
-  pointer-events: auto !important;
-}
+/* Primary tone colors are handled by minimal theme */
 
-[data-ui="NavbarLayout"] [data-ui="Button"][data-tone="primary"]:hover {
-  background-color: #219099 !important;
-  border-color: #56a7b0 !important;
-}
+/* Hover colors handled by minimal theme */

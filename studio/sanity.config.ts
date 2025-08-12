@@ -12,11 +12,8 @@ import ATCAdminNavigator from './components/ATCAdminNavigator';
 import { clearFieldPlugin } from './plugins/clearFieldPlugin';
 import { keyboardShortcutsPlugin } from './plugins/keyboardShortcutsPlugin';
 
-// Import minimal aviation theme - safe styling that preserves functionality
+// Import aviation theme and enhanced styling layers (ordered by specificity)
 import './styles/minimal-aviation-theme.css';
-import './styles/enhanced-responsive.css';
-import './styles/navbar-fixes.css';
-import './styles/fixes/navbar-buttons.css'; // Final override for navbar/button fixes
 
 // TypeScript interfaces
 interface NavbarProps {
@@ -46,60 +43,36 @@ export default defineConfig({
       logo: () => null,
       navbar: (props: NavbarProps) => {
         return React.createElement('div', {
-          className: 'atc-navbar-container atc-fix-topbar',
           style: {
-            display: 'flex',
-            alignItems: 'center',
-            width: '100%',
-            height: '49px',
-            backgroundColor: '#0a1a1d',
-            borderBottom: '1px solid #1a3a42',
-            padding: '0 12px',
-            gap: '8px',
-            boxSizing: 'border-box'
+            position: 'relative',
+            width: '100%'
           }
         }, [
-          // Default Sanity Navbar - fills space; our CSS hides brand area
-          React.createElement('div', {
-            key: 'sanity-navbar',
-            style: {
-              flex: 1,
-              display: 'flex',
-              alignItems: 'center',
-              minWidth: 0,
-              height: '100%'
-            }
-          }, props.renderDefault(props)),
+          // Default Sanity Navbar (unaltered)
+          React.createElement(React.Fragment, { key: 'sanity-default' }, props.renderDefault(props)),
 
-          // Compact Website button aligned right
+          // Website button positioned without affecting layout
           React.createElement('a', {
             key: 'back-link',
             href: '/',
             style: {
-              color: '#f0f9ff',
+              position: 'absolute',
+              top: '50%',
+              right: 12,
+              transform: 'translateY(-50%)',
               textDecoration: 'none',
-              fontSize: '12px',
-              fontWeight: 500,
-              padding: '0 10px',
-              borderRadius: '4px',
-              backgroundColor: '#075e68',
-              border: '1px solid #0c6e72',
-              transition: 'background-color 0.2s ease',
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '6px',
-              fontFamily: 'system-ui, sans-serif',
-              flexShrink: 0,
-              height: '32px',
-              lineHeight: 1
+              color: '#ffffff',
+              backgroundColor: '#075E68',
+              border: '1px solid #0C6E72',
+              borderRadius: 4,
+              padding: '6px 10px',
+              fontSize: 12,
+              fontWeight: 600,
+              lineHeight: 1,
+              fontFamily: 'system-ui, sans-serif'
             },
-            onMouseOver: (e: React.MouseEvent<HTMLAnchorElement>) => {
-              e.currentTarget.style.backgroundColor = '#219099';
-            },
-            onMouseOut: (e: React.MouseEvent<HTMLAnchorElement>) => {
-              e.currentTarget.style.backgroundColor = '#075e68';
-            },
-            title: 'Return to Website'
+            title: 'Return to Website',
+            'aria-label': 'Return to Website'
           }, 'Website')
         ]);
       }

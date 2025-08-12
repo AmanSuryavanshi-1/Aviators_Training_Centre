@@ -14,7 +14,7 @@
   border-color: #219099 !important;
 }
 
-/* Minimal navbar branding */
+/* Minimal navbar branding (keep default spacing/layout) */
 [data-ui="Navbar"] {
   border-bottom: 1px solid #075E68 !important;
 }

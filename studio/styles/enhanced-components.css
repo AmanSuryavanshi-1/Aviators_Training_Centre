@@ -380,6 +380,8 @@ a:focus-visible {
   border: 1px solid var(--atc-border) !important;
 }
 
+/* Navbar link styling handled inline to avoid spacing overrides */
+
 /* ===== SEARCH COMPONENTS ===== */
 /* Enhanced search */
 [data-ui="SearchBox"] {
@@ -404,9 +406,9 @@ a:focus-visible {
   padding: var(--atc-spacing-sm) var(--atc-spacing-md) !important;
 }
 
-[data-ui="SearchBox"] input:focus {
-  outline: none !important;
-  box-shadow: none !important;
+[data-ui="SearchBox"] input:focus-visible {
+  outline: var(--focus-ring-width) solid var(--atc-focus) !important;
+  outline-offset: var(--focus-ring-offset) !important;
 }
 
 /* ===== TAB COMPONENTS ===== */

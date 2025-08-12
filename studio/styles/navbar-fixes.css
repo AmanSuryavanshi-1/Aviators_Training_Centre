@@ -5,53 +5,15 @@
 
 /* ===== NAVBAR CONTAINER FIXES ===== */
 /* Ensure consistent navbar height and alignment */
-[data-ui="NavbarLayout"],
-.atc-navbar-container {
-  height: 49px !important;
-  min-height: 49px !important;
-  max-height: 49px !important;
-  display: flex !important;
-  align-items: center !important;
-  background-color: #0a1a1d !important;
-  border-bottom: 1px solid #1a3a42 !important;
-  padding: 0 12px !important;
-}
+/* Removed to preserve Sanity defaults */
 
 /* ===== BUTTON STANDARDIZATION ===== */
 /* Fix all navbar buttons to have consistent sizing */
-[data-ui="NavbarLayout"] [data-ui="Button"],
-[data-ui="NavbarLayout"] button,
-[data-ui="NavbarLayout"] [role="button"],
-.atc-navbar-container [data-ui="Button"],
-.atc-navbar-container button,
-.atc-navbar-container [role="button"] {
-  height: 32px !important;
-  min-height: 32px !important;
-  max-height: 32px !important;
-  padding: 0 12px !important;
-  border-radius: 4px !important;
-  font-size: 12px !important;
-  font-weight: 500 !important;
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  white-space: nowrap !important;
-  box-sizing: border-box !important;
-}
+/* Removed button sizing overrides */
 
 /* ===== PUBLISH BUTTON SPECIFIC FIXES ===== */
 /* Fix the publish button shape and alignment */
-[data-ui="NavbarLayout"] [data-ui="Button"][data-tone="primary"],
-[data-ui="NavbarLayout"] button[data-tone="primary"],
-.atc-navbar-container [data-ui="Button"][data-tone="primary"],
-.atc-navbar-container button[data-tone="primary"] {
-  background-color: #075e68 !important;
-  color: #f0f9ff !important;
-  border: 1px solid #0c6e72 !important;
-  height: 32px !important;
-  padding: 0 12px !important;
-  border-radius: 4px !important;
-}
+/* Primary color is already handled via minimal theme */
 
 [data-ui="NavbarLayout"] [data-ui="Button"][data-tone="primary"]:hover,
 [data-ui="NavbarLayout"] button[data-tone="primary"]:hover,
@@ -63,15 +25,7 @@
 
 /* ===== DRAFTS DROPDOWN FIXES ===== */
 /* Fix the drafts dropdown button */
-[data-ui="NavbarLayout"] [data-ui="MenuButton"],
-.atc-navbar-container [data-ui="MenuButton"] {
-  height: 32px !important;
-  min-height: 32px !important;
-  padding: 0 8px 0 12px !important;
-  background-color: transparent !important;
-  border: 1px solid #1a3a42 !important;
-  color: #f0f9ff !important;
-}
+/* Removed dropdown sizing overrides */
 
 [data-ui="NavbarLayout"] [data-ui="MenuButton"]:hover,
 .atc-navbar-container [data-ui="MenuButton"]:hover {
@@ -81,19 +35,7 @@
 
 /* ===== ICON BUTTON FIXES ===== */
 /* Standardize all icon buttons */
-[data-ui="NavbarLayout"] [data-ui="Button"][data-mode="ghost"],
-[data-ui="NavbarLayout"] button[data-mode="ghost"],
-.atc-navbar-container [data-ui="Button"][data-mode="ghost"],
-.atc-navbar-container button[data-mode="ghost"] {
-  width: 32px !important;
-  height: 32px !important;
-  min-width: 32px !important;
-  min-height: 32px !important;
-  padding: 0 !important;
-  background-color: transparent !important;
-  border: 1px solid transparent !important;
-  color: #f0f9ff !important;
-}
+/* Removed icon button sizing overrides */
 
 [data-ui="NavbarLayout"] [data-ui="Button"][data-mode="ghost"]:hover,
 [data-ui="NavbarLayout"] button[data-mode="ghost"]:hover,
@@ -105,42 +47,15 @@
 
 /* ===== SPACING AND LAYOUT FIXES ===== */
 /* Fix spacing between navbar elements */
-[data-ui="NavbarLayout"] > div,
-.atc-navbar-container > div {
-  display: flex !important;
-  align-items: center !important;
-  gap: 8px !important;
-  height: 100% !important;
-}
+/* Preserve default spacing */
 
 /* ===== TEXT AND TYPOGRAPHY FIXES ===== */
 /* Ensure all text is properly sized and aligned */
-[data-ui="NavbarLayout"] [data-ui="Text"],
-[data-ui="NavbarLayout"] span,
-[data-ui="NavbarLayout"] div[role="button"] span,
-.atc-navbar-container [data-ui="Text"],
-.atc-navbar-container span,
-.atc-navbar-container div[role="button"] span {
-  font-size: 12px !important;
-  font-weight: 500 !important;
-  color: #f0f9ff !important;
-  line-height: 1 !important;
-  white-space: nowrap !important;
-}
+/* Preserve default typography */
 
 /* ===== SANITY LOGO AND TITLE CLEANUP ===== */
-/* Hide or minimize Sanity branding to reduce clutter */
-/* Hide Sanity logo/branding containers to reclaim space */
-[data-ui="NavbarLayout"] [data-ui="Flex"]:first-child > div:first-child,
-[data-ui="NavbarLayout"] [data-ui="Flex"] [data-ui="Box"]:first-child,
-[data-ui="NavbarLayout"] [data-ui="Flex"] [data-ui="Stack"]:first-child,
-[data-ui="NavbarLayout"] [data-ui="Navbar"] > div:first-child,
-.atc-navbar-container .sanity-navbar__branding,
-.atc-navbar-container img[alt*="Sanity"],
-.atc-navbar-container [class*="Logo"],
-.atc-navbar-container [data-testid="studio-logo"] {
-  display: none !important;
-}
+/* Hide only explicit branding containers to reclaim space */
+/* Do not forcibly hide branding beyond config-provided logo override */
 
 /* Alternative: If you want to keep it but make it smaller */
 /*
@@ -156,67 +71,21 @@
 */
 
 /* ===== RESPONSIVE NAVBAR FIXES ===== */
-@media (max-width: 768px) {
-  [data-ui="NavbarLayout"],
-  .atc-navbar-container {
-    padding: 0 8px !important;
-  }
-  
-  [data-ui="NavbarLayout"] [data-ui="Button"],
-  [data-ui="NavbarLayout"] button,
-  .atc-navbar-container [data-ui="Button"],
-  .atc-navbar-container button {
-    height: 36px !important;
-    min-height: 36px !important;
-    font-size: 13px !important;
-  }
-  
-  [data-ui="NavbarLayout"] [data-ui="Button"][data-mode="ghost"],
-  [data-ui="NavbarLayout"] button[data-mode="ghost"],
-  .atc-navbar-container [data-ui="Button"][data-mode="ghost"],
-  .atc-navbar-container button[data-mode="ghost"] {
-    width: 36px !important;
-    height: 36px !important;
-    min-width: 36px !important;
-    min-height: 36px !important;
-  }
-}
+/* Remove mobile-specific navbar overrides */
 
 /* ===== FOCUS STATES ===== */
 /* Ensure proper focus indicators */
-[data-ui="NavbarLayout"] [data-ui="Button"]:focus-visible,
-[data-ui="NavbarLayout"] button:focus-visible,
-.atc-navbar-container [data-ui="Button"]:focus-visible,
-.atc-navbar-container button:focus-visible {
-  outline: 2px solid #075e68 !important;
-  outline-offset: 2px !important;
-}
+/* Rely on default focus styles */
 
 /* ===== LOADING STATES ===== */
 /* Fix loading indicators in navbar */
-[data-ui="NavbarLayout"] [data-ui="Spinner"],
-.atc-navbar-container [data-ui="Spinner"] {
-  width: 16px !important;
-  height: 16px !important;
-  color: #73b5bd !important;
-}
+/* Spinner defaults retained */
 
 /* ===== DROPDOWN MENU FIXES ===== */
 /* Fix dropdown menus from navbar */
-[data-ui="NavbarLayout"] [data-ui="Menu"],
-.atc-navbar-container [data-ui="Menu"] {
-  background-color: #1a1a1a !important;
-  border: 1px solid #1a3a42 !important;
-  border-radius: 6px !important;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
-}
+/* Menu styling kept default */
 
-[data-ui="NavbarLayout"] [data-ui="MenuItem"],
-.atc-navbar-container [data-ui="MenuItem"] {
-  color: #f0f9ff !important;
-  font-size: 12px !important;
-  padding: 8px 12px !important;
-}
+/* Menu item typography kept default */
 
 [data-ui="NavbarLayout"] [data-ui="MenuItem"]:hover,
 .atc-navbar-container [data-ui="MenuItem"]:hover {
@@ -244,12 +113,7 @@
 }
 
 /* Override any conflicting Sanity styles */
-[data-ui="NavbarLayout"] .atc-navbar-container {
-  padding: 0 12px !important;
-  height: 49px !important;
-  background-color: #0a1a1d !important;
-  border-bottom: 1px solid #1a3a42 !important;
-}
+/* Remove container overrides */
 
 /* Ensure proper button alignment within the navbar */
 [data-ui="NavbarLayout"] .atc-navbar-container [data-ui="Button"],
