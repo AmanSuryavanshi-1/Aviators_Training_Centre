@@ -32,7 +32,7 @@ const ContactDetailsCard: React.FC = () => {
                         </div>
                         <div>
                             <h4 className="mb-1 text-sm font-semibold text-foreground">Location</h4>
-                            <p className="text-sm text-foreground/80">Ramphal Chowk Rd, Sector 7 Dwarka,<br />Dwarka, Delhi, 110075, India</p>
+                            <p className="text-sm text-foreground/80">Delhi, India</p>
                         </div>
                     </div>
                     {/* Phone */}

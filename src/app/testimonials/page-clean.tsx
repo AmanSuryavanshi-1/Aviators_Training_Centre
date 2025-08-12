@@ -308,7 +308,7 @@ export default function TestimonialsPageClean() {
           <div className="container mx-auto px-4 text-center">
             <p className="text-sm text-muted-foreground">
               Aviators Training Centre - India's Leading DGCA CPL/ATPL Ground School Training Institute | 
-              Located in Dwarka, Delhi | Serving aspiring pilots across India since 2020
+              Located in Delhi, India | Serving aspiring pilots across India since 2020
             </p>
           </div>
         </footer>

@@ -118,7 +118,7 @@ export function generateTestimonialsPageSchema(
         ...reviewObjects
       ]
     },
-    // Local Business Schema for Indian aviation training market
+    // Local Business Schema for Indian aviation training market (without aggregateRating to avoid conflicts)
     {
       '@context': 'https://schema.org',
       '@type': 'EducationalOrganization',
@@ -128,10 +128,8 @@ export function generateTestimonialsPageSchema(
       logo: 'https://www.aviatorstrainingcentre.in/AVIATORS_TRAINING_CENTRE_LOGO_LightMode.png',
       address: {
         '@type': 'PostalAddress',
-        streetAddress: 'Ramphal Chowk Rd, Sector 7 Dwarka',
-        addressLocality: 'Dwarka',
+        addressLocality: 'Delhi',
         addressRegion: 'Delhi',
-        postalCode: '110075',
         addressCountry: 'IN'
       },
       contactPoint: {
@@ -144,13 +142,7 @@ export function generateTestimonialsPageSchema(
         'https://www.facebook.com/profile.php?id=61576701390492',
         'https://www.instagram.com/aviatorstrainingcentre',
         'https://youtube.com/@aviatewithatc'
-      ],
-      aggregateRating: {
-        '@type': 'AggregateRating',
-        ratingValue: '4.8',
-        reviewCount: '500',
-        bestRating: '5'
-      }
+      ]
     },
     // FAQ Schema for SEO
     {
@@ -228,12 +220,7 @@ export function generateTestimonialsPageSchema(
         'Technical Specific',
         'RTR(A) Radio Telephony'
       ],
-      aggregateRating: {
-        '@type': 'AggregateRating',
-        ratingValue: '4.8',
-        reviewCount: '500',
-        bestRating: '5'
-      },
+
       offers: {
         '@type': 'Offer',
         category: 'Aviation Training',

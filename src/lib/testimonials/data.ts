@@ -204,7 +204,7 @@ export function generateCourseSchema() {
         "name": "Aviators Training Centre",
         "address": {
           "@type": "PostalAddress",
-          "addressLocality": "Dwarka",
+          "addressLocality": "Delhi",
           "addressRegion": "Delhi",
           "addressCountry": "IN"
         }
@@ -240,7 +240,7 @@ export function generateOrganizationSchema() {
     "description": "India's premier DGCA approved aviation training institute specializing in CPL and ATPL ground school preparation",
     "address": {
       "@type": "PostalAddress",
-      "addressLocality": "Dwarka",
+      "addressLocality": "Delhi",
       "addressRegion": "Delhi",
       "addressCountry": "IN"
     },
@@ -253,13 +253,18 @@ export function generateOrganizationSchema() {
       "https://www.youtube.com/@aviatorstrainingcentre",
       "https://www.instagram.com/aviatorstrainingcentre"
     ],
-    "hasCredential": "DGCA Approved Training Institute",
-    "aggregateRating": {
-      "@type": "AggregateRating",
-      "ratingValue": "4.8",
-      "reviewCount": youtubeShorts.length,
-      "bestRating": "5"
-    },
+    "hasCredential": "DGCA Approved Training Institute"
+    // Note: aggregateRating and reviews are handled separately in testimonials page to avoid conflicts
+  };
+}
+
+// Generate separate review schema for organization (used in testimonials page)
+export function generateOrganizationReviewSchema() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "EducationalOrganization",
+    "name": "Aviators Training Centre",
+    "url": "https://www.aviatorstrainingcentre.in",
     "review": youtubeShorts.map(video => {
       const student = getStudentById(video.studentId || '');
       return {

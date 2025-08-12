@@ -1103,7 +1103,7 @@ export default function InfiniteVideoCarousel() {
           <h2>About Aviators Training Centre</h2>
           <p>
             India's premier DGCA approved aviation training institute specializing in CPL and ATPL ground school preparation. 
-            Located in Dwarka, Delhi, serving aspiring pilots across India with comprehensive training programs including 
+            Located in Delhi, India, serving aspiring pilots across India with comprehensive training programs including 
             Air Navigation, Aviation Meteorology, Technical General, Air Regulations, RTR(A), and Type Rating courses.
           </p>
           <p>

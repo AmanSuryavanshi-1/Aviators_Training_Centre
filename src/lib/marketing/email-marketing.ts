@@ -462,7 +462,7 @@ export class EmailMarketingManager {
             <p style="font-size: 14px; color: #6b7280;">
               Best regards,<br>
               The Aviators Training Centre Team<br>
-              <a href="https://www.aviatorstrainingcentre.in" style="color: #0f766e;">aviatorstrainingcentre.com</a>
+              <a href="https://www.aviatorstrainingcentre.in" style="color: #0f766e;">aviatorstrainingcentre.in</a>
             </p>
             
             <p style="font-size: 12px; color: #9ca3af; text-align: center; margin-top: 30px;">

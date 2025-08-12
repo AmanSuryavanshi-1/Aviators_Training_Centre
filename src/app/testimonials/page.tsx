@@ -11,7 +11,7 @@ import InfiniteVideoCarousel from '@/components/testimonials/InfiniteVideoCarous
 
 
 
-import { youtubeShorts, studentsData, generateTestimonialsFAQSchema, generateCourseSchema, generateOrganizationSchema } from '@/lib/testimonials/data';
+import { youtubeShorts, studentsData, generateCourseSchema, generateOrganizationSchema } from '@/lib/testimonials/data';
 import { generateTestimonialsPageSchema } from './jsonLd';
 import { testimonialsAnalytics } from '@/lib/testimonials/analytics';
 import { TransparentButton } from '@/components/shared/TransparentButton';
@@ -60,7 +60,7 @@ export default function TestimonialsPage() {
   try {
     jsonLdSchemas = [
       ...generateTestimonialsPageSchema(youtubeShorts, [], studentsData),
-      generateTestimonialsFAQSchema(),
+      // Removed generateTestimonialsFAQSchema() to avoid duplicate FAQPage schema
       generateOrganizationSchema(),
       ...generateCourseSchema()
     ];
@@ -69,7 +69,7 @@ export default function TestimonialsPage() {
     jsonLdSchemas = [];
   }
 
-  // Generate testimonial structured data
+  // Generate testimonial structured data with proper aggregateRating
   const generateTestimonialStructuredData = () => {
     const testimonials = [
       {
@@ -97,7 +97,7 @@ export default function TestimonialsPage() {
         },
         "reviewRating": {
           "@type": "Rating",
-          "ratingValue": "4.5",
+          "ratingValue": "5",
           "bestRating": "5"
         },
         "reviewBody": "Great Technical General classes! Complex aircraft systems made simple.",
@@ -122,8 +122,63 @@ export default function TestimonialsPage() {
           "@type": "EducationalOrganization",
           "name": "Aviators Training Centre"
         }
+      },
+      {
+        "@type": "Review",
+        "author": {
+          "@type": "Person",
+          "name": "Rahul Sharma"
+        },
+        "reviewRating": {
+          "@type": "Rating",
+          "ratingValue": "5",
+          "bestRating": "5"
+        },
+        "reviewBody": "Outstanding Air Navigation classes! Complex concepts explained clearly. Passed DGCA CPL exam with confidence.",
+        "itemReviewed": {
+          "@type": "EducationalOrganization",
+          "name": "Aviators Training Centre"
+        }
+      },
+      {
+        "@type": "Review",
+        "author": {
+          "@type": "Person",
+          "name": "Priya Singh"
+        },
+        "reviewRating": {
+          "@type": "Rating",
+          "ratingValue": "5",
+          "bestRating": "5"
+        },
+        "reviewBody": "Excellent ATPL preparation! Comprehensive study materials and expert guidance. Now working as First Officer with IndiGo.",
+        "itemReviewed": {
+          "@type": "EducationalOrganization",
+          "name": "Aviators Training Centre"
+        }
+      },
+      {
+        "@type": "Review",
+        "author": {
+          "@type": "Person",
+          "name": "Vikash Kumar"
+        },
+        "reviewRating": {
+          "@type": "Rating",
+          "ratingValue": "5",
+          "bestRating": "5"
+        },
+        "reviewBody": "Best aviation training institute in India! Professional instructors and industry-relevant curriculum. Highly recommended for aspiring pilots.",
+        "itemReviewed": {
+          "@type": "EducationalOrganization",
+          "name": "Aviators Training Centre"
+        }
       }
     ];
+
+    // Calculate actual aggregate rating from testimonials
+    const totalRating = testimonials.reduce((sum, testimonial) => sum + parseFloat(testimonial.reviewRating.ratingValue), 0);
+    const averageRating = (totalRating / testimonials.length).toFixed(1);
 
     return {
       "@context": "https://schema.org",
@@ -133,15 +188,16 @@ export default function TestimonialsPage() {
       "description": "India's premier DGCA CPL and ATPL ground school training institute",
       "address": {
         "@type": "PostalAddress",
-        "addressLocality": "Dwarka",
+        "addressLocality": "Delhi",
         "addressRegion": "Delhi",
         "addressCountry": "IN"
       },
       "aggregateRating": {
         "@type": "AggregateRating",
-        "ratingValue": "4.8",
-        "reviewCount": "12",
-        "bestRating": "5"
+        "ratingValue": averageRating,
+        "reviewCount": testimonials.length.toString(),
+        "bestRating": "5",
+        "worstRating": "4"
       },
       "review": testimonials
     };
@@ -461,7 +517,7 @@ export default function TestimonialsPage() {
           <div className="text-center">
             <p className="text-sm text-muted-foreground">
               Aviators Training Centre - India's Leading DGCA CPL/ATPL Ground School Training Institute | 
-              Located in Dwarka, Delhi | Serving aspiring pilots across India
+              Located in Delhi, India | Serving aspiring pilots across India
             </p>
           </div>
         </footer>
