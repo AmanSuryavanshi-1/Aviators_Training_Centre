@@ -1,0 +1,510 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "events": [
+          "BOOKING_CANCELLED"
+        ],
+        "options": {}
+      },
+      "type": "n8n-nodes-base.calTrigger",
+      "typeVersion": 2,
+      "position": [
+        -1600,
+        320
+      ],
+      "id": "cal-cancellation-trigger",
+      "name": "Cal.com Cancellation Trigger",
+      "webhookId": "cal-cancellation-webhook",
+      "credentials": {
+        "calApi": {
+          "id": "vMCQjfPGMVC79QYi",
+          "name": "Cal.com Adude"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "search",
+        "base": {
+          "__rl": true,
+          "value": "appWzCutTRkTGvc2t",
+          "mode": "id"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tbls8AXjTeC4XWiC0",
+          "mode": "id"
+        },
+        "filterByFormula": "={Booking ID} = \"{{ $json.bookingId.toString() }}\"",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        -1400,
+        320
+      ],
+      "id": "find-cancelled-booking",
+      "name": "Find Cancelled Booking",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "y0MqaXSyaHsVbNbh",
+          "name": "Airtable Personal Access Token account"
+        }
+      },
+      "continueOnFail": true,
+      "retryOnFail": true,
+      "maxTries": 4,
+      "waitBetweenTries": 1000
+    },
+    {
+      "parameters": {
+        "functionCode": "// Cancellation Workflow Monitoring System\nconst workflowId = 'ATC_Booking_Cancellation_Workflow';\nconst executionId = $execution.id || 'unknown';\nconst startTime = new Date();\nconst bookingId = $('Cal.com Cancellation Trigger').item.json.bookingId;\n\n// Log cancellation workflow start\nconsole.log('=== CANCELLATION WORKFLOW START ===');\nconsole.log('Execution ID:', executionId);\nconsole.log('Workflow:', workflowId);\nconsole.log('Start Time:', startTime.toISOString());\nconsole.log('Cancelled Booking ID:', bookingId);\n\n// Validate cancellation data\nif (!bookingId) {\n  console.error('CRITICAL ERROR: No booking ID provided for cancellation');\n  throw new Error('Missing booking ID for cancellation');\n}\n\n// Log search results\nconst searchResults = $input.all();\nconsole.log('Booking search results:', searchResults.length, 'records found');\n\nif (searchResults.length === 0) {\n  console.warn('WARNING: No booking found for cancellation');\n  console.warn('Booking ID:', bookingId);\n} else if (searchResults.length > 1) {\n  console.warn('WARNING: Multiple bookings found with same ID');\n  console.warn('Count:', searchResults.length);\n  console.warn('Using first result for cancellation');\n}\n\n// Performance tracking\nconst metrics = {\n  executionId: executionId,\n  workflowId: workflowId,\n  startTime: startTime.toISOString(),\n  bookingId: bookingId,\n  recordsFound: searchResults.length,\n  cancellationReason: 'user_initiated'\n};\n\nconsole.log('Cancellation monitoring initialized');\nconsole.log('Metrics:', JSON.stringify(metrics));\n\n// Pass through the search results\nreturn $input.all();"
+      },
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [
+        -1300,
+        320
+      ],
+      "id": "cancellation-monitoring",
+      "name": "Cancellation Monitoring"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "booking-found",
+              "leftValue": "={{ $json.length }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "gt",
+                "name": "filter.operator.gt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -1200,
+        320
+      ],
+      "id": "check-if-booking-exists",
+      "name": "Check If Booking Exists"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "base": {
+          "__rl": true,
+          "value": "appWzCutTRkTGvc2t",
+          "mode": "id"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tbls8AXjTeC4XWiC0",
+          "mode": "id"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Status": "Cancelled",
+            "Meeting Status Summary": "Booking cancelled by user on {{ new Date().toISOString().split('T')[0] }}",
+            "id": "={{ $('Find Cancelled Booking').item.json.id }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": false
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "options",
+              "options": [
+                {
+                  "name": "Confirmed",
+                  "value": "Confirmed"
+                },
+                {
+                  "name": "Canceled",
+                  "value": "Canceled"
+                },
+                {
+                  "name": "Cancelled",
+                  "value": "Cancelled"
+                },
+                {
+                  "name": "In Progress",
+                  "value": "In Progress"
+                },
+                {
+                  "name": "Email Sent",
+                  "value": "Email Sent"
+                },
+                {
+                  "name": "Follow Up Sent",
+                  "value": "Follow Up Sent"
+                },
+                {
+                  "name": "Won",
+                  "value": "Won"
+                },
+                {
+                  "name": "Lost",
+                  "value": "Lost"
+                }
+              ],
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Meeting Status Summary",
+              "displayName": "Meeting Status Summary",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {
+          "typecast": true
+        }
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        -1000,
+        320
+      ],
+      "id": "update-cancelled-status",
+      "name": "Update Cancelled Status",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "y0MqaXSyaHsVbNbh",
+          "name": "Airtable Personal Access Token account"
+        }
+      },
+      "continueOnFail": true,
+      "retryOnFail": true,
+      "maxTries": 4,
+      "waitBetweenTries": 1000
+    }, 
+   {
+      "parameters": {
+        "sendTo": "={{ $('Find Cancelled Booking').item.json.Email }}",
+        "subject": "Consultation Cancelled - We're Here When You're Ready ✈️",
+        "message": "=<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>Consultation Cancelled - Aviators Training Centre</title>\n  <style>\n    body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; background: #f8fafc; }\n    .container { max-width: 600px; margin: 0 auto; padding: 20px; }\n    .header { background: linear-gradient(135deg, #075E68 0%, #219099 100%); color: white; padding: 30px; text-align: center; border-radius: 8px 8px 0 0; }\n    .content { background: #ffffff; padding: 30px; border: 1px solid #e0e0e0; }\n    .cta-button { display: inline-block; background: #ff6b35; color: white; padding: 15px 30px; text-decoration: none; border-radius: 5px; font-weight: bold; margin: 20px 0; }\n    .footer { background: #f8f9fa; padding: 20px; text-align: center; border-radius: 0 0 8px 8px; }\n    .info-box { background: #e8f4fd; padding: 15px; border-left: 4px solid #075E68; margin: 20px 0; border-radius: 4px; }\n  </style>\n</head>\n<body>\n  <div class=\"container\">\n    <div class=\"header\">\n      <h1>✈️ Aviators Training Centre</h1>\n      <p>We understand plans can change</p>\n    </div>\n    \n    <div class=\"content\">\n      <h2>Hello {{ $('Find Cancelled Booking').item.json['Contact Name'] || 'Future Pilot' }},</h2>\n      \n      <p>We've received your cancellation for the consultation that was scheduled. No worries at all - we understand that plans can change!</p>\n      \n      <div class=\"info-box\">\n        <h3>🗓️ Cancelled Consultation Details</h3>\n        <p><strong>Session:</strong> {{ $('Find Cancelled Booking').item.json['Meeting Title'] }}<br>\n           <strong>Was scheduled for:</strong> {{ $('Find Cancelled Booking').item.json['Meeting Date'] }} at {{ $('Find Cancelled Booking').item.json['Meeting Time'] }} IST</p>\n      </div>\n      \n      <p><strong>Ready to reschedule?</strong> We're here whenever you're ready to take the next step in your aviation career.</p>\n      \n      <div style=\"text-align: center;\">\n        <a href=\"https://cal.com/amansuryavanshi/aviators-training-centre-enrollment-consultation?prefill=true&name={{ encodeURIComponent($('Find Cancelled Booking').item.json['Contact Name'] || '') }}&email={{ encodeURIComponent($('Find Cancelled Booking').item.json.Email || '') }}\" class=\"cta-button\">Schedule New Consultation</a>\n      </div>\n      \n      <p>If you have any questions or need assistance, feel free to reach out to us directly.</p>\n      \n      <p><strong>Contact us:</strong><br>\n         📞 <a href=\"tel:+919485687609\">+91 94856 87609</a><br>\n         💬 <a href=\"https://wa.me/919485687609\">WhatsApp</a><br>\n         ✉️ <a href=\"mailto:aviatorstrainingcentre@gmail.com\">aviatorstrainingcentre@gmail.com</a></p>\n    </div>\n\n    <div class=\"footer\">\n      <p>&copy; 2024 Aviators Training Centre. All Rights Reserved.</p>\n      <p>We're here when you're ready to soar! ✈️</p>\n    </div>\n  </div>\n</body>\n</html>",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        -800,
+        320
+      ],
+      "id": "send-cancellation-email",
+      "name": "Send Cancellation Email",
+      "webhookId": "cancellation-email-webhook",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "U15PmNBEdvmXRWmr",
+          "name": "aviatorstrainingcentre@gmail.com"
+        }
+      },
+      "continueOnFail": true,
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 2000
+    },    
+{
+      "parameters": {
+        "amount": 7,
+        "unit": "days"
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        -600,
+        320
+      ],
+      "id": "wait-7-days",
+      "name": "Wait 7 Days",
+      "webhookId": "wait-7-days-webhook"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('Find Cancelled Booking').item.json.Email }}",
+        "subject": "Still Interested in Aviation Training? Let's Talk! 🛩️",
+        "message": "=<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>Follow-up - Aviators Training Centre</title>\n  <style>\n    body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; background: #f8fafc; }\n    .container { max-width: 600px; margin: 0 auto; padding: 20px; }\n    .header { background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%); color: white; padding: 30px; text-align: center; border-radius: 8px 8px 0 0; }\n    .content { background: #ffffff; padding: 30px; border: 1px solid #e0e0e0; }\n    .cta-button { display: inline-block; background: #075E68; color: white; padding: 15px 30px; text-decoration: none; border-radius: 5px; font-weight: bold; margin: 20px 0; }\n    .footer { background: #f8f9fa; padding: 20px; text-align: center; border-radius: 0 0 8px 8px; }\n    .highlight { background: #fff3cd; border: 1px solid #ffeaa7; padding: 15px; border-radius: 5px; margin: 20px 0; }\n  </style>\n</head>\n<body>\n  <div class=\"container\">\n    <div class=\"header\">\n      <h1>🛩️ Your Aviation Dreams Are Still Valid!</h1>\n      <p>We haven't forgotten about you</p>\n    </div>\n    \n    <div class=\"content\">\n      <h2>Hi {{ $('Find Cancelled Booking').item.json['Contact Name'] || 'Future Pilot' }},</h2>\n      \n      <p>A week ago, you had to cancel your consultation with us. We completely understand that timing isn't always perfect!</p>\n      \n      <div class=\"highlight\">\n        <h3>✈️ Your Aviation Journey Awaits</h3>\n        <p>Whether you're looking to become a commercial pilot, get your PPL, or advance your aviation career - we're still here to help you achieve those goals.</p>\n      </div>\n      \n      <p><strong>What's changed in a week?</strong></p>\n      <ul>\n        <li>🎯 New batch enrollments are opening soon</li>\n        <li>📚 Updated course materials and training methods</li>\n        <li>💰 Early bird pricing still available</li>\n        <li>🏆 More success stories from our recent graduates</li>\n      </ul>\n      \n      <div style=\"text-align: center;\">\n        <a href=\"https://cal.com/amansuryavanshi/aviators-training-centre-enrollment-consultation?prefill=true&name={{ encodeURIComponent($('Find Cancelled Booking').item.json['Contact Name'] || '') }}&email={{ encodeURIComponent($('Find Cancelled Booking').item.json.Email || '') }}\" class=\"cta-button\">Let's Reschedule - I'm Ready Now!</a>\n      </div>\n      \n      <p>Or if you prefer, just reply to this email and let us know what works best for you.</p>\n      \n      <p><strong>Quick questions?</strong> WhatsApp us at <a href=\"https://wa.me/919485687609\">+91 94856 87609</a></p>\n    </div>\n\n    <div class=\"footer\">\n      <p>&copy; 2024 Aviators Training Centre. All Rights Reserved.</p>\n      <p>Ready to take off when you are! 🚀</p>\n    </div>\n  </div>\n</body>\n</html>",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        -400,
+        320
+      ],
+      "id": "send-followup-after-cancellation",
+      "name": "Send Follow-up After Cancellation",
+      "webhookId": "followup-cancellation-webhook",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "U15PmNBEdvmXRWmr",
+          "name": "aviatorstrainingcentre@gmail.com"
+        }
+      },
+      "continueOnFail": true,
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 2000
+    },  
+  {
+      "parameters": {
+        "operation": "update",
+        "base": {
+          "__rl": true,
+          "value": "appWzCutTRkTGvc2t",
+          "mode": "id"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tbls8AXjTeC4XWiC0",
+          "mode": "id"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Status": "Follow Up Sent",
+            "Meeting Status Summary": "Cancellation follow-up sent after 7 days on {{ new Date().toISOString().split('T')[0] }}",
+            "id": "={{ $('Find Cancelled Booking').item.json.id }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": false
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "options",
+              "options": [
+                {
+                  "name": "Confirmed",
+                  "value": "Confirmed"
+                },
+                {
+                  "name": "Canceled",
+                  "value": "Canceled"
+                },
+                {
+                  "name": "Cancelled",
+                  "value": "Cancelled"
+                },
+                {
+                  "name": "In Progress",
+                  "value": "In Progress"
+                },
+                {
+                  "name": "Email Sent",
+                  "value": "Email Sent"
+                },
+                {
+                  "name": "Follow Up Sent",
+                  "value": "Follow Up Sent"
+                },
+                {
+                  "name": "Won",
+                  "value": "Won"
+                },
+                {
+                  "name": "Lost",
+                  "value": "Lost"
+                }
+              ],
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Meeting Status Summary",
+              "displayName": "Meeting Status Summary",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {
+          "typecast": true
+        }
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        -200,
+        320
+      ],
+      "id": "update-followup-status",
+      "name": "Update Follow-up Status",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "y0MqaXSyaHsVbNbh",
+          "name": "Airtable Personal Access Token account"
+        }
+      },
+      "continueOnFail": true,
+      "retryOnFail": true,
+      "maxTries": 4,
+      "waitBetweenTries": 1000
+    }
+  ],
+  "connections": {
+    "Cal.com Cancellation Trigger": {
+      "main": [
+        [
+          {
+            "node": "Find Cancelled Booking",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Find Cancelled Booking": {
+      "main": [
+        [
+          {
+            "node": "Cancellation Monitoring",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cancellation Monitoring": {
+      "main": [
+        [
+          {
+            "node": "Check If Booking Exists",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check If Booking Exists": {
+      "main": [
+        [
+          {
+            "node": "Update Cancelled Status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update Cancelled Status": {
+      "main": [
+        [
+          {
+            "node": "Send Cancellation Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Cancellation Email": {
+      "main": [
+        [
+          {
+            "node": "Wait 7 Days",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait 7 Days": {
+      "main": [
+        [
+          {
+            "node": "Send Follow-up After Cancellation",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Follow-up After Cancellation": {
+      "main": [
+        [
+          {
+            "node": "Update Follow-up Status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "instanceId": "2aff0c99a9b9ea9c976d68c5887d32445a6bdc6f59f99592eb5b4c4dbaf3d92e"
+  }
+}

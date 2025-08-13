@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { db } from '@/lib/firebase';
 import { ref, push, serverTimestamp } from 'firebase/database';
 import { Resend } from 'resend';
+import { triggerContactFormWebhook } from '@/lib/n8n/contact-webhook';
 
 // Define allowed methods and ensure dynamic content
 export const dynamic = 'force-dynamic';
@@ -287,6 +288,25 @@ export async function POST(req: NextRequest) {
       if (process.env.NODE_ENV === 'development') {
         console.log('Data saved to Firebase with ID:', newContactRef?.key);
       }
+
+      // --- Trigger n8n webhook after successful Firebase storage ---
+      if (newContactRef?.key) {
+        if (process.env.NODE_ENV === 'development') {
+          console.log('🔗 About to trigger n8n webhook with form data:', {
+            formId: newContactRef.key,
+            formData: formData
+          });
+        }
+        try {
+          await triggerContactFormWebhook(formData, newContactRef.key);
+          if (process.env.NODE_ENV === 'development') {
+            console.log('✅ Webhook trigger completed successfully');
+          }
+        } catch (webhookError) {
+          // Webhook errors should not affect form submission - just log them
+          console.error('❌ Webhook trigger failed after Firebase storage:', webhookError);
+        }
+      }
     } catch (firebaseError) {
       console.error('Firebase error:', firebaseError);
       
@@ -294,6 +314,20 @@ export async function POST(req: NextRequest) {
       // but log the error for debugging
       if (firebaseError.message?.includes('timeout') || firebaseError.message?.includes('region')) {
         console.error('Firebase database issue detected, but continuing with email processing');
+        // Trigger webhook even if Firebase failed (use timestamp as fallback ID)
+        const fallbackId = `fallback-${Date.now()}`;
+        if (process.env.NODE_ENV === 'development') {
+          console.log('🔗 Triggering n8n webhook with fallback ID after Firebase error:', fallbackId);
+        }
+        try {
+          await triggerContactFormWebhook(formData, fallbackId);
+          if (process.env.NODE_ENV === 'development') {
+            console.log('✅ Fallback webhook trigger completed successfully');
+          }
+        } catch (webhookError) {
+          // Webhook errors should not affect form submission - just log them
+          console.error('❌ Webhook trigger failed after Firebase error:', webhookError);
+        }
         // Don't return error - continue with email sending
       } else {
         return NextResponse.json({ error: 'Database error. Please try again later.' }, { status: 500, headers });

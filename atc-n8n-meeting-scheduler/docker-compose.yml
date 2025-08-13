@@ -1,0 +1,107 @@
+version: '3.8'
+
+services:
+  traefik:
+    image: traefik:v2.10
+    container_name: traefik
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./ssl:/letsencrypt
+    command:
+      - --api.dashboard=true
+      - --providers.docker=true
+      - --providers.docker.exposedbydefault=false
+      - --entrypoints.web.address=:80
+      - --entrypoints.websecure.address=:443
+      - --certificatesresolvers.letsencrypt.acme.tlschallenge=true
+      - --certificatesresolvers.letsencrypt.acme.email=${EMAIL:-aviatorstrainingcentre@gmail.com}
+      - --certificatesresolvers.letsencrypt.acme.storage=/letsencrypt/acme.json
+      # Redirect HTTP to HTTPS
+      - --entrypoints.web.http.redirections.entrypoint.to=websecure
+      - --entrypoints.web.http.redirections.entrypoint.scheme=https
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.traefik.rule=Host(`traefik.${DOMAIN:-n8n.aviatorstrainingcentre.in}`)"
+      - "traefik.http.routers.traefik.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.traefik.service=api@internal"
+      - "traefik.http.routers.traefik.middlewares=auth"
+      - "traefik.http.middlewares.auth.basicauth.users=admin:$$2y$$10$$K8V2qJwjXyqJQvKzqzqzqOzqzqzqzqzqzqzqzqzqzqzqzqzqzqzqzq"
+
+  n8n:
+    image: n8nio/n8n:latest
+    container_name: n8n
+    restart: unless-stopped
+    environment:
+      - N8N_HOST=${DOMAIN:-n8n.aviatorstrainingcentre.in}
+      - N8N_PORT=5678
+      - N8N_PROTOCOL=https
+      - WEBHOOK_URL=https://${DOMAIN:-n8n.aviatorstrainingcentre.in}/
+      - GENERIC_TIMEZONE=${TIMEZONE:-Asia/Kolkata}
+      - N8N_SECURE_COOKIE=true
+      - N8N_ENCRYPTION_KEY=${N8N_ENCRYPTION_KEY:-your-super-secret-encryption-key-32-chars-long}
+      - DB_TYPE=sqlite
+      - DB_SQLITE_DATABASE=/home/node/.n8n/database.sqlite
+      - N8N_BASIC_AUTH_ACTIVE=true
+      - N8N_BASIC_AUTH_USER=${N8N_BASIC_AUTH_USER:-admin}
+      - N8N_BASIC_AUTH_PASSWORD=${N8N_BASIC_AUTH_PASSWORD:-YourSecurePassword123!}
+      - N8N_METRICS=true
+      - N8N_LOG_LEVEL=info
+      - N8N_DISABLE_UI=false
+      - N8N_PERSONALIZATION_ENABLED=false
+      - EXECUTIONS_PROCESS=main
+      - EXECUTIONS_DATA_PRUNE=true
+      - EXECUTIONS_DATA_MAX_AGE=168
+    volumes:
+      - ./data:/home/node/.n8n
+      - ./backups:/backups
+    deploy:
+      resources:
+        limits:
+          memory: 800M
+          cpus: '0.8'
+        reservations:
+          memory: 400M
+          cpus: '0.4'
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.n8n.rule=Host(`${DOMAIN:-n8n.aviatorstrainingcentre.in}`)"
+      - "traefik.http.routers.n8n.tls.certresolver=letsencrypt"
+      - "traefik.http.services.n8n.loadbalancer.server.port=5678"
+      - "traefik.http.routers.n8n.middlewares=n8n-headers"
+      - "traefik.http.middlewares.n8n-headers.headers.customrequestheaders.X-Forwarded-Proto=https"
+
+  backup:
+    image: alpine:latest
+    container_name: n8n-backup
+    restart: unless-stopped
+    volumes:
+      - ./data:/n8n-data:ro
+      - ./backups:/backups
+    command: >
+      sh -c "
+        echo 'Backup service started'
+        while true; do
+          echo 'Creating backup at $(date)'
+          tar -czf /backups/n8n-backup-$(date +%Y%m%d-%H%M%S).tar.gz -C /n8n-data .
+          echo 'Backup created successfully'
+          
+          # Keep only last 7 days of backups
+          find /backups -name 'n8n-backup-*.tar.gz' -mtime +7 -delete
+          echo 'Old backups cleaned up'
+          
+          # Show backup status
+          echo 'Current backups:'
+          ls -la /backups/n8n-backup-*.tar.gz 2>/dev/null || echo 'No backups found'
+          
+          echo 'Next backup in 24 hours'
+          sleep 86400
+        done
+      "
+
+networks:
+  default:
+    name: n8n-network
