@@ -1,0 +1,191 @@
+{
+  "name": "ATC WhatsApp AI Cloud - Interest-Based Data Collection",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "whatsapp-inbound",
+        "authentication": "headerAuth"
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [-800, 200],
+      "id": "whatsapp-webhook",
+      "name": "WhatsApp Inbound",
+      "webhookId": "atc-whatsapp-ai"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 9 * * *"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.cron",
+      "typeVersion": 1,
+      "position": [-800, 400],
+      "id": "daily-outreach",
+      "name": "Daily Outreach (9am)"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Parse WhatsApp message and detect interest\nconst data = $input.all()[0]?.json?.body;\nif (!data) throw new Error('No data received');\n\n// Normalize phone to E.164\nfunction normalizePhone(phone) {\n  const cleaned = phone.replace(/[^\\d+]/g, '');\n  if (cleaned.startsWith('+91') && cleaned.length === 13) return cleaned;\n  if (cleaned.startsWith('91') && cleaned.length === 12) return '+' + cleaned;\n  if (cleaned.length === 10) return '+91' + cleaned;\n  return phone;\n}\n\n// Extract data and detect interest\nfunction analyzeMessage(message) {\n  const lower = message.toLowerCase();\n  let interestScore = 0;\n  const extracted = { name: null, email: null, interests: [] };\n  \n  // Name patterns\n  const nameMatch = message.match(/(?:my name is|i am|i'm)\\s+([a-zA-Z\\s]{2,30})/i);\n  if (nameMatch) extracted.name = nameMatch[1].trim();\n  \n  // Email patterns\n  const emailMatch = message.match(/([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,})/);  \n  if (emailMatch) extracted.email = emailMatch[1].toLowerCase();\n  \n  // Interest detection\n  const interests = ['cpl', 'ppl', 'atpl', 'pilot', 'aviation', 'flying'];\n  interests.forEach(interest => {\n    if (lower.includes(interest)) {\n      extracted.interests.push(interest.toUpperCase());\n      interestScore += 20;\n    }\n  });\n  \n  // Question indicators\n  if (message.includes('?') || /\\b(what|how|when|cost|price)\\b/i.test(message)) {\n    interestScore += 30;\n  }\n  \n  return { ...extracted, interestScore, isInterested: interestScore >= 40 };\n}\n\nconst phone = normalizePhone(data.from || data.sender);\nconst message = data.message || data.text;\nconst analysis = analyzeMessage(message);\n\nreturn {\n  phone,\n  message,\n  ...analysis,\n  timestamp: new Date().toISOString()\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [-600, 200],
+      "id": "parse-message",
+      "name": "Parse Message"
+    },
+    {
+      "parameters": {
+        "operation": "search",
+        "base": {
+          "__rl": true,
+          "value": "={{ $vars.AIRTABLE_BASE_ID }}",
+          "mode": "id"
+        },
+        "table": {
+          "__rl": true,
+          "value": "={{ $vars.AIRTABLE_LEADS_TABLE_ID }}",
+          "mode": "id"
+        },
+        "filterByFormula": "={Phone} = \"{{ $json.phone }}\""
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [-400, 200],
+      "id": "find-lead",
+      "name": "Find Lead"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Generate AI response based on interest and data completeness\nconst messageData = $('Parse Message').first().json;\nconst leadData = $('Find Lead').first().json[0];\n\nif (!leadData) throw new Error('Lead not found');\n\nconst lead = leadData.fields;\nconst shouldAskForData = messageData.isInterested && (!lead.Name || !lead.Email);\n\nlet response = '';\n\nif (messageData.email && messageData.email.includes('@gmial.com')) {\n  response = `Thanks! I noticed your email might have a typo - did you mean ${messageData.email.replace('@gmial.com', '@gmail.com')}?`;\n} else if (shouldAskForData) {\n  response = `Great to see your interest in aviation training! 🛩️\\n\\nI'd love to send you detailed information about our CPL, PPL, and ATPL programs. Can I get your name and email address to share the course details?`;\n} else if (messageData.isInterested) {\n  response = `Excellent! Our aviation programs include:\\n\\n✈️ CPL: 18 months, ₹25-30 lakhs\\n✈️ PPL: 6 months, ₹8-12 lakhs\\n✈️ ATPL: Advanced airline pilot training\\n\\nWhich program interests you most?`;\n} else {\n  response = `Thanks for your message! We offer comprehensive pilot training programs at ATC. Are you interested in learning about becoming a pilot?`;\n}\n\n// Check for hot lead (high interest + specific questions)\nconst isHotLead = messageData.interestScore >= 80 || \n  messageData.message.toLowerCase().includes('cost') ||\n  messageData.message.toLowerCase().includes('when can i start');\n\nif (isHotLead) {\n  response += `\\n\\nI can see you're serious about starting your aviation career! Our counselor will call you within 2 hours to discuss everything in detail. 🔥`;\n}\n\nreturn {\n  response,\n  leadId: leadData.id,\n  shouldAskForData,\n  isHotLead,\n  updates: {\n    Name: messageData.name || lead.Name,\n    Email: messageData.email || lead.Email,\n    InterestDetected: messageData.isInterested,\n    WhatsAppScore: messageData.interestScore,\n    Status: isHotLead ? 'Hot' : lead.Status,\n    DataCompleteness: calculateCompleteness(messageData.name || lead.Name, lead.Phone, messageData.email || lead.Email)\n  }\n};\n\nfunction calculateCompleteness(name, phone, email) {\n  let score = 0;\n  if (phone) score += 33;\n  if (name) score += 33;\n  if (email) score += 34;\n  return score;\n}"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [-200, 200],
+      "id": "generate-response",
+      "name": "Generate Response"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "base": {
+          "__rl": true,
+          "value": "={{ $vars.AIRTABLE_BASE_ID }}",
+          "mode": "id"
+        },
+        "table": {
+          "__rl": true,
+          "value": "={{ $vars.AIRTABLE_LEADS_TABLE_ID }}",
+          "mode": "id"
+        },
+        "id": "={{ $json.leadId }}",
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Name": "={{ $json.updates.Name }}",
+            "Email": "={{ $json.updates.Email }}",
+            "InterestDetected": "={{ $json.updates.InterestDetected }}",
+            "WhatsAppScore": "={{ $json.updates.WhatsAppScore }}",
+            "Status": "={{ $json.updates.Status }}",
+            "DataCompleteness": "={{ $json.updates.DataCompleteness }}"
+          }
+        }
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [0, 200],
+      "id": "update-lead",
+      "name": "Update Lead"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Mock WhatsApp send (replace with actual AiSensy API)\nconst response = $('Generate Response').first().json.response;\nconst phone = $('Parse Message').first().json.phone;\n\nconsole.log(`Sending to ${phone}: ${response}`);\n\nreturn {\n  success: true,\n  messageId: 'mock_' + Date.now(),\n  response,\n  phone\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [200, 200],
+      "id": "send-response",
+      "name": "Send Response (Mock)"
+    }
+  ],
+  "connections": {
+    "WhatsApp Inbound": {
+      "main": [
+        [
+          {
+            "node": "Parse Message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse Message": {
+      "main": [
+        [
+          {
+            "node": "Find Lead",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Find Lead": {
+      "main": [
+        [
+          {
+            "node": "Generate Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Response": {
+      "main": [
+        [
+          {
+            "node": "Update Lead",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update Lead": {
+      "main": [
+        [
+          {
+            "node": "Send Response (Mock)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [
+    {
+      "createdAt": "2024-01-01T00:00:00.000Z",
+      "updatedAt": "2024-01-01T00:00:00.000Z",
+      "id": "atc-whatsapp-ai-simple",
+      "name": "ATC WhatsApp AI Simple"
+    }
+  ],
+  "triggerCount": 1,
+  "updatedAt": "2024-01-01T00:00:00.000Z",
+  "versionId": "1"
+}

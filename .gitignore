@@ -7,10 +7,30 @@ node_modules/
 test-results/
 *.tsbuildinfo
 
-# Secrets
+# Secrets & Sensitive Files
+.env
 .env.local
 .env.*.local
+*.env
 studio/.env.local
+
+# n8n Deployment Sensitive Files
+atc-n8n-meeting-scheduler/.env
+atc-n8n-meeting-scheduler/.env.local
+atc-n8n-meeting-scheduler/credentials-backup.txt
+atc-n8n-meeting-scheduler/credentials-template.md
+atc-n8n-meeting-scheduler/data/
+atc-n8n-meeting-scheduler/backups/
+atc-n8n-meeting-scheduler/ssl/
+atc-n8n-meeting-scheduler/logs/
+atc-n8n-meeting-scheduler/*.log
+
+# Security - Never commit these patterns
+*credentials*
+*secrets*
+*keys*
+*tokens*
+*password*
 
 # Ignored Directories
 .continue/
