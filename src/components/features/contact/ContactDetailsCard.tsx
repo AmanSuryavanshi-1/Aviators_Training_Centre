@@ -16,64 +16,89 @@ const itemVariants = {
 
 const ContactDetailsCard: React.FC = () => {
     return (
-        <motion.div variants={itemVariants} className="lg:col-span-2">
-            <Card className="p-6 h-full rounded-lg border shadow-sm bg-card border-border md:p-8">
-                <CardHeader className="p-0 mb-6">
-                    <CardTitle className={cn("text-2xl font-semibold", aviationPrimary)}>Contact Details</CardTitle>
-                    <CardDescription className="mt-1 text-foreground/70">
+        <motion.div variants={itemVariants} className="w-full h-full">
+            <Card className="w-full h-full rounded-lg border shadow-sm bg-card border-border p-4 md:p-4 lg:p-5 flex flex-col">
+                <CardHeader className="p-0 mb-3 md:mb-4 flex-shrink-0">
+                    <CardTitle className={cn("text-lg md:text-xl font-semibold", aviationPrimary)}>Contact Details</CardTitle>
+                    <CardDescription className="mt-1 text-sm text-foreground/70">
                         Reach out via phone, email, or visit us.
                     </CardDescription>
                 </CardHeader>
-                <CardContent className="p-0 space-y-5">
-                    {/* Location */}
-                    <div className="flex items-start space-x-3">
-                        <div className={cn("flex-shrink-0 p-2 mt-1 rounded-full bg-teal-100/70 dark:bg-teal-900/40", aviationSecondary)}>
-                            <MapPin className="w-5 h-5" />
+                <CardContent className="p-0 flex-grow flex flex-col">
+                    <div className="space-y-3 flex-grow">
+                        {/* Location */}
+                        <div className="flex items-start space-x-3">
+                            <div className={cn("flex-shrink-0 p-2 mt-1 rounded-full bg-teal-100/70 dark:bg-teal-900/40", aviationSecondary)}>
+                                <MapPin className="w-5 h-5" />
+                            </div>
+                            <div>
+                                <h4 className="mb-1 text-sm font-semibold text-foreground">Location</h4>
+                                <p className="text-sm text-foreground/80">Delhi, India</p>
+                            </div>
                         </div>
-                        <div>
-                            <h4 className="mb-1 text-sm font-semibold text-foreground">Location</h4>
-                            <p className="text-sm text-foreground/80">Delhi, India</p>
+                        {/* Phone */}
+                        <div className="flex items-start space-x-3">
+                            <div className={cn("flex-shrink-0 p-2 mt-1 rounded-full bg-teal-100/70 dark:bg-teal-900/40", aviationSecondary)}>
+                                <Phone className="w-5 h-5" />
+                            </div>
+                            <div>
+                                <h4 className="mb-1 text-sm font-semibold text-foreground">Phone</h4>
+                                <div className="space-y-1">
+                                    <Link href="tel:+919485687609" className="block text-sm text-foreground/80 hover:text-foreground">+91 94856 87609</Link>
+                                    <Link href="tel:+917842401155" className="block text-sm text-foreground/80 hover:text-foreground">+91 78424 01155</Link>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    {/* Phone */}
-                    <div className="flex items-start space-x-3">
-                        <div className={cn("flex-shrink-0 p-2 mt-1 rounded-full bg-teal-100/70 dark:bg-teal-900/40", aviationSecondary)}>
-                            <Phone className="w-5 h-5" />
+                        {/* Email */}
+                        <div className="flex items-start space-x-3">
+                            <div className={cn("flex-shrink-0 p-2 mt-1 rounded-full bg-teal-100/70 dark:bg-teal-900/40", aviationSecondary)}>
+                                <Mail className="w-5 h-5" />
+                            </div>
+                            <div>
+                                <h4 className="mb-1 text-sm font-semibold text-foreground">Email</h4>
+                                <Link href="mailto:aviatorstrainingcentre@gmail.com" className="text-sm text-foreground/80 hover:text-foreground underline-offset-2 hover:underline">aviatorstrainingcentre@gmail.com</Link>
+                            </div>
                         </div>
-                        <div>
-                            <h4 className="mb-1 text-sm font-semibold text-foreground">Phone</h4>
-                            <p className="text-sm text-foreground/80">+91 94856 87609</p>
-                            <p className="text-sm text-foreground/80">+91 7842401155</p>
+                        {/* Operating Hours */}
+                        <div className="flex items-start space-x-3">
+                            <div className={cn("flex-shrink-0 p-2 mt-1 rounded-full bg-teal-100/70 dark:bg-teal-900/40", aviationSecondary)}>
+                                <Clock className="w-5 h-5" />
+                            </div>
+                            <div>
+                                <h4 className="mb-1 text-sm font-semibold text-foreground">Operating Hours</h4>
+                                <p className="text-sm text-foreground/80">Mon - Fri: 8:00 AM - 7:00 PM</p>
+                                <p className="text-sm text-foreground/80">Weekends: 9:00 AM - 5:00 PM</p>
+                            </div>
                         </div>
-                    </div>
-                    {/* Email */}
-                    <div className="flex items-start space-x-3">
-                        <div className={cn("flex-shrink-0 p-2 mt-1 rounded-full bg-teal-100/70 dark:bg-teal-900/40", aviationSecondary)}>
-                            <Mail className="w-5 h-5" />
+
+                        {/* Response Time */}
+                        <div className="bg-teal-50/30 dark:bg-teal-900/20 rounded-lg p-3 border border-teal-200/50 dark:border-teal-800/30">
+                            <div className="text-center">
+                                <p className="text-sm font-medium text-teal-700 dark:text-teal-300 mb-1">Quick Response</p>
+                                <p className="text-xs text-teal-600/90 dark:text-teal-400/90">We typically respond within 24 hours</p>
+                            </div>
                         </div>
-                        <div>
-                            <h4 className="mb-1 text-sm font-semibold text-foreground">Email</h4>
-                            <Link href="mailto:aviatorstrainingcentre@gmail.com" className="text-sm break-all text-foreground/80 hover:text-foreground underline-offset-2 hover:underline">aviatorstrainingcentre@gmail.com</Link>
-                            <br />
-                            <Link href="mailto:info@aviatorstrainingcentre.in" className="text-sm break-all text-foreground/80 hover:text-foreground underline-offset-2 hover:underline">info@aviatorstrainingcentre.in</Link>
+
+                        {/* Additional Contact Methods */}
+                        <div className="space-y-2 pt-2">
+                            <h4 className="text-sm font-semibold text-foreground mb-2">Preferred Contact Methods</h4>
+                            <div className="grid grid-cols-2 gap-2 text-xs">
+                                <div className="bg-gray-50/50 dark:bg-gray-800/30 rounded-md p-2 text-center">
+                                    <p className="font-medium text-foreground/80">General Inquiries</p>
+                                    <p className="text-foreground/60">Email or Phone</p>
+                                </div>
+                                <div className="bg-gray-50/50 dark:bg-gray-800/30 rounded-md p-2 text-center">
+                                    <p className="font-medium text-foreground/80">Urgent Matters</p>
+                                    <p className="text-foreground/60">Direct Call</p>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    {/* Operating Hours */}
-                    <div className="flex items-start space-x-3">
-                        <div className={cn("flex-shrink-0 p-2 mt-1 rounded-full bg-teal-100/70 dark:bg-teal-900/40", aviationSecondary)}>
-                            <Clock className="w-5 h-5" />
-                        </div>
-                        <div>
-                            <h4 className="mb-1 text-sm font-semibold text-foreground">Operating Hours</h4>
-                            <dl className="text-sm text-foreground/80">
-                                <div className="flex justify-between"><dt>Mon - Fri:</dt><dd className="pl-2">8:00 AM - 7:00 PM</dd></div>
-                                <div className="flex justify-between"><dt>Saturday:</dt><dd className="pl-2">9:00 AM - 5:00 PM</dd></div>
-                                <div className="flex justify-between"><dt>Sunday:</dt><dd className="pl-2">10:00 AM - 4:00 PM</dd></div>
-                            </dl>
-                        </div>
+
+
+
                     </div>
                     {/* Social Links */}
-                    <div className="pt-4 border-t border-border/50">
+                    <div className="pt-3 border-t border-border/50 mt-auto">
                         <h4 className="mb-2 text-sm font-semibold text-foreground">Follow Us</h4>
                         <div className="flex space-x-2">
                             <Button variant="ghost" size="icon" asChild className={cn("text-foreground/70 hover:text-foreground", aviationSecondary)}>

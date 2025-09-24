@@ -237,35 +237,37 @@ const ContactFormCard: React.FC<ContactFormCardProps> = ({inquirySubjects}) => {
     };
     const aviationPrimary = 'text-teal-700 dark:text-teal-300';
   return (
-    <Card className="p-6 rounded-lg border shadow-sm bg-card border-border md:p-8">
-      <CardHeader className="p-0 mb-6">
-        <CardTitle className={cn("text-2xl font-semibold", aviationPrimary)}>
+    <Card className="w-full h-full rounded-lg border shadow-sm bg-card border-border p-4 md:p-4 lg:p-5 flex flex-col">
+      <CardHeader className="p-0 mb-3 md:mb-4 flex-shrink-0">
+        <CardTitle className={cn("text-lg md:text-xl font-semibold", aviationPrimary)}>
           {isDemoBooking ? 'Demo Request Form' : 'Send Us a Message'}
         </CardTitle>
-                <CardDescription className="mt-1 text-foreground/70">
+                <CardDescription className="mt-1 text-sm text-foreground/70">
                     {isDemoBooking
                         ? `Confirm your details and the pre-filled request.`
                         : `Fill out the form below and we will get back to you shortly.`}
                 </CardDescription>
       </CardHeader>
-      <CardContent className="p-0">
+      <CardContent className="p-0 flex-grow flex flex-col">
         {isSubmitted && (
           <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="p-4 mb-6 bg-green-50 rounded-lg border border-green-200 dark:bg-green-900/20 dark:border-green-800"
+            initial={{ opacity: 0, scale: 0.95, y: -10 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.95, y: -10 }}
+            transition={{ duration: 0.3, ease: "easeOut" }}
+            className="p-4 mb-4 bg-green-50 rounded-lg border border-green-200 dark:bg-green-900/20 dark:border-green-800 shadow-sm"
           >
-            <div className="flex items-center space-x-3">
-              <div className="flex-shrink-0">
-                <svg className="w-6 h-6 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="flex items-start space-x-3">
+              <div className="flex-shrink-0 mt-0.5">
+                <svg className="w-5 h-5 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </div>
-              <div>
-                <h3 className="text-sm font-medium text-green-800 dark:text-green-200">
+              <div className="min-w-0 flex-1">
+                <h3 className="text-sm font-semibold text-green-800 dark:text-green-200">
                   {isDemoBooking ? 'Demo Request Sent!' : 'Message Sent Successfully!'}
                 </h3>
-                <p className="mt-1 text-sm text-green-700 dark:text-green-300">
+                <p className="mt-1 text-sm text-green-700 dark:text-green-300 leading-relaxed">
                   {isDemoBooking 
                     ? 'We will contact you within 24 hours to schedule your demo session.'
                     : 'Thank you for reaching out! We will get back to you within 24 hours.'}
@@ -280,10 +282,11 @@ const ContactFormCard: React.FC<ContactFormCardProps> = ({inquirySubjects}) => {
           errors={validation.errors} 
           show={showValidationSummary}
         />
-        <form onSubmit={handleFormSubmit} className="space-y-5 contact-form" id="contact-form">
-          <div className="grid grid-cols-1 gap-5">
-            <div className="space-y-1.5">
-              <Label htmlFor="name" className="text-sm font-medium">Full Name</Label>
+        <form onSubmit={handleFormSubmit} className="contact-form flex-grow flex flex-col min-h-0" id="contact-form">
+          <div className="space-y-3 md:space-y-4 flex-shrink-0">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="name" className="text-sm font-medium">Full Name</Label>
               <Input
                 id="name"
                 value={name}
@@ -292,7 +295,7 @@ const ContactFormCard: React.FC<ContactFormCardProps> = ({inquirySubjects}) => {
                 placeholder="e.g. John Doe"
                 required
                 className={cn(
-                  "focus-visible:ring-teal-500",
+                  "focus-visible:ring-teal-500 h-10", // Consistent height
                   validation.errors.name && "border-red-500 focus:border-red-500 focus:ring-red-500"
                 )}
                 aria-invalid={!!validation.errors.name}
@@ -300,7 +303,7 @@ const ContactFormCard: React.FC<ContactFormCardProps> = ({inquirySubjects}) => {
               />
               <ValidationError error={validation.errors.name} fieldId="name" />
             </div>
-            <div className="space-y-1.5">
+            <div className="space-y-2">
               <Label htmlFor="email" className="text-sm font-medium">Email Address</Label>
               <Input
                 id="email"
@@ -311,17 +314,17 @@ const ContactFormCard: React.FC<ContactFormCardProps> = ({inquirySubjects}) => {
                 placeholder="e.g. john.doe@email.com"
                 required
                 className={cn(
-                  "focus-visible:ring-teal-500",
+                  "focus-visible:ring-teal-500 h-10", // Consistent height
                   validation.errors.email && "border-red-500 focus:border-red-500 focus:ring-red-500"
                 )}
                 aria-invalid={!!validation.errors.email}
                 aria-describedby={validation.errors.email ? "email-error" : undefined}
               />
               <ValidationError error={validation.errors.email} fieldId="email" />
+              </div>
             </div>
-          </div>
-          <div className="grid grid-cols-1 gap-5">
-            <div className="space-y-1.5">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
+            <div className="space-y-2">
               <Label htmlFor="phone" className="text-sm font-medium">Phone Number <span className="text-foreground/50">(Optional)</span></Label>
               <Input
                 id="phone"
@@ -330,7 +333,7 @@ const ContactFormCard: React.FC<ContactFormCardProps> = ({inquirySubjects}) => {
                 onBlur={() => validation.validateField('phone', phone)}
                 placeholder="e.g. +91 12345 67890"
                 className={cn(
-                  "focus-visible:ring-teal-500",
+                  "focus-visible:ring-teal-500 h-10", // Consistent height
                   validation.errors.phone && "border-red-500 focus:border-red-500 focus:ring-red-500"
                 )}
                 aria-invalid={!!validation.errors.phone}
@@ -338,7 +341,7 @@ const ContactFormCard: React.FC<ContactFormCardProps> = ({inquirySubjects}) => {
               />
               <ValidationError error={validation.errors.phone} fieldId="phone" />
             </div>
-            <div className="space-y-1.5">
+            <div className="space-y-2 relative">
               <Label htmlFor="subject" className="text-sm font-medium">Subject</Label>
               {isDemoBooking || (subject && new URLSearchParams(window.location.search).get('subject')) ? (
                 <Input
@@ -348,7 +351,7 @@ const ContactFormCard: React.FC<ContactFormCardProps> = ({inquirySubjects}) => {
                   onBlur={() => validation.validateField('subject', subject, { isDemoBooking })}
                   readOnly={isDemoBooking}
                   className={cn(
-                    "cursor-text",
+                    "cursor-text h-10", // Consistent height
                     "focus-visible:ring-teal-500",
                     validation.errors.subject && "border-red-500 focus:border-red-500 focus:ring-red-500",
                     isDemoBooking && "cursor-not-allowed bg-muted/50"
@@ -357,84 +360,114 @@ const ContactFormCard: React.FC<ContactFormCardProps> = ({inquirySubjects}) => {
                   aria-describedby={validation.errors.subject ? "subject-error" : undefined}
                 />
               ) : (
-                <Select
-                  value={subject}
-                  onValueChange={(value) => {
-                    setSubject(value);
-                    validation.validateField('subject', value, { isDemoBooking });
-                  }}
-                >
-                  <SelectTrigger 
-                    id="subject-select" 
-                    className={cn(
-                      "focus:ring-teal-500",
-                      validation.errors.subject && "border-red-500 focus:border-red-500 focus:ring-red-500"
-                    )}
-                    aria-invalid={!!validation.errors.subject}
-                    aria-describedby={validation.errors.subject ? "subject-error" : undefined}
+                <div className="relative">
+                  <Select
+                    value={subject}
+                    onValueChange={(value) => {
+                      setSubject(value);
+                      validation.validateField('subject', value, { isDemoBooking });
+                    }}
                   >
-                    <SelectValue placeholder="Select a subject..." />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {inquirySubjects.map((subj) => (
-                      <SelectItem key={subj} value={subj}>
-                        {subj}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                    <SelectTrigger 
+                      id="subject-select" 
+                      className={cn(
+                        "focus:ring-teal-500 h-10 w-full", // Consistent height and fixed width to prevent shaking
+                        validation.errors.subject && "border-red-500 focus:border-red-500 focus:ring-red-500"
+                      )}
+                      aria-invalid={!!validation.errors.subject}
+                      aria-describedby={validation.errors.subject ? "subject-error" : undefined}
+                    >
+                      <SelectValue placeholder="Select a subject..." />
+                    </SelectTrigger>
+                    <SelectContent 
+                      className="max-h-60 overflow-y-auto z-[100] w-full"
+                      position="popper"
+                      sideOffset={4}
+                      align="start"
+                      avoidCollisions={true}
+                    >
+                      {inquirySubjects.map((subj) => (
+                        <SelectItem key={subj} value={subj} className="cursor-pointer">
+                          {subj}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
               )}
               <ValidationError error={validation.errors.subject} fieldId="subject" />
             </div>
+            </div>
           </div>
-          <div className="space-y-1.5">
-            <Label htmlFor="message" className="text-sm font-medium">Your Message</Label>
-            <Textarea
-              id="message"
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
-              onBlur={() => validation.validateField('message', message, { isDemoBooking })}
-              placeholder={isDemoBooking ? "Add any specific questions here..." : "Please provide details about your question or request..."}
-              rows={5}
-              required={!isDemoBooking}
-              readOnly={isDemoBooking}
-              className={cn("cursor-text",
-                "focus-visible:ring-teal-500",
-                validation.errors.message && "border-red-500 focus:border-red-500 focus:ring-red-500",
-                isDemoBooking && "bg-muted/50 cursor-not-allowed"
-              )}
-              aria-invalid={!!validation.errors.message}
-              aria-describedby={validation.errors.message ? "message-error" : undefined}
-            />
+          <div className="mt-3 md:mt-4 flex-grow flex flex-col min-h-0">
+            <div className="mb-2 flex-shrink-0">
+              <Label htmlFor="message" className="text-sm font-medium block mb-1">Your Message</Label>
+              <p className="text-xs text-foreground/60 hidden md:block">
+                {isDemoBooking 
+                  ? "Feel free to add any specific questions or requirements for your demo session."
+                  : "Please provide detailed information about your inquiry to help us assist you better."
+                }
+              </p>
+            </div>
+            <div className="flex-grow flex flex-col min-h-0">
+              <Textarea
+                id="message"
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+                onBlur={() => validation.validateField('message', message, { isDemoBooking })}
+                placeholder={isDemoBooking ? "Add any specific questions here..." : "Please provide details about your question or request..."}
+                required={!isDemoBooking}
+                readOnly={isDemoBooking}
+                className={cn("cursor-text resize-none flex-grow w-full",
+                  "min-h-[120px] md:min-h-[140px] lg:min-h-[160px]",
+                  "focus-visible:ring-teal-500 transition-all duration-200",
+                  "border-2 border-border hover:border-teal-300 focus:border-teal-500",
+                  validation.errors.message && "border-red-500 focus:border-red-500 focus:ring-red-500",
+                  isDemoBooking && "bg-muted/50 cursor-not-allowed"
+                )}
+                aria-invalid={!!validation.errors.message}
+                aria-describedby={validation.errors.message ? "message-error" : undefined}
+              />
+            </div>
             <ValidationError error={validation.errors.message} fieldId="message" />
           </div>
-          <div>
+          <div className="pt-3 md:pt-4 flex-shrink-0">
             <Button
               type="submit"
-              size="lg"
               className={cn(
-                'flex gap-2 justify-center items-center w-full conversion-button',
-                'overflow-hidden relative text-white bg-teal-600 rounded-full shadow-md transition-all duration-300 ease-out group hover:bg-teal-700 hover:shadow-lg dark:bg-teal-500 dark:hover:bg-teal-600',
-                'focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500',
-                'disabled:opacity-50 disabled:cursor-not-allowed'
+                'group relative w-full conversion-button',
+                'bg-teal-600 hover:bg-teal-700 text-white',
+                'rounded-lg border-0 shadow-sm hover:shadow-md',
+                'transition-all duration-200 ease-out',
+                'focus:outline-none focus:ring-2 focus:ring-teal-500/30 focus:ring-offset-1',
+                'disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:bg-teal-600',
+                'h-10 px-6 text-sm font-medium',
+                'overflow-hidden'
               )}
               disabled={loading}
               data-conversion="true"
             >
-              {loading ? (
-                <>
-                  <motion.div
-                    className="w-5 h-5 rounded-full border-2 border-white border-t-transparent"
-                    animate={{ rotate: 360 }}
-                    transition={{ duration: 1, repeat: Infinity, ease: easingFunctions.linear }}
-                  />
-                  <span className="ml-2">{isDemoBooking ? 'Submitting Request...' : 'Sending...'}</span>
-                </>
-              ) : (
-                <>
-                  {isDemoBooking ? 'Confirm Demo Request' : 'Send Message'} <Send className="ml-2 w-4 h-4" />
-                </>
-              )}
+              <div className="flex items-center justify-center gap-1.5">
+                {loading ? (
+                  <>
+                    <motion.div
+                      className="w-3.5 h-3.5 rounded-full border-2 border-white/30 border-t-white"
+                      animate={{ rotate: 360 }}
+                      transition={{ duration: 1, repeat: Infinity, ease: easingFunctions.linear }}
+                    />
+                    <span className="text-sm">
+                      {isDemoBooking ? 'Submitting...' : 'Sending...'}
+                    </span>
+                  </>
+                ) : (
+                  <>
+                    <span className="text-sm font-medium">
+                      {isDemoBooking ? 'Send Demo Request' : 'Send Message'}
+                    </span>
+                    <Send className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5" />
+                  </>
+                )}
+              </div>
             </Button>
                     </div>
         </form>
