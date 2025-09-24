@@ -94,7 +94,7 @@ export const UrgencyCTA: React.FC<UrgencyCTAProps> = ({
 
        {/* Secondary Link Button - Kept as variant="link" */}
        <Button asChild variant="link" className={cn("text-base conversion-button", aviationSecondary, "hover:text-teal-500 dark:hover:text-teal-300")} data-conversion="true">
-           <Link href={{ pathname: "/contact#contact-form", query: { subject: 'Consultation Request', message: 'I would like to schedule a consultation to discuss the courses and the limited-time offer.' } }}>
+           <Link href={{ pathname: "/contact", hash: "contact-form", query: { subject: 'Consultation Request', message: 'I would like to schedule a consultation to discuss the courses and the limited-time offer.' } }}>
               Limited seats! Schedule a consultation →
           </Link> 
        </Button>
