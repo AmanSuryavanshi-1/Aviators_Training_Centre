@@ -56,7 +56,6 @@ const nextConfig = {
   // Experimental features
   experimental: {
     ppr: false, // Disable partial prerendering for now, enable when stable
-    instrumentationHook: false, // Disable to avoid Windows permission issues
   },
   
   // Cache configuration for better performance

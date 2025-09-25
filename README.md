@@ -17,6 +17,7 @@ A comprehensive, production-ready aviation training platform combining Next.js 1
 - [Development](#-development)
 - [Testing](#-testing)
 - [Deployment](#-deployment)
+- [Security](#-security)
 - [Contributing](#-contributing)
 
 ## 🚀 Quick Start
@@ -48,17 +49,17 @@ cd studio && npm run dev       # Sanity Studio (http://localhost:3333)
 ### Access Points
 
 - **Website**: http://localhost:3000
-- **Sanity Studio**: http://localhost:3333  
+- **Sanity Studio**: http://localhost:3333
 - **Admin Dashboard**: http://localhost:3000/admin
 
 ## 📚 Documentation
 
-| Document | Description |
-|----------|-------------|
-| [**Developer Guide**](./DEVELOPER_GUIDE.md) | Complete setup, environment, scripts, and troubleshooting |
-| [**Components Reference**](./COMPONENTS_REFERENCE.md) | Component documentation and API reference |
-| [**Architecture Guide**](./docs/ARCHITECTURE.md) | System design and technical architecture |
-| [**API Documentation**](./docs/API.md) | API endpoints and integration guide |
+| Document                                              | Description                                               |
+| ----------------------------------------------------- | --------------------------------------------------------- |
+| [**Developer Guide**](./DEVELOPER_GUIDE.md)           | Complete setup, environment, scripts, and troubleshooting |
+| [**Components Reference**](./COMPONENTS_REFERENCE.md) | Component documentation and API reference                 |
+| [**Architecture Guide**](./docs/ARCHITECTURE.md)      | System design and technical architecture                  |
+| [**API Documentation**](./docs/API.md)                | API endpoints and integration guide                       |
 
 ### Key Features
 
@@ -71,17 +72,20 @@ cd studio && npm run dev       # Sanity Studio (http://localhost:3333)
 ## 🛠 Tech Stack
 
 ### Core Framework
+
 - **Next.js 15** with App Router and React 18
 - **TypeScript** with strict type checking
 - **Tailwind CSS** with custom aviation theme
 
-### Backend & Services  
+### Backend & Services
+
 - **Sanity CMS** for content management
 - **Firebase** (Firestore + Auth) for analytics and authentication
 - **Resend API** for transactional emails
 - **Vercel** hosting with edge functions
 
 ### Development Tools
+
 - **ESLint** + **Jest** + **Playwright** for testing
 - **TypeScript** path mapping with @ aliases
 
@@ -178,6 +182,24 @@ vercel --prod
 - **GitHub Actions**: CI/CD pipeline
 - **Vercel Integration**: Automatic deployments on push
 - **Sanity Webhooks**: Content-triggered rebuilds
+
+## 🔒 Security
+
+This project maintains high security standards with automated vulnerability scanning and regular dependency updates.
+
+### Security Features
+
+- **Zero Known Vulnerabilities**: All dependencies regularly audited and updated
+- **Automated Security Scanning**: Daily vulnerability checks via GitHub Actions
+- **Secure Dependency Management**: Package overrides prevent vulnerable versions
+- **Security-First Development**: All PRs include security validation
+
+### Security Resources
+
+- 📖 [Complete Security Guide](./SECURITY_GUIDE.md) - Comprehensive security documentation
+- 🛡️ [Security Fixes Summary](./SECURITY_FIXES_SUMMARY.md) - Recent vulnerability resolutions
+- 🔍 Run `npm run security:audit` for security checks
+- 🚨 Report security issues via GitHub issues with `security` label
 
 ## 🤝 Contributing
 
