@@ -142,8 +142,13 @@ export class EnhancedSanityClient {
 
       // Test write access if token is available
       let tokenPermissions: string[] = ['read'];
-      if (process.env.SANITY_API_TOKEN) {
+      if (process.env.SANITY_API_TOKEN && 
+          process.env.NODE_ENV !== 'production' && 
+          !process.env.CI && 
+          !process.env.VERCEL && 
+          !process.env.NETLIFY) {
         try {
+          // Only test write permissions in development/staging, not production
           // Test create permission by attempting to create a test document
           // Use a simple document type that should be allowed
           const testDoc = {

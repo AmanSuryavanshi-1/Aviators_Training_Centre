@@ -95,9 +95,9 @@ export class PreventiveMaintenanceSystem {
         id: 'cleanup-test-documents',
         name: 'Cleanup Test Documents',
         description: 'Remove test documents and temporary data',
-        frequency: 'daily',
+        frequency: 'hourly',
         status: 'pending',
-        priority: 'low',
+        priority: 'high',
         autoFix: true
       },
       {

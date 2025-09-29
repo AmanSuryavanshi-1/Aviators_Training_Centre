@@ -33,7 +33,7 @@
     "expand-object": ">=0.4.0"
   },
   "scripts": {
-    "postbuild": "next-sitemap",
+    "postbuild": "next-sitemap && node tools/scripts/deploy/post-deployment-cleanup.js",
     "dev": "next dev",
     "dev:unified": "node tools/scripts/development/dev-unified.js",
     "build": "next build",
