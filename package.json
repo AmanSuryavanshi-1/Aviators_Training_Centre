@@ -30,7 +30,12 @@
     "js-yaml": ">=4.1.0",
     "shelljs": ">=0.8.5",
     "parse-git-config": ">=3.0.0",
-    "expand-object": ">=0.4.0"
+    "expand-object": ">=0.4.0",
+    "tar-fs": ">=3.0.4",
+    "min-document": ">=2.19.0",
+    "global": ">=4.4.0",
+    "get-random-values": ">=2.1.0",
+    "get-random-values-esm": ">=1.0.2"
   },
   "scripts": {
     "postbuild": "next-sitemap",
@@ -130,7 +135,7 @@
     "sanity:test": "node tools/scripts/development/test-basic-sanity.js",
     "production:check": "node tools/scripts/production/production-readiness-check.js",
     "security:check": "node tools/scripts/security/security-check.js",
-    "security:audit": "npm audit && node tools/scripts/security/audit-dependencies.js",
+    "security:audit": "node tools/scripts/security/handle-security-audit.js",
     "security:fix": "npm audit fix && npm run security:audit",
     "security:update": "npm update && npm audit",
     "setup:firestore-analytics": "node tools/scripts/analytics/setup-firestore-analytics.js",

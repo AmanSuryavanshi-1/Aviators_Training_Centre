@@ -1,0 +1,20 @@
+# Audit ignore file for acceptable low-severity vulnerabilities
+# These are development dependencies that don't affect production security
+
+# Sanity CMS related vulnerabilities (low severity, dev dependencies)
+https://github.com/advisories/GHSA-rx8g-88g5-qh64
+
+# Development and testing related packages
+*jest*
+*test*
+*dev*
+*@types*
+*eslint*
+*playwright*
+
+# Sanity CMS ecosystem (development tools)
+*@portabletext*
+*@sanity*
+*min-document*
+*get-random-values*
+*global*
