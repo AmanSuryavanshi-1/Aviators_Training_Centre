@@ -3,6 +3,7 @@
 import { useState, useCallback } from 'react';
 import Image from 'next/image';
 import { cn } from '@/lib/utils';
+import OptimizedImage from '@/components/shared/OptimizedImage';
 
 interface BulletproofImageProps {
   src: string;
@@ -57,7 +58,20 @@ const BulletproofImage: React.FC<BulletproofImageProps> = ({
     ...(sizes && { sizes }),
   };
 
-  return <Image {...imageProps} />;
+  // Use OptimizedImage for better performance while maintaining compatibility
+  return (
+    <OptimizedImage
+      {...imageProps}
+      loadingPriority={priority ? 'critical' : 'medium'}
+      lazyLoad={!priority}
+      fetchPriority={priority ? 'high' : 'auto'}
+      preload={priority}
+      connectionAware={true}
+      respectDataSaver={true}
+      performanceTracking={true}
+      fallbackSrc={fallbackSrc}
+    />
+  );
 };
 
 export default BulletproofImage;

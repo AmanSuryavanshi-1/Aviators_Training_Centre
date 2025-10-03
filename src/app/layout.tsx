@@ -11,6 +11,7 @@ import ServiceWorkerRegistration from "@/components/features/blog/ServiceWorkerR
 import ErrorHandlingProvider from "@/components/shared/ErrorHandlingProvider";
 import ConditionalLayout from "@/components/layout/ConditionalLayout";
 import ConditionalAnalytics from "@/components/analytics/ConditionalAnalytics";
+import { PerformanceImageProvider } from "@/lib/image-optimization";
 
 // Initialize automation system
 if (typeof window === 'undefined') {
@@ -169,6 +170,39 @@ export default function RootLayout({
         </noscript>
         {/* End Meta Pixel Code */}
 
+        {/* Global Image Optimization */}
+        <Script
+          id="global-image-optimization"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+              // Initialize global image optimization
+              if (typeof window !== 'undefined') {
+                const initImageOptimization = async () => {
+                  try {
+                    const { default: GlobalImageOptimizer } = await import('/src/lib/image-optimization/globalInit.js');
+                    const optimizer = GlobalImageOptimizer.getInstance();
+                    optimizer.init();
+                    
+                    // Log initialization in development
+                    if (window.location.hostname === 'localhost' || window.location.hostname.includes('dev')) {
+                      console.log('🚀 Global Image Optimization initialized');
+                    }
+                  } catch (error) {
+                    console.warn('Failed to initialize global image optimization:', error);
+                  }
+                };
+                
+                if (document.readyState === 'loading') {
+                  document.addEventListener('DOMContentLoaded', initImageOptimization);
+                } else {
+                  initImageOptimization();
+                }
+              }
+            `,
+          }}
+        />
+
         {/* Google tag (gtag.js) - Enhanced for proper domain tracking */}
         <Script
           strategy="afterInteractive"
@@ -221,11 +255,13 @@ export default function RootLayout({
               enableToastNotifications={true}
               enableConnectionMonitoring={true}
             >
-              <ConditionalLayout>
-                {children}
-              </ConditionalLayout>
-              <Analytics />
-              <ServiceWorkerRegistration />
+              <PerformanceImageProvider>
+                <ConditionalLayout>
+                  {children}
+                </ConditionalLayout>
+                <Analytics />
+                <ServiceWorkerRegistration />
+              </PerformanceImageProvider>
             </ErrorHandlingProvider>
           </ConditionalAnalytics>
         </ThemeProvider>

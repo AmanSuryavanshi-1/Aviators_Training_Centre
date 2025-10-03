@@ -1,14 +1,15 @@
-import React, { useState, useEffect } from 'react';
-// Removed import { Button } from '@/components/ui/button';
-import { ArrowRight, CalendarCheck, Phone } from 'lucide-react'; // Added Phone icon
+import React, { useState, useEffect, useCallback } from 'react';
+import { ArrowRight, CalendarCheck, Phone } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { cn } from "./../ui/utils";
 import { BookDemoButton } from '@/components/shared/BookDemoButton';
-import { SolidButton } from '@/components/shared/SolidButton'; // Import the new SolidButton
+import { SolidButton } from '@/components/shared/SolidButton';
 import { TransparentButton } from '@/components/shared/TransparentButton';
+import OptimizedImage from '@/components/shared/OptimizedImage';
+import { PerformanceImageProvider, useImagePerformanceMetrics } from '@/lib/image-optimization';
+import HeroImagePerformanceMonitor from './HeroImagePerformanceMonitor';
 import { easingFunctions } from '@/lib/animations/easing';
-// Optional: import { TransparentButton } from '@/components/shared/TransparentButton'; // Import if needed for secondary button
 
 // --- Configuration ---
 // Removed aviationButtonBg and aviationButtonDarkBg as styling is now in SolidButton
@@ -66,19 +67,101 @@ const itemVariants = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: easingFunctions.easeOut } }
 };
 
-const HeroSection = () => {
+// Inner component that uses the performance hooks
+const HeroSectionInner = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [direction, setDirection] = useState(0);
+  const [imagesLoaded, setImagesLoaded] = useState<Set<number>>(new Set());
+  const [performanceMetrics, setPerformanceMetrics] = useState<{
+    averageLoadTime: number;
+    lcpCandidate: boolean;
+    recommendations: string[];
+  } | null>(null);
   const SWIPE_THRESHOLD_PX = 50;
 
-  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
-    const target = e.target as HTMLImageElement;
-    if (!target.src.endsWith(FALLBACK_IMAGE)) {
-        target.onerror = null;
-        target.src = FALLBACK_IMAGE;
-    }
-  };
+  // Performance metrics for hero images (now inside provider context)
+  const { preloadImage } = useImagePerformanceMetrics();
 
+  // Handle image load success
+  const handleImageLoad = useCallback((slideIndex: number) => {
+    setImagesLoaded(prev => new Set(prev).add(slideIndex));
+  }, []);
+
+  // Handle image load error with fallback
+  const handleImageError = useCallback((slideIndex: number) => {
+    console.warn(`Hero image ${slideIndex} failed to load, using fallback`);
+    // The OptimizedImage component will handle fallback automatically
+  }, []);
+
+  // Handle performance metrics updates
+  const handlePerformanceUpdate = useCallback((metrics: {
+    averageLoadTime: number;
+    lcpCandidate: boolean;
+    recommendations: string[];
+  }) => {
+    setPerformanceMetrics(metrics);
+    
+    // Log performance warnings in development
+    if (process.env.NODE_ENV === 'development' && metrics.recommendations.length > 0) {
+      console.warn('Hero Image Performance Recommendations:', metrics.recommendations);
+    }
+  }, []);
+
+  // Add critical preload link for first hero image to ensure instant LCP
+  useEffect(() => {
+    if (typeof document !== 'undefined') {
+      // Create preload link for the first hero image
+      const preloadLink = document.createElement('link');
+      preloadLink.rel = 'preload';
+      preloadLink.as = 'image';
+      preloadLink.href = slides[0].image;
+      preloadLink.fetchPriority = 'high';
+      
+      // Add to document head if not already present
+      const existingPreload = document.querySelector(`link[href="${slides[0].image}"]`);
+      if (!existingPreload) {
+        document.head.appendChild(preloadLink);
+      }
+      
+      // Cleanup on unmount
+      return () => {
+        if (document.head.contains(preloadLink)) {
+          document.head.removeChild(preloadLink);
+        }
+      };
+    }
+  }, []);
+
+  // Preload all hero images on component mount for instant transitions
+  useEffect(() => {
+    const preloadAllImages = async () => {
+      try {
+        // Preload current image with critical priority
+        await preloadImage(slides[currentSlide].image, 'critical');
+        
+        // Preload next images with high priority
+        const nextIndex = (currentSlide + 1) % slides.length;
+        await preloadImage(slides[nextIndex].image, 'high');
+        
+        // Preload remaining images with medium priority (connection-aware)
+        const remainingSlides = slides.filter((_, index) => 
+          index !== currentSlide && index !== nextIndex
+        );
+        
+        // Stagger preloading to avoid overwhelming slow connections
+        for (const slide of remainingSlides) {
+          await new Promise(resolve => setTimeout(resolve, 100)); // 100ms delay
+          await preloadImage(slide.image, 'medium');
+        }
+      } catch (error) {
+        console.warn('Some hero images failed to preload:', error);
+      }
+    };
+
+    preloadAllImages();
+  }, [currentSlide, preloadImage]);
+
+  // Auto-advance slides with connection-aware timing
   useEffect(() => {
     const interval = setInterval(() => {
       setDirection(1);
@@ -87,43 +170,72 @@ const HeroSection = () => {
     return () => clearInterval(interval);
   }, []);
 
-  const goToNext = () => {
+  const goToNext = useCallback(() => {
     setDirection(1);
-    setCurrentSlide((prev) => (prev === slides.length - 1 ? 0 : prev + 1));
-  };
+    const nextIndex = (currentSlide + 1) % slides.length;
+    setCurrentSlide(nextIndex);
+    
+    // Preload the image after next for smooth transitions
+    const afterNextIndex = (nextIndex + 1) % slides.length;
+    preloadImage(slides[afterNextIndex].image, 'high');
+  }, [currentSlide, preloadImage]);
 
-  const goToPrev = () => {
+  const goToPrev = useCallback(() => {
     setDirection(-1);
-    setCurrentSlide((prev) => (prev === 0 ? slides.length - 1 : prev - 1));
-  };
+    const prevIndex = currentSlide === 0 ? slides.length - 1 : currentSlide - 1;
+    setCurrentSlide(prevIndex);
+    
+    // Preload the image before previous for smooth transitions
+    const beforePrevIndex = prevIndex === 0 ? slides.length - 1 : prevIndex - 1;
+    preloadImage(slides[beforePrevIndex].image, 'high');
+  }, [currentSlide, preloadImage]);
 
-  const handleIndicatorClick = (index: number) => {
+  const handleIndicatorClick = useCallback((index: number) => {
     setDirection(index > currentSlide ? 1 : -1);
     setCurrentSlide(index);
-  };
+    
+    // Preload adjacent images when user navigates
+    const nextIndex = (index + 1) % slides.length;
+    const prevIndex = index === 0 ? slides.length - 1 : index - 1;
+    preloadImage(slides[nextIndex].image, 'high');
+    preloadImage(slides[prevIndex].image, 'high');
+  }, [currentSlide, preloadImage]);
 
   return (
     <section className="relative h-[70vh] md:h-[80vh] lg:h-[90vh] w-full overflow-hidden">
-      <AnimatePresence initial={false} custom={direction}>
-        <motion.div
-          key={currentSlide}
-          custom={direction}
-          variants={slideVariants}
-          initial="enter"
-          animate="center"
-          exit="exit"
-          transition={{ x: { type: "spring", stiffness: 300, damping: 30 }, opacity: { duration: 0.3 } }}
-          className="absolute inset-0 w-full h-full"
-        >
-          <img
-            src={slides[currentSlide].image}
-            alt={slides[currentSlide].title}
-            className="object-cover absolute inset-0 w-full h-full"
-            onError={handleImageError}
-            loading="eager"
-          />
-        </motion.div>
-      </AnimatePresence>
+        <AnimatePresence initial={false} custom={direction}>
+          <motion.div
+            key={currentSlide}
+            custom={direction}
+            variants={slideVariants}
+            initial="enter"
+            animate="center"
+            exit="exit"
+            transition={{ x: { type: "spring", stiffness: 300, damping: 30 }, opacity: { duration: 0.3 } }}
+            className="absolute inset-0 w-full h-full"
+          >
+            <div data-hero-image>
+              <OptimizedImage
+                src={slides[currentSlide].image}
+                alt={slides[currentSlide].title}
+                fill
+                className="object-cover"
+                loadingPriority="critical"
+                lazyLoad={false}
+                fetchPriority="high"
+                preload={true}
+                connectionAware={true}
+                respectDataSaver={true}
+                performanceTracking={true}
+                fallbackSrc={FALLBACK_IMAGE}
+                onLoad={() => handleImageLoad(currentSlide)}
+                onError={() => handleImageError(currentSlide)}
+                sizes="100vw"
+                placeholder="blur"
+              />
+            </div>
+          </motion.div>
+        </AnimatePresence>
 
       <motion.div
         className="flex relative z-10 justify-center items-center p-4 h-full bg-black/30 sm:p-8 touch-pan-y sm:touch-auto cursor-grab active:cursor-grabbing sm:cursor-auto"
@@ -201,7 +313,36 @@ const HeroSection = () => {
           />
         ))}
       </div>
+
+      {/* Performance Monitor */}
+      <HeroImagePerformanceMonitor
+        slideCount={slides.length}
+        currentSlide={currentSlide}
+        onPerformanceUpdate={handlePerformanceUpdate}
+      />
+
+      {/* Performance Debug Info (Development Only) */}
+      {process.env.NODE_ENV === 'development' && performanceMetrics && (
+        <div className="absolute top-4 right-4 bg-black/80 text-white p-2 rounded text-xs z-30">
+          <div>Avg Load: {performanceMetrics.averageLoadTime.toFixed(0)}ms</div>
+          <div>LCP: {performanceMetrics.lcpCandidate ? '✓' : '✗'}</div>
+          {performanceMetrics.recommendations.length > 0 && (
+            <div className="text-yellow-300 mt-1">
+              ⚠ {performanceMetrics.recommendations.length} issues
+            </div>
+          )}
+        </div>
+      )}
     </section>
+  );
+};
+
+// Main HeroSection component with provider wrapper
+const HeroSection = () => {
+  return (
+    <PerformanceImageProvider>
+      <HeroSectionInner />
+    </PerformanceImageProvider>
   );
 };
 

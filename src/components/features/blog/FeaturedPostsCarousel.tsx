@@ -9,10 +9,11 @@ import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 import Image from 'next/image';
-import BulletproofImage from './BulletproofImage';
+import OptimizedImage from '@/components/shared/OptimizedImage';
 import Link from 'next/link';
 import { BlogPostPreview } from '@/lib/types/blog';
 import { getImageUrl } from '@/lib/blog/utils';
+import { PerformanceImageProvider, useImagePerformanceMetrics } from '@/lib/image-optimization';
 
 interface FeaturedPostsCarouselProps {
   posts: BlogPostPreview[];
@@ -35,25 +36,71 @@ const slideVariants = {
   }),
 };
 
-const FeaturedPostsCarousel: React.FC<FeaturedPostsCarouselProps> = ({ posts }) => {
+// Inner component that uses performance hooks
+const FeaturedPostsCarouselInner: React.FC<FeaturedPostsCarouselProps> = ({ posts }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [direction, setDirection] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
 
+  // Performance metrics for carousel images
+  const { preloadImage } = useImagePerformanceMetrics();
+
   const nextSlide = useCallback(() => {
     setDirection(1);
-    setCurrentIndex((prevIndex) => (prevIndex + 1) % posts.length);
-  }, [posts.length]);
+    const nextIndex = (currentIndex + 1) % posts.length;
+    setCurrentIndex(nextIndex);
+    
+    // Preload the next image for smooth transitions
+    const afterNextIndex = (nextIndex + 1) % posts.length;
+    if (posts[afterNextIndex]?.image) {
+      preloadImage(getImageUrl(posts[afterNextIndex].image, 800, 600), 'high');
+    }
+  }, [currentIndex, posts.length, posts, preloadImage]);
 
   const prevSlide = useCallback(() => {
     setDirection(-1);
-    setCurrentIndex((prevIndex) => (prevIndex - 1 + posts.length) % posts.length);
-  }, [posts.length]);
+    const prevIndex = (currentIndex - 1 + posts.length) % posts.length;
+    setCurrentIndex(prevIndex);
+    
+    // Preload the previous image for smooth transitions
+    const beforePrevIndex = (prevIndex - 1 + posts.length) % posts.length;
+    if (posts[beforePrevIndex]?.image) {
+      preloadImage(getImageUrl(posts[beforePrevIndex].image, 800, 600), 'high');
+    }
+  }, [currentIndex, posts.length, posts, preloadImage]);
 
   const goToSlide = useCallback((index: number) => {
     setDirection(index > currentIndex ? 1 : -1);
     setCurrentIndex(index);
-  }, [currentIndex]);
+    
+    // Preload adjacent images when user navigates directly
+    const nextIndex = (index + 1) % posts.length;
+    const prevIndex = (index - 1 + posts.length) % posts.length;
+    
+    if (posts[nextIndex]?.image) {
+      preloadImage(getImageUrl(posts[nextIndex].image, 800, 600), 'high');
+    }
+    if (posts[prevIndex]?.image) {
+      preloadImage(getImageUrl(posts[prevIndex].image, 800, 600), 'high');
+    }
+  }, [currentIndex, posts, preloadImage]);
+
+  // Preload carousel images on mount
+  useEffect(() => {
+    if (posts.length === 0) return;
+    
+    // Preload current and next images immediately
+    const currentPost = posts[currentIndex];
+    const nextIndex = (currentIndex + 1) % posts.length;
+    const nextPost = posts[nextIndex];
+    
+    if (currentPost?.image) {
+      preloadImage(getImageUrl(currentPost.image, 800, 600), 'high');
+    }
+    if (nextPost?.image && nextIndex !== currentIndex) {
+      preloadImage(getImageUrl(nextPost.image, 800, 600), 'medium');
+    }
+  }, [posts, currentIndex, preloadImage]);
 
   // Auto-advance slides
   useEffect(() => {
@@ -121,13 +168,20 @@ const FeaturedPostsCarousel: React.FC<FeaturedPostsCarouselProps> = ({ posts }) 
                   {/* Image Section */}
                   <div className="relative overflow-hidden lg:order-1">
                     <div className="relative aspect-[16/10] sm:aspect-[4/3] lg:aspect-auto lg:h-full">
-                      <BulletproofImage
+                      <OptimizedImage
                         src={getImageUrl(currentPost.image, 800, 600)}
                         alt={currentPost.image?.alt || currentPost.title}
                         fill
                         className="object-cover transition-transform duration-700 hover:scale-105"
-                        priority={currentIndex === 0}
+                        loadingPriority={currentIndex === 0 ? 'critical' : 'high'}
+                        lazyLoad={currentIndex !== 0}
+                        fetchPriority={currentIndex === 0 ? 'high' : 'auto'}
+                        preload={currentIndex === 0}
+                        connectionAware={true}
+                        respectDataSaver={true}
+                        performanceTracking={true}
                         sizes="(max-width: 768px) 100vw, 50vw"
+                        placeholder="blur"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent lg:bg-gradient-to-r lg:from-transparent lg:to-black/20" />
                     </div>
@@ -300,12 +354,18 @@ const FeaturedPostsCarousel: React.FC<FeaturedPostsCarouselProps> = ({ posts }) 
               )}
             >
               <div className="relative w-20 h-16">
-                <BulletproofImage
+                <OptimizedImage
                   src={getImageUrl(post.image, 80, 64)}
                   alt={post.title}
                   fill
                   className="object-cover"
+                  loadingPriority={index === currentIndex ? 'high' : 'medium'}
+                  lazyLoad={true}
+                  connectionAware={true}
+                  respectDataSaver={true}
+                  performanceTracking={true}
                   sizes="80px"
+                  placeholder="empty"
                 />
                 {index === currentIndex && (
                   <div className="absolute inset-0 bg-primary/20" />
@@ -316,6 +376,15 @@ const FeaturedPostsCarousel: React.FC<FeaturedPostsCarouselProps> = ({ posts }) 
         </div>
       )}
     </div>
+  );
+};
+
+// Main component with performance provider wrapper
+const FeaturedPostsCarousel: React.FC<FeaturedPostsCarouselProps> = ({ posts }) => {
+  return (
+    <PerformanceImageProvider>
+      <FeaturedPostsCarouselInner posts={posts} />
+    </PerformanceImageProvider>
   );
 };
 

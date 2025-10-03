@@ -1,4 +1,5 @@
 import React from 'react';
+import EnhancedSafeImage from './EnhancedSafeImage';
 
 interface SafeImageProps {
   src: string;
@@ -9,15 +10,17 @@ interface SafeImageProps {
   [key: string]: any;
 }
 
+// Updated SafeImage to use EnhancedSafeImage for better performance
 export default function SafeImage({ src, alt, width, height, className, ...props }: SafeImageProps) {
   return (
-    <img
+    <EnhancedSafeImage
       src={src}
       alt={alt}
       width={width}
       height={height}
       className={className}
-      loading="lazy"
+      lazyLoad={true}
+      priority="medium"
       {...props}
     />
   );

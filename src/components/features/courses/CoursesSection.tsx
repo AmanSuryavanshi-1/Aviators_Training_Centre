@@ -9,6 +9,8 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { easingFunctions } from '@/lib/animations/easing';
 import { SolidButton } from '@/components/shared/SolidButton'; // Import SolidButton
 import { TransparentButton } from '@/components/shared/TransparentButton'; // Import TransparentButton
+import EnhancedSafeImage from '@/components/shared/EnhancedSafeImage';
+import { PerformanceImageProvider } from '@/lib/image-optimization';
 
 // --- Configuration (Removed button style variables) ---
 const aviationPrimary = 'text-teal-700 dark:text-teal-300';
@@ -56,15 +58,15 @@ const courses = [
 ];
 const FALLBACK_IMAGE = "/HomePage/Hero5.webp";
 
-const CoursesSection: React.FC = () => {
-
+// Inner component for performance optimization
+const CoursesSectionInner: React.FC = () => {
   const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
-        const target = e.target as HTMLImageElement;
-        if (!target.src.endsWith(FALLBACK_IMAGE)) {
-            target.onerror = null;
-            target.src = FALLBACK_IMAGE;
-        }
-    };
+    const target = e.target as HTMLImageElement;
+    if (!target.src.endsWith(FALLBACK_IMAGE)) {
+      target.onerror = null;
+      target.src = FALLBACK_IMAGE;
+    }
+  };
 
   return (
     <motion.section
@@ -109,12 +111,19 @@ const CoursesSection: React.FC = () => {
                 <CardHeader className="relative p-0">
                     {/* Image Section - Fixed Height */}
                     <div className="overflow-hidden h-48"> {/* Fixed height */}
-                      <img
-                          src={course.image}
-                          alt={course.title}
-                          className="object-cover w-full h-full transition-transform duration-300 group-hover:scale-105"
-                          onError={handleImageError}
-                          loading="lazy"
+                      <EnhancedSafeImage
+                        src={course.image}
+                        alt={course.title}
+                        className="object-cover w-full h-full transition-transform duration-300 group-hover:scale-105"
+                        width={400}
+                        height={192}
+                        priority="medium"
+                        lazyLoad={true}
+                        placeholder={
+                          <div className="w-full h-full bg-muted animate-pulse rounded-t-3xl flex items-center justify-center">
+                            <course.icon className="w-12 h-12 text-muted-foreground/50" />
+                          </div>
+                        }
                       />
                     </div>
                 </CardHeader>
@@ -161,6 +170,15 @@ const CoursesSection: React.FC = () => {
       </motion.div>
 
     </motion.section>
+  );
+};
+
+// Main component with performance provider wrapper
+const CoursesSection: React.FC = () => {
+  return (
+    <PerformanceImageProvider>
+      <CoursesSectionInner />
+    </PerformanceImageProvider>
   );
 };
 

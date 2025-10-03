@@ -6,6 +6,8 @@ import { Star, Quote, User } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { TextTestimonial, Student } from '@/lib/testimonials/types';
 import { easingFunctions } from '@/lib/animations/easing';
+import EnhancedSafeImage from '@/components/shared/EnhancedSafeImage';
+import { PerformanceImageProvider } from '@/lib/image-optimization';
 
 interface TestimonialsSectionProps {
   testimonials?: TextTestimonial[];
@@ -77,7 +79,8 @@ const sampleStudents: Student[] = [
 const aviationPrimary = 'text-teal-700 dark:text-teal-300';
 const aviationSecondary = 'text-teal-600 dark:text-teal-400';
 
-export default function TestimonialsSection({
+// Inner component for performance optimization
+function TestimonialsSectionInner({
   testimonials = sampleTestimonials,
   students = sampleStudents,
   title = "What Our Students Say",
@@ -177,10 +180,19 @@ export default function TestimonialsSection({
                       {/* Avatar */}
                       <div className="w-12 h-12 rounded-full bg-teal-100 dark:bg-teal-900/30 flex items-center justify-center flex-shrink-0">
                         {student?.avatarUrl ? (
-                          <img
+                          <EnhancedSafeImage
                             src={student.avatarUrl}
                             alt={student.name || 'Student'}
+                            width={48}
+                            height={48}
                             className="w-full h-full rounded-full object-cover"
+                            lazyLoad={true}
+                            priority="low"
+                            placeholder={
+                              <div className="w-full h-full rounded-full bg-teal-100 dark:bg-teal-900/30 flex items-center justify-center">
+                                <User className="w-6 h-6 text-teal-600 dark:text-teal-400" />
+                              </div>
+                            }
                           />
                         ) : (
                           <User className="w-6 h-6 text-teal-600 dark:text-teal-400" />
@@ -248,5 +260,14 @@ export default function TestimonialsSection({
         )}
       </div>
     </motion.section>
+  );
+}
+
+// Main component with performance provider wrapper
+export default function TestimonialsSection(props: TestimonialsSectionProps) {
+  return (
+    <PerformanceImageProvider>
+      <TestimonialsSectionInner {...props} />
+    </PerformanceImageProvider>
   );
 }

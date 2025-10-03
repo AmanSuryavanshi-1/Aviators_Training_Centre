@@ -11,6 +11,8 @@ import { cn } from '@/lib/utils';
 import Link from 'next/link';
 import { sanitySimpleService } from '@/lib/sanity/client.simple';
 import { easingFunctions } from '@/lib/animations/easing';
+import EnhancedSafeImage from '@/components/shared/EnhancedSafeImage';
+import { PerformanceImageProvider } from '@/lib/image-optimization';
 
 // Type definition for compatibility
 interface BlogPost {
@@ -57,7 +59,7 @@ const cardVariants = {
   },
 };
 
-// Production-ready image component with bulletproof fallback
+// Production-ready image component with enhanced performance
 const ProductionBlogImage: React.FC<{
   src?: string;
   alt: string;
@@ -93,17 +95,27 @@ const ProductionBlogImage: React.FC<{
   const imageSrc = !src || src.includes('undefined') ? fallbackSrc : src;
 
   return (
-    <div className={cn("relative overflow-hidden bg-muted", className)}>
-      <img
-        src={imageSrc}
-        alt={alt}
-        className="w-full h-full object-cover"
-        loading="lazy"
-        style={{ 
-          background: `linear-gradient(135deg, #075E68 0%, #0C6E72 100%)` 
-        }}
-      />
-    </div>
+    <EnhancedSafeImage
+      src={imageSrc}
+      alt={alt}
+      width={400}
+      height={300}
+      className={cn("w-full h-full object-cover", className)}
+      lazyLoad={true}
+      priority="medium"
+      placeholder={
+        <div className={cn("relative overflow-hidden bg-muted animate-pulse", className)}>
+          <div 
+            className="w-full h-full flex items-center justify-center"
+            style={{ 
+              background: `linear-gradient(135deg, #075E68 0%, #0C6E72 100%)` 
+            }}
+          >
+            <BookOpen className="w-12 h-12 text-white/50" />
+          </div>
+        </div>
+      }
+    />
   );
 };
 
@@ -120,7 +132,8 @@ const formatDate = (dateString: string) => {
   }
 };
 
-const BlogCard: React.FC<BlogCardProps> = ({ 
+// Inner component for performance optimization
+const BlogCardInner: React.FC<BlogCardProps> = ({ 
   post, 
   viewMode = 'grid', 
   variant = 'default',
@@ -392,6 +405,15 @@ const BlogCard: React.FC<BlogCardProps> = ({
         </div>
       </Card>
     </motion.div>
+  );
+};
+
+// Main component with performance provider wrapper
+const BlogCard: React.FC<BlogCardProps> = (props) => {
+  return (
+    <PerformanceImageProvider>
+      <BlogCardInner {...props} />
+    </PerformanceImageProvider>
   );
 };
 

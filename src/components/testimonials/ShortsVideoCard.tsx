@@ -6,6 +6,8 @@ import { Play, User, ExternalLink } from 'lucide-react';
 import { YouTubeShort, Student } from '@/lib/testimonials/types';
 import { generateEmbedUrl } from '@/lib/testimonials/data';
 import { testimonialsAnalytics } from '@/lib/testimonials/analytics';
+import EnhancedSafeImage from '@/components/shared/EnhancedSafeImage';
+import { PerformanceImageProvider } from '@/lib/image-optimization';
 
 interface ShortsVideoCardProps {
   video: YouTubeShort;
@@ -13,7 +15,8 @@ interface ShortsVideoCardProps {
   className?: string;
 }
 
-export default function ShortsVideoCard({ video, student, className }: ShortsVideoCardProps) {
+// Inner component for performance optimization
+function ShortsVideoCardInner({ video, student, className }: ShortsVideoCardProps) {
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -75,17 +78,21 @@ export default function ShortsVideoCard({ video, student, className }: ShortsVid
         {!isPlaying ? (
           // Thumbnail with play overlay
           <div className="relative w-full h-full">
-            <img
+            <EnhancedSafeImage
               src={video.thumbnailUrl || `https://img.youtube.com/vi/${video.videoId}/maxresdefault.jpg`}
               alt={`${student?.name || 'Student'} testimonial`}
               className="w-full h-full object-cover"
-              loading="lazy"
+              priority="medium"
+              lazyLoad={true}
+              width={300}
+              height={400}
               onLoad={() => setIsLoading(false)}
-              onError={(e) => {
-                const target = e.target as HTMLImageElement;
-                target.src = '/placeholder-testimonial.jpg';
-                setIsLoading(false);
-              }}
+              onError={() => setIsLoading(false)}
+              placeholder={
+                <div className="w-full h-full bg-muted animate-pulse flex items-center justify-center">
+                  <Play className="w-12 h-12 text-muted-foreground/50" />
+                </div>
+              }
             />
             
             {/* Play Button Overlay */}
@@ -127,10 +134,17 @@ export default function ShortsVideoCard({ video, student, className }: ShortsVid
           {/* Avatar */}
           <div className="w-10 h-10 rounded-full bg-aviation-primary/10 dark:bg-aviation-primary/20 flex items-center justify-center flex-shrink-0 mx-auto sm:mx-0">
             {student?.avatarUrl ? (
-              <img
+              <EnhancedSafeImage
                 src={student.avatarUrl}
                 alt={student.name || 'Student'}
                 className="w-full h-full rounded-full object-cover"
+                width={40}
+                height={40}
+                priority="low"
+                lazyLoad={true}
+                placeholder={
+                  <div className="w-full h-full rounded-full bg-muted animate-pulse" />
+                }
               />
             ) : (
               <User className="w-5 h-5 text-aviation-primary dark:text-aviation-light" />
@@ -185,5 +199,14 @@ export default function ShortsVideoCard({ video, student, className }: ShortsVid
         </div>
       </div>
     </div>
+  );
+}
+
+// Main component with performance provider wrapper
+export default function ShortsVideoCard({ video, student, className }: ShortsVideoCardProps) {
+  return (
+    <PerformanceImageProvider>
+      <ShortsVideoCardInner video={video} student={student} className={className} />
+    </PerformanceImageProvider>
   );
 }

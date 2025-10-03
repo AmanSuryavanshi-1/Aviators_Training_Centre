@@ -151,7 +151,17 @@ class UnifiedBlogService {
       async () => {
         const optimizedQuery = queryOptimizer.getOptimizedQuery(
           'blog-listing',
-          `*[_type == "post" && !(_id in path("drafts.**"))] | order(publishedAt desc) {
+          `*[
+            _type == "post" 
+            && !(_id in path("drafts.**"))
+            && !(title match "*test*")
+            && !(title match "*Test*")
+            && !(title match "*TEST*")
+            && !(title match "*Connection Test*")
+            && !(title match "*Will be deleted*")
+            && !(excerpt match "*test document*")
+            && !(excerpt match "*connection validation*")
+          ] | order(publishedAt desc) {
             _id,
             title,
             slug,
@@ -283,7 +293,16 @@ class UnifiedBlogService {
       'sanity-fetch-single-post',
       async () => {
         // Query by both ID and slug to handle both cases
-        const query = `*[_type == "post" && !(_id in path("drafts.**")) && (_id == $identifier || slug.current == $identifier)][0] {
+        const query = `*[
+          _type == "post" 
+          && !(_id in path("drafts.**"))
+          && !(title match "*test*")
+          && !(title match "*Test*")
+          && !(title match "*TEST*")
+          && !(title match "*Connection Test*")
+          && !(title match "*Will be deleted*")
+          && (_id == $identifier || slug.current == $identifier)
+        ][0] {
           _id,
           title,
           slug,

@@ -3,6 +3,14 @@ export const POSTS_QUERY = `*[
   _type == "post" 
   && defined(slug.current)
   && publishedAt <= now()
+  && !(_id in path("drafts.**"))
+  && !(title match "*test*")
+  && !(title match "*Test*")
+  && !(title match "*TEST*")
+  && !(title match "*Connection Test*")
+  && !(title match "*Will be deleted*")
+  && !(excerpt match "*test document*")
+  && !(excerpt match "*connection validation*")
 ] | order(publishedAt desc) {
   _id,
   title,
@@ -46,7 +54,16 @@ export const POSTS_QUERY = `*[
   focusKeyword
 }`;
 
-export const POST_QUERY = `*[_type == "post" && slug.current == $slug][0] {
+export const POST_QUERY = `*[
+  _type == "post" 
+  && slug.current == $slug
+  && !(_id in path("drafts.**"))
+  && !(title match "*test*")
+  && !(title match "*Test*")
+  && !(title match "*TEST*")
+  && !(title match "*Connection Test*")
+  && !(title match "*Will be deleted*")
+][0] {
   _id,
   title,
   slug,
@@ -107,6 +124,12 @@ export const FEATURED_POSTS_QUERY = `*[
   _type == "post" 
   && featuredOnHome == true 
   && publishedAt <= now()
+  && !(_id in path("drafts.**"))
+  && !(title match "*test*")
+  && !(title match "*Test*")
+  && !(title match "*TEST*")
+  && !(title match "*Connection Test*")
+  && !(title match "*Will be deleted*")
 ] | order(publishedAt desc)[0...3] {
   _id,
   title,
@@ -143,6 +166,12 @@ export const POSTS_BY_CATEGORY_QUERY = `*[
   && defined(slug.current)
   && publishedAt <= now()
   && category._ref == $categoryId
+  && !(_id in path("drafts.**"))
+  && !(title match "*test*")
+  && !(title match "*Test*")
+  && !(title match "*TEST*")
+  && !(title match "*Connection Test*")
+  && !(title match "*Will be deleted*")
 ] | order(publishedAt desc) {
   _id,
   title,
@@ -174,7 +203,13 @@ export const POSTS_BY_TAG_QUERY = `*[
   && defined(slug.current)
   && publishedAt <= now()
   && $tagId in tags[]._ref
-] | order(publishedAt desc) {
+  && !(_id in path("drafts.**"))
+  && !(title match "*test*")
+  && !(title match "*Test*")
+  && !(title match "*TEST*")
+  && !(title match "*Connection Test*")
+  && !(title match "*Will be deleted*")
+] | order(publishedDate desc) {
   _id,
   title,
   slug,
@@ -205,6 +240,12 @@ export const RELATED_POSTS_QUERY = `*[
   && defined(slug.current)
   && publishedAt <= now()
   && _id != $currentPostId
+  && !(_id in path("drafts.**"))
+  && !(title match "*test*")
+  && !(title match "*Test*")
+  && !(title match "*TEST*")
+  && !(title match "*Connection Test*")
+  && !(title match "*Will be deleted*")
   && (
     category._ref == $categoryId ||
     count((tags[]._ref)[@ in $tagIds]) > 0
@@ -230,7 +271,16 @@ export const RELATED_POSTS_QUERY = `*[
   readingTime
 }`;
 
-export const POST_SLUGS_QUERY = `*[_type == "post" && defined(slug.current)] {
+export const POST_SLUGS_QUERY = `*[
+  _type == "post" 
+  && defined(slug.current)
+  && !(_id in path("drafts.**"))
+  && !(title match "*test*")
+  && !(title match "*Test*")
+  && !(title match "*TEST*")
+  && !(title match "*Connection Test*")
+  && !(title match "*Will be deleted*")
+] {
   slug
 }`;
 
