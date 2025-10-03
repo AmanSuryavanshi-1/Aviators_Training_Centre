@@ -9,8 +9,6 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { easingFunctions } from '@/lib/animations/easing';
 import { SolidButton } from '@/components/shared/SolidButton'; // Import SolidButton
 import { TransparentButton } from '@/components/shared/TransparentButton'; // Import TransparentButton
-import EnhancedSafeImage from '@/components/shared/EnhancedSafeImage';
-import { PerformanceImageProvider } from '@/lib/image-optimization';
 
 // --- Configuration (Removed button style variables) ---
 const aviationPrimary = 'text-teal-700 dark:text-teal-300';
@@ -32,13 +30,13 @@ const cardHoverEffect = {
   hover: { y: -5, boxShadow: "0px 10px 20px rgba(0, 0, 0, 0.12)", transition: { duration: 0.3, ease: easingFunctions.circOut } }
 };
 
-// --- Course Data (Unchanged) ---
+// --- Course Data with Verified Image Paths ---
 const courses = [
   {
     icon: GraduationCap,
     title: 'CPL & ATPL Ground School',
     description: 'Comprehensive online classes covering all DGCA subjects - Navigation, Meteorology, Regulations, and Technical.',
-    image: '/Course-Img.webp', // Ensure images are relevant
+    image: '/Course-Img.webp', // Using the main course image that exists
     path: '/courses'
   },
   {
@@ -56,17 +54,9 @@ const courses = [
     path: '/courses'
   }
 ];
-const FALLBACK_IMAGE = "/HomePage/Hero5.webp";
+const FALLBACK_IMAGE = "/Course-Img.webp";
 
-// Inner component for performance optimization
-const CoursesSectionInner: React.FC = () => {
-  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
-    const target = e.target as HTMLImageElement;
-    if (!target.src.endsWith(FALLBACK_IMAGE)) {
-      target.onerror = null;
-      target.src = FALLBACK_IMAGE;
-    }
-  };
+const CoursesSection: React.FC = () => {
 
   return (
     <motion.section
@@ -111,19 +101,22 @@ const CoursesSectionInner: React.FC = () => {
                 <CardHeader className="relative p-0">
                     {/* Image Section - Fixed Height */}
                     <div className="overflow-hidden h-48"> {/* Fixed height */}
-                      <EnhancedSafeImage
+                      <img
                         src={course.image}
                         alt={course.title}
                         className="object-cover w-full h-full transition-transform duration-300 group-hover:scale-105"
-                        width={400}
-                        height={192}
-                        priority="medium"
-                        lazyLoad={true}
-                        placeholder={
-                          <div className="w-full h-full bg-muted animate-pulse rounded-t-3xl flex items-center justify-center">
-                            <course.icon className="w-12 h-12 text-muted-foreground/50" />
-                          </div>
-                        }
+                        loading="lazy"
+                        onLoad={() => {
+                          console.log(`✅ Image loaded successfully: ${course.image}`);
+                        }}
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement;
+                          console.log(`❌ Image failed to load: ${course.image}, trying fallback: ${FALLBACK_IMAGE}`);
+                          if (!target.src.endsWith(FALLBACK_IMAGE)) {
+                            target.onerror = null;
+                            target.src = FALLBACK_IMAGE;
+                          }
+                        }}
                       />
                     </div>
                 </CardHeader>
@@ -170,15 +163,6 @@ const CoursesSectionInner: React.FC = () => {
       </motion.div>
 
     </motion.section>
-  );
-};
-
-// Main component with performance provider wrapper
-const CoursesSection: React.FC = () => {
-  return (
-    <PerformanceImageProvider>
-      <CoursesSectionInner />
-    </PerformanceImageProvider>
   );
 };
 
