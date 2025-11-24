@@ -17,11 +17,11 @@ const Footer: React.FC = () => {
             <div className="flex flex-col space-y-4">
               <NextLink href="/" className="mb-3">
                 <div className="overflow-hidden relative p-4 w-52 h-24 bg-white rounded-2xl shadow-lg shadow-teal-950">
-                  <Image 
+                  <Image
                     src="/AVIATORS_TRAINING_CENTRE_LOGO_LightMode.png"
-                    alt="Aviators Training Centre Logo" 
-                    width={100} 
-                    height={50} 
+                    alt="Aviators Training Centre Logo"
+                    width={100}
+                    height={50}
                     className="object-contain w-full h-full"
                   />
                 </div>
@@ -30,19 +30,19 @@ const Footer: React.FC = () => {
                 Providing world-class aviation training for aspiring pilots and aviation professionals.
               </p>
               <div className="flex mt-4 space-x-3">
-                <a href="https://www.facebook.com/profile.php?id=61576701390492" target="_blank" rel="noopener noreferrer" className="p-3 bg-teal-700 rounded-full transition-colors duration-300 hover:bg-teal-600">
+                <a href="https://www.facebook.com/profile.php?id=61576701390492" target="_blank" rel="noopener noreferrer" className="p-3 bg-teal-700 rounded-full transition-colors duration-300 hover:bg-teal-600" aria-label="Visit our Facebook page">
                   <Facebook className="w-5 h-5" />
                 </a>
-                {/* <a href="#" className="p-3 bg-teal-700 rounded-full transition-colors duration-300 hover:bg-teal-600">
+                {/* <a href="#" className="p-3 bg-teal-700 rounded-full transition-colors duration-300 hover:bg-teal-600" aria-label="Visit our Twitter page">
                   <Twitter className="w-5 h-5" />
                 </a> */}
-                <a href="https://www.instagram.com/aviatorstrainingcentre?igsh=MWd2NmVxdG83ZTdxMQ==" target="_blank" rel="noopener noreferrer" className="p-3 bg-teal-700 rounded-full transition-colors duration-300 hover:bg-teal-600">
+                <a href="https://www.instagram.com/aviatorstrainingcentre?igsh=MWd2NmVxdG83ZTdxMQ==" target="_blank" rel="noopener noreferrer" className="p-3 bg-teal-700 rounded-full transition-colors duration-300 hover:bg-teal-600" aria-label="Visit our Instagram page">
                   <Instagram className="w-5 h-5" />
                 </a>
-                <a href="https://youtube.com/@aviatewithatc?si=VGZ1IChG-bULcnVU" target="_blank" rel="noopener noreferrer" className="p-3 bg-teal-700 rounded-full transition-colors duration-300 hover:bg-teal-600">
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5"><path d="M21.8 8.001a2.75 2.75 0 0 0-1.94-1.946C18.2 6 12 6 12 6s-6.2 0-7.86.055A2.75 2.75 0 0 0 2.2 8.001 28.6 28.6 0 0 0 2 12a28.6 28.6 0 0 0 .2 3.999a2.75 2.75 0 0 0 1.94 1.946C5.8 18 12 18 12 18s6.2 0 7.86-.055a2.75 2.75 0 0 0 1.94-1.946A28.6 28.6 0 0 0 22 12a28.6 28.6 0 0 0-.2-3.999zM10 15V9l6 3-6 3z"/></svg>
+                <a href="https://youtube.com/@aviatewithatc?si=VGZ1IChG-bULcnVU" target="_blank" rel="noopener noreferrer" className="p-3 bg-teal-700 rounded-full transition-colors duration-300 hover:bg-teal-600" aria-label="Visit our YouTube channel">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5"><path d="M21.8 8.001a2.75 2.75 0 0 0-1.94-1.946C18.2 6 12 6 12 6s-6.2 0-7.86.055A2.75 2.75 0 0 0 2.2 8.001 28.6 28.6 0 0 0 2 12a28.6 28.6 0 0 0 .2 3.999a2.75 2.75 0 0 0 1.94 1.946C5.8 18 12 18 12 18s6.2 0 7.86-.055a2.75 2.75 0 0 0 1.94-1.946A28.6 28.6 0 0 0 22 12a28.6 28.6 0 0 0-.2-3.999zM10 15V9l6 3-6 3z" /></svg>
                 </a>
-                {/* <a href="#" className="p-3 bg-teal-700 rounded-full transition-colors duration-300 hover:bg-teal-600">
+                {/* <a href="#" className="p-3 bg-teal-700 rounded-full transition-colors duration-300 hover:bg-teal-600" aria-label="Visit our LinkedIn page">
                   <Linkedin className="w-5 h-5" />
                 </a> */}
               </div>
@@ -59,7 +59,7 @@ const Footer: React.FC = () => {
               <li><NextLink href="/instructors" className="flex items-center text-sm text-gray-200 transition-colors hover:text-white"><span className="mr-2">›</span>Instructors</NextLink></li>
               <li><NextLink href="/testimonials" className="flex items-center text-sm text-gray-200 transition-colors hover:text-white"><span className="mr-2">›</span>Testimonials</NextLink></li>
               <li><NextLink href="/blog" className="flex items-center text-sm text-gray-200 transition-colors hover:text-white"><span className="mr-2">›</span>Blog</NextLink></li>
-               <li><NextLink href="/faq" className="flex items-center text-sm text-gray-200 transition-colors hover:text-white"><span className="mr-2">›</span>FAQ</NextLink></li>
+              <li><NextLink href="/faq" className="flex items-center text-sm text-gray-200 transition-colors hover:text-white"><span className="mr-2">›</span>FAQ</NextLink></li>
               <li><NextLink href="/contact" className="flex items-center text-sm text-gray-200 transition-colors hover:text-white"><span className="mr-2">›</span>Contact</NextLink></li>
             </ul>
           </div>
