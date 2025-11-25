@@ -1,6 +1,8 @@
 # Dependencies
 node_modules/
 
+_mainDocs
+
 # Build & Caches
 .next/
 .vercel/

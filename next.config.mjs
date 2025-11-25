@@ -35,7 +35,7 @@ const nextConfig = {
   },
 
   images: {
-    domains: ['localhost', 'cdn.sanity.io', 'images.unsplash.com'],
+    domains: ['localhost', 'cdn.sanity.io', 'images.unsplash.com', 'img.youtube.com', 'i.ytimg.com'],
     formats: ['image/webp', 'image/avif'],
     dangerouslyAllowSVG: true,
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
@@ -108,7 +108,7 @@ const nextConfig = {
           },
           {
             key: 'Content-Security-Policy',
-            value: "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline' https://*.googletagmanager.com https://*.google-analytics.com https://connect.facebook.net https://www.facebook.com https://va.vercel-scripts.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' blob: data: https://cdn.sanity.io https://images.unsplash.com https://*.google-analytics.com https://www.facebook.com https://www.googletagmanager.com; font-src 'self' https://fonts.gstatic.com; frame-src 'self' https://www.facebook.com https://www.youtube.com; connect-src 'self' https://*.googleapis.com https://*.google-analytics.com https://*.facebook.com https://vitals.vercel-insights.com https://cdn.sanity.io https://*.sanity.io;"
+            value: "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline' https://*.googletagmanager.com https://*.google-analytics.com https://connect.facebook.net https://www.facebook.com https://va.vercel-scripts.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' blob: data: https://cdn.sanity.io https://images.unsplash.com https://*.google-analytics.com https://www.facebook.com https://www.googletagmanager.com https://img.youtube.com https://i.ytimg.com https://*.ytimg.com; font-src 'self' https://fonts.gstatic.com; frame-src 'self' https://www.facebook.com https://www.youtube.com; connect-src 'self' https://*.googleapis.com https://*.google-analytics.com https://*.facebook.com https://vitals.vercel-insights.com https://cdn.sanity.io https://*.sanity.io;"
           }
         ]
       }
