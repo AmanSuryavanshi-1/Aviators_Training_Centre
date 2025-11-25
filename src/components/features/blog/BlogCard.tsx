@@ -1,6 +1,6 @@
 "use client";
 
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Clock, User, Calendar, ArrowRight, BookOpen, Tag } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
@@ -9,10 +9,11 @@ import { Button } from '@/components/ui/button';
 import { TransparentButton } from '@/components/shared/TransparentButton';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
+import Image from 'next/image';
 import { sanitySimpleService } from '@/lib/sanity/client.simple';
 import { easingFunctions } from '@/lib/animations/easing';
-import EnhancedSafeImage from '@/components/shared/EnhancedSafeImage';
 import { PerformanceImageProvider } from '@/lib/image-optimization';
+import { getImageUrl } from '@/lib/blog/utils';
 
 // Type definition for compatibility
 interface BlogPost {
@@ -59,62 +60,51 @@ const cardVariants = {
   },
 };
 
-// Production-ready image component with enhanced performance
+// Local blog images from public folder for fallback
+const LOCAL_BLOG_IMAGES = [
+  '/Blogs/Blog2.webp',
+  '/Blogs/Blog3.webp',
+  '/Blogs/Blog4.webp',
+  '/Blogs/Blog5.webp',
+  '/Blogs/Blog6.webp',
+  '/Blogs/Blog7.webp',
+  '/Blogs/Blog8.webp',
+  '/Blogs/Blog_Preperation.webp',
+  '/Blogs/Blog_money.webp',
+  '/Blogs/Blog_money2.webp',
+];
+
+// Get a consistent fallback image based on post title
+const getLocalFallbackImage = (title: string): string => {
+  // Use title length to pick a consistent image for each post
+  const index = title.length % LOCAL_BLOG_IMAGES.length;
+  return LOCAL_BLOG_IMAGES[index];
+};
+
+// Production-ready image component using Next.js Image
 const ProductionBlogImage: React.FC<{
-  src?: string;
+  src?: string | null;
   alt: string;
   className?: string;
   title: string;
 }> = ({ src, alt, className, title }) => {
-  // Generate a consistent fallback image based on title
-  const generateFallbackImage = (title: string) => {
-    const colors = ['#075E68', '#0C6E72', '#0A5A5E', '#0E7A80', '#4A90A4', '#6B73FF', '#10B981'];
-    const colorIndex = title.length % colors.length;
-    const bgColor = colors[colorIndex];
-    
-    // Create a simple but professional SVG with aviation theme
-    const svg = `<svg width="400" height="300" viewBox="0 0 400 300" fill="none" xmlns="http://www.w3.org/2000/svg">
-<rect width="400" height="300" fill="${bgColor}"/>
-<g transform="translate(200, 150)">
-<path d="M-30 -10 L30 -10 L40 0 L30 10 L-30 10 L-40 0 Z" fill="white" fill-opacity="0.3"/>
-<circle cx="0" cy="0" r="3" fill="white" fill-opacity="0.8"/>
-<path d="M-15 -5 L15 -5 M-15 5 L15 5" stroke="white" stroke-opacity="0.6" stroke-width="1"/>
-</g>
-<text x="200" y="220" font-family="Arial, sans-serif" font-size="12" fill="white" text-anchor="middle" font-weight="600" opacity="0.9">Aviation Content</text>
-</svg>`;
-    
-    try {
-      return `data:image/svg+xml;base64,${btoa(svg)}`;
-    } catch (error) {
-      // Fallback to URL encoding if base64 fails
-      return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
-    }
-  };
-
-  const fallbackSrc = generateFallbackImage(title);
-  const imageSrc = !src || src.includes('undefined') ? fallbackSrc : src;
+  const [imgError, setImgError] = useState(false);
+  
+  // Use local fallback image from public/Blogs folder
+  const fallbackSrc = getLocalFallbackImage(title);
+  
+  // Check if src is valid (not null, undefined, or contains 'undefined')
+  const isValidSrc = src && !src.includes('undefined') && (src.startsWith('http') || src.startsWith('/'));
+  const imageSrc = (isValidSrc && !imgError) ? src : fallbackSrc;
 
   return (
-    <EnhancedSafeImage
+    <Image
       src={imageSrc}
       alt={alt}
-      width={400}
-      height={300}
-      className={cn("w-full h-full object-cover", className)}
-      lazyLoad={true}
-      priority="medium"
-      placeholder={
-        <div className={cn("relative overflow-hidden bg-muted animate-pulse", className)}>
-          <div 
-            className="w-full h-full flex items-center justify-center"
-            style={{ 
-              background: `linear-gradient(135deg, #075E68 0%, #0C6E72 100%)` 
-            }}
-          >
-            <BookOpen className="w-12 h-12 text-white/50" />
-          </div>
-        </div>
-      }
+      fill
+      className={cn("object-cover", className)}
+      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+      onError={() => setImgError(true)}
     />
   );
 };
@@ -200,22 +190,14 @@ const BlogCardInner: React.FC<BlogCardProps> = ({
     return null;
   }
 
-  // Get image source safely using Sanity service
+  // Get image source safely using blog utils (same as carousel)
   const getImageSrc = () => {
-    if (safePost.image && safePost.image.asset) {
-      try {
-        return sanitySimpleService.getImageUrl(safePost.image, {
-          width: 400,
-          height: 300,
-          quality: 85,
-          format: 'webp'
-        });
-      } catch (error) {
-        console.error('Error getting image URL:', error);
-        return null;
-      }
+    try {
+      return getImageUrl(safePost.image, 400, 300);
+    } catch (error) {
+      console.error('Error getting image URL:', error);
+      return null;
     }
-    return null;
   };
   
   return (
