@@ -2,7 +2,7 @@
 node_modules/
 
 _mainDocs
-
+/Tempdocs
 # Build & Caches
 .next/
 .vercel/
@@ -38,7 +38,7 @@ atc-n8n-meeting-scheduler/*.log
 .continue/
 .kiro/
 .vscode/
-docs/
+# docs/
 scripts/
 tests/
 tools/
@@ -66,6 +66,9 @@ studio/test-studio.js
 # Other artifacts
 *.log
 *.md
+!aviators-training-centre-executive-summary.md 
+!aviators-training-centre-interview-prep.md 
+!aviators-training-centre-technical-documentation.md 
 *.backup
 
 # Specific test directories
