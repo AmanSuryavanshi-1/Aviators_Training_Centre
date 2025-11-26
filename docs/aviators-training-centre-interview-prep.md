@@ -159,7 +159,8 @@
 
 ### Story 1: Lighthouse Optimization (The "Performance = Revenue" Story)
 
-![Lighthouse Optimization](./Docs_Assets/ASSET-10%20Lighthouse%20Optimization%20BeforeAfter.png)
+<img src="./Docs_Assets/ASSET-10%20Lighthouse%20Optimization%20BeforeAfter.png" alt="Lighthouse Optimization" width="900"/>
+
 *Visual aid: Lighthouse optimization journey showing before/after scores and 5-part optimization strategy*
 
 **🎯 Use this for:** Technical problem-solving, systematic thinking, business impact
@@ -212,6 +213,10 @@
 ---
 
 ### Story 2: n8n Empty Object Bug (The "Multi-Layer Validation" Story)
+
+<img src="./Docs_Assets/ASSET-7%203-Layer%20Validation%20Decision%20Tree.png" alt="3-Layer Validation" width="800"/>
+
+*Visual aid: 3-layer validation decision tree showing how each layer catches different failure modes*
 
 **🎯 Use this for:** Debugging skills, production problem-solving, automation expertise
 
@@ -267,6 +272,10 @@ function isValidLead(lead) {
 ---
 
 ### Story 3: WhatsApp AI Adaptation (The "Platform Risk & Adaptation" Story)
+
+<img src="./Docs_Assets/ASSET-8%20WhatsApp%20AI%202-Workflow%20Architecture.png" alt="WhatsApp AI Architecture" width="900"/>
+
+*Visual aid: Original WhatsApp AI 2-workflow architecture showing what was built and why it's being adapted for Meta policy compliance*
 
 **🎯 Use this for:** Decision-making, risk assessment, adaptability, problem-solving
 

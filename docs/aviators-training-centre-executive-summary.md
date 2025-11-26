@@ -28,10 +28,12 @@ Transformed India's premier DGCA ground school from 100% paid advertising depend
 
 **ROI:** Infinite (₹0 cost vs ₹3L+ revenue)
 
-![Homepage Screenshot](./Docs_Assets/ASSET-13%20Homepage%20Screenshot.png)
+<img src="./Docs_Assets/ASSET-13%20Homepage%20Screenshot.png" alt="Homepage Screenshot" width="800"/>
+
 *The production website achieving 95+ Lighthouse score and driving 50+ organic leads*
 
-![Mobile Homepage](./Docs_Assets/ASSET-28%20Mobile%20Homepage.png)
+<img src="./Docs_Assets/ASSET-28%20Mobile%20Homepage.png" alt="Mobile Homepage" width="400"/>
+
 *Mobile-optimized homepage with responsive design - 95+ Lighthouse score on mobile devices ensuring excellent user experience across all screen sizes*
 
 ---
@@ -59,10 +61,12 @@ Transformed India's premier DGCA ground school from 100% paid advertising depend
 | Infrastructure Cost | ₹0/month | Free tier optimization |
 | Keywords Ranking | 20+ | Page 1 Google India |
 
-![Google Search Console Performance](./Docs_Assets/ASSET-17%20Google%20Search%20Console%20Performance.png)
+<img src="./Docs_Assets/ASSET-17%20Google%20Search%20Console%20Performance.png" alt="Google Search Console Performance" width="900"/>
+
 *Google Search Console performance: 19.3K impressions and 146 clicks over 6 months - proof of organic growth with zero ad spend*
 
-![Lead Generation Funnel](./Docs_Assets/ASSET-11%20Lead%20Generation%20Funnel.png)
+<img src="./Docs_Assets/ASSET-11%20Lead%20Generation%20Funnel.png" alt="Lead Generation Funnel" width="800"/>
+
 *Complete lead generation funnel: From 19.3K impressions to ₹3L revenue - showing 34% visit-to-lead conversion and 12% lead-to-customer conversion*
 
 ---
@@ -71,7 +75,8 @@ Transformed India's premier DGCA ground school from 100% paid advertising depend
 
 ### 1. Lighthouse Optimization (<50 → 95+)
 
-![Lighthouse Optimization](./Docs_Assets/ASSET-10%20Lighthouse%20Optimization%20BeforeAfter.png)
+<img src="./Docs_Assets/ASSET-10%20Lighthouse%20Optimization%20BeforeAfter.png" alt="Lighthouse Optimization" width="900"/>
+
 *Lighthouse optimization journey: <50 to 95+ through 5-part systematic optimization (images 93% reduction, code 67% reduction, fonts, scripts, caching)*
 
 **Challenge:** Initial deployment scored <50, killing SEO rankings.
@@ -87,10 +92,12 @@ Transformed India's premier DGCA ground school from 100% paid advertising depend
 
 ### 2. n8n Automation Architecture (3 Production Workflows)
 
-![n8n Workflows](./Docs_Assets/ASSET-2%20n8n%203%20Production%20Workflows%20Overview.png)
+<img src="./Docs_Assets/ASSET-2%20n8n%203%20Production%20Workflows%20Overview.png" alt="n8n Workflows" width="900"/>
+
 *Three production n8n workflows: Firebase contact form automation, Cal.com booking confirmation with 3-layer validation, and cancellation recovery - 74+ nodes achieving 99.7% reliability*
 
-![3-Layer Validation](./Docs_Assets/ASSET-7%203-Layer%20Validation%20Decision%20Tree.png)
+<img src="./Docs_Assets/ASSET-7%203-Layer%20Validation%20Decision%20Tree.png" alt="3-Layer Validation" width="800"/>
+
 *Critical innovation: 3-layer validation decision tree solving the empty object bug - improved reliability from 60% to 99.7%*
 
 **The Problem Before Automation:**
@@ -217,7 +224,8 @@ Meta announced that AI-initiated conversations will be banned from WhatsApp Busi
 - Target keywords: "DGCA ground school", "CPL training cost", "How to become pilot"
 - 20+ keywords ranking page 1 Google India
 
-![Blog Post Example](./Docs_Assets/ASSET-16%20Blog%20Post%20Example.png)
+<img src="./Docs_Assets/ASSET-16%20Blog%20Post%20Example.png" alt="Blog Post Example" width="800"/>
+
 *Example blog post showing SEO optimization - 2,000+ word comprehensive guide with structured headings, internal links, and keyword targeting driving organic traffic*
 
 **Results (6 months Google Search Console):**

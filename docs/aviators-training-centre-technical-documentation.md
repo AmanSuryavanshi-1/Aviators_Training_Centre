@@ -82,7 +82,8 @@ A complete full-stack platform combining modern web technologies, intelligent n8
 
 **ROI:** Infinite (₹0 cost vs ₹3L+ revenue)
 
-![Homepage Screenshot](./Docs_Assets/ASSET-13%20Homepage%20Screenshot.png)
+<img src="./Docs_Assets/ASSET-13%20Homepage%20Screenshot.png" alt="Homepage Screenshot" width="800"/>
+
 *Figure 1: Production website achieving 95+ Lighthouse score - www.aviatorstrainingcentre.in*
 
 ### 1.2 Key Metrics
@@ -105,7 +106,8 @@ A complete full-stack platform combining modern web technologies, intelligent n8
 | | Total Nodes | 74+ across all workflows |
 | | Email Automation | 100% automated |
 
-![Google Search Console Performance](./Docs_Assets/ASSET-17%20Google%20Search%20Console%20Performance.png)
+<img src="./Docs_Assets/ASSET-17%20Google%20Search%20Console%20Performance.png" alt="Google Search Console Performance" width="900"/>
+
 *Figure 2: Google Search Console performance showing 19.3K impressions and 146 clicks over 6 months - proof of organic growth with zero ad spend*
 
 ### 1.3 Technology Stack
@@ -127,7 +129,8 @@ A complete full-stack platform combining modern web technologies, intelligent n8
 
 ### 2.1 High-Level Architecture
 
-![Complete System Architecture](./Docs_Assets/ASSET-1%20Complete%20System%20Architecture%20Diagram.png)
+<img src="./Docs_Assets/ASSET-1%20Complete%20System%20Architecture%20Diagram.png" alt="Complete System Architecture" width="1000"/>
+
 *Figure 3: Complete system architecture showing five layers from user interaction to external services - demonstrates zero-cost infrastructure design using free tiers*
 
 ```
@@ -343,7 +346,8 @@ atc-n8n-meeting-scheduler/workflows/
 
 ### 3.3 The 3 Production Workflows
 
-![n8n Workflows Overview](./Docs_Assets/ASSET-2%20n8n%203%20Production%20Workflows%20Overview.png)
+<img src="./Docs_Assets/ASSET-2%20n8n%203%20Production%20Workflows%20Overview.png" alt="n8n Workflows Overview" width="900"/>
+
 *Figure 4: Three production n8n workflows handling contact forms, bookings, and cancellation recovery - 74+ nodes with 99.7% reliability saving owner 3-4 hours daily*
 
 **Overview of Production Workflows:**
@@ -372,10 +376,12 @@ atc-n8n-meeting-scheduler/workflows/
 
 ### 3.4 Website Contact Form to n8n Automation Flow
 
-![Contact Form to n8n Flow](./Docs_Assets/ASSET-3%20Contact%20Form%20to%20n8n%20End-to-End%20Flow.png)
+<img src="./Docs_Assets/ASSET-3%20Contact%20Form%20to%20n8n%20End-to-End%20Flow.png" alt="Contact Form to n8n Flow" width="900"/>
+
 *Figure 5: Complete end-to-end flow from user form submission to Airtable CRM update - 7 steps completing in <2 seconds with 99.7% reliability*
 
-![Contact Form Screenshot](./Docs_Assets/ASSET-15%20Contact%20Form%20Screenshot.png)
+<img src="./Docs_Assets/ASSET-15%20Contact%20Form%20Screenshot.png" alt="Contact Form Screenshot" width="700"/>
+
 *Screenshot: Actual contact form on aviatorstrainingcentre.in that triggers the n8n automation workflow*
 
 **Complete End-to-End Flow:**
@@ -501,10 +507,12 @@ export async function triggerContactFormWebhook(
 **Trigger:** Firebase Realtime Database webhook  
 **Nodes:** 12 nodes
 
-![Firebase Trigger Workflow](./Docs_Assets/ASSET-4%20Firebase%20Trigger%20Workflow%20Detail.png)
+<img src="./Docs_Assets/ASSET-4%20Firebase%20Trigger%20Workflow%20Detail.png" alt="Firebase Trigger Workflow" width="850"/>
+
 *Figure 8: Firebase trigger workflow detail showing 12 nodes handling contact form automation - from webhook trigger to email sending to Airtable CRM update with 48-hour follow-up logic*
 
-![n8n Firebase Workflow Canvas](./Docs_Assets/ASSET-19%20n8n%20Workflow%20Canvas%20-%20Firebase%20Trigger.png)
+<img src="./Docs_Assets/ASSET-19%20n8n%20Workflow%20Canvas%20-%20Firebase%20Trigger.png" alt="n8n Firebase Workflow Canvas" width="1000"/>
+
 *Figure 9: Actual n8n workflow canvas for Firebase trigger - visual representation of the 12-node automation handling contact form submissions*
 
 **Detailed Flow:**
@@ -576,7 +584,8 @@ export async function triggerContactFormWebhook(
 | T+0 (Immediate) | Welcome | "Schedule Your Free Consultation" | First touch, booking link |
 | T+48 hours | Follow-up | "Don't Miss Out - Your Aviation Career Awaits! 🛩️" | Urgency, limited slots |
 
-![Email Sequence Timeline](./Docs_Assets/ASSET-12%20Email%20Sequence%20Timeline.png)
+<img src="./Docs_Assets/ASSET-12%20Email%20Sequence%20Timeline.png" alt="Email Sequence Timeline" width="900"/>
+
 *Figure 10: Complete email sequence timeline showing immediate welcome email, 48-hour follow-up, booking confirmation, and 7-day cancellation recovery - automated nurture sequence driving 12% conversion rate*
 
 ---
@@ -588,10 +597,12 @@ export async function triggerContactFormWebhook(
 **Trigger:** Cal.com BOOKING_CREATED webhook  
 **Nodes:** 18 nodes (includes 3-layer validation)
 
-![Cal.com Booking Workflow](./Docs_Assets/ASSET-5%20Cal.com%20Booking%20Workflow%20with%203-Layer%20Validation.png)
+<img src="./Docs_Assets/ASSET-5%20Cal.com%20Booking%20Workflow%20with%203-Layer%20Validation.png" alt="Cal.com Booking Workflow" width="850"/>
+
 *Figure 11: Cal.com booking workflow with 3-layer validation - 18 nodes handling booking confirmation with duplicate prevention, validation logic, and Airtable CRM integration*
 
-![n8n Cal.com Workflow Canvas](./Docs_Assets/ASSET-20%20n8n%20Workflow%20Canvas%20-%20Cal.com%20Trigger.png)
+<img src="./Docs_Assets/ASSET-20%20n8n%20Workflow%20Canvas%20-%20Cal.com%20Trigger.png" alt="n8n Cal.com Workflow Canvas" width="1000"/>
+
 *Figure 12: Actual n8n workflow canvas for Cal.com trigger - visual representation of the 18-node automation with 3-layer validation preventing empty object bug*
 
 **The Critical Innovation: 3-Layer Validation**
@@ -677,7 +688,8 @@ if (bookingData[0].name && bookingData[0].email && bookingData[0].startTime) {
 **Trigger:** Cal.com BOOKING_CANCELLED webhook  
 **Nodes:** 10 nodes
 
-![Cancellation Recovery Workflow](./Docs_Assets/ASSET-6%20Cancellation%20Recovery%20Workflow.png)
+<img src="./Docs_Assets/ASSET-6%20Cancellation%20Recovery%20Workflow.png" alt="Cancellation Recovery Workflow" width="850"/>
+
 *Figure 13: Cancellation recovery workflow - 10 nodes handling booking cancellations with immediate acknowledgment, 7-day wait period, and re-engagement email achieving 15-20% recovery rate*
 
 **Why This Workflow Matters:**
@@ -1030,7 +1042,8 @@ const name = items[0].json.name; // Could be from wrong node
 - ✅ **Notes and history** (why leads didn't convert)
 - ✅ **Free tier** (1,200 records = 2+ years of leads)
 
-![Airtable CRM Schema](./Docs_Assets/ASSET-9%20Airtable%20CRM%20Schema%20%26%20Views.png)
+<img src="./Docs_Assets/ASSET-9%20Airtable%20CRM%20Schema%20%26%20Views.png" alt="Airtable CRM Schema" width="900"/>
+
 *Figure 14: Airtable CRM schema and views - complete database structure showing contact information, lead tracking, booking details, automation fields, and 5 custom views (All Leads, New Leads, Hot Leads, Confirmed Consultations, Lost Leads)*
 
 ### 4.2 Database Schema
@@ -1119,7 +1132,8 @@ Manual Outreach → Owner → Airtable (Add notes, update status)
 
 ### Challenge 1: n8n Empty Object Bug
 
-![3-Layer Validation](./Docs_Assets/ASSET-7%203-Layer%20Validation%20Decision%20Tree.png)
+<img src="./Docs_Assets/ASSET-7%203-Layer%20Validation%20Decision%20Tree.png" alt="3-Layer Validation" width="800"/>
+
 *Figure 7: 3-layer validation decision tree solving the empty object bug - improved reliability from 60% to 99.7% by catching empty arrays, empty objects, and partial data*
 
 **Problem:** 40% of booking confirmations sent with blank details.
@@ -1167,7 +1181,8 @@ if (validLeads.length === 0) {
 
 ### Challenge 2: Lighthouse Optimization (<50 → 95+)
 
-![Lighthouse Optimization](./Docs_Assets/ASSET-10%20Lighthouse%20Optimization%20BeforeAfter.png)
+<img src="./Docs_Assets/ASSET-10%20Lighthouse%20Optimization%20BeforeAfter.png" alt="Lighthouse Optimization" width="900"/>
+
 *Figure 6: Lighthouse optimization journey from <50 to 95+ score through systematic 5-part optimization - directly drove Page 1 rankings, 19.3K impressions, and ₹3L revenue*
 
 **Problem:** Initial deployment scored <50, killing SEO rankings.
