@@ -235,15 +235,15 @@ aviators-training-centre/
 
 ### Complete Documentation Package
 
-This project includes comprehensive documentation for different audiences:
+This project includes comprehensive documentation for different audiences. All documentation files are located in the `Docs/` folder and root directory.
 
 | Document | Description | Best For |
 |----------|-------------|----------|
-| [**Technical Documentation**](./Docs/aviators-training-centre-technical-documentation.md) | Complete technical deep-dive (18,500+ words) | Developers, technical interviews |
-| [**Executive Summary**](./Docs/aviators-training-centre-executive-summary.md) | Business-focused overview (4,600+ words) | Hiring managers, recruiters |
-| [**Interview Prep Guide**](./Docs/aviators-training-centre-interview-prep.md) | Quick reference for interviews (2,400+ words) | Interview preparation |
-| [**Developer Guide**](./DEVELOPER_GUIDE.md) | Setup and troubleshooting | Development team |
-| [**Components Reference**](./COMPONENTS_REFERENCE.md) | Component API documentation | Frontend developers |
+| [**Technical Documentation**](Docs/aviators-training-centre-technical-documentation.md) | Complete technical deep-dive (18,500+ words) | Developers, technical interviews |
+| [**Executive Summary**](Docs/aviators-training-centre-executive-summary.md) | Business-focused overview (4,600+ words) | Hiring managers, recruiters |
+| [**Interview Prep Guide**](Docs/aviators-training-centre-interview-prep.md) | Quick reference for interviews (2,400+ words) | Interview preparation |
+| [**Developer Guide**](DEVELOPER_GUIDE.md) | Setup and troubleshooting | Development team |
+| [**Components Reference**](COMPONENTS_REFERENCE.md) | Component API documentation | Frontend developers |
 
 ### Key Documentation Highlights
 
@@ -419,8 +419,8 @@ The system includes automated deployment via:
 
 ### Security Resources
 
-- 📖 [Complete Security Guide](./SECURITY_GUIDE.md)
-- 🛡️ [Security Fixes Summary](./SECURITY_FIXES_SUMMARY.md)
+- 📖 [Complete Security Guide](SECURITY_GUIDE.md)
+- 🛡️ [Security Fixes Summary](SECURITY_FIXES_SUMMARY.md)
 - 🔍 Run `npm run security:audit` for security checks
 - 🚨 Report security issues via GitHub issues with `security` label
 
@@ -494,7 +494,7 @@ test: add integration tests for analytics
 
 - **Documentation** - Check the `Docs/` folder for detailed guides
 - **Issues** - Create GitHub issues for bugs or feature requests
-- **Troubleshooting** - See [Developer Guide](./DEVELOPER_GUIDE.md#troubleshooting)
+- **Troubleshooting** - See [Developer Guide](DEVELOPER_GUIDE.md#troubleshooting)
 
 ### Troubleshooting
 
@@ -538,5 +538,4 @@ Built with:
 **Aviators Training Centre** - Empowering aviation education through modern web technology and intelligent automation.
 
 **Live Site:** [www.aviatorstrainingcentre.in](https://www.aviatorstrainingcentre.in)  
-**Documentation:** [Complete Documentation Package](./Docs/README.md)  
 **Last Updated:** November 26, 2025
