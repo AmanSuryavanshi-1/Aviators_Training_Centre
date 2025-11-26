@@ -13,7 +13,7 @@ A comprehensive, production-ready aviation training platform built for India's p
 
 **Live Site:** [www.aviatorstrainingcentre.in](https://www.aviatorstrainingcentre.in)
 
-<img src="./Docs/Docs_Assets/ASSET-13%20Homepage%20Screenshot.png" alt="Aviators Training Centre Homepage" width="800"/>
+<img src="./docs/Docs_Assets/ASSET-13%20Homepage%20Screenshot.png" alt="Aviators Training Centre Homepage" width="800"/>
 
 *Production website achieving 95+ Lighthouse score and driving 50+ organic leads monthly*
 
@@ -32,7 +32,7 @@ A comprehensive, production-ready aviation training platform built for India's p
 | **Automation Reliability** | 99.7% | 1000+ bookings processed |
 | **Infrastructure Cost** | ₹0/month | Free tier optimization |
 
-<img src="./Docs/Docs_Assets/ASSET-17%20Google%20Search%20Console%20Performance.png" alt="Google Search Console Performance" width="900"/>
+<img src="./docs/Docs_Assets/ASSET-17%20Google%20Search%20Console%20Performance.png" alt="Google Search Console Performance" width="900"/>
 
 *Google Search Console: 19.3K impressions and 146 clicks over 6 months - proof of organic growth*
 
@@ -58,7 +58,7 @@ A comprehensive, production-ready aviation training platform built for India's p
 
 ### 🤖 Intelligent Lead Automation (n8n)
 
-<img src="./Docs/Docs_Assets/ASSET-2%20n8n%203%20Production%20Workflows%20Overview.png" alt="n8n Workflows" width="900"/>
+<img src="./docs/Docs_Assets/ASSET-2%20n8n%203%20Production%20Workflows%20Overview.png" alt="n8n Workflows" width="900"/>
 
 *Three production n8n workflows: 74+ nodes achieving 99.7% reliability, saving owner 3-4 hours daily*
 
@@ -89,7 +89,7 @@ A comprehensive, production-ready aviation training platform built for India's p
 
 ### 🚀 Performance & SEO Excellence
 
-<img src="./Docs/Docs_Assets/ASSET-10%20Lighthouse%20Optimization%20BeforeAfter.png" alt="Lighthouse Optimization" width="900"/>
+<img src="./docs/Docs_Assets/ASSET-10%20Lighthouse%20Optimization%20BeforeAfter.png" alt="Lighthouse Optimization" width="900"/>
 
 *Lighthouse optimization: <50 to 95+ through systematic 5-part optimization*
 
@@ -219,7 +219,7 @@ aviators-training-centre/
 │   ├── � atviators-training-centre-technical-documentation.md
 │   ├── 📄 aviators-training-centre-executive-summary.md
 │   ├── 📄 aviators-training-centre-interview-prep.md
-│   └── 📁 Docs_Assets/             # Documentation images and diagrams
+│   └── 📁 docs_Assets/             # Documentation images and diagrams
 ├── 📁 tests/                        # Test suites
 │   ├── 📁 e2e/                      # End-to-end tests
 │   └── 📁 integration/              # Integration tests
@@ -239,9 +239,9 @@ This project includes comprehensive documentation for different audiences. All d
 
 | Document | Description | Best For |
 |----------|-------------|----------|
-| [**Technical Documentation**](Docs/aviators-training-centre-technical-documentation.md) | Complete technical deep-dive (18,500+ words) | Developers, technical interviews |
-| [**Executive Summary**](Docs/aviators-training-centre-executive-summary.md) | Business-focused overview (4,600+ words) | Hiring managers, recruiters |
-| [**Interview Prep Guide**](Docs/aviators-training-centre-interview-prep.md) | Quick reference for interviews (2,400+ words) | Interview preparation |
+| [**Technical Documentation**](docs/aviators-training-centre-technical-documentation.md) | Complete technical deep-dive (18,500+ words) | Developers, technical interviews |
+| [**Executive Summary**](docs/aviators-training-centre-executive-summary.md) | Business-focused overview (4,600+ words) | Hiring managers, recruiters |
+| [**Interview Prep Guide**](docs/aviators-training-centre-interview-prep.md) | Quick reference for interviews (2,400+ words) | Interview preparation |
 | [**Developer Guide**](DEVELOPER_GUIDE.md) | Setup and troubleshooting | Development team |
 | [**Components Reference**](COMPONENTS_REFERENCE.md) | Component API documentation | Frontend developers |
 
@@ -374,7 +374,7 @@ The system includes automated deployment via:
 
 ## 🤖 n8n Automation System
 
-<img src="./Docs/Docs_Assets/ASSET-7%203-Layer%20Validation%20Decision%20Tree.png" alt="3-Layer Validation" width="800"/>
+<img src="./docs/Docs_Assets/ASSET-7%203-Layer%20Validation%20Decision%20Tree.png" alt="3-Layer Validation" width="800"/>
 
 *Critical innovation: 3-layer validation solving the empty object bug - 60% to 99.7% reliability*
 
