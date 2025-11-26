@@ -9,9 +9,9 @@
 
 **What I Built:**
 - Full-stack aviation training website for DGCA ground school
-- Transformed business from 100% paid ads → 100% organic leads
-- Generated ₹3 lakh revenue from 50+ leads in 3-4 months
-- Zero ad spend, zero monthly infrastructure costs
+- Transformed business from 100% paid ads → diversified lead generation (organic SEO + targeted ads + cold outreach)
+- Generated ₹3 lakh revenue from organic SEO leads alone (50+ total leads across all channels in 3-4 months)
+- Zero cost for organic leads vs ₹500-800 per lead via ads
 
 **The Technical Wins:**
 - Achieved 95+ Lighthouse score (was <50)
@@ -29,11 +29,11 @@
 ## 📊 KEY NUMBERS (MEMORIZE THESE)
 
 ### Business Impact
-- **50+ leads** (total in 3-4 months)
-- **₹3,00,000 revenue** (6 conversions)
+- **50+ leads** (total in 3-4 months via organic + ads + cold outreach)
+- **₹3,00,000 revenue** (from organic SEO leads only - 6 conversions)
 - **12% conversion rate**
-- **₹0 cost per lead** (vs ₹500-800 via ads)
-- **₹35,000+ monthly savings** (eliminated ad spend)
+- **₹0 cost per organic lead** (vs ₹500-800 via ads)
+- **Diversified lead sources** (organic SEO + targeted ads + cold outreach)
 
 ### Technical Wins
 - **95+ Lighthouse** (up from <50)
@@ -131,7 +131,7 @@
 ### For Product/Technical PM Roles
 
 **Opening Hook:**
-"I transformed an aviation training institute from paid ads to organic leads, delivering ₹3L revenue with zero ad spend."
+"I transformed an aviation training institute from 100% paid ads to a diversified lead generation strategy, delivering ₹3L revenue from organic SEO alone while building additional channels (targeted ads + cold outreach)."
 
 **The Problem:**
 - Spending ₹35K/month on Facebook ads
@@ -146,9 +146,9 @@
 - Designed automation workflows
 
 **The Result:**
-- 50+ organic leads in 3-4 months
-- ₹3 lakh revenue, zero ad spend
-- Infinite ROI
+- 50+ leads in 3-4 months (organic + ads + cold outreach)
+- ₹3 lakh revenue from organic SEO leads alone
+- Infinite ROI on organic channel (₹0 cost vs ₹3L revenue)
 
 **Why It Matters:**
 "I connect technical decisions to business outcomes. Every optimization had measurable impact on revenue."
@@ -537,7 +537,7 @@ Use specific numbers, not vague terms:
 ## 📝 QUICK REFERENCE CARD
 
 **30-Second Pitch:**
-"I built a full-stack aviation platform that generated ₹3 lakh from 50+ organic leads in 3-4 months with zero ad spend. Key technical win: Lighthouse <50 → 95+ driving all organic traffic. Built n8n automation with 99.7% reliability using multi-layer validation."
+"I built a full-stack aviation platform that generated ₹3 lakh from organic SEO alone, with 50+ total leads across diversified channels (organic + ads + cold outreach) in 3-4 months. Key technical win: Lighthouse <50 → 95+ driving all organic conversions. Built n8n automation with 99.7% reliability using multi-layer validation."
 
 **Key Numbers:**
 - 50+ leads (3-4 months)

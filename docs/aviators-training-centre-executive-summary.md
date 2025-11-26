@@ -10,7 +10,7 @@
 
 ## Executive Overview
 
-Transformed India's premier DGCA ground school from 100% paid advertising dependency to 100% organic lead generation, delivering ₹3 lakh+ revenue with zero ad spend.
+Transformed India's premier DGCA ground school from 100% paid advertising dependency to a diversified lead generation strategy (organic SEO + targeted ads + cold outreach), delivering ₹3 lakh+ revenue from organic SEO alone with zero ad spend on those conversions.
 
 ### The Business Challenge
 
@@ -21,8 +21,8 @@ Transformed India's premier DGCA ground school from 100% paid advertising depend
 - Monthly ad spend: ₹35,000-50,000 with unpredictable ROI
 
 **After:**
-- 50+ total organic leads in 3-4 months (zero ad spend)
-- ₹3,00,000+ revenue from 6 conversions (12% conversion rate)
+- 50+ total leads in 3-4 months (organic + ads + cold outreach)
+- ₹3,00,000+ revenue from organic SEO leads only - 6 conversions (12% conversion rate)
 - Automated lead management with 99.9% reliability
 - 95+ Lighthouse score driving top Google rankings
 
@@ -63,7 +63,7 @@ Transformed India's premier DGCA ground school from 100% paid advertising depend
 
 <img src="./Docs_Assets/ASSET-17%20Google%20Search%20Console%20Performance.png" alt="Google Search Console Performance" width="900"/>
 
-*Google Search Console performance: 19.3K impressions and 146 clicks over 6 months - proof of organic growth with zero ad spend*
+*Google Search Console performance: 19.3K impressions and 146 clicks over 6 months - demonstrating strong organic growth alongside other lead channels*
 
 <img src="./Docs_Assets/ASSET-11%20Lead%20Generation%20Funnel.png" alt="Lead Generation Funnel" width="800"/>
 
@@ -293,12 +293,12 @@ Meta announced that AI-initiated conversations will be banned from WhatsApp Busi
 
 ## Conclusion
 
-The Aviators Training Centre platform demonstrates how modern web technologies, intelligent automation, and strategic SEO can transform a traditional business model. The combination of Next.js 14, Firebase, n8n, and systematic optimization delivered measurable results: ₹3 lakh+ revenue from 50+ organic leads with zero ad spend over 3-4 months.
+The Aviators Training Centre platform demonstrates how modern web technologies, intelligent automation, and strategic SEO can transform a traditional business model. The combination of Next.js 14, Firebase, n8n, and systematic optimization delivered measurable results: ₹3 lakh+ revenue from organic SEO alone (50+ total leads across organic + ads + cold outreach) over 3-4 months.
 
 The platform achieved 95+ Lighthouse score, 99.7% automation reliability, and established strong organic presence with 146 clicks and 19.3K impressions in 6 months—demonstrating both technical excellence and business impact.
 
 ---
 
-**Contact:** [Your Email] | **Portfolio:** [Your Portfolio URL] | **GitHub:** [Your GitHub]
+**Contact:** [amansurya.work@gmail.com] | **Portfolio:** [https://amansuryavanshi-dev.vercel.app/] | **GitHub:** [https://github.com/AmanSuryavanshi-1]
 
 *Last Updated: November 25, 2025*

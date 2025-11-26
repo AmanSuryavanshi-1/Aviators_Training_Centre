@@ -9,13 +9,13 @@
 
 > **Transforming aviation training enrollment from manual, ad-dependent process to intelligent, organic lead generation machine**
 
-A comprehensive, production-ready aviation training platform built for India's premier DGCA ground school. This system combines Next.js 15, Sanity CMS, Firebase, n8n automation, and strategic SEO to deliver ₹3,00,000+ revenue from 50+ organic leads with zero ad spend.
+A comprehensive, production-ready aviation training platform built for India's premier DGCA ground school. This system combines Next.js 15, Sanity CMS, Firebase, n8n automation, and strategic SEO to deliver ₹3,00,000+ revenue from organic SEO alone (50+ total leads across organic + ads + cold outreach).
 
 **Live Site:** [www.aviatorstrainingcentre.in](https://www.aviatorstrainingcentre.in)
 
 <img src="./docs/Docs_Assets/ASSET-13%20Homepage%20Screenshot.png" alt="Aviators Training Centre Homepage" width="800"/>
 
-*Production website achieving 95+ Lighthouse score and driving 50+ organic leads monthly*
+*Production website achieving 95+ Lighthouse score and driving strong lead generation through multiple channels*
 
 ---
 
@@ -23,13 +23,13 @@ A comprehensive, production-ready aviation training platform built for India's p
 
 | Metric | Value | Achievement |
 |--------|-------|-------------|
-| **Organic Leads** | 50+ total | 3-4 months, zero ad spend |
-| **Revenue Generated** | ₹3,00,000+ | 6 conversions (12% rate) |
-| **Cost Per Lead** | ₹0 | vs ₹500-800 via ads |
+| **Total Leads** | 50+ total | 3-4 months (organic + ads + cold outreach) |
+| **Revenue Generated** | ₹3,00,000+ | From organic SEO only - 6 conversions (12% rate) |
+| **Organic Cost Per Lead** | ₹0 | vs ₹500-800 via ads |
 | **Monthly Ad Savings** | ₹35,000+ | Eliminated Facebook ads |
 | **ROI** | Infinite | ₹0 cost vs ₹3L+ revenue |
 | **Lighthouse Score** | 95+ | Up from <50 |
-| **Automation Reliability** | 99.7% | 1000+ bookings processed |
+| **Automation Reliability** | 99.7% | 100+ bookings processed |
 | **Infrastructure Cost** | ₹0/month | Free tier optimization |
 
 <img src="./docs/Docs_Assets/ASSET-17%20Google%20Search%20Console%20Performance.png" alt="Google Search Console Performance" width="900"/>
@@ -466,10 +466,10 @@ test: add integration tests for analytics
 
 ### Business Impact
 
-- ✅ **₹3,00,000+ revenue** from 50+ organic leads
-- ✅ **Zero ad spend** (eliminated ₹35,000+ monthly cost)
+- ✅ **₹3,00,000+ revenue** from organic SEO alone (50+ total leads across all channels)
+- ✅ **Diversified lead sources** (organic + ads + cold outreach)
 - ✅ **12% conversion rate** (industry-leading)
-- ✅ **Infinite ROI** (₹0 cost vs ₹3L+ revenue)
+- ✅ **Infinite ROI on organic** (₹0 cost vs ₹3L+ revenue)
 
 ### Technical Excellence
 
