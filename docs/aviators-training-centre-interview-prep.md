@@ -323,7 +323,135 @@ function isValidLead(lead) {
 
 ---
 
-### Story 4: LLM-First SEO Innovation (The "First Mover" Story)
+### Story 4: Lead Source Attribution Challenge (The "Data-Driven Marketing" Story)
+
+**🎯 Use this for:** Problem identification, business impact, technical implementation, data-driven decision making
+
+**SETUP:**
+- "We were running multiple marketing campaigns - WhatsApp, Facebook ads, Google, email"
+- "Getting 50+ leads but couldn't answer: 'Which channel is actually working?'"
+- "Making marketing decisions blindly without ROI data"
+
+**PROBLEM:**
+When leads filled the contact form, we only knew:
+- Their name and contact details
+- What they were interested in
+
+What we DIDN'T know:
+- Did they come from WhatsApp?
+- Did they click a Facebook ad?
+- Did they find us through Google search?
+- Which specific campaign brought them?
+
+**BUSINESS IMPACT:**
+- Couldn't measure ROI of different channels
+- Couldn't answer: "Which marketing channel generates most leads?"
+- Couldn't calculate: "What's the ROI of Facebook ads vs WhatsApp?"
+- Couldn't optimize: "Should we invest more in Instagram or email?"
+- Making marketing decisions based on gut feeling, not data
+- Potentially wasting money on underperforming channels
+
+**ACTION (Technical Solution):**
+
+Implemented automatic UTM source tracking system:
+
+1. **Capture:** When user lands on website
+   - Read UTM parameters from URL (`?utm_source=whatsapp&utm_medium=social`)
+   - Store in browser (sessionStorage + localStorage)
+   - Persist across page navigation
+
+2. **Track:** Throughout user journey
+   - Data follows user across all pages
+   - No manual work required
+   - Completely invisible to user
+
+3. **Attribute:** On form submission
+   - Retrieve stored UTM data
+   - Include in form payload automatically
+   - Save to Firebase with contact info
+
+4. **Analyze:** In Firebase database
+   - Contact info + Source attribution stored together
+   - Human-readable descriptions ("Facebook Ads", "Google Search (Organic)")
+   - Ready for analysis and reporting
+
+**TECHNICAL IMPLEMENTATION:**
+```typescript
+// Core tracking utility
+export function captureUTMParams() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const utmParams = {
+    utm_source: urlParams.get('utm_source'),
+    utm_medium: urlParams.get('utm_medium'),
+    utm_campaign: urlParams.get('utm_campaign'),
+    referrer: document.referrer || 'direct',
+    landing_page: window.location.href,
+  };
+  
+  // Store in browser
+  sessionStorage.setItem('atc_session_utm', JSON.stringify(utmParams));
+}
+
+// Form integration
+const handleFormSubmit = async () => {
+  const utmParams = getStoredUTMParams();
+  const formData = {
+    ...contactInfo,
+    ...utmParams,  // Automatically added!
+    source_description: getSourceDescription(utmParams)
+  };
+  
+  await fetch('/api/contact', {
+    method: 'POST',
+    body: JSON.stringify(formData)
+  });
+};
+```
+
+**RESULT:**
+- Can now track ROI of every marketing channel
+- Know exactly which campaigns generate leads
+- Data-driven marketing decisions instead of guesswork
+- Can optimize spend based on performance
+- Example insights: "15 leads from WhatsApp (30%), 12 from Facebook ads (24%), 10 from Google organic (20%)"
+
+**FIREBASE DATA STRUCTURE:**
+```json
+{
+  "name": "Rahul Sharma",
+  "email": "rahul@example.com",
+  "subject": "CPL Ground Classes",
+  
+  "utm_source": "whatsapp",
+  "utm_medium": "social",
+  "utm_campaign": "course_promo",
+  "source_description": "whatsapp (social)",
+  
+  "timestamp": "2024-11-27T10:30:00Z"
+}
+```
+
+**BUSINESS QUESTIONS NOW ANSWERABLE:**
+1. "How many leads came from WhatsApp this month?" → Query Firebase
+2. "Are Facebook Ads working better than Google Ads?" → Compare conversion rates
+3. "Which campaign generated the most inquiries?" → Group by campaign
+4. "Should we invest more in Instagram or email?" → Calculate ROI per channel
+
+**KEY FEATURES:**
+- ✅ Automatic capture (no manual work)
+- ✅ Persists across pages
+- ✅ Backward compatible (form works without UTM)
+- ✅ Zero user-facing changes
+- ✅ Human-readable descriptions
+
+**LEARNING:**
+"You can't optimize what you don't measure. Without attribution data, marketing is guesswork. This system transformed our marketing from 'hope it works' to 'know what works' - enabling data-driven decisions and ROI optimization."
+
+**Interview Tip:** This shows you understand the connection between technical implementation and business value. You identified a business problem (can't measure marketing ROI), implemented a technical solution (UTM tracking), and delivered measurable impact (data-driven decisions).
+
+---
+
+### Story 5: LLM-First SEO Innovation (The "First Mover" Story)
 
 **🎯 Use this for:** Innovation questions, product thinking, competitive advantage
 
@@ -487,10 +615,11 @@ Result: 95+ Lighthouse score with minimal effort. Right tool for SEO-focused pro
 - [ ] Start with hook, end with impact
 - [ ] Use specific numbers
 
-### 3. Prepare 4 Core Stories (10 min)
+### 3. Prepare 5 Core Stories (10 min)
 - [ ] Lighthouse optimization (technical problem-solving)
 - [ ] n8n empty object bug (debugging, 3-layer validation)
 - [ ] WhatsApp AI discontinuation (platform risk, decision-making)
+- [ ] Lead source attribution (business impact, data-driven decisions)
 - [ ] llms.txt innovation (first mover, future-thinking)
 - [ ] Know: Setup → Problem → Action → Result → Learning
 
@@ -508,9 +637,9 @@ Result: 95+ Lighthouse score with minimal effort. Right tool for SEO-focused pro
 
 ## 🧠 MEMORY TRICKS
 
-### The "Rule of 3"
-Always group things in threes:
-- **4 core stories:** Lighthouse, n8n bug, WhatsApp AI discontinuation, llms.txt
+### The "Rule of 3-5"
+Always group things in manageable chunks:
+- **5 core stories:** Lighthouse, n8n bug, WhatsApp AI, Lead attribution, llms.txt
 - **3 production workflows:** Contact form, Booking confirmation, Cancellation recovery
 - **3 dimensions of success:** Business, Technical, UX
 - **3-layer validation:** Structure, ID field, Required fields
@@ -546,11 +675,12 @@ Use specific numbers, not vague terms:
 - 99.7% workflow reliability
 - 19.3K impressions, 146 clicks
 
-**4 Core Stories:**
+**5 Core Stories:**
 1. Lighthouse optimization (technical problem-solving)
 2. n8n empty object bug (debugging, multi-layer validation)
 3. WhatsApp AI discontinuation (platform risk, decision-making)
-4. llms.txt innovation (first mover, future-thinking)
+4. Lead source attribution (business impact, data-driven decisions)
+5. llms.txt innovation (first mover, future-thinking)
 
 **Questions to Ask:**
 1. How do you balance technical debt with velocity?

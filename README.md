@@ -84,8 +84,9 @@ A comprehensive, production-ready aviation training platform built for India's p
 - **Conversion Tracking** - Monitor form submissions and demo bookings
 - **Blog Analytics** - Track reading time, scroll depth, and content performance
 - **Contact Form Analytics** - Track form starts, completions, and conversion rates
-- **Traffic Source Detection** - Identify referral sources and campaign performance
-- **Firebase Integration** - Firestore for analytics storage and real-time sync
+- **UTM Source Tracking** - Automatically capture where each lead came from (WhatsApp, Facebook, Google, etc.)
+- **Traffic Source Attribution** - Know exactly which marketing channels generate leads
+- **Firebase Integration** - Firestore for analytics storage and real-time sync with UTM data
 
 ### 🚀 Performance & SEO Excellence
 
@@ -191,9 +192,10 @@ aviators-training-centre/
 │   │   ├── 📁 api/                  # API routes
 │   │   ├── 📁 blog/                 # Blog pages
 │   │   ├── 📁 contact/              # Contact form
-│   │   └── 📄 layout.tsx            # Root layout
+│   │   └── 📄 layout.tsx            # Root layout with UTM tracker
 │   ├── 📁 components/               # React components
 │   │   ├── 📁 admin/                # Admin-specific components
+│   │   ├── 📁 analytics/            # Analytics components (UTM tracker)
 │   │   ├── 📁 blog/                 # Blog components
 │   │   ├── 📁 ui/                   # Reusable UI components
 │   │   └── 📁 layout/               # Layout components
@@ -201,7 +203,7 @@ aviators-training-centre/
 │   │   ├── 📁 sanity/               # Sanity client and queries
 │   │   ├── 📁 firebase/             # Firebase configuration
 │   │   ├── 📁 analytics/            # Analytics utilities
-│   │   └── 📁 utils/                # General utilities
+│   │   └── 📁 utils/                # General utilities (includes UTM tracker)
 │   ├── 📁 hooks/                    # Custom React hooks
 │   └── 📁 types/                    # TypeScript type definitions
 ├── 📁 studio/                       # Sanity CMS Studio
@@ -369,6 +371,125 @@ The system includes automated deployment via:
 - **GitHub Actions** - CI/CD pipeline
 - **Vercel Integration** - Automatic deployments on push
 - **Sanity Webhooks** - Content-triggered rebuilds
+
+---
+
+## 📍 UTM Source Tracking System
+
+### What It Does
+
+Every time someone fills out your contact form, the system automatically captures and saves **where they came from**:
+
+- 📱 **WhatsApp** - If they clicked a link you shared on WhatsApp
+- 📘 **Facebook Ads** - If they clicked your Facebook advertisement
+- 🔍 **Google Search** - If they found you through Google
+- 📸 **Instagram** - If they came from Instagram
+- 📧 **Email** - If they clicked a link in your newsletter
+- 🤖 **AI Assistants** - If they found you through ChatGPT, Claude, etc.
+- 🌐 **Direct** - If they typed your website URL directly
+
+### How It Works (Simple Explanation)
+
+```
+1. User Clicks Link
+   ↓
+   Example: https://aviatorstrainingcentre.in/?utm_source=whatsapp
+   
+2. System Captures Source
+   ↓
+   Automatically saves: "This person came from WhatsApp"
+   
+3. User Fills Contact Form
+   ↓
+   Name: Rahul Sharma
+   Email: rahul@example.com
+   Subject: CPL Ground Classes
+   
+4. Saved to Firebase Database
+   ↓
+   Contact Info + Source: "whatsapp"
+   
+5. You Can See in Firebase
+   ↓
+   "This lead came from WhatsApp!"
+```
+
+### What Gets Saved in Database
+
+When someone submits the contact form, Firebase stores:
+
+```javascript
+{
+  // Contact Information
+  name: "Rahul Sharma",
+  email: "rahul@example.com",
+  phone: "+91 9876543210",
+  subject: "CPL Ground Classes",
+  message: "I want to enroll...",
+  
+  // Source Tracking (Automatically Added!)
+  utm_source: "whatsapp",              // Platform they came from
+  utm_medium: "social",                // Type of traffic
+  utm_campaign: "course_promotion",    // Your campaign name
+  source_description: "whatsapp (social)", // Easy to read!
+  
+  // Additional Info
+  referrer: "direct",                  // Previous website
+  landing_page: "https://...",         // Where they landed
+  timestamp: "2024-11-27T10:30:00Z"    // When they submitted
+}
+```
+
+### Real Examples
+
+**Example 1: WhatsApp Link**
+- You share: `https://aviatorstrainingcentre.in/?utm_source=whatsapp&utm_medium=social`
+- User clicks and fills form
+- Firebase shows: `utm_source: "whatsapp"` ✅
+
+**Example 2: Facebook Ad**
+- User clicks your Facebook ad
+- Fills contact form
+- Firebase shows: `source_description: "Facebook Ads"` ✅
+
+**Example 3: Google Search**
+- User searches "pilot training India"
+- Clicks your website
+- Fills form
+- Firebase shows: `source_description: "Google Search (Organic)"` ✅
+
+### Why This Matters
+
+Now you can answer questions like:
+- "How many leads came from WhatsApp this month?" 📊
+- "Are Facebook Ads working better than Google Ads?" 💰
+- "Which campaign generated the most inquiries?" 🎯
+- "Should I invest more in Instagram or email?" 📈
+
+### Technical Implementation
+
+**Files Involved:**
+- `src/lib/utils/utmTracker.ts` - Captures UTM parameters from URL
+- `src/components/analytics/UTMTracker.tsx` - Initializes tracking on page load
+- `src/app/layout.tsx` - Includes tracker in root layout
+- `src/components/features/contact/ContactFormCard.tsx` - Retrieves UTM data on form submit
+- `src/app/api/contact/route.ts` - Saves UTM data to Firebase
+
+**How It Works Technically:**
+1. User lands on website with UTM parameters in URL
+2. `UTMTracker` component captures parameters automatically
+3. Data stored in browser (sessionStorage + localStorage)
+4. Data persists as user navigates pages
+5. When form is submitted, UTM data is retrieved
+6. API saves contact info + UTM data to Firebase
+7. You can analyze lead sources in Firebase Console
+
+**Key Features:**
+- ✅ Automatic capture (no manual work)
+- ✅ Works across all pages
+- ✅ Backward compatible (form works without UTM)
+- ✅ No user-facing changes
+- ✅ Production ready
 
 ---
 
