@@ -12,6 +12,7 @@ import ErrorHandlingProvider from "@/components/shared/ErrorHandlingProvider";
 import ConditionalLayout from "@/components/layout/ConditionalLayout";
 import ConditionalAnalytics from "@/components/analytics/ConditionalAnalytics";
 import { PerformanceImageProvider } from "@/lib/image-optimization";
+import UTMTracker from "@/components/analytics/UTMTracker";
 
 // Initialize automation system
 if (typeof window === 'undefined') {
@@ -256,6 +257,7 @@ export default function RootLayout({
               enableConnectionMonitoring={true}
             >
               <PerformanceImageProvider>
+                <UTMTracker />
                 <ConditionalLayout>
                   {children}
                 </ConditionalLayout>

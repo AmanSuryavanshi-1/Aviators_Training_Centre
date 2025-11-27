@@ -15,6 +15,14 @@ interface ContactFormData {
   phone?: string;
   subject: string;
   message: string;
+  utm_source?: string;
+  utm_medium?: string;
+  utm_campaign?: string;
+  utm_content?: string;
+  utm_term?: string;
+  referrer?: string;
+  landing_page?: string;
+  source_description?: string;
 }
 
 // Add OPTIONS method to handle CORS preflight requests
@@ -257,7 +265,21 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Invalid request format. Please send valid JSON data.' }, { status: 400, headers });
     }
     
-    const { name, email, phone, subject, message } = formData;
+    const { 
+      name, 
+      email, 
+      phone, 
+      subject, 
+      message,
+      utm_source,
+      utm_medium,
+      utm_campaign,
+      utm_content,
+      utm_term,
+      referrer,
+      landing_page,
+      source_description
+    } = formData;
 
     // --- Validate form data ---
     if (!name || !email || !subject || !message) {
@@ -265,6 +287,18 @@ export async function POST(req: NextRequest) {
         console.log('Missing required fields:', { name, email, subject, message });
       }
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400, headers });
+    }
+
+    // Log UTM tracking data in development
+    if (process.env.NODE_ENV === 'development' && (utm_source || referrer)) {
+      console.log('📊 UTM Tracking Data:', {
+        utm_source,
+        utm_medium,
+        utm_campaign,
+        referrer,
+        landing_page,
+        source_description
+      });
     }
 
     // --- Save to Firebase Realtime Database with timeout ---
@@ -275,10 +309,31 @@ export async function POST(req: NextRequest) {
       const contactsRef = ref(db, 'contacts');
       
       // Add timeout to prevent hanging
-      const savePromise = push(contactsRef, {
-        ...formData,
+      // Prepare data for Firebase with UTM tracking
+      const firebaseData = {
+        // Contact information
+        name,
+        email,
+        phone: phone || '',
+        subject,
+        message,
+        
+        // UTM tracking data
+        utm_source: utm_source || '',
+        utm_medium: utm_medium || '',
+        utm_campaign: utm_campaign || '',
+        utm_content: utm_content || '',
+        utm_term: utm_term || '',
+        referrer: referrer || 'direct',
+        landing_page: landing_page || '',
+        source_description: source_description || 'Direct Traffic',
+        
+        // Metadata
         timestamp: serverTimestamp(),
-      });
+        submitted_at: new Date().toISOString(),
+      };
+
+      const savePromise = push(contactsRef, firebaseData);
       
       const timeoutPromise = new Promise((_, reject) => {
         setTimeout(() => reject(new Error('Firebase operation timed out')), 10000); // 10 second timeout

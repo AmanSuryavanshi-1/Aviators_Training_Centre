@@ -15,6 +15,7 @@ import { useFormValidation, FormData } from '@/hooks/use-form-validation';
 import ValidationError, { FormValidationSummary, FieldWrapper } from './ValidationError';
 import { useContactAnalytics } from '@/hooks/useAnalytics';
 import { easingFunctions } from '@/lib/animations/easing';
+import { getStoredUTMParams, getSourceDescription } from '@/lib/utils/utmTracker';
 
 interface ContactFormCardProps {
   inquirySubjects: string[];
@@ -77,13 +78,26 @@ const ContactFormCard: React.FC<ContactFormCardProps> = ({inquirySubjects}) => {
         e.preventDefault();
         setShowValidationSummary(false);
 
-        // Collect form data
+        // Get UTM tracking data
+        const utmParams = getStoredUTMParams();
+        const sourceDescription = getSourceDescription(utmParams);
+
+        // Collect form data with UTM tracking
         const formData: FormData = {
             name,
             email,
             phone,
             subject,
             message,
+            // UTM tracking data
+            utm_source: utmParams?.utm_source,
+            utm_medium: utmParams?.utm_medium,
+            utm_campaign: utmParams?.utm_campaign,
+            utm_content: utmParams?.utm_content,
+            utm_term: utmParams?.utm_term,
+            referrer: utmParams?.referrer,
+            landing_page: utmParams?.landing_page,
+            source_description: sourceDescription,
         };
 
         // Validate form before submission

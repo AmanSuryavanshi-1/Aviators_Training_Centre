@@ -7,6 +7,15 @@ export interface FormData {
   phone: string;
   subject: string;
   message: string;
+  // UTM tracking fields (optional)
+  utm_source?: string;
+  utm_medium?: string;
+  utm_campaign?: string;
+  utm_content?: string;
+  utm_term?: string;
+  referrer?: string;
+  landing_page?: string;
+  source_description?: string;
 }
 
 export interface FormValidationState {

@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UTM Tracking Test - Aviators Training Centre</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .test-section {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-bottom: 20px;
+        }
+        
+        .test-section h2 {
+            color: #333;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #667eea;
+        }
+        
+        .test-links {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .test-link {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-decoration: none;
+            transition: transform 0.2s, box-shadow 0.2s;
+            display: block;
+        }
+        
+        .test-link:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+        
+        .test-link h3 {
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+        
+        .test-link p {
+            font-size: 13px;
+            opacity: 0.9;
+            margin-bottom: 10px;
+        }
+        
+        .test-link code {
+            background: rgba(255,255,255,0.2);
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 11px;
+            display: block;
+            margin-top: 10px;
+            word-break: break-all;
+        }
+        
+        .status {
+            background: #10b981;
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .status::before {
+            content: "✓";
+            font-size: 24px;
+            font-weight: bold;
+        }
+        
+        .instructions {
+            background: #f3f4f6;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+        
+        .instructions h3 {
+            color: #333;
+            margin-bottom: 15px;
+        }
+        
+        .instructions ol {
+            margin-left: 20px;
+        }
+        
+        .instructions li {
+            margin-bottom: 10px;
+            color: #666;
+        }
+        
+        .current-params {
+            background: #fef3c7;
+            border: 2px solid #f59e0b;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+        
+        .current-params h3 {
+            color: #92400e;
+            margin-bottom: 15px;
+        }
+        
+        .current-params pre {
+            background: white;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🛩️ UTM Tracking Test Suite</h1>
+            <p>Aviators Training Centre - Traffic Source Testing</p>
+        </div>
+        
+        <div class="status">
+            <span>UTM Tracking System is Active and Ready for Testing</span>
+        </div>
+        
+        <div class="test-section">
+            <h2>📱 Social Media Sources</h2>
+            <div class="test-links">
+                <a href="https://aviatorstrainingcentre.in/?utm_source=whatsapp&utm_medium=social&utm_campaign=test_whatsapp" class="test-link" target="_blank">
+                    <h3>WhatsApp Link</h3>
+                    <p>Simulates user clicking link shared on WhatsApp</p>
+                    <code>utm_source=whatsapp</code>
+                </a>
+                
+                <a href="https://aviatorstrainingcentre.in/?utm_source=facebook&utm_medium=cpc&utm_campaign=test_fb_ads" class="test-link" target="_blank">
+                    <h3>Facebook Ads</h3>
+                    <p>Simulates user clicking Facebook advertisement</p>
+                    <code>utm_source=facebook&utm_medium=cpc</code>
+                </a>
+                
+                <a href="https://aviatorstrainingcentre.in/?utm_source=instagram&utm_medium=cpc&utm_campaign=test_ig_ads" class="test-link" target="_blank">
+                    <h3>Instagram Ads</h3>
+                    <p>Simulates user clicking Instagram advertisement</p>
+                    <code>utm_source=instagram&utm_medium=cpc</code>
+                </a>
+                
+                <a href="https://aviatorstrainingcentre.in/?utm_source=linkedin&utm_medium=social&utm_campaign=test_linkedin" class="test-link" target="_blank">
+                    <h3>LinkedIn Post</h3>
+                    <p>Simulates user clicking LinkedIn post</p>
+                    <code>utm_source=linkedin&utm_medium=social</code>
+                </a>
+            </div>
+        </div>
+        
+        <div class="test-section">
+            <h2>🔍 Search Engines</h2>
+            <div class="test-links">
+                <a href="https://aviatorstrainingcentre.in/?utm_source=google&utm_medium=cpc&utm_campaign=test_google_ads" class="test-link" target="_blank">
+                    <h3>Google Ads</h3>
+                    <p>Simulates user clicking Google advertisement</p>
+                    <code>utm_source=google&utm_medium=cpc</code>
+                </a>
+                
+                <a href="https://aviatorstrainingcentre.in/?utm_source=google&utm_medium=organic&utm_campaign=test_organic" class="test-link" target="_blank">
+                    <h3>Google Organic</h3>
+                    <p>Simulates user clicking organic search result</p>
+                    <code>utm_source=google&utm_medium=organic</code>
+                </a>
+            </div>
+        </div>
+        
+        <div class="test-section">
+            <h2>📧 Email & Other</h2>
+            <div class="test-links">
+                <a href="https://aviatorstrainingcentre.in/?utm_source=newsletter&utm_medium=email&utm_campaign=test_email" class="test-link" target="_blank">
+                    <h3>Email Campaign</h3>
+                    <p>Simulates user clicking link in newsletter</p>
+                    <code>utm_source=newsletter&utm_medium=email</code>
+                </a>
+                
+                <a href="https://aviatorstrainingcentre.in/" class="test-link" target="_blank">
+                    <h3>Direct Traffic</h3>
+                    <p>Simulates user typing URL directly</p>
+                    <code>No UTM parameters</code>
+                </a>
+            </div>
+        </div>
+        
+        <div class="test-section">
+            <h2>📋 Testing Instructions</h2>
+            <div class="instructions">
+                <h3>How to Test:</h3>
+                <ol>
+                    <li><strong>Click any test link above</strong> - This will open your website with UTM parameters</li>
+                    <li><strong>Navigate to the Contact page</strong> - The UTM data will persist</li>
+                    <li><strong>Fill out the contact form</strong> - Include all required fields</li>
+                    <li><strong>Submit the form</strong> - The UTM data will be included automatically</li>
+                    <li><strong>Check Firebase</strong> - Go to Realtime Database → contacts → latest entry</li>
+                    <li><strong>Verify the data</strong> - Look for utm_source, utm_medium, and source_description fields</li>
+                </ol>
+            </div>
+            
+            <div class="instructions" style="margin-top: 20px;">
+                <h3>What to Look For in Firebase:</h3>
+                <ol>
+                    <li><strong>utm_source</strong> - Should match the source you clicked (whatsapp, facebook, google, etc.)</li>
+                    <li><strong>utm_medium</strong> - Should show the medium (social, cpc, email, organic)</li>
+                    <li><strong>utm_campaign</strong> - Should show the campaign name (test_whatsapp, test_fb_ads, etc.)</li>
+                    <li><strong>source_description</strong> - Human-readable source (e.g., "Facebook Ads", "WhatsApp")</li>
+                    <li><strong>referrer</strong> - The page that referred the user</li>
+                    <li><strong>landing_page</strong> - The full URL with UTM parameters</li>
+                </ol>
+            </div>
+        </div>
+        
+        <div class="test-section">
+            <h2>🔍 Current Page UTM Parameters</h2>
+            <div class="current-params">
+                <h3>Detected Parameters:</h3>
+                <pre id="current-utm">Loading...</pre>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Display current UTM parameters
+        function displayCurrentUTM() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const utmData = {
+                utm_source: urlParams.get('utm_source') || 'Not set',
+                utm_medium: urlParams.get('utm_medium') || 'Not set',
+                utm_campaign: urlParams.get('utm_campaign') || 'Not set',
+                utm_content: urlParams.get('utm_content') || 'Not set',
+                utm_term: urlParams.get('utm_term') || 'Not set',
+                referrer: document.referrer || 'Direct',
+                current_url: window.location.href
+            };
+            
+            document.getElementById('current-utm').textContent = JSON.stringify(utmData, null, 2);
+        }
+        
+        // Run on page load
+        displayCurrentUTM();
+    </script>
+</body>
+</html>
