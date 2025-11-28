@@ -212,7 +212,7 @@ const HeroSectionInner = () => {
               onLoad={() => handleImageLoad(currentSlide)}
               onError={() => handleImageError(currentSlide)}
               sizes="(max-width: 768px) 100vw, 100vw"
-              placeholder="blur"
+              placeholder={currentSlide === 0 ? "empty" : "blur"}
             />
           </div>
         </motion.div>
@@ -294,12 +294,14 @@ const HeroSectionInner = () => {
         ))}
       </div>
 
-      {/* Performance Monitor */}
-      <HeroImagePerformanceMonitor
-        slideCount={slides.length}
-        currentSlide={currentSlide}
-        onPerformanceUpdate={handlePerformanceUpdate}
-      />
+      {/* Performance Monitor - Dev Only */}
+      {process.env.NODE_ENV === 'development' && (
+        <HeroImagePerformanceMonitor
+          slideCount={slides.length}
+          currentSlide={currentSlide}
+          onPerformanceUpdate={handlePerformanceUpdate}
+        />
+      )}
 
       {/* Performance Debug Info (Development Only) */}
       {process.env.NODE_ENV === 'development' && performanceMetrics && (
@@ -317,13 +319,4 @@ const HeroSectionInner = () => {
   );
 };
 
-// Main HeroSection component with provider wrapper
-const HeroSection = () => {
-  return (
-    <PerformanceImageProvider>
-      <HeroSectionInner />
-    </PerformanceImageProvider>
-  );
-};
-
-export default HeroSection;
+export default HeroSectionInner;

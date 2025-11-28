@@ -1,13 +1,6 @@
 "use client"
 import React from 'react';
 import HeroSection from "@/components/features/courses/HeroSection";
-import WhyChooseUs from "@/components/features/courses/WhyChooseUs";
-import CoursesSection from "@/components/features/courses/CoursesSection";
-import FeaturedBlogSection from "@/components/features/courses/FeaturedBlogSection";
-import PilotPathway from "@/components/features/courses/PilotPathway";
-import FAQ from "@/components/shared/FAQ";
-import CTASection from "@/components/features/courses/CTASection";
-import InfiniteVideoCarousel from "@/components/testimonials/InfiniteVideoCarousel";
 import { motion } from 'framer-motion';
 import { cn } from "@/components/ui/utils";
 import { Plane, Target, Radio, GraduationCap, TrendingUp, ArrowRight, Users } from 'lucide-react';
@@ -16,6 +9,16 @@ import { useAnalytics } from '@/hooks/useAnalytics';
 import { commonVariants } from '@/lib/animations/easing';
 import { SolidButton } from '@/components/shared/SolidButton';
 import { TransparentButton } from '@/components/shared/TransparentButton';
+import dynamic from 'next/dynamic';
+
+// Dynamically import heavy components to reduce TBT
+const WhyChooseUs = dynamic(() => import("@/components/features/courses/WhyChooseUs"));
+const CoursesSection = dynamic(() => import("@/components/features/courses/CoursesSection"));
+const FeaturedBlogSection = dynamic(() => import("@/components/features/courses/FeaturedBlogSection"));
+const PilotPathway = dynamic(() => import("@/components/features/courses/PilotPathway"));
+const FAQ = dynamic(() => import("@/components/shared/FAQ"));
+const CTASection = dynamic(() => import("@/components/features/courses/CTASection"));
+const InfiniteVideoCarousel = dynamic(() => import("@/components/testimonials/InfiniteVideoCarousel"));
 
 // Use consistent animation variants with proper easing
 const { sectionVariants, itemVariants } = commonVariants;
@@ -44,39 +47,39 @@ export default function HomePageClient() {
             whileInView="visible"
             viewport={{ once: true, amount: 0.3 }}
           >
-            <motion.h1
+            <motion.h2
               className={cn("text-2xl md:text-3xl lg:text-4xl font-bold leading-tight", aviationPrimary)}
               variants={itemVariants}
             >
               Aviators Training Centre - India's Premier ATC Training Institute
-            </motion.h1>
+            </motion.h2>
             <motion.p
               className="text-base sm:text-lg md:text-xl text-foreground/90 max-w-4xl mx-auto leading-relaxed"
               variants={itemVariants}
             >
               <span className="font-semibold text-teal-700 dark:text-teal-300">Master DGCA exams with expert-led online ground school.</span> Learn from experienced airline pilots like <strong className="font-semibold text-teal-700 dark:text-teal-300">Ankit Kumar</strong>, <strong className="font-semibold text-teal-700 dark:text-teal-300">Dhruv Shirkoli</strong>, and <strong className="font-semibold text-teal-700 dark:text-teal-300">Saksham Khandelwal</strong>. Our <span className="font-semibold text-teal-700 dark:text-teal-300">ATC courses</span> include comprehensive <span className="font-semibold text-teal-700 dark:text-teal-300">CPL/ATPL</span> training, <span className="font-semibold text-teal-700 dark:text-teal-300">Type Rating</span> preparation, and <span className="font-semibold text-teal-700 dark:text-teal-300">RTR(A)</span> certification with 24/7 support and proven success rates.
             </motion.p>
-            <motion.div
-              className="flex flex-wrap justify-center gap-3 sm:gap-4 md:gap-6 text-base md:text-lg px-2"
+            <motion.ul
+              className="flex flex-wrap justify-center gap-3 sm:gap-4 md:gap-6 text-base md:text-lg px-2 list-none"
               variants={itemVariants}
             >
-              <span className="bg-teal-50 dark:bg-teal-900/20 px-4 py-3 rounded-full flex items-center gap-2 text-teal-700 dark:text-teal-300 font-medium">
+              <li className="bg-teal-50 dark:bg-teal-900/20 px-4 py-3 rounded-full flex items-center gap-2 text-teal-700 dark:text-teal-300 font-medium">
                 <Plane className="w-5 h-5" />
                 DGCA Ground School
-              </span>
-              <span className="bg-teal-50 dark:bg-teal-900/20 px-4 py-3 rounded-full flex items-center gap-2 text-teal-700 dark:text-teal-300 font-medium">
+              </li>
+              <li className="bg-teal-50 dark:bg-teal-900/20 px-4 py-3 rounded-full flex items-center gap-2 text-teal-700 dark:text-teal-300 font-medium">
                 <Target className="w-5 h-5" />
                 Type Rating Prep
-              </span>
-              <span className="bg-teal-50 dark:bg-teal-900/20 px-4 py-3 rounded-full flex items-center gap-2 text-teal-700 dark:text-teal-300 font-medium">
+              </li>
+              <li className="bg-teal-50 dark:bg-teal-900/20 px-4 py-3 rounded-full flex items-center gap-2 text-teal-700 dark:text-teal-300 font-medium">
                 <Radio className="w-5 h-5" />
                 RTR(A) Training
-              </span>
-              <span className="bg-teal-50 dark:bg-teal-900/20 px-4 py-3 rounded-full flex items-center gap-2 text-teal-700 dark:text-teal-300 font-medium">
+              </li>
+              <li className="bg-teal-50 dark:bg-teal-900/20 px-4 py-3 rounded-full flex items-center gap-2 text-teal-700 dark:text-teal-300 font-medium">
                 <GraduationCap className="w-5 h-5" />
                 Airline Instructors
-              </span>
-            </motion.div>
+              </li>
+            </motion.ul>
 
             {/* Internal Link to Blog Content */}
             <motion.div

@@ -137,6 +137,14 @@ export default function RootLayout({
                   "description": "B737 type-rated airline pilot"
                 }
               ],
+              "aggregateRating": {
+                "@type": "AggregateRating",
+                "ratingValue": "4.8",
+                "reviewCount": "150",
+                "bestRating": "5",
+                "worstRating": "1"
+              },
+              "priceRange": "₹₹",
               "offers": {
                 "@type": "Offer",
                 "category": "Aviation Training",

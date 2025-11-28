@@ -84,9 +84,9 @@ const CoursesSection: React.FC = () => {
       </div>
 
       {/* Grid using standard Card component */}
-      <div className="grid grid-cols-1 gap-8 items-stretch md:grid-cols-2 lg:grid-cols-3">
+      <ul className="grid grid-cols-1 gap-8 items-stretch md:grid-cols-2 lg:grid-cols-3 list-none p-0 m-0">
         {courses.map((course, index) => (
-          <motion.div
+          <motion.li
             key={index}
             variants={itemVariants}
             className="flex"
@@ -137,9 +137,9 @@ const CoursesSection: React.FC = () => {
                 </CardFooter>
               </Card>
             </motion.div>
-          </motion.div>
+          </motion.li>
         ))}
-      </div>
+      </ul>
 
       {/* Button to view all courses page - Updated */}
       <motion.div
