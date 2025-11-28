@@ -80,8 +80,9 @@ const config = {
         sm: 'calc(var(--radius) - 4px)',
       },
       fontFamily: {
-        sans: ['Roboto', ...fontFamily.sans],
-        heading: ['Montserrat', ...fontFamily.sans],
+        sans: ['var(--font-roboto)', ...fontFamily.sans],
+        heading: ['var(--font-montserrat)', ...fontFamily.sans],
+        inter: ['var(--font-inter)', ...fontFamily.sans],
       },
       keyframes: {
         'accordion-down': {

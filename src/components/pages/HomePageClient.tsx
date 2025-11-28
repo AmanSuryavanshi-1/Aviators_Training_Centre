@@ -37,26 +37,26 @@ export default function HomePageClient() {
       <main>
         <div className="container px-4 py-16 mx-auto space-y-20 sm:px-6 md:py-24 md:space-y-28 max-w-full overflow-hidden">
           {/* SEO-Optimized Content Section */}
-          <motion.section 
+          <motion.section
             className="text-center space-y-8"
             variants={sectionVariants}
-            initial="hidden"
+            initial="visible"
             whileInView="visible"
             viewport={{ once: true, amount: 0.3 }}
           >
-            <motion.h1 
+            <motion.h1
               className={cn("text-2xl md:text-3xl lg:text-4xl font-bold leading-tight", aviationPrimary)}
               variants={itemVariants}
             >
               Aviators Training Centre - India's Premier ATC Training Institute
             </motion.h1>
-            <motion.p 
+            <motion.p
               className="text-base sm:text-lg md:text-xl text-foreground/90 max-w-4xl mx-auto leading-relaxed"
               variants={itemVariants}
             >
               <span className="font-semibold text-teal-700 dark:text-teal-300">Master DGCA exams with expert-led online ground school.</span> Learn from experienced airline pilots like <strong className="font-semibold text-teal-700 dark:text-teal-300">Ankit Kumar</strong>, <strong className="font-semibold text-teal-700 dark:text-teal-300">Dhruv Shirkoli</strong>, and <strong className="font-semibold text-teal-700 dark:text-teal-300">Saksham Khandelwal</strong>. Our <span className="font-semibold text-teal-700 dark:text-teal-300">ATC courses</span> include comprehensive <span className="font-semibold text-teal-700 dark:text-teal-300">CPL/ATPL</span> training, <span className="font-semibold text-teal-700 dark:text-teal-300">Type Rating</span> preparation, and <span className="font-semibold text-teal-700 dark:text-teal-300">RTR(A)</span> certification with 24/7 support and proven success rates.
             </motion.p>
-            <motion.div 
+            <motion.div
               className="flex flex-wrap justify-center gap-3 sm:gap-4 md:gap-6 text-base md:text-lg px-2"
               variants={itemVariants}
             >
@@ -77,13 +77,13 @@ export default function HomePageClient() {
                 Airline Instructors
               </span>
             </motion.div>
-            
+
             {/* Internal Link to Blog Content */}
-            <motion.div 
+            <motion.div
               className="mt-8 text-center"
               variants={itemVariants}
             >
-              <Link 
+              <Link
                 href="/blog/pilot-salary-india-2024-career-earnings-guide"
                 className="inline-flex items-center px-6 py-3 text-sm font-medium text-teal-700 bg-teal-50 rounded-lg hover:bg-teal-100 transition-colors duration-200 dark:bg-teal-900/20 dark:text-teal-300 dark:hover:bg-teal-900/30 conversion-button"
                 onClick={() => handleCTAClick('Discover Pilot Salary Potential', '/blog/pilot-salary-india-2024-career-earnings-guide')}
@@ -108,14 +108,14 @@ export default function HomePageClient() {
           <CoursesSection />
 
           {/* Testimonials Section - Infinite Scroll */}
-          <motion.section 
+          <motion.section
             className="py-16 md:py-20"
             variants={sectionVariants}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.3 }}
           >
-            <motion.div 
+            <motion.div
               className="text-center space-y-6 mb-12"
               variants={itemVariants}
             >
@@ -126,11 +126,11 @@ export default function HomePageClient() {
                 Watch authentic testimonials from our successful DGCA CPL graduates who transformed their aviation dreams into reality through our comprehensive training programs.
               </p>
             </motion.div>
-            
+
             <InfiniteVideoCarousel />
-            
+
             {/* Action Buttons */}
-            <motion.div 
+            <motion.div
               className="text-center mt-12 space-y-6"
               variants={itemVariants}
             >
@@ -143,7 +143,7 @@ export default function HomePageClient() {
                     className="data-[conversion=true]:conversion-button"
                   />
                 </div>
-                
+
                 <div onClick={() => handleCTAClick('Contact Us', '/contact')}>
                   <TransparentButton
                     href="/contact"

@@ -13,6 +13,7 @@ import ConditionalLayout from "@/components/layout/ConditionalLayout";
 import ConditionalAnalytics from "@/components/analytics/ConditionalAnalytics";
 import { PerformanceImageProvider } from "@/lib/image-optimization";
 import UTMTracker from "@/components/analytics/UTMTracker";
+import { inter, montserrat, roboto } from "@/lib/fonts";
 
 // Initialize automation system
 if (typeof window === 'undefined') {
@@ -25,51 +26,51 @@ if (typeof window === 'undefined') {
 }
 
 export const viewport: Viewport = {
-    width: "device-width",
-    initialScale: 1,
-    maximumScale: 5,
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
 };
 
 export const metadata: Metadata = {
-    title: "Aviators Training Centre - India's Premier ATC Training Institute | DGCA CPL/ATPL Exam Prep",
-    description: "#1 Aviators Training Centre (ATC) in India. Expert-led DGCA ground school for CPL/ATPL exams, Type Rating prep, RTR(A) training. Learn from airline pilots like Ankit Kumar. 24/7 support, proven success rates.",
-    keywords: "Aviators Training Centre, ATC courses, ATC training, ATC instructors, Ankit Kumar ATC, DGCA ground school, CPL training India, ATPL exam prep, pilot training institute, aviation training courses, type rating preparation, RTR(A) training, best ATC training institute India, online pilot coaching, airline pilot training",
-    robots: "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
-    alternates: {
-        canonical: "https://www.aviatorstrainingcentre.in",
-        languages: {
-            'en': 'https://www.aviatorstrainingcentre.in',
-        },
+  title: "Aviators Training Centre - India's Premier ATC Training Institute | DGCA CPL/ATPL Exam Prep",
+  description: "#1 Aviators Training Centre (ATC) in India. Expert-led DGCA ground school for CPL/ATPL exams, Type Rating prep, RTR(A) training. Learn from airline pilots like Ankit Kumar. 24/7 support, proven success rates.",
+  keywords: "Aviators Training Centre, ATC courses, ATC training, ATC instructors, Ankit Kumar ATC, DGCA ground school, CPL training India, ATPL exam prep, pilot training institute, aviation training courses, type rating preparation, RTR(A) training, best ATC training institute India, online pilot coaching, airline pilot training",
+  robots: "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+  alternates: {
+    canonical: "https://www.aviatorstrainingcentre.in",
+    languages: {
+      'en': 'https://www.aviatorstrainingcentre.in',
     },
-    openGraph: {
-        type: "website",
-        locale: "en_IN",
-        url: "https://www.aviatorstrainingcentre.in",
-        title: "Aviators Training Centre - India's Premier ATC Training Institute",
-        description: "#1 Aviators Training Centre (ATC) in India. Expert-led DGCA ground school for CPL/ATPL exams, Type Rating prep, RTR(A) training. Learn from airline pilots like Ankit Kumar.",
-        siteName: "Aviators Training Centre",
-        images: [{
-            url: "https://www.aviatorstrainingcentre.in/AVIATORS_TRAINING_CENTRE_LOGO_LightMode.png",
-            width: 1200,
-            height: 630,
-            alt: "Aviators Training Centre - Premier ATC Training Institute India"
-        }]
-    },
-    twitter: {
-        card: "summary_large_image",
-        title: "Aviators Training Centre - India's Premier ATC Training Institute",
-        description: "#1 Aviators Training Centre (ATC) in India. Expert-led DGCA ground school for CPL/ATPL exams, Type Rating prep, RTR(A) training.",
-        images: ["https://www.aviatorstrainingcentre.in/AVIATORS_TRAINING_CENTRE_LOGO_LightMode.png"]
-    },
-    verification: {
-        google: "aE_FqlD0SbJberIaVs7Xe0flcsZF9gojWQg0BCQhiBc",
-        other: {
-            "google-site-verification": "aE_FqlD0SbJberIaVs7Xe0flcsZF9gojWQg0BCQhiBc"
-        }
-    },
+  },
+  openGraph: {
+    type: "website",
+    locale: "en_IN",
+    url: "https://www.aviatorstrainingcentre.in",
+    title: "Aviators Training Centre - India's Premier ATC Training Institute",
+    description: "#1 Aviators Training Centre (ATC) in India. Expert-led DGCA ground school for CPL/ATPL exams, Type Rating prep, RTR(A) training. Learn from airline pilots like Ankit Kumar.",
+    siteName: "Aviators Training Centre",
+    images: [{
+      url: "https://www.aviatorstrainingcentre.in/AVIATORS_TRAINING_CENTRE_LOGO_LightMode.png",
+      width: 1200,
+      height: 630,
+      alt: "Aviators Training Centre - Premier ATC Training Institute India"
+    }]
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Aviators Training Centre - India's Premier ATC Training Institute",
+    description: "#1 Aviators Training Centre (ATC) in India. Expert-led DGCA ground school for CPL/ATPL exams, Type Rating prep, RTR(A) training.",
+    images: ["https://www.aviatorstrainingcentre.in/AVIATORS_TRAINING_CENTRE_LOGO_LightMode.png"]
+  },
+  verification: {
+    google: "aE_FqlD0SbJberIaVs7Xe0flcsZF9gojWQg0BCQhiBc",
     other: {
-        "google-site-verification": "google04cf4c380ddcb85b.html"
+      "google-site-verification": "aE_FqlD0SbJberIaVs7Xe0flcsZF9gojWQg0BCQhiBc"
     }
+  },
+  other: {
+    "google-site-verification": "google04cf4c380ddcb85b.html"
+  }
 };
 
 export default function RootLayout({
@@ -82,7 +83,7 @@ export default function RootLayout({
       <head>
         <link rel="icon" href="/AVIATORS_TRAINING_CENTRE_LOGO_LightMode.png" type="image/png" sizes="any" />
         <link rel="apple-touch-icon" href="/AVIATORS_TRAINING_CENTRE_LOGO_LightMode.png" />
-        
+
         {/* Enhanced Structured Data for Organization */}
         <Script
           id="organization-schema"
@@ -144,11 +145,11 @@ export default function RootLayout({
             })
           }}
         />
-        
+
         {/* Meta Pixel Code */}
         <Script
           id="meta-pixel"
-          strategy="afterInteractive"
+          strategy="lazyOnload"
           dangerouslySetInnerHTML={{
             __html: `
               !function(f,b,e,v,n,t,s)
@@ -166,7 +167,7 @@ export default function RootLayout({
         />
         <noscript>
           <img height="1" width="1" style={{ display: 'none' }}
-          src="https://www.facebook.com/tr?id=1982191385652109&ev=PageView&noscript=1"
+            src="https://www.facebook.com/tr?id=1982191385652109&ev=PageView&noscript=1"
           />
         </noscript>
         {/* End Meta Pixel Code */}
@@ -174,7 +175,7 @@ export default function RootLayout({
         {/* Global Image Optimization */}
         <Script
           id="global-image-optimization"
-          strategy="afterInteractive"
+          strategy="lazyOnload"
           dangerouslySetInnerHTML={{
             __html: `
               // Initialize global image optimization
@@ -206,12 +207,12 @@ export default function RootLayout({
 
         {/* Google tag (gtag.js) - Enhanced for proper domain tracking */}
         <Script
-          strategy="afterInteractive"
+          strategy="lazyOnload"
           src={`https://www.googletagmanager.com/gtag/js?id=G-XSRFEJCB7N`}
         />
         <Script
           id="gtag-init"
-          strategy="afterInteractive"
+          strategy="lazyOnload"
           dangerouslySetInnerHTML={{
             __html: `
               window.dataLayer = window.dataLayer || [];
@@ -243,7 +244,8 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className="bg-background no-horizontal-overflow">
+
+      <body className={`bg-background no-horizontal-overflow ${inter.variable} ${montserrat.variable} ${roboto.variable}`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"

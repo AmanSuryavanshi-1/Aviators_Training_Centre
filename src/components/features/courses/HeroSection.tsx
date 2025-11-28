@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { ArrowRight, CalendarCheck, Phone } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Link } from 'react-router-dom';
+import { Link } from 'next/link';
 import { cn } from "./../ui/utils";
 import { BookDemoButton } from '@/components/shared/BookDemoButton';
 import { SolidButton } from '@/components/shared/SolidButton';
@@ -54,7 +54,10 @@ const FALLBACK_IMAGE = "/placeholder.svg";
 
 // --- Animation Variants (unchanged) ---
 const slideVariants = {
-  enter: (direction: number) => ({ x: direction > 0 ? '100%' : '-100%', opacity: 0 }),
+  enter: (direction: number) => ({
+    x: direction > 0 ? '100%' : direction < 0 ? '-100%' : 0,
+    opacity: direction === 0 ? 1 : 0
+  }),
   center: { zIndex: 1, x: 0, opacity: 1 },
   exit: (direction: number) => ({ zIndex: 0, x: direction < 0 ? '100%' : '-100%', opacity: 0 }),
 };
@@ -100,37 +103,15 @@ const HeroSectionInner = () => {
     recommendations: string[];
   }) => {
     setPerformanceMetrics(metrics);
-    
+
     // Log performance warnings in development
     if (process.env.NODE_ENV === 'development' && metrics.recommendations.length > 0) {
       console.warn('Hero Image Performance Recommendations:', metrics.recommendations);
     }
   }, []);
 
-  // Add critical preload link for first hero image to ensure instant LCP
-  useEffect(() => {
-    if (typeof document !== 'undefined') {
-      // Create preload link for the first hero image
-      const preloadLink = document.createElement('link');
-      preloadLink.rel = 'preload';
-      preloadLink.as = 'image';
-      preloadLink.href = slides[0].image;
-      preloadLink.fetchPriority = 'high';
-      
-      // Add to document head if not already present
-      const existingPreload = document.querySelector(`link[href="${slides[0].image}"]`);
-      if (!existingPreload) {
-        document.head.appendChild(preloadLink);
-      }
-      
-      // Cleanup on unmount
-      return () => {
-        if (document.head.contains(preloadLink)) {
-          document.head.removeChild(preloadLink);
-        }
-      };
-    }
-  }, []);
+  // Manual preload link injection removed as next/image with priority handles this better
+
 
   // Preload all hero images on component mount for instant transitions
   useEffect(() => {
@@ -138,16 +119,16 @@ const HeroSectionInner = () => {
       try {
         // Preload current image with critical priority
         await preloadImage(slides[currentSlide].image, 'critical');
-        
+
         // Preload next images with high priority
         const nextIndex = (currentSlide + 1) % slides.length;
         await preloadImage(slides[nextIndex].image, 'high');
-        
+
         // Preload remaining images with medium priority (connection-aware)
-        const remainingSlides = slides.filter((_, index) => 
+        const remainingSlides = slides.filter((_, index) =>
           index !== currentSlide && index !== nextIndex
         );
-        
+
         // Stagger preloading to avoid overwhelming slow connections
         for (const slide of remainingSlides) {
           await new Promise(resolve => setTimeout(resolve, 100)); // 100ms delay
@@ -174,7 +155,7 @@ const HeroSectionInner = () => {
     setDirection(1);
     const nextIndex = (currentSlide + 1) % slides.length;
     setCurrentSlide(nextIndex);
-    
+
     // Preload the image after next for smooth transitions
     const afterNextIndex = (nextIndex + 1) % slides.length;
     preloadImage(slides[afterNextIndex].image, 'high');
@@ -184,7 +165,7 @@ const HeroSectionInner = () => {
     setDirection(-1);
     const prevIndex = currentSlide === 0 ? slides.length - 1 : currentSlide - 1;
     setCurrentSlide(prevIndex);
-    
+
     // Preload the image before previous for smooth transitions
     const beforePrevIndex = prevIndex === 0 ? slides.length - 1 : prevIndex - 1;
     preloadImage(slides[beforePrevIndex].image, 'high');
@@ -193,7 +174,7 @@ const HeroSectionInner = () => {
   const handleIndicatorClick = useCallback((index: number) => {
     setDirection(index > currentSlide ? 1 : -1);
     setCurrentSlide(index);
-    
+
     // Preload adjacent images when user navigates
     const nextIndex = (index + 1) % slides.length;
     const prevIndex = index === 0 ? slides.length - 1 : index - 1;
@@ -203,39 +184,39 @@ const HeroSectionInner = () => {
 
   return (
     <section className="relative h-[70vh] md:h-[80vh] lg:h-[90vh] w-full overflow-hidden">
-        <AnimatePresence initial={false} custom={direction}>
-          <motion.div
-            key={currentSlide}
-            custom={direction}
-            variants={slideVariants}
-            initial="enter"
-            animate="center"
-            exit="exit"
-            transition={{ x: { type: "spring", stiffness: 300, damping: 30 }, opacity: { duration: 0.3 } }}
-            className="absolute inset-0 w-full h-full"
-          >
-            <div data-hero-image>
-              <OptimizedImage
-                src={slides[currentSlide].image}
-                alt={slides[currentSlide].title}
-                fill
-                className="object-cover"
-                loadingPriority="critical"
-                lazyLoad={false}
-                fetchPriority="high"
-                preload={true}
-                connectionAware={true}
-                respectDataSaver={true}
-                performanceTracking={true}
-                fallbackSrc={FALLBACK_IMAGE}
-                onLoad={() => handleImageLoad(currentSlide)}
-                onError={() => handleImageError(currentSlide)}
-                sizes="100vw"
-                placeholder="blur"
-              />
-            </div>
-          </motion.div>
-        </AnimatePresence>
+      <AnimatePresence initial={false} custom={direction}>
+        <motion.div
+          key={currentSlide}
+          custom={direction}
+          variants={slideVariants}
+          initial="enter"
+          animate="center"
+          exit="exit"
+          transition={{ x: { type: "spring", stiffness: 300, damping: 30 }, opacity: { duration: 0.3 } }}
+          className="absolute inset-0 w-full h-full"
+        >
+          <div data-hero-image>
+            <OptimizedImage
+              src={slides[currentSlide].image}
+              alt={slides[currentSlide].title}
+              fill
+              className="object-cover"
+              loadingPriority="critical"
+              lazyLoad={false}
+              fetchPriority="high"
+              preload={true}
+              connectionAware={true}
+              respectDataSaver={true}
+              performanceTracking={true}
+              fallbackSrc={FALLBACK_IMAGE}
+              onLoad={() => handleImageLoad(currentSlide)}
+              onError={() => handleImageError(currentSlide)}
+              sizes="(max-width: 768px) 100vw, 100vw"
+              placeholder="blur"
+            />
+          </div>
+        </motion.div>
+      </AnimatePresence>
 
       <motion.div
         className="flex relative z-10 justify-center items-center p-4 h-full bg-black/30 sm:p-8 touch-pan-y sm:touch-auto cursor-grab active:cursor-grabbing sm:cursor-auto"
@@ -253,7 +234,7 @@ const HeroSectionInner = () => {
         <motion.div
           key={currentSlide + '-content'}
           variants={contentVariants}
-          initial="hidden"
+          initial={currentSlide === 0 ? "visible" : "hidden"}
           animate="visible"
           exit="hidden"
           className="mx-auto max-w-4xl text-center text-white"
@@ -278,15 +259,15 @@ const HeroSectionInner = () => {
             {/* Pass props if needed, but base component likely handles styling */}
             {/* <BookDemoButton /> */}
             <TransparentButton
-            href="/contact#contact-form"
-            icon={CalendarCheck}
-            label="Book a Demo"
-            textColorClassName="text-white" // <-- Use the new prop for white text
-            // Optional: Still override border if needed, separate from text color
-            className="border-white bg-transparent/30 dark:border-white"
-          />
+              href="/contact#contact-form"
+              icon={CalendarCheck}
+              label="Book a Demo"
+              textColorClassName="text-white" // <-- Use the new prop for white text
+              // Optional: Still override border if needed, separate from text color
+              className="border-white bg-transparent/30 dark:border-white"
+            />
             {/* Optional Secondary/Contact Button (Using TransparentButton if uncommented) */}
-             {/*
+            {/*
              <TransparentButton
                 href="/contact"
                 icon={Phone} // Example: Using Phone icon
@@ -305,9 +286,8 @@ const HeroSectionInner = () => {
         {slides.map((_, index) => (
           <button
             key={index}
-            className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ease-out ${ 
-              index === currentSlide ? 'bg-white scale-125' : 'bg-white/50 hover:bg-white/75'
-            }`}
+            className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ease-out ${index === currentSlide ? 'bg-white scale-125' : 'bg-white/50 hover:bg-white/75'
+              }`}
             onClick={() => handleIndicatorClick(index)}
             aria-label={`Go to slide ${index + 1}`}
           />

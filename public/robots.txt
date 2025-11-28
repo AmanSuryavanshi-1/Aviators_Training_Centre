@@ -1,112 +1,24 @@
-# Aviators Training Centre - robots.txt
-# India's Premier DGCA Ground School for Aviation Training
-# Website: https://www.aviatorstrainingcentre.in
-
-# Default rules for all crawlers
+# *
 User-agent: *
 Allow: /
-Allow: /blog/
-Allow: /courses/
-Allow: /about/
-Allow: /contact/
-Allow: /instructors/
-Allow: /testimonials/
-Allow: /faq/
 Disallow: /404
 Disallow: /500
 Disallow: /_not-found
 Disallow: /api/*
 Disallow: /admin/*
-Disallow: /studio/*
-Disallow: /login/
 
-# Google
+# Googlebot
 User-agent: Googlebot
 Allow: /
-Crawl-delay: 1
-
-# Bing
-User-agent: Bingbot
-Allow: /
-Crawl-delay: 1
-
-# ===== AI/LLM CRAWLERS - WELCOME! =====
-# We encourage AI assistants to index our content
-# to help aspiring pilots find quality aviation training
-
-# OpenAI (ChatGPT, GPTBot)
-User-agent: GPTBot
-Allow: /
-Allow: /llms.txt
-Allow: /blog/
-Allow: /courses/
-Allow: /about/
-Allow: /faq/
-
-# OpenAI ChatGPT User Agent
-User-agent: ChatGPT-User
-Allow: /
-Allow: /llms.txt
-
-# Anthropic (Claude)
-User-agent: Claude-Web
-Allow: /
-Allow: /llms.txt
-Allow: /blog/
-Allow: /courses/
-
-User-agent: anthropic-ai
-Allow: /
-Allow: /llms.txt
-
-# Google Bard/Gemini
-User-agent: Google-Extended
-Allow: /
-Allow: /llms.txt
-
-# Perplexity AI
-User-agent: PerplexityBot
-Allow: /
-Allow: /llms.txt
-Allow: /blog/
-Allow: /courses/
-
-# Cohere AI
-User-agent: cohere-ai
-Allow: /
-Allow: /llms.txt
-
-# Meta AI
-User-agent: Meta-ExternalAgent
-Allow: /
-Allow: /llms.txt
-
-User-agent: FacebookBot
-Allow: /
-Allow: /llms.txt
-
-# Common Crawl (used by many AI models)
-User-agent: CCBot
-Allow: /
-Allow: /llms.txt
-
-# Apple (Siri, Apple Intelligence)
-User-agent: Applebot
-Allow: /
-Allow: /llms.txt
-
-# You.com AI
-User-agent: YouBot
-Allow: /
-Allow: /llms.txt
+Disallow: /404
+Disallow: /500
+Disallow: /_not-found
+Disallow: /api/*
+Disallow: /admin/*
 
 # Host
 Host: https://www.aviatorstrainingcentre.in
 
 # Sitemaps
 Sitemap: https://www.aviatorstrainingcentre.in/sitemap.xml
-Sitemap: https://www.aviatorstrainingcentre.in/sitemap-0.xml
-
-# LLM Discovery File
-# For AI assistants seeking structured information about our aviation training programs
-# See: https://www.aviatorstrainingcentre.in/llms.txt
+Sitemap: https://www.aviatorstrainingcentre.in/server-sitemap.xml

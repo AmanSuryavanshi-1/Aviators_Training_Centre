@@ -2,7 +2,8 @@ import React from 'react';
 // Removed import { Button } from '@/components/ui/button';
 // Consistent icons - Keeping ChevronRight and LinkIcon
 import { GraduationCap, RadioTower, PlaneTakeoff, ChevronRight, Link as LinkIcon } from 'lucide-react';
-import { Link } from 'react-router-dom'; // Keep Link import (might be used elsewhere, though not directly for replaced buttons)
+import { Link } from 'next/link';
+import OptimizedImage from '@/components/shared/OptimizedImage';
 import { cn } from '@/components/ui/utils';
 import { motion } from 'framer-motion';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -99,36 +100,27 @@ const CoursesSection: React.FC = () => {
             >
               <Card className="flex overflow-hidden relative z-10 flex-col w-full h-full rounded-3xl border shadow-sm transition-shadow duration-300 bg-card border-border">
                 <CardHeader className="relative p-0">
-                    {/* Image Section - Fixed Height */}
-                    <div className="overflow-hidden h-48"> {/* Fixed height */}
-                      <img
-                        src={course.image}
-                        alt={course.title}
-                        className="object-cover w-full h-full transition-transform duration-300 group-hover:scale-105"
-                        loading="lazy"
-                        onLoad={() => {
-                          console.log(`✅ Image loaded successfully: ${course.image}`);
-                        }}
-                        onError={(e) => {
-                          const target = e.target as HTMLImageElement;
-                          console.log(`❌ Image failed to load: ${course.image}, trying fallback: ${FALLBACK_IMAGE}`);
-                          if (!target.src.endsWith(FALLBACK_IMAGE)) {
-                            target.onerror = null;
-                            target.src = FALLBACK_IMAGE;
-                          }
-                        }}
-                      />
-                    </div>
+                  {/* Image Section - Fixed Height */}
+                  <div className="overflow-hidden h-48 relative"> {/* Fixed height */}
+                    <OptimizedImage
+                      src={course.image}
+                      alt={course.title}
+                      fill
+                      className="object-cover transition-transform duration-300 group-hover:scale-105"
+                      fallbackSrc={FALLBACK_IMAGE}
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    />
+                  </div>
                 </CardHeader>
                 <CardContent className="flex flex-col flex-grow p-4">
                   {/* Title and Icon */}
                   <div className="flex items-center mb-3 space-x-3">
-                      <div className={cn("flex-shrink-0 p-1.5 rounded-md bg-teal-100/70 dark:bg-teal-900/40", aviationSecondary)}>
-                          <course.icon className="w-5 h-5" />
-                      </div>
-                      <CardTitle className="text-lg font-semibold text-foreground">{course.title}</CardTitle>
+                    <div className={cn("flex-shrink-0 p-1.5 rounded-md bg-teal-100/70 dark:bg-teal-900/40", aviationSecondary)}>
+                      <course.icon className="w-5 h-5" />
+                    </div>
+                    <CardTitle className="text-lg font-semibold text-foreground">{course.title}</CardTitle>
                   </div>
-                  {/* Description */} 
+                  {/* Description */}
                   <CardDescription className="flex-grow mb-4 text-sm text-foreground/80">
                     {course.description}
                   </CardDescription>
@@ -149,17 +141,17 @@ const CoursesSection: React.FC = () => {
         ))}
       </div>
 
-      {/* Button to view all courses page - Updated */} 
+      {/* Button to view all courses page - Updated */}
       <motion.div
         variants={itemVariants}
         className="mt-12 text-center"
-       >
+      >
         {/* Replaced Button with SolidButton */}
         <SolidButton
-           href="/courses"
-           icon={LinkIcon} // Using the same icon
-           label="View All Course Details"
-         />
+          href="/courses"
+          icon={LinkIcon} // Using the same icon
+          label="View All Course Details"
+        />
       </motion.div>
 
     </motion.section>
