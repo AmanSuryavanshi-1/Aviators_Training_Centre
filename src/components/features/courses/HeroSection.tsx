@@ -239,15 +239,15 @@ const HeroSectionInner = () => {
           exit="hidden"
           className="mx-auto max-w-4xl text-center text-white"
         >
-          <motion.h1 variants={itemVariants} className="mb-4 text-3xl font-bold tracking-tight drop-shadow-lg sm:text-4xl md:text-5xl lg:text-6xl">
+          <motion.h1 variants={itemVariants} className="mb-4 text-2xl font-bold tracking-tight drop-shadow-lg sm:text-3xl md:text-5xl lg:text-6xl">
             {slides[currentSlide].title}
           </motion.h1>
-          <motion.p variants={itemVariants} className="mx-auto mb-8 max-w-3xl text-base drop-shadow-md sm:text-lg md:text-xl text-white/95">
+          <motion.p variants={itemVariants} className="mx-auto mb-8 max-w-3xl text-sm drop-shadow-md sm:text-base md:text-xl text-white/95">
             {slides[currentSlide].subtitle}
           </motion.p>
 
           {/* --- Action Buttons --- */}
-          <motion.div variants={itemVariants} className="flex flex-wrap gap-4 justify-center items-center md:gap-6">
+          <motion.div variants={itemVariants} className="flex flex-row flex-wrap gap-3 justify-center items-center sm:gap-4 md:gap-6">
             {/* Primary Action Button (Replaced with SolidButton) */}
             <SolidButton
               href={slides[currentSlide].buttonLink}
@@ -262,6 +262,7 @@ const HeroSectionInner = () => {
               href="/contact#contact-form"
               icon={CalendarCheck}
               label="Book a Demo"
+              mobileLabel="Demo"
               textColorClassName="text-white" // <-- Use the new prop for white text
               // Optional: Still override border if needed, separate from text color
               className="border-white bg-transparent/30 dark:border-white"

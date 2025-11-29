@@ -1,6 +1,6 @@
 "use client"
 import React, { useEffect } from 'react';
-import {clsx} from 'clsx'
+import { clsx } from 'clsx'
 import { motion } from 'framer-motion';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
@@ -38,16 +38,16 @@ const { sectionVariants, itemVariants, cardHoverEffect } = commonVariants;
 
 // --- Course Data (Unchanged) ---
 const groundSchoolSubjects = [
-{ id: "air-navigation", icon: Map, title: "Air Navigation", description: "Mastering flight path calculations, chart reading, and navigational instruments.", image: NAV_IMAGE },
-{ id: "meteorology", icon: CloudSun, title: "Meteorology", description: "Understanding atmospheric conditions, weather patterns, and forecasts.", image: MET_IMAGE },
-{ id: "air-regulations", icon: Gavel, title: "Air Regulations", description: "Knowledge of national (DGCA) and international aviation laws and procedures.", image: REGS_IMAGE },
-{ id: "technical-general", icon: Wrench, title: "Technical General", description: "Fundamental principles of flight, aerodynamics, aircraft structures, and systems.", image: TECH_GEN_IMAGE },
+  { id: "air-navigation", icon: Map, title: "Air Navigation", description: "Mastering flight path calculations, chart reading, and navigational instruments.", image: NAV_IMAGE },
+  { id: "meteorology", icon: CloudSun, title: "Meteorology", description: "Understanding atmospheric conditions, weather patterns, and forecasts.", image: MET_IMAGE },
+  { id: "air-regulations", icon: Gavel, title: "Air Regulations", description: "Knowledge of national (DGCA) and international aviation laws and procedures.", image: REGS_IMAGE },
+  { id: "technical-general", icon: Wrench, title: "Technical General", description: "Fundamental principles of flight, aerodynamics, aircraft structures, and systems.", image: TECH_GEN_IMAGE },
   { id: "technical-specific", icon: Plane, title: "Technical Specific", description: "In-depth study of specific aircraft types systems and performance.", image: TECH_SPEC_IMAGE },
 ];
 
 const additionalServicesData = [
-{ id: "rtr-radio-telephony", icon: RadioTower, title: "RTR(A) - Radio Telephony", description: "Specialized training to enhance communication skills for the RTR(A) license exam.", image: RTR_IMAGE, link: "/contact", learnMoreText: "Ace Communication" },
-{ id: "type-rating-prep", icon: Plane, title: "A320 & B737 Type Rating Prep", description: "Intensive preparation for type rating exams, including major airlines like IndiGo.", image: TYPE_RATING_IMAGE, link: "/contact", learnMoreText: "Prep for Type Rating" },
+  { id: "rtr-radio-telephony", icon: RadioTower, title: "RTR(A) - Radio Telephony", description: "Specialized training to enhance communication skills for the RTR(A) license exam.", image: RTR_IMAGE, link: "/contact", learnMoreText: "Ace Communication" },
+  { id: "type-rating-prep", icon: Plane, title: "A320 & B737 Type Rating Prep", description: "Intensive preparation for type rating exams, including major airlines like IndiGo.", image: TYPE_RATING_IMAGE, link: "/contact", learnMoreText: "Prep for Type Rating" },
   { id: "one-on-one-classes", icon: UserCheck, title: "One-on-One Online Classes", description: "Personalized tutoring for CPL/ATPL subjects, tailored to your learning pace.", image: ONE_ON_ONE_IMAGE, link: "/contact", learnMoreText: "Get Coaching" },
   { id: "interview-prep", icon: Briefcase, title: "Interview Preparation", description: "Targeted practice sessions to develop confidence for airline interviews.", image: INTERVIEW_PREP_IMAGE, link: "/contact", learnMoreText: "Ace Your Interview" },
 ];
@@ -84,16 +84,16 @@ const Courses: React.FC = () => {
             // Smooth scroll to the element with offset for header
             const yOffset = -80; // Adjust based on your header height
             const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
-            
+
             window.scrollTo({
               top: y,
               behavior: 'smooth'
             });
-            
+
             // Add a subtle highlight effect
             element.style.transform = 'scale(1.02)';
             element.style.transition = 'transform 0.3s ease-in-out';
-            
+
             // Remove highlight after animation
             setTimeout(() => {
               element.style.transform = 'scale(1)';
@@ -108,7 +108,7 @@ const Courses: React.FC = () => {
 
     // Handle hash changes (for single page navigation)
     window.addEventListener('hashchange', handleHashNavigation);
-    
+
     // Cleanup event listener
     return () => {
       window.removeEventListener('hashchange', handleHashNavigation);
@@ -171,12 +171,12 @@ const Courses: React.FC = () => {
         transition={{ duration: 0.8 }}
       >
         <video
-            autoPlay loop muted playsInline
-            className="absolute inset-0 z-0 object-cover w-full h-full"
-            poster={HERO_FALLBACK_IMAGE}
+          autoPlay loop muted playsInline
+          className="absolute inset-0 z-0 object-cover w-full h-full"
+          poster={HERO_FALLBACK_IMAGE}
         >
-           <source src={HERO_VIDEO_URL} type="video/mp4" />
-            Your browser does not support the video tag.
+          <source src={HERO_VIDEO_URL} type="video/mp4" />
+          Your browser does not support the video tag.
         </video>
         <div className="absolute inset-0 bg-gradient-to-r from-[rgba(7,94,104,0.35)] to-[rgba(12,110,114,0.65)] z-10"></div>
         <motion.div
@@ -199,141 +199,141 @@ const Courses: React.FC = () => {
 
         {/* Complete CPL/ATPL Ground Training Section */}
         <motion.section
-           variants={sectionVariants}
-           initial="hidden"
-           whileInView="visible"
-           viewport={{ once: true, amount: 0.1 }}
+          variants={sectionVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.1 }}
         >
           <div className="mb-12 text-center md:mb-16">
-             <motion.h2 variants={itemVariants} className={clsx("mb-3 text-3xl font-bold md:text-4xl", aviationPrimary)}>Complete CPL/ATPL Ground Training</motion.h2>
-             <motion.p variants={itemVariants} className="max-w-3xl mx-auto text-lg text-foreground/80">
-                We provide in-depth training for all DGCA syllabus subjects, building a strong foundation for your aviation career.
-             </motion.p>
+            <motion.h2 variants={itemVariants} className={clsx("mb-3 text-3xl font-bold md:text-4xl", aviationPrimary)}>Complete CPL/ATPL Ground Training</motion.h2>
+            <motion.p variants={itemVariants} className="max-w-3xl mx-auto text-lg text-foreground/80">
+              We provide in-depth training for all DGCA syllabus subjects, building a strong foundation for your aviation career.
+            </motion.p>
           </div>
 
-          <div className="grid items-stretch grid-cols-1 gap-6 mb-12 md:grid-cols-2 lg:grid-cols-3 sm:gap-8">  
+          <div className="grid items-stretch grid-cols-1 gap-6 mb-12 md:grid-cols-2 lg:grid-cols-3 sm:gap-8">
             {groundSchoolSubjects.map((subject, index) => (
               <motion.div key={index} variants={itemVariants} className="flex">
-                 <motion.div id={subject.id} className="relative w-full h-full group" whileHover="hover" initial="rest" animate="rest" variants={cardHoverEffect} >
-                   <Card className="relative z-10 flex flex-col w-full h-full overflow-hidden transition-shadow duration-300 border rounded-lg shadow-sm bg-card border-border">
-                      <CardHeader className="relative p-0">
-                          <div className="relative h-40 overflow-hidden sm:h-48">
-                            <Image
-                                src={subject.image}
-                                alt={subject.title}
-                                fill
-                                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                                className="object-cover transition-transform duration-300 group-hover:scale-105"
-                                onError={handleImageError}
-                                loading="lazy"
-                            />
-                         </div>
-                     </CardHeader>
-                     <CardContent className="flex flex-col flex-grow p-4 sm:p-5">
-                        <div className="flex items-center mb-2 space-x-3 sm:mb-3">
-                            <subject.icon className={clsx("flex-shrink-0 w-5 h-5 sm:w-6 sm:h-6", aviationSecondary)} />
-                            <CardTitle className="text-base font-semibold sm:text-lg text-foreground">{subject.title}</CardTitle>
-                        </div>
-                        <CardDescription className="flex-grow text-xs sm:text-sm text-foreground/80">
-                          {subject.description}
-                        </CardDescription>
-                     </CardContent>
-                      <CardFooter className="flex justify-end gap-2 p-4 pt-3 mt-auto border-t sm:gap-3 sm:p-5 sm:pt-4 border-border/30">
-                          <BookDemoButton
-                             size="sm"
-                             className="min-h-[40px] w-full sm:w-auto"
-                             state={{ subject: `Demo Request: ${subject.title}`, courseName: subject.title }}
-                           />
-                       </CardFooter>
-                   </Card>
-                 </motion.div>
-               </motion.div>
+                <motion.div id={subject.id} className="relative w-full h-full group" whileHover="hover" initial="rest" animate="rest" variants={cardHoverEffect} >
+                  <Card className="relative z-10 flex flex-col w-full h-full overflow-hidden transition-shadow duration-300 border rounded-lg shadow-sm bg-card border-border">
+                    <CardHeader className="relative p-0">
+                      <div className="relative h-40 overflow-hidden sm:h-48">
+                        <Image
+                          src={subject.image}
+                          alt={subject.title}
+                          fill
+                          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                          className="object-cover transition-transform duration-300 group-hover:scale-105"
+                          onError={handleImageError}
+                          loading="lazy"
+                        />
+                      </div>
+                    </CardHeader>
+                    <CardContent className="flex flex-col flex-grow p-4 sm:p-5">
+                      <div className="flex items-center mb-2 space-x-3 sm:mb-3">
+                        <subject.icon className={clsx("flex-shrink-0 w-5 h-5 sm:w-6 sm:h-6", aviationSecondary)} />
+                        <CardTitle className="text-base font-semibold sm:text-lg text-foreground">{subject.title}</CardTitle>
+                      </div>
+                      <CardDescription className="flex-grow text-xs sm:text-sm text-foreground/80">
+                        {subject.description}
+                      </CardDescription>
+                    </CardContent>
+                    <CardFooter className="flex justify-end gap-2 p-4 pt-3 mt-auto border-t sm:gap-3 sm:p-5 sm:pt-4 border-border/30">
+                      <BookDemoButton
+                        size="sm"
+                        className="min-h-[40px] w-full sm:w-auto"
+                        state={{ subject: `Demo Request: ${subject.title}`, courseName: subject.title }}
+                      />
+                    </CardFooter>
+                  </Card>
+                </motion.div>
+              </motion.div>
             ))}
 
             {/* Placeholder Contact Card - Updated Button */}
             <motion.div variants={itemVariants} className="flex">
-                 <motion.div className="relative w-full h-full group" whileHover="hover" initial="rest" animate="rest" variants={cardHoverEffect} >
-                    <Card className="relative z-10 flex flex-col items-center justify-center w-full h-full p-4 overflow-hidden text-center transition-shadow duration-300 border border-dashed rounded-lg shadow-sm bg-gradient-to-br sm:p-6 from-teal-50/50 to-sky-50/50 dark:from-gray-800/60 dark:to-gray-900/60 border-border">
-                       <div className="mb-3 sm:mb-4">
-                          <PhoneForwarded className={clsx("w-8 h-8 sm:w-10 sm:h-10", aviationSecondary)} />
-                       </div>
-                       <CardTitle className="mb-1 text-base font-semibold sm:mb-2 sm:text-lg text-foreground">Have Questions?</CardTitle>
-                       <CardDescription className="mb-3 text-xs sm:mb-4 sm:text-sm text-foreground/80">
-                          Contact us for details about courses or enrollment.
-                       </CardDescription>
-                       {/* Responsive TransparentButton */}
-                       <TransparentButton
-                          href="/contact#contact-form"
-                          icon={PhoneForwarded}
-                          label="Contact Us"
-                          className="min-h-[40px] w-full sm:w-auto"
-                        />
-                    </Card>
-                 </motion.div>
+              <motion.div className="relative w-full h-full group" whileHover="hover" initial="rest" animate="rest" variants={cardHoverEffect} >
+                <Card className="relative z-10 flex flex-col items-center justify-center w-full h-full p-4 overflow-hidden text-center transition-shadow duration-300 border border-dashed rounded-lg shadow-sm bg-gradient-to-br sm:p-6 from-teal-50/50 to-sky-50/50 dark:from-gray-800/60 dark:to-gray-900/60 border-border">
+                  <div className="mb-3 sm:mb-4">
+                    <PhoneForwarded className={clsx("w-8 h-8 sm:w-10 sm:h-10", aviationSecondary)} />
+                  </div>
+                  <CardTitle className="mb-1 text-base font-semibold sm:mb-2 sm:text-lg text-foreground">Have Questions?</CardTitle>
+                  <CardDescription className="mb-3 text-xs sm:mb-4 sm:text-sm text-foreground/80">
+                    Contact us for details about courses or enrollment.
+                  </CardDescription>
+                  {/* Responsive TransparentButton */}
+                  <TransparentButton
+                    href="/contact#contact-form"
+                    icon={PhoneForwarded}
+                    label="Contact Us"
+                    className="min-h-[40px] w-full sm:w-auto"
+                  />
+                </Card>
+              </motion.div>
             </motion.div>
 
           </div>
         </motion.section>
 
-         {/* Additional Training & Prep Services Section - Updated Button */}
+        {/* Additional Training & Prep Services Section - Updated Button */}
         <motion.section
-           variants={sectionVariants}
-           initial="hidden"
-           whileInView="visible"
-           viewport={{ once: true, amount: 0.1 }}
+          variants={sectionVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.1 }}
         >
-            <h2 className={clsx("mb-12 text-3xl font-bold text-center md:text-4xl md:mb-16", aviationPrimary)}>Additional Training & Prep Services</h2>
-            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 sm:gap-8 lg:gap-10">
-                {additionalServicesData.map((service, index) => (
-                    <motion.div key={index} variants={itemVariants}>
-                        <motion.div id={service.id} className="relative h-full group" whileHover="hover" initial="rest" animate="rest" variants={cardHoverEffect} >
-                            <Card className="relative z-10 flex flex-col h-full overflow-hidden transition-shadow duration-300 border rounded-lg shadow-sm bg-card sm:flex-row border-border">
-                                <div className="relative flex-shrink-0 h-48 sm:h-auto sm:w-1/3 aspect-video sm:aspect-auto">
-                                    <Image
-                                        src={service.image}
-                                        alt={service.title}
-                                        fill
-                                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                                        className="object-cover"
-                                        onError={handleImageError}
-                                        loading="lazy"
-                                    />
-                                </div>
-                                <div className="flex flex-col flex-grow p-4 sm:p-5 md:p-6">
-                                    <CardHeader className="p-0 mb-2">
-                                        <div className="flex items-center mb-2 space-x-2">
-                                            <service.icon className={clsx("flex-shrink-0 w-4 h-4 sm:w-5 sm:h-5", aviationSecondary)} />
-                                            <CardTitle className="text-lg font-semibold sm:text-xl text-foreground">{service.title}</CardTitle>
-                                        </div>
-                                    </CardHeader>    
-                                    <CardContent className="flex-grow p-0 mb-3 sm:mb-4">
-                                        <CardDescription className="text-xs sm:text-sm text-foreground/80">
-                                            {service.description}
-                                        </CardDescription>
-                                    </CardContent>
-                                    <CardFooter className="flex flex-col gap-2 p-0 mt-auto sm:flex-row sm:gap-3">
-                                        <div className="flex-grow sm:flex-grow-0"> 
-                                            <TransparentButton
-                                                href={service.link}
-                                                icon={ArrowRight}
-                                                label={service.learnMoreText}
-                                                className="min-h-[40px] w-full sm:w-auto"
-                                            />
-                                        </div>
-                                        <div className="flex-grow sm:flex-grow-0"> 
-                                             <BookDemoButton
-                                               size="sm"
-                                               className="min-h-[40px] w-full sm:w-auto"
-                                               state={{ subject: `Demo Request: ${service.title}`, courseName: service.title }}
-                                             />
-                                        </div>
-                                    </CardFooter>
-                                </div>
-                            </Card>
-                        </motion.div>
-                    </motion.div>
-                ))}
-            </div>
+          <h2 className={clsx("mb-12 text-3xl font-bold text-center md:text-4xl md:mb-16", aviationPrimary)}>Additional Training & Prep Services</h2>
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 sm:gap-8 lg:gap-10">
+            {additionalServicesData.map((service, index) => (
+              <motion.div key={index} variants={itemVariants}>
+                <motion.div id={service.id} className="relative h-full group" whileHover="hover" initial="rest" animate="rest" variants={cardHoverEffect} >
+                  <Card className="relative z-10 flex flex-col h-full overflow-hidden transition-shadow duration-300 border rounded-lg shadow-sm bg-card sm:flex-row border-border">
+                    <div className="relative flex-shrink-0 h-48 sm:h-auto sm:w-1/3 aspect-video sm:aspect-auto">
+                      <Image
+                        src={service.image}
+                        alt={service.title}
+                        fill
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                        className="object-cover"
+                        onError={handleImageError}
+                        loading="lazy"
+                      />
+                    </div>
+                    <div className="flex flex-col flex-grow p-4 sm:p-5 md:p-6">
+                      <CardHeader className="p-0 mb-2">
+                        <div className="flex items-center mb-2 space-x-2">
+                          <service.icon className={clsx("flex-shrink-0 w-4 h-4 sm:w-5 sm:h-5", aviationSecondary)} />
+                          <CardTitle className="text-lg font-semibold sm:text-xl text-foreground">{service.title}</CardTitle>
+                        </div>
+                      </CardHeader>
+                      <CardContent className="flex-grow p-0 mb-3 sm:mb-4">
+                        <CardDescription className="text-xs sm:text-sm text-foreground/80">
+                          {service.description}
+                        </CardDescription>
+                      </CardContent>
+                      <CardFooter className="flex flex-col gap-2 p-0 mt-auto sm:flex-row sm:gap-3">
+                        <div className="flex-grow sm:flex-grow-0">
+                          <TransparentButton
+                            href={service.link}
+                            icon={ArrowRight}
+                            label={service.learnMoreText}
+                            className="min-h-[40px] w-full sm:w-auto"
+                          />
+                        </div>
+                        <div className="flex-grow sm:flex-grow-0">
+                          <BookDemoButton
+                            size="sm"
+                            className="min-h-[40px] w-full sm:w-auto"
+                            state={{ subject: `Demo Request: ${service.title}`, courseName: service.title }}
+                          />
+                        </div>
+                      </CardFooter>
+                    </div>
+                  </Card>
+                </motion.div>
+              </motion.div>
+            ))}
+          </div>
         </motion.section>
 
         {/* Urgency CTA Section */}
@@ -347,22 +347,22 @@ const Courses: React.FC = () => {
           viewport={{ once: true, amount: 0.1 }}
           className="p-5 border shadow-lg bg-gradient-to-br rounded-xl sm:p-8 from-teal-50/30 to-sky-50/30 dark:from-gray-800/40 dark:to-gray-900/40 md:p-12 border-border/50"
         >
-            <h2 className={clsx("mb-6 text-2xl font-bold text-center sm:mb-10 sm:text-3xl md:text-4xl", aviationPrimary)}>Why Train with ATC?</h2>
-            <div className="grid grid-cols-2 text-center gap-x-3 gap-y-6 sm:gap-x-6 sm:gap-y-8 sm:grid-cols-3 md:grid-cols-4">
-                {atcFeaturesData.map((feature, index) => (
-                    <motion.div
-                        key={index}
-                        variants={itemVariants}
-                        className="flex flex-col items-center p-2 sm:p-3 group" 
-                    >
-                         <div className="p-2 mb-2 transition-colors duration-300 rounded-full sm:p-3 sm:mb-3 bg-teal-100/70 dark:bg-teal-900/40 group-hover:bg-teal-200/80 dark:group-hover:bg-teal-800/60">
-                            <feature.icon className={clsx("w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7", aviationSecondary)} />
-                        </div>
-                        <h4 className="mb-1 text-xs font-semibold sm:text-sm text-foreground">{feature.title}</h4>
-                        <p className="text-xs text-foreground/70">{feature.description}</p>
-                    </motion.div>
-                ))}
-            </div>
+          <h2 className={clsx("mb-6 text-2xl font-bold text-center sm:mb-10 sm:text-3xl md:text-4xl", aviationPrimary)}>Why Train with ATC?</h2>
+          <div className="grid grid-cols-2 text-center gap-x-3 gap-y-6 sm:gap-x-6 sm:gap-y-8 sm:grid-cols-3 md:grid-cols-4">
+            {atcFeaturesData.map((feature, index) => (
+              <motion.div
+                key={index}
+                variants={itemVariants}
+                className="flex flex-col items-center p-2 sm:p-3 group"
+              >
+                <div className="p-2 mb-2 transition-colors duration-300 rounded-full sm:p-3 sm:mb-3 bg-teal-100/70 dark:bg-teal-900/40 group-hover:bg-teal-200/80 dark:group-hover:bg-teal-800/60">
+                  <feature.icon className={clsx("w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7", aviationSecondary)} />
+                </div>
+                <h4 className="mb-1 text-xs font-semibold sm:text-sm text-foreground">{feature.title}</h4>
+                <p className="text-xs text-foreground/70">{feature.description}</p>
+              </motion.div>
+            ))}
+          </div>
         </motion.section>
 
         {/* ATC Benefits Accordion Section - Responsive Optimized */}
@@ -372,21 +372,21 @@ const Courses: React.FC = () => {
           whileInView="visible"
           viewport={{ once: true, amount: 0.1 }}
         >
-            <h2 className={clsx("mb-6 text-2xl font-bold text-center sm:mb-10 sm:text-3xl md:text-4xl", aviationPrimary)}>Detailed Benefits</h2>
-            <Accordion type="single" collapsible className="w-full max-w-3xl mx-auto">
-                 {atcBenefitsData.map((item, index) => (
-                    <motion.div key={index} variants={itemVariants}>
-                        <AccordionItem value={`item-${index + 1}`} className="mb-2 overflow-hidden border-b rounded-md shadow-sm border-border/60 bg-card/40 dark:bg-card/60">
-                            <AccordionTrigger className={cn("px-4 py-3 text-sm font-medium text-left transition-colors sm:px-5 sm:py-4 sm:text-base md:text-lg hover:no-underline hover:bg-teal-50/50 dark:hover:bg-teal-900/30", aviationSecondary)}>
-                                {item.title}
-                            </AccordionTrigger>
-                            <AccordionContent className="px-4 pt-2 pb-4 text-xs sm:px-5 sm:pb-5 sm:text-sm md:text-base text-foreground/80 bg-card/30 dark:bg-card/50">
-                                {item.content}
-                            </AccordionContent>
-                        </AccordionItem>
-                     </motion.div>
-                ))}
-            </Accordion>
+          <h2 className={clsx("mb-6 text-2xl font-bold text-center sm:mb-10 sm:text-3xl md:text-4xl", aviationPrimary)}>Detailed Benefits</h2>
+          <Accordion type="single" collapsible className="w-full max-w-3xl mx-auto">
+            {atcBenefitsData.map((item, index) => (
+              <motion.div key={index} variants={itemVariants}>
+                <AccordionItem value={`item-${index + 1}`} className="mb-2 overflow-hidden border-b rounded-md shadow-sm border-border/60 bg-card/40 dark:bg-card/60">
+                  <AccordionTrigger className={cn("px-4 py-3 text-sm font-medium text-left transition-colors sm:px-5 sm:py-4 sm:text-base md:text-lg hover:no-underline hover:bg-teal-50/50 dark:hover:bg-teal-900/30", aviationSecondary)}>
+                    {item.title}
+                  </AccordionTrigger>
+                  <AccordionContent className="px-4 pt-2 pb-4 text-xs sm:px-5 sm:pb-5 sm:text-sm md:text-base text-foreground/80 bg-card/30 dark:bg-card/50">
+                    {item.content}
+                  </AccordionContent>
+                </AccordionItem>
+              </motion.div>
+            ))}
+          </Accordion>
         </motion.section>
 
       </main>

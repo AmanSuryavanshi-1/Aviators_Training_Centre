@@ -26,12 +26,12 @@ const DynamicCTA: React.FC<DynamicCTAProps> = ({ post }) => {
       ...(post.additionalKeywords?.map(k => k.toLowerCase()) || []),
       ...(post.tags?.map(t => t.title.toLowerCase()) || [])
     ].filter(Boolean);
-    
+
     const allContent = [title, category, ...keywords].join(' ');
 
     // CPL/ATPL Ground School CTA
-    if (allContent.includes('cpl') || allContent.includes('atpl') || 
-        allContent.includes('ground school') || allContent.includes('dgca')) {
+    if (allContent.includes('cpl') || allContent.includes('atpl') ||
+      allContent.includes('ground school') || allContent.includes('dgca')) {
       return {
         title: "Ready to Start Your CPL/ATPL Ground School?",
         subtitle: "Master all DGCA subjects with expert guidance from airline pilots and achieve your aviation dreams.",
@@ -50,8 +50,8 @@ const DynamicCTA: React.FC<DynamicCTAProps> = ({ post }) => {
     }
 
     // Type Rating CTA
-    if (allContent.includes('type rating') || allContent.includes('a320') || 
-        allContent.includes('b737') || allContent.includes('airline')) {
+    if (allContent.includes('type rating') || allContent.includes('a320') ||
+      allContent.includes('b737') || allContent.includes('airline')) {
       return {
         title: "Preparing for Type Rating Exams?",
         subtitle: "Get specialized coaching for A320 & B737 type rating preparation with industry experts.",
@@ -70,8 +70,8 @@ const DynamicCTA: React.FC<DynamicCTAProps> = ({ post }) => {
     }
 
     // RTR(A) CTA
-    if (allContent.includes('rtr') || allContent.includes('radio') || 
-        allContent.includes('communication') || allContent.includes('telephony')) {
+    if (allContent.includes('rtr') || allContent.includes('radio') ||
+      allContent.includes('communication') || allContent.includes('telephony')) {
       return {
         title: "Master Aviation Communication Skills?",
         subtitle: "Excel in RTR(A) exams with specialized radio telephony training and communication techniques.",
@@ -90,8 +90,8 @@ const DynamicCTA: React.FC<DynamicCTAProps> = ({ post }) => {
     }
 
     // Interview Preparation CTA
-    if (allContent.includes('interview') || allContent.includes('job') || 
-        allContent.includes('career') || allContent.includes('hiring')) {
+    if (allContent.includes('interview') || allContent.includes('job') ||
+      allContent.includes('career') || allContent.includes('hiring')) {
       return {
         title: "Ace Your Airline Interviews?",
         subtitle: "Get personalized interview coaching and boost your confidence with proven strategies.",
@@ -143,11 +143,12 @@ const DynamicCTA: React.FC<DynamicCTAProps> = ({ post }) => {
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           transition={{ type: 'spring', stiffness: 400, damping: 17 }}
+          className="w-full sm:w-auto"
         >
           <Button
             asChild
             size="lg"
-            className="group relative rounded-full px-8 py-4 overflow-hidden bg-white text-aviation-primary shadow-lg transition-all duration-300 ease-out hover:bg-aviation-light/10 hover:text-white hover:shadow-xl border-2 border-white min-h-[56px] font-semibold"
+            className="group relative rounded-full px-8 py-4 overflow-hidden bg-white text-aviation-primary shadow-lg transition-all duration-300 ease-out hover:bg-aviation-light/10 hover:text-white hover:shadow-xl border-2 border-white min-h-[56px] font-semibold w-full sm:w-auto"
           >
             <Link href={cta.primaryCTA.href}>
               <span className="relative z-10 flex items-center justify-center">
@@ -163,12 +164,13 @@ const DynamicCTA: React.FC<DynamicCTAProps> = ({ post }) => {
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           transition={{ type: 'spring', stiffness: 400, damping: 17 }}
+          className="w-full sm:w-auto"
         >
           <Button
             asChild
             size="lg"
             variant="outline"
-            className="group relative rounded-full px-8 py-4 overflow-hidden border-2 border-aviation-light bg-aviation-accent text-white shadow-lg transition-all duration-300 ease-out hover:bg-aviation-tertiary hover:border-white hover:shadow-xl min-h-[56px] font-semibold"
+            className="group relative rounded-full px-8 py-4 overflow-hidden border-2 border-aviation-light bg-aviation-accent text-white shadow-lg transition-all duration-300 ease-out hover:bg-aviation-tertiary hover:border-white hover:shadow-xl min-h-[56px] font-semibold w-full sm:w-auto"
           >
             <Link href={cta.secondaryCTA.href}>
               <span className="relative z-10 flex items-center justify-center">

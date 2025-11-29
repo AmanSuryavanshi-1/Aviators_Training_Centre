@@ -48,34 +48,34 @@ export default function HomePageClient() {
             viewport={{ once: true, amount: 0.3 }}
           >
             <motion.h2
-              className={cn("text-2xl md:text-3xl lg:text-4xl font-bold leading-tight", aviationPrimary)}
+              className={cn("text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold leading-tight", aviationPrimary)}
               variants={itemVariants}
             >
               Aviators Training Centre - India's Premier ATC Training Institute
             </motion.h2>
             <motion.p
-              className="text-base sm:text-lg md:text-xl text-foreground/90 max-w-4xl mx-auto leading-relaxed"
+              className="text-sm sm:text-base md:text-lg lg:text-xl text-foreground/90 max-w-4xl mx-auto leading-relaxed"
               variants={itemVariants}
             >
               <span className="font-semibold text-teal-700 dark:text-teal-300">Master DGCA exams with expert-led online ground school.</span> Learn from experienced airline pilots like <strong className="font-semibold text-teal-700 dark:text-teal-300">Ankit Kumar</strong>, <strong className="font-semibold text-teal-700 dark:text-teal-300">Dhruv Shirkoli</strong>, and <strong className="font-semibold text-teal-700 dark:text-teal-300">Saksham Khandelwal</strong>. Our <span className="font-semibold text-teal-700 dark:text-teal-300">ATC courses</span> include comprehensive <span className="font-semibold text-teal-700 dark:text-teal-300">CPL/ATPL</span> training, <span className="font-semibold text-teal-700 dark:text-teal-300">Type Rating</span> preparation, and <span className="font-semibold text-teal-700 dark:text-teal-300">RTR(A)</span> certification with 24/7 support and proven success rates.
             </motion.p>
             <motion.ul
-              className="flex flex-wrap justify-center gap-3 sm:gap-4 md:gap-6 text-base md:text-lg px-2 list-none"
+              className="flex flex-wrap justify-center gap-2 sm:gap-3 md:gap-4 lg:gap-6 text-xs sm:text-sm md:text-base px-2 list-none"
               variants={itemVariants}
             >
-              <li className="bg-teal-50 dark:bg-teal-900/20 px-4 py-3 rounded-full flex items-center gap-2 text-teal-700 dark:text-teal-300 font-medium">
+              <li className="bg-teal-50 dark:bg-teal-900/20 px-2 py-1.5 sm:px-3 sm:py-2 md:px-4 md:py-3 rounded-full flex items-center gap-2 text-teal-700 dark:text-teal-300 font-medium">
                 <Plane className="w-5 h-5" />
                 DGCA Ground School
               </li>
-              <li className="bg-teal-50 dark:bg-teal-900/20 px-4 py-3 rounded-full flex items-center gap-2 text-teal-700 dark:text-teal-300 font-medium">
+              <li className="bg-teal-50 dark:bg-teal-900/20 px-2 py-1.5 sm:px-3 sm:py-2 md:px-4 md:py-3 rounded-full flex items-center gap-2 text-teal-700 dark:text-teal-300 font-medium">
                 <Target className="w-5 h-5" />
                 Type Rating Prep
               </li>
-              <li className="bg-teal-50 dark:bg-teal-900/20 px-4 py-3 rounded-full flex items-center gap-2 text-teal-700 dark:text-teal-300 font-medium">
+              <li className="bg-teal-50 dark:bg-teal-900/20 px-2 py-1.5 sm:px-3 sm:py-2 md:px-4 md:py-3 rounded-full flex items-center gap-2 text-teal-700 dark:text-teal-300 font-medium">
                 <Radio className="w-5 h-5" />
                 RTR(A) Training
               </li>
-              <li className="bg-teal-50 dark:bg-teal-900/20 px-4 py-3 rounded-full flex items-center gap-2 text-teal-700 dark:text-teal-300 font-medium">
+              <li className="bg-teal-50 dark:bg-teal-900/20 px-2 py-1.5 sm:px-3 sm:py-2 md:px-4 md:py-3 rounded-full flex items-center gap-2 text-teal-700 dark:text-teal-300 font-medium">
                 <GraduationCap className="w-5 h-5" />
                 Airline Instructors
               </li>
@@ -122,10 +122,10 @@ export default function HomePageClient() {
               className="text-center space-y-6 mb-12"
               variants={itemVariants}
             >
-              <h2 className={cn("text-3xl md:text-4xl lg:text-5xl font-bold", aviationPrimary)}>
+              <h2 className={cn("text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold", aviationPrimary)}>
                 Success Stories from Our Graduates
               </h2>
-              <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+              <p className="text-sm sm:text-base md:text-lg lg:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
                 Watch authentic testimonials from our successful DGCA CPL graduates who transformed their aviation dreams into reality through our comprehensive training programs.
               </p>
             </motion.div>
@@ -137,12 +137,13 @@ export default function HomePageClient() {
               className="text-center mt-12 space-y-6"
               variants={itemVariants}
             >
-              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+              <div className="flex flex-row flex-wrap gap-3 sm:gap-4 justify-center items-center">
                 <div onClick={() => handleCTAClick('Browse All Testimonials', '/testimonials')}>
                   <SolidButton
                     href="/testimonials"
                     icon={Users}
                     label="Browse All Testimonials"
+                    mobileLabel="Testimonials"
                     className="data-[conversion=true]:conversion-button"
                   />
                 </div>
@@ -152,6 +153,7 @@ export default function HomePageClient() {
                     href="/contact"
                     icon={GraduationCap}
                     label="Contact Us"
+                    mobileLabel="Contact"
                     className="data-[conversion=true]:conversion-button"
                   />
                 </div>

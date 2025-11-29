@@ -485,7 +485,7 @@ export default function TestimonialsPage() {
                 <h3 className="text-2xl md:text-3xl lg:text-4xl font-bold text-primary mb-6">
                   Explore More Ways to Succeed
                 </h3>
-                <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                <div className="flex flex-row flex-wrap gap-4 justify-center items-center">
                   <div onClick={() => testimonialsAnalytics.trackCTAClick('contact', 'secondary-cta')}>
                     <TransparentButton
                       href="/contact"

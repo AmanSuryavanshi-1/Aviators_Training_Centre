@@ -65,10 +65,10 @@ const pathwaySteps = [
     title: "Ground School Mastery",
     description: "Complete our structured online classes covering all DGCA subjects.",
     details: [
-        "**Subjects:** Air Navigation, Meteorology, Air Regulation, Technical General, Technical Specific, RTR(A).",
-        "**Format:** Online live classes, recorded sessions, comprehensive study materials.",
-        "**Assessments:** Regular topic tests and mock exams simulating DGCA pattern.",
-        "**Support:** 24/7 doubt-clearing via dedicated channels."
+      "**Subjects:** Air Navigation, Meteorology, Air Regulation, Technical General, Technical Specific, RTR(A).",
+      "**Format:** Online live classes, recorded sessions, comprehensive study materials.",
+      "**Assessments:** Regular topic tests and mock exams simulating DGCA pattern.",
+      "**Support:** 24/7 doubt-clearing via dedicated channels."
     ]
   },
   {
@@ -76,10 +76,10 @@ const pathwaySteps = [
     title: "DGCA Exams",
     description: "Successfully pass all CPL/ATPL theoretical knowledge examinations.",
     details: [
-        "**Exam Structure:** Multiple Choice Questions (MCQs) covering the syllabus.",
-        "**Passing Score:** Minimum 70% required for each subject.",
-        "**Validity:** Subject passes have a validity period (check DGCA regulations).",
-        "**Preparation:** Our course includes extensive question banks and mock tests."
+      "**Exam Structure:** Multiple Choice Questions (MCQs) covering the syllabus.",
+      "**Passing Score:** Minimum 70% required for each subject.",
+      "**Validity:** Subject passes have a validity period (check DGCA regulations).",
+      "**Preparation:** Our course includes extensive question banks and mock tests."
     ]
   },
   {
@@ -87,9 +87,9 @@ const pathwaySteps = [
     title: "RTR(A) License",
     description: "Obtain your Radio Telephony Restricted (Aeronautical) license.",
     details: [
-        "**Purpose:** Required for using aeronautical mobile radio communication equipment.",
-        "**Exam Parts:** Part 1 (Practical: Transmission technique), Part 2 (Oral Exam: Regulations & Procedures).",
-        "**Training:** We provide dedicated RTR(A) preparation covering theory and practicals."
+      "**Purpose:** Required for using aeronautical mobile radio communication equipment.",
+      "**Exam Parts:** Part 1 (Practical: Transmission technique), Part 2 (Oral Exam: Regulations & Procedures).",
+      "**Training:** We provide dedicated RTR(A) preparation covering theory and practicals."
     ]
   },
   {
@@ -97,10 +97,10 @@ const pathwaySteps = [
     title: "Type Rating Prep (Optional)",
     description: "Prepare for A320/B737 Type Rating (if pursuing an airline career).",
     details: [
-        "**Focus:** Technical specifics of the chosen aircraft type (e.g., Airbus A320, Boeing 737).",
-        "**Content:** Covers systems, performance, procedures, and airline exam patterns.",
-        "**Benefit:** Increases employability with specific airlines.",
-        "**Note:** This is separate from the actual Type Rating course done at an approved TRTO."
+      "**Focus:** Technical specifics of the chosen aircraft type (e.g., Airbus A320, Boeing 737).",
+      "**Content:** Covers systems, performance, procedures, and airline exam patterns.",
+      "**Benefit:** Increases employability with specific airlines.",
+      "**Note:** This is separate from the actual Type Rating course done at an approved TRTO."
     ]
   },
   {
@@ -108,9 +108,9 @@ const pathwaySteps = [
     title: "Airline Interview Ready",
     description: "Build confidence and skills for airline interviews.",
     details: [
-        "**Components:** Mock interviews (HR & Technical), group discussions, psychometric test guidance.",
-        "**Skills:** Communication, problem-solving, situational awareness, aviation knowledge review.",
-        "**Goal:** Prepare candidates to confidently face airline recruitment processes."
+      "**Components:** Mock interviews (HR & Technical), group discussions, psychometric test guidance.",
+      "**Skills:** Communication, problem-solving, situational awareness, aviation knowledge review.",
+      "**Goal:** Prepare candidates to confidently face airline recruitment processes."
     ]
   }
 ];
@@ -141,53 +141,53 @@ const AnimatedTimelineItem: React.FC<{ step: typeof pathwaySteps[0]; index: numb
     >
       {/* Dot on the Line */}
       <div className={cn(
-          "absolute top-5 left-6 z-10 w-5 h-5 bg-teal-500 rounded-full border-4 transform -translate-x-1/2 -translate-y-1/2 md:left-1/2 border-background dark:bg-teal-400", // Ensure dot is above line
-          "transition-all duration-300 group-hover:scale-110 group-hover:bg-teal-600 dark:group-hover:bg-teal-300"
-      )}/>
+        "absolute top-5 left-6 z-10 w-5 h-5 bg-teal-500 rounded-full border-4 transform -translate-x-1/2 -translate-y-1/2 md:left-1/2 border-background dark:bg-teal-400", // Ensure dot is above line
+        "transition-all duration-300 group-hover:scale-110 group-hover:bg-teal-600 dark:group-hover:bg-teal-300"
+      )} />
 
       {/* Content Card Container - Stacked on mobile, alternating on md+ */}
       <div className={cn(
-          "ml-14 w-full", // Mobile: full width, margin left for line
-          "md:ml-0 md:w-1/2", // Medium+: half width, no margin
-          index % 2 === 0
-            ? "md:pr-8 md:mr-auto" // Even items on left for md+
-            : "md:pl-8 md:ml-auto" // Odd items on right for md+
+        "ml-14 w-full", // Mobile: full width, margin left for line
+        "md:ml-0 md:w-1/2", // Medium+: half width, no margin
+        index % 2 === 0
+          ? "md:pr-8 md:mr-auto" // Even items on left for md+
+          : "md:pl-8 md:ml-auto" // Odd items on right for md+
       )}>
-        <Collapsible>
+        <Collapsible suppressHydrationWarning>
           <Card className="overflow-hidden transition-shadow border rounded-lg shadow-sm bg-card border-border/80 hover:shadow-md">
             <div className="flex items-start justify-between gap-2 p-4"> {/* Adjusted for better trigger placement */}
               <div className="flex items-center flex-grow gap-3">
-                  <div className={cn("flex-shrink-0 p-2 rounded-md bg-teal-100/70 dark:bg-teal-900/40", aviationSecondary)}>
-                    <step.icon className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <h3 className="text-base font-semibold text-foreground">{step.title}</h3>
-                    <p className="mt-1 text-sm text-foreground/70"> {/* Description moved below title */}
-                      {step.description}
-                    </p>
-                  </div>
+                <div className={cn("flex-shrink-0 p-2 rounded-md bg-teal-100/70 dark:bg-teal-900/40", aviationSecondary)}>
+                  <step.icon className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 className="text-base font-semibold text-foreground">{step.title}</h3>
+                  <p className="mt-1 text-sm text-foreground/70"> {/* Description moved below title */}
+                    {step.description}
+                  </p>
+                </div>
               </div>
-               {/* Collapsible Trigger Button */}
-               <CollapsibleTrigger asChild>
-                   <Button variant="ghost" size="sm" className="flex-shrink-0 h-auto p-1 text-teal-600 dark:text-teal-400 hover:bg-teal-100/50 dark:hover:bg-teal-900/30">
-                      <span className="sr-only">Toggle details</span>
-                      <ChevronDown className="h-4 w-4 transition-transform duration-200 group-data-[state=open]:rotate-180" />
-                   </Button>
-               </CollapsibleTrigger>
+              {/* Collapsible Trigger Button */}
+              <CollapsibleTrigger asChild>
+                <Button variant="ghost" size="sm" className="flex-shrink-0 h-auto p-1 text-teal-600 dark:text-teal-400 hover:bg-teal-100/50 dark:hover:bg-teal-900/30">
+                  <span className="sr-only">Toggle details</span>
+                  <ChevronDown className="h-4 w-4 transition-transform duration-200 group-data-[state=open]:rotate-180" />
+                </Button>
+              </CollapsibleTrigger>
             </div>
 
             {/* Collapsible Content Area */}
             <CollapsibleContent>
-               <div className="px-4 py-3 border-t bg-muted/30 dark:bg-muted/10 border-border/50">
-                  <ul className="space-y-1.5 pl-4"> {/* Slightly reduced indent */}
-                    {step.details.map((detail, i) => (
-                      <li key={i} className="flex items-start text-xs text-foreground/80">
-                        <span className="mr-2 mt-0.5">•</span>
-                        <span dangerouslySetInnerHTML={{ __html: detail.replace(/\*\*(.*?)\*\*/g, '<strong class="font-medium text-foreground/90">$1</strong>') }} />
-                      </li>
-                    ))}
-                  </ul>
-               </div>
+              <div className="px-4 py-3 border-t bg-muted/30 dark:bg-muted/10 border-border/50">
+                <ul className="space-y-1.5 pl-4"> {/* Slightly reduced indent */}
+                  {step.details.map((detail, i) => (
+                    <li key={i} className="flex items-start text-xs text-foreground/80">
+                      <span className="mr-2 mt-0.5">•</span>
+                      <span dangerouslySetInnerHTML={{ __html: detail.replace(/\*\*(.*?)\*\*/g, '<strong class="font-medium text-foreground/90">$1</strong>') }} />
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </CollapsibleContent>
           </Card>
         </Collapsible>
@@ -238,12 +238,12 @@ const PilotPathway: React.FC = () => {
 
       {/* Urgency CTA Section */}
       <motion.div variants={itemVariants} className="max-w-4xl mx-auto mt-16 md:mt-20">
-         <UrgencyCTA
-            title="Limited Time Offer: Enroll Now!"
-            description="Special discount available for the next batch starting soon. Secure your spot today!"
-            buttonIcon={CalendarClock}
-            buttonClassName="min-h-[48px]" // Ensure button height
-         />
+        <UrgencyCTA
+          title="Limited Time Offer: Enroll Now!"
+          description="Special discount available for the next batch starting soon. Secure your spot today!"
+          buttonIcon={CalendarClock}
+          buttonClassName="min-h-[48px]" // Ensure button height
+        />
       </motion.div>
 
     </motion.section>

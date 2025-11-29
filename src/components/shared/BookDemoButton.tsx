@@ -26,9 +26,10 @@ const buttonVariants = cva(
 interface BookDemoButtonProps extends VariantProps<typeof buttonVariants> {
   className?: string;
   state?: { subject: string; courseName: string };
+  mobileLabel?: string;
 }
 
-export const BookDemoButton: React.FC<BookDemoButtonProps> = ({ className, size, state }) => {
+export const BookDemoButton: React.FC<BookDemoButtonProps> = ({ className, size, state, ...props }) => {
   const defaultDemoMessage = `I would like to book a demo${state?.courseName ? ` for the ${state.courseName} course` : ''}. Please contact me to schedule a time.`;
   const href = `/contact${state ? `?subject=${encodeURIComponent(state.subject)}&courseName=${encodeURIComponent(state.courseName)}&message=${encodeURIComponent(defaultDemoMessage)}` : ''}#contact-form`;
 
@@ -37,7 +38,8 @@ export const BookDemoButton: React.FC<BookDemoButtonProps> = ({ className, size,
       <Link href={href}>
         <Button size={size} className={cn(buttonVariants({ size, className }), "conversion-button")} data-conversion="true">
           <CalendarCheck className="mr-2 h-5 w-5" />
-          {state ? 'Book a Demo' : 'Book a Demo'}
+          <span className="hidden sm:inline">{state ? 'Book a Demo' : 'Book a Demo'}</span>
+          <span className="sm:hidden">{props.mobileLabel || (state ? 'Book a Demo' : 'Book a Demo')}</span>
         </Button>
       </Link>
     </motion.div>

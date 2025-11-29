@@ -44,13 +44,14 @@ export default function TestimonialsCTA({ className, variant = 'primary' }: Test
             <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
               Join hundreds of successful pilots who started their career with our comprehensive training programs.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <div className="flex flex-row flex-wrap gap-4 justify-center items-center">
               <div onClick={() => testimonialsAnalytics.trackCTAClick('demo', 'secondary-cta')}>
-                <BookDemoButton 
+                <BookDemoButton
                   size="lg"
-                  state={{ 
-                    subject: "Demo Request from Testimonials Page", 
-                    courseName: "DGCA Ground School" 
+                  mobileLabel="Demo"
+                  state={{
+                    subject: "Demo Request from Testimonials Page",
+                    courseName: "DGCA Ground School"
                   }}
                 />
               </div>
@@ -59,6 +60,7 @@ export default function TestimonialsCTA({ className, variant = 'primary' }: Test
                   href="/courses"
                   icon={GraduationCap}
                   label="Explore Courses"
+                  mobileLabel="Courses"
                 />
               </div>
             </div>
@@ -89,18 +91,19 @@ export default function TestimonialsCTA({ className, variant = 'primary' }: Test
             Your Success Story Starts Here
           </h2>
           <p className="text-md md:text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
-            Join the ranks of successful pilots who achieved their dreams through our comprehensive DGCA ground school training. 
+            Join the ranks of successful pilots who achieved their dreams through our comprehensive DGCA ground school training.
             Your testimonial could be next!
           </p>
 
           {/* Primary CTAs */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
+          <div className="flex flex-row flex-wrap gap-4 justify-center items-center mb-12">
             <div onClick={() => testimonialsAnalytics.trackCTAClick('demo', 'primary-cta')}>
-              <BookDemoButton 
+              <BookDemoButton
                 size="lg"
-                state={{ 
-                  subject: "Demo Request from Testimonials Page", 
-                  courseName: "DGCA Ground School" 
+                mobileLabel="Demo"
+                state={{
+                  subject: "Demo Request from Testimonials Page",
+                  courseName: "DGCA Ground School"
                 }}
               />
             </div>
@@ -109,13 +112,14 @@ export default function TestimonialsCTA({ className, variant = 'primary' }: Test
                 href="/courses"
                 icon={ArrowRight}
                 label="View All Courses"
+                mobileLabel="Courses"
               />
             </div>
           </div>
         </motion.div>
 
         {/* Urgency CTA */}
-          <UrgencyCTA />
+        <UrgencyCTA />
       </div>
     </motion.section>
   );

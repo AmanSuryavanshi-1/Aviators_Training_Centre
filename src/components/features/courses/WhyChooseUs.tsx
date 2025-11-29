@@ -75,49 +75,49 @@ const WhyChooseUs: React.FC = () => {
       <div className="mb-8 text-center md:mb-10">
         <motion.h2
           variants={itemVariants}
-          className={cn("mb-4 text-3xl font-bold md:text-4xl", aviationPrimary)} // Consistent heading
+          className={cn("mb-4 text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold", aviationPrimary)} // Consistent heading
         >
           Why Choose Aviators Training Centre?
         </motion.h2>
         <motion.p
           variants={itemVariants}
-          className="mx-auto max-w-2xl text-lg leading-relaxed text-foreground/80"
+          className="mx-auto max-w-2xl text-sm sm:text-base md:text-lg leading-relaxed text-foreground/80"
         >
           We deliver focused, high-quality online ground training designed to help you ace your DGCA exams and launch your pilot career.
         </motion.p>
       </div>
 
       {/* Grid using standard Card component */}
-      <div className="grid grid-cols-1 gap-4 items-stretch md:grid-cols-2 lg:grid-cols-3">
+      <div className="grid grid-cols-1 gap-3 sm:gap-4 items-stretch md:grid-cols-2 lg:grid-cols-3">
         {features.map((feature, index) => (
           <motion.div
             key={index}
             variants={itemVariants}
             className="flex" // Ensure motion.div fills height for cardHoverEffect
           >
-             <motion.div
-                className="relative w-full h-full group rounded-3xl" // Needed for hover effect boundaries
-                whileHover="hover"
-                initial="rest"
-                animate="rest"
-                variants={cardHoverEffect}
-             >
-                {/* Standard Card Component Structure */}
-                <Card className="flex overflow-hidden relative z-10 flex-col p-4 w-full h-full text-center rounded-3xl border shadow-sm transition-shadow duration-300 bg-card border-border md:p-8">
-                    <CardHeader className="flex-shrink-0 p-0 mb-5">
-                        {/* Consistent Icon Styling */}
-                        <div className={cn("p-3 mx-auto mb-4 rounded-full transition-colors duration-300 bg-teal-100/70 dark:bg-teal-900/40 w-fit group-hover:bg-teal-200/80 dark:group-hover:bg-teal-800/60")}>
-                           <feature.icon className={cn("w-8 h-8", aviationSecondary)} />
-                        </div>
-                        <CardTitle className="text-xl font-semibold text-foreground">{feature.title}</CardTitle>
-                    </CardHeader>
-                    <CardContent className="flex-grow p-0">
-                        <CardDescription className="text-sm leading-relaxed text-foreground/80">
-                            {feature.description}
-                        </CardDescription>
-                    </CardContent>
-                </Card>
-             </motion.div>
+            <motion.div
+              className="relative w-full h-full group rounded-3xl" // Needed for hover effect boundaries
+              whileHover="hover"
+              initial="rest"
+              animate="rest"
+              variants={cardHoverEffect}
+            >
+              {/* Standard Card Component Structure */}
+              <Card className="flex overflow-hidden relative z-10 flex-col p-3 sm:p-4 md:p-6 lg:p-8 w-full h-full text-center rounded-3xl border shadow-sm transition-shadow duration-300 bg-card border-border">
+                <CardHeader className="flex-shrink-0 p-0 mb-5">
+                  {/* Consistent Icon Styling */}
+                  <div className={cn("p-3 mx-auto mb-4 rounded-full transition-colors duration-300 bg-teal-100/70 dark:bg-teal-900/40 w-fit group-hover:bg-teal-200/80 dark:group-hover:bg-teal-800/60")}>
+                    <feature.icon className={cn("w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8", aviationSecondary)} />
+                  </div>
+                  <CardTitle className="text-base sm:text-lg md:text-xl font-semibold text-foreground">{feature.title}</CardTitle>
+                </CardHeader>
+                <CardContent className="flex-grow p-0">
+                  <CardDescription className="text-xs sm:text-sm leading-relaxed text-foreground/80">
+                    {feature.description}
+                  </CardDescription>
+                </CardContent>
+              </Card>
+            </motion.div>
           </motion.div>
         ))}
       </div>
