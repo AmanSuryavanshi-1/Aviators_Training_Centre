@@ -5,28 +5,26 @@ import { cn } from '@/lib/utils';
 import Hero from './hero/Hero';
 import dynamic from 'next/dynamic';
 import TestimonialsCTA from '@/components/testimonials/TestimonialsCTA';
-
+import TestimonialsVideoCarousel from '@/components/testimonials/TestimonialsVideoCarousel';
 import TextTestimonialsCarousel from '@/components/testimonials/TextTestimonialsCarousel';
-import InfiniteVideoCarousel from '@/components/testimonials/InfiniteVideoCarousel';
-
 
 
 import { youtubeShorts, studentsData, generateCourseSchema, generateOrganizationSchema } from '@/lib/testimonials/data';
 import { generateTestimonialsPageSchema } from './jsonLd';
 import { testimonialsAnalytics } from '@/lib/testimonials/analytics';
 import { TransparentButton } from '@/components/shared/TransparentButton';
-import { 
-  Award, 
-  GraduationCap, 
-  Users, 
-  Plane, 
-  Shield, 
-  Target, 
-  TrendingUp, 
-  BookOpen, 
-  Briefcase, 
-  CheckCircle, 
-  Star 
+import {
+  Award,
+  GraduationCap,
+  Users,
+  Plane,
+  Shield,
+  Target,
+  TrendingUp,
+  BookOpen,
+  Briefcase,
+  CheckCircle,
+  Star
 } from 'lucide-react';
 
 // Define consistent animation variants
@@ -45,7 +43,7 @@ const aviationPrimary = 'text-teal-700 dark:text-teal-300';
 const aviationSecondary = 'text-teal-600 dark:text-teal-400';
 
 export default function TestimonialsPage() {
-  
+
   // Track page view safely
   React.useEffect(() => {
     try {
@@ -213,7 +211,7 @@ export default function TestimonialsPage() {
           dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
         />
       ))}
-      
+
       {/* Testimonial structured data */}
       <script
         type="application/ld+json"
@@ -221,7 +219,7 @@ export default function TestimonialsPage() {
       />
 
       <div className="flex flex-col min-h-screen bg-background text-foreground scroll-smooth"
-           style={{ minHeight: '100vh' }}>
+        style={{ minHeight: '100vh' }}>
 
 
         {/* Hero Section */}
@@ -233,7 +231,7 @@ export default function TestimonialsPage() {
 
         {/* Main Content with consistent spacing patterns */}
         <main className="container flex-grow px-4 py-16 mx-auto space-y-20 sm:px-6 md:py-24 md:space-y-28 max-w-full overflow-hidden" role="main">
-        
+
           {/* Infinite Video Carousel */}
           <section className="relative bg-gradient-to-br from-background via-muted/5 to-background">
             {/* Header with SEO Enhancement */}
@@ -251,12 +249,12 @@ export default function TestimonialsPage() {
                 </span>
               </h2>
               <p className="text-md md:text-lg text-muted-foreground max-w-4xl mx-auto leading-relaxed">
-                Watch verified graduates share their journey from aviation dreams to commercial pilot reality. 
+                Watch verified graduates share their journey from aviation dreams to commercial pilot reality.
                 Real success stories from DGCA CPL, ATPL, and RTR(A) training programs at India's premier aviation institute.
               </p>
             </motion.div>
-            
-            <InfiniteVideoCarousel />
+
+            <TestimonialsVideoCarousel />
           </section>
 
           {/* Text Testimonials Carousel */}
@@ -277,7 +275,7 @@ export default function TestimonialsPage() {
 
 
           {/* Enhanced SEO Content Section - Premium Aviation Training */}
-          <section 
+          <section
             aria-labelledby="seo-content-heading"
             className="relative py-12 md:py-16 bg-gradient-to-br from-muted/10 via-background to-card/10 overflow-hidden"
           >
@@ -298,12 +296,12 @@ export default function TestimonialsPage() {
                 transition={{ duration: 0.6, delay: 0.3 }}
               >
                 <div className="text-center mb-12 md:mb-20">
-                  <h2 
+                  <h2
                     id="seo-content-heading"
                     className="text-3xl md:text-4xl lg:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-aviation-primary via-aviation-secondary to-aviation-tertiary mb-4 leading-tight"
                   >
-                  Why <span className=" text-foreground ">Aviators Training Centre</span> is Your Best Choice for Aviation Success
-                </h2>
+                    Why <span className=" text-foreground ">Aviators Training Centre</span> is Your Best Choice for Aviation Success
+                  </h2>
                   <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
                     Discover authentic experiences from aviation students who achieved their pilot dreams through dedicated training and expert guidance
                   </p>
@@ -335,11 +333,11 @@ export default function TestimonialsPage() {
                       <span className="absolute -top-2 -right-2 px-2 py-1 bg-primary text-primary-foreground text-xs font-medium rounded-lg shadow-md z-10">
                         {feature.highlight}
                       </span>
-                      
+
                       <div className="flex-shrink-0 w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
                         <feature.icon className="w-6 h-6 text-primary" />
                       </div>
-                      
+
                       <h5 className="font-semibold text-primary mb-3 pr-4">{feature.title}</h5>
                       <p className="text-muted-foreground text-sm leading-relaxed">{feature.description}</p>
                     </div>
@@ -393,13 +391,13 @@ export default function TestimonialsPage() {
                       <span className="absolute -top-2 -right-2 px-2 py-1 bg-primary text-primary-foreground text-xs font-medium rounded-lg shadow-md z-10">
                         {program.highlight}
                       </span>
-                      
+
                       <div className="w-12 h-12 bg-primary rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
                         <program.icon className="w-6 h-6 text-primary-foreground" />
                       </div>
-                      
+
                       <h4 className="font-bold text-primary mb-3 pr-4">{program.title}</h4>
-                      
+
                       <ul className="space-y-2">
                         {program.features.map((feature, idx) => (
                           <li key={idx} className="flex items-center gap-2 text-sm text-muted-foreground">
@@ -422,91 +420,91 @@ export default function TestimonialsPage() {
                 transition={{ duration: 0.6, delay: 0.5 }}
               >
                 <div className="my-16">
-                <div className="text-center mb-8 md:mb-12">
-                  <h3 className="text-2xl text-aviation-primary sm:text-4xl md:text-5xl font-bold mb-2">
-                    Why Student <span className="text-foreground">Testimonials</span> Matter in Aviation Training
-                  </h3>
-                  <p className="text-base md:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-                    Real experiences from aviation students provide valuable insights into effective study methods, exam preparation strategies and career development in the aviation industry
-                  </p>
-                </div>
+                  <div className="text-center mb-8 md:mb-12">
+                    <h3 className="text-2xl text-aviation-primary sm:text-4xl md:text-5xl font-bold mb-2">
+                      Why Student <span className="text-foreground">Testimonials</span> Matter in Aviation Training
+                    </h3>
+                    <p className="text-base md:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+                      Real experiences from aviation students provide valuable insights into effective study methods, exam preparation strategies and career development in the aviation industry
+                    </p>
+                  </div>
 
-                <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-                  {[
-                    {
-                      icon: BookOpen,
-                      title: "Study Method Insights",
-                      description: "Learn effective techniques and approaches that helped students succeed in aviation exams",
-                      metric: "Proven Strategies"
-                    },
-                    {
-                      icon: Target,
-                      title: "Exam Preparation Tips",
-                      description: "Discover preparation methods and time management strategies from successful candidates",
-                      metric: "Success Tips"
-                    },
-                    {
-                      icon: Plane,
-                      title: "Career Path Guidance",
-                      description: "Understand different aviation career opportunities and pathways through student experiences",
-                      metric: "Career Insights"
-                    }
-                  ].map((insight, index) => (
-                    <div key={index} className="text-center p-4 sm:p-6 bg-card rounded-xl shadow-sm border border-border hover:shadow-lg transition-all duration-300 group">
-                      <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4 mx-auto group-hover:scale-110 transition-transform duration-300">
-                        <insight.icon className="w-6 h-6 text-primary" />
+                  <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+                    {[
+                      {
+                        icon: BookOpen,
+                        title: "Study Method Insights",
+                        description: "Learn effective techniques and approaches that helped students succeed in aviation exams",
+                        metric: "Proven Strategies"
+                      },
+                      {
+                        icon: Target,
+                        title: "Exam Preparation Tips",
+                        description: "Discover preparation methods and time management strategies from successful candidates",
+                        metric: "Success Tips"
+                      },
+                      {
+                        icon: Plane,
+                        title: "Career Path Guidance",
+                        description: "Understand different aviation career opportunities and pathways through student experiences",
+                        metric: "Career Insights"
+                      }
+                    ].map((insight, index) => (
+                      <div key={index} className="text-center p-4 sm:p-6 bg-card rounded-xl shadow-sm border border-border hover:shadow-lg transition-all duration-300 group">
+                        <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4 mx-auto group-hover:scale-110 transition-transform duration-300">
+                          <insight.icon className="w-6 h-6 text-primary" />
+                        </div>
+                        <h4 className="font-semibold text-primary mb-2 text-sm sm:text-base">{insight.title}</h4>
+                        <div className="text-primary font-medium mb-3 text-xs sm:text-sm px-2 py-1 bg-primary/10 rounded-full inline-block">
+                          {insight.metric}
+                        </div>
+                        <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">{insight.description}</p>
                       </div>
-                      <h4 className="font-semibold text-primary mb-2 text-sm sm:text-base">{insight.title}</h4>
-                      <div className="text-primary font-medium mb-3 text-xs sm:text-sm px-2 py-1 bg-primary/10 rounded-full inline-block">
-                        {insight.metric}
-                      </div>
-                      <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">{insight.description}</p>
+                    ))}
+                  </div>
+                  <div className="text-center mt-12">
+                    <div className="inline-flex items-center gap-2 px-4 sm:px-6 py-2 sm:py-3 bg-primary/10 text-primary rounded-full font-medium text-sm sm:text-base">
+                      <Star className="w-4 h-4 sm:w-5 sm:h-5" />
+                      <span>Authentic Student Experiences & Reviews</span>
                     </div>
-                  ))}
-                </div>
-                <div className="text-center mt-12">
-                  <div className="inline-flex items-center gap-2 px-4 sm:px-6 py-2 sm:py-3 bg-primary/10 text-primary rounded-full font-medium text-sm sm:text-base">
-                    <Star className="w-4 h-4 sm:w-5 sm:h-5" />
-                    <span>Authentic Student Experiences & Reviews</span>
                   </div>
                 </div>
-              </div>
               </motion.div>
 
-                    {/* <p className="text-base md:text-lg leading-relaxed text-muted-foreground text-center">
+              {/* <p className="text-base md:text-lg leading-relaxed text-muted-foreground text-center">
                       Discover more about our training approach in our <a href="/blog" className="text-aviation-primary hover:text-aviation-primary/80 underline">aviation blog</a> or explore our <a href="/faq" className="text-aviation-primary hover:text-aviation-primary/80 underline">frequently asked questions</a> to learn more about the pilot training process.
                     </p> */}
-{/* Secondary CTAs */}
-      <motion.div
-        className="text-center mt-12 md:mt-36 "
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ delay: 0.8, duration: 0.6 }}
-      >
-        <h3 className="text-2xl md:text-3xl lg:text-4xl font-bold text-primary mb-6">
-          Explore More Ways to Succeed
-        </h3>
-        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-          <div onClick={() => testimonialsAnalytics.trackCTAClick('contact', 'secondary-cta')}>
-            <TransparentButton
-              href="/contact"
-              icon={Users}
-              label="Contact Our Team"
-            />
-          </div>
-          <TransparentButton
-            href="/blog"
-            icon={GraduationCap}
-            label="Read Success Tips"
-          />
-          <TransparentButton
-            href="/faq"
-            icon={Award}
-            label="Common Questions"
-          />
-        </div>
-      </motion.div>
+              {/* Secondary CTAs */}
+              <motion.div
+                className="text-center mt-12 md:mt-36 "
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.8, duration: 0.6 }}
+              >
+                <h3 className="text-2xl md:text-3xl lg:text-4xl font-bold text-primary mb-6">
+                  Explore More Ways to Succeed
+                </h3>
+                <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                  <div onClick={() => testimonialsAnalytics.trackCTAClick('contact', 'secondary-cta')}>
+                    <TransparentButton
+                      href="/contact"
+                      icon={Users}
+                      label="Contact Our Team"
+                    />
+                  </div>
+                  <TransparentButton
+                    href="/blog"
+                    icon={GraduationCap}
+                    label="Read Success Tips"
+                  />
+                  <TransparentButton
+                    href="/faq"
+                    icon={Award}
+                    label="Common Questions"
+                  />
+                </div>
+              </motion.div>
             </div>
           </section>
 
@@ -516,7 +514,7 @@ export default function TestimonialsPage() {
         <footer className="bg-card border-t border-border py-12">
           <div className="text-center">
             <p className="text-sm text-muted-foreground">
-              Aviators Training Centre - India's Leading DGCA CPL/ATPL Ground School Training Institute | 
+              Aviators Training Centre - India's Leading DGCA CPL/ATPL Ground School Training Institute |
               Located in Delhi, India | Serving aspiring pilots across India
             </p>
           </div>

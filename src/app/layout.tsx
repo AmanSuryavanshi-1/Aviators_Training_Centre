@@ -256,8 +256,7 @@ export default function RootLayout({
       <body className={`bg-background no-horizontal-overflow ${inter.variable} ${montserrat.variable} ${roboto.variable}`}>
         <ThemeProvider
           attribute="class"
-          defaultTheme="system"
-          enableSystem
+          defaultTheme="light"
           disableTransitionOnChange
         >
           <ConditionalAnalytics>

@@ -18,7 +18,7 @@ const FeaturedBlogSection = dynamic(() => import("@/components/features/courses/
 const PilotPathway = dynamic(() => import("@/components/features/courses/PilotPathway"));
 const FAQ = dynamic(() => import("@/components/shared/FAQ"));
 const CTASection = dynamic(() => import("@/components/features/courses/CTASection"));
-const InfiniteVideoCarousel = dynamic(() => import("@/components/testimonials/InfiniteVideoCarousel"));
+const TestimonialsVideoCarousel = dynamic(() => import("@/components/testimonials/TestimonialsVideoCarousel"));
 
 // Use consistent animation variants with proper easing
 const { sectionVariants, itemVariants } = commonVariants;
@@ -130,7 +130,7 @@ export default function HomePageClient() {
               </p>
             </motion.div>
 
-            <InfiniteVideoCarousel />
+            <TestimonialsVideoCarousel />
 
             {/* Action Buttons */}
             <motion.div

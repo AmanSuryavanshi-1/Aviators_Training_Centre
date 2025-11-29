@@ -22,7 +22,22 @@ export const youtubeShorts: YouTubeShort[] = videoTestimonials as YouTubeShort[]
 
 // Utility function to generate completely hidden YouTube embed URL
 export function generateEmbedUrl(videoId: string): string {
-  return `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&controls=0&disablekb=1&fs=0&iv_load_policy=3&modestbranding=1&rel=0&showinfo=0&cc_load_policy=0&playsinline=1&enablejsapi=0&start=1&end=999999&origin=${typeof window !== 'undefined' ? window.location.origin : ''}`;
+  // Use standard youtube.com domain which is less prone to blocking than nocookie in some contexts
+  // Ensure origin is set for security and to prevent blocking
+  const origin = typeof window !== 'undefined' ? window.location.origin : '';
+  return `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1&playsinline=1&enablejsapi=1&origin=${origin}`;
+}
+
+// Utility function to generate reliable YouTube thumbnail URL
+export function getYouTubeThumbnail(videoId: string, quality: 'default' | 'hq' | 'mq' | 'sd' | '0' = '0'): string {
+  // For maximum reliability, use frame thumbnails (0.jpg, 1.jpg, etc.)
+  // These are ALWAYS available for any YouTube video including Shorts
+  // 0.jpg is the most reliable as it's the first frame
+  if (quality === '0') {
+    return `https://i.ytimg.com/vi/${videoId}/0.jpg`;
+  }
+  // Fallback to quality defaults for manual overrides
+  return `https://i.ytimg.com/vi/${videoId}/${quality}default.jpg`;
 }
 
 // Utility function to extract video ID from YouTube URL
@@ -31,14 +46,14 @@ export function extractVideoId(url: string): string | null {
     /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/,
     /youtube\.com\/shorts\/([^"&?\/\s]{11})/
   ];
-  
+
   for (const pattern of patterns) {
     const match = url.match(pattern);
     if (match) {
       return match[1];
     }
   }
-  
+
   return null;
 }
 
@@ -51,7 +66,7 @@ export function getStudentById(studentId: string): Student | null {
 export function getVideoWithStudent(videoId: string): { video: YouTubeShort; student: Student | null } | null {
   const video = youtubeShorts.find(v => v.id === videoId);
   if (!video) return null;
-  
+
   const student = video.studentId ? getStudentById(video.studentId) : null;
   return { video, student };
 }
@@ -91,24 +106,24 @@ export type TextTestimonial = (typeof textTestimonials)[0];
 // SEO Enhancement Functions
 export function getAllSEOKeywords(): string[] {
   const allKeywords = new Set<string>();
-  
+
   youtubeShorts.forEach(video => {
     video.seoKeywords?.forEach(keyword => allKeywords.add(keyword));
     video.subjects?.forEach(subject => allKeywords.add(subject));
   });
-  
+
   return Array.from(allKeywords);
 }
 
 export function getKeywordsBySubject(subject: string): string[] {
   const keywords = new Set<string>();
-  
+
   youtubeShorts
     .filter(video => video.subjects?.includes(subject))
     .forEach(video => {
       video.seoKeywords?.forEach(keyword => keywords.add(keyword));
     });
-  
+
   return Array.from(keywords);
 }
 
@@ -125,9 +140,9 @@ export function generateSEOTitle(): string {
 export function getVideoSEOData(videoId: string) {
   const video = youtubeShorts.find(v => v.id === videoId);
   const student = video?.studentId ? getStudentById(video.studentId) : null;
-  
+
   if (!video) return null;
-  
+
   return {
     title: `${video.studentName} - ${video.subjects?.[0] || 'Aviation'} Success Story`,
     description: `${video.studentName} shares their journey in ${video.subjects?.join(' and ')} at Aviators Training Centre. ${video.seoKeywords?.slice(0, 3).join(', ')}.`,
@@ -153,7 +168,7 @@ export function generateTestimonialsFAQSchema() {
         }
       },
       {
-        "@type": "Question", 
+        "@type": "Question",
         "name": "How successful are students at Aviators Training Centre?",
         "acceptedAnswer": {
           "@type": "Answer",
@@ -183,7 +198,7 @@ export function generateTestimonialsFAQSchema() {
 // SEO Enhancement: Generate Course Schema
 export function generateCourseSchema() {
   const uniqueSubjects = [...new Set(youtubeShorts.flatMap(v => v.subjects || []))];
-  
+
   return uniqueSubjects.map(subject => ({
     "@context": "https://schema.org",
     "@type": "Course",
