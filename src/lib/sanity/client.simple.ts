@@ -59,10 +59,10 @@ export const sanitySimpleService = {
           }
         }
       }`
-      
-      const posts = await client.fetch(query)
+
+      const posts = await client.fetch(query, {}, { next: { revalidate: 60 } })
       console.log('Fetched posts:', posts?.length || 0, 'posts')
-      
+
       // Ensure all posts have proper structure
       const safePosts = (posts || []).map(post => ({
         ...post,
@@ -74,7 +74,7 @@ export const sanitySimpleService = {
         category: post.category || { title: 'Uncategorized', slug: { current: 'uncategorized' } },
         author: post.author || { name: 'Anonymous', slug: { current: 'anonymous' } }
       }))
-      
+
       return safePosts
     } catch (error) {
       console.error('Error fetching posts:', error)
@@ -132,8 +132,8 @@ export const sanitySimpleService = {
         ctaPlacements,
         structuredData
       }`
-      
-      const post = await client.fetch(query, { slug })
+
+      const post = await client.fetch(query, { slug }, { next: { revalidate: 60 } })
       return post || null
     } catch (error) {
       console.error('Error fetching post:', error)
@@ -151,10 +151,10 @@ export const sanitySimpleService = {
         color,
         _updatedAt
       }`
-      
-      const categories = await client.fetch(query)
+
+      const categories = await client.fetch(query, {}, { next: { revalidate: 60 } })
       console.log('Fetched categories:', categories?.length || 0, 'categories')
-      
+
       // Ensure all categories have proper structure
       const safeCategories = (categories || []).map(category => ({
         ...category,
@@ -162,7 +162,7 @@ export const sanitySimpleService = {
         title: category.title || 'Untitled Category',
         _updatedAt: category._updatedAt || new Date().toISOString()
       }))
-      
+
       return safeCategories
     } catch (error) {
       console.error('Error fetching categories:', error)
@@ -187,10 +187,10 @@ export const sanitySimpleService = {
           alt
         }
       }`
-      
-      const authors = await client.fetch(query)
+
+      const authors = await client.fetch(query, {}, { next: { revalidate: 60 } })
       console.log('Fetched authors:', authors?.length || 0, 'authors')
-      
+
       // Ensure all authors have proper structure
       const safeAuthors = (authors || []).map(author => ({
         ...author,
@@ -198,7 +198,7 @@ export const sanitySimpleService = {
         name: author.name || 'Anonymous Author',
         _updatedAt: author._updatedAt || new Date().toISOString()
       }))
-      
+
       return safeAuthors
     } catch (error) {
       console.error('Error fetching authors:', error)
@@ -208,15 +208,15 @@ export const sanitySimpleService = {
 
   getImageUrl(source: any, options: { width?: number; height?: number; format?: string; quality?: number } = {}) {
     if (!source || !source.asset) return null
-    
+
     try {
       let builder = urlFor(source)
-      
+
       if (options.width) builder = builder.width(options.width)
       if (options.height) builder = builder.height(options.height)
       if (options.format) builder = builder.format(options.format)
       if (options.quality) builder = builder.quality(options.quality)
-      
+
       return builder.url()
     } catch (error) {
       console.error('Error generating image URL:', error)

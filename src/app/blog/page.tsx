@@ -6,6 +6,9 @@ import FeaturedPostsCarousel from '@/components/features/blog/FeaturedPostsCarou
 // Consistent heading color tokens used across the site
 const aviationPrimary = 'text-teal-700 dark:text-teal-300';
 
+export const revalidate = 60;
+
+
 export const metadata: Metadata = {
   title: 'Aviation Blog - Aviators Training Centre',
   description: 'Latest insights, tips, and updates from the aviation industry. Expert advice for aspiring pilots and aviation professionals.',
@@ -19,7 +22,7 @@ export default async function BlogPage() {
     console.log('Fetching blog posts...');
     posts = await sanitySimpleService.getAllPosts({ limit: 20 });
     console.log('Fetched posts:', posts?.length || 0);
-    
+
     // Ensure posts is an array
     if (!Array.isArray(posts)) {
       posts = [];
@@ -94,7 +97,7 @@ export default async function BlogPage() {
           </div>
         )}
 
-{/* Blog Posts Grid */}
+        {/* Blog Posts Grid */}
         {!error && allPosts.length > 0 && (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 py-4 sm:py-6 md:py-8">
             {allPosts.map((post) => (

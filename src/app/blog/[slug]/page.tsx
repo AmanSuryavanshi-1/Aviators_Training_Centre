@@ -11,6 +11,9 @@ import ShareButton from '@/components/features/blog/ShareButton';
 import DynamicCTA from '@/components/features/blog/DynamicCTA';
 import '@/styles/blog-content.css';
 
+export const revalidate = 60;
+
+
 interface BlogPostPageProps {
   params: Promise<{
     slug: string;
