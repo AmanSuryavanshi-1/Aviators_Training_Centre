@@ -311,19 +311,21 @@ const Courses: React.FC = () => {
                           {service.description}
                         </CardDescription>
                       </CardContent>
-                      <CardFooter className="flex flex-col gap-2 p-0 mt-auto sm:flex-row sm:gap-3">
-                        <div className="flex-grow sm:flex-grow-0">
+                      <CardFooter className="flex flex-wrap gap-2 p-0 mt-auto w-full">
+                        <div className="flex-1 min-w-[120px]">
                           <TransparentButton
                             href={service.link}
                             icon={ArrowRight}
                             label={service.learnMoreText}
-                            className="min-h-[40px] w-full sm:w-auto"
+                            mobileLabel="Learn More"
+                            className="min-h-[44px] w-full"
                           />
                         </div>
-                        <div className="flex-grow sm:flex-grow-0">
+                        <div className="flex-1 min-w-[120px]">
                           <BookDemoButton
                             size="sm"
-                            className="min-h-[40px] w-full sm:w-auto"
+                            mobileLabel="Demo"
+                            className="min-h-[44px] w-full"
                             state={{ subject: `Demo Request: ${service.title}`, courseName: service.title }}
                           />
                         </div>

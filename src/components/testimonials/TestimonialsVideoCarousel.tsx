@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight, Play, Volume2, VolumeX } from 'lucide-react';
 import { youtubeShorts, studentsData, generateEmbedUrl, getYouTubeThumbnail } from '@/lib/testimonials/data';
 import { cn } from '@/lib/utils';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 export default function TestimonialsVideoCarousel() {
     const [currentIndex, setCurrentIndex] = useState(0);
@@ -11,6 +12,7 @@ export default function TestimonialsVideoCarousel() {
     const [isAutoPlaying, setIsAutoPlaying] = useState(true);
     const [isMuted, setIsMuted] = useState(false);
     const autoPlayRef = useRef<NodeJS.Timeout | null>(null);
+    const isMobile = useIsMobile();
 
     const studentMap = new Map(studentsData.map(s => [s.id, s]));
 
@@ -109,182 +111,192 @@ export default function TestimonialsVideoCarousel() {
                     </button>
 
                     {/* Video Cards */}
-                    <AnimatePresence mode="sync" initial={false}>
-                        <motion.div
-                            className="flex items-center justify-center gap-3 md:gap-6 w-full perspective-1000"
-                            drag="x"
-                            dragConstraints={{ left: 0, right: 0 }}
-                            dragElastic={0.2}
-                            onDragEnd={handleDragEnd}
-                        >
-                            {visibleVideos.map(({ video, position }) => {
-                                const student = studentMap.get(video.studentId || '');
-                                const isCenter = position === 0;
-                                const isInner = Math.abs(position) === 1;
+                    <motion.div
+                        className="flex items-center justify-center gap-3 md:gap-6 w-full perspective-1000"
+                        drag="x"
+                        dragConstraints={{ left: 0, right: 0 }}
+                        dragElastic={0.2}
+                        onDragEnd={handleDragEnd}
+                    >
+                        {visibleVideos.map(({ video, position }) => {
+                            const student = studentMap.get(video.studentId || '');
+                            const isCenter = position === 0;
+                            const isInner = Math.abs(position) === 1;
 
-                                const widthClass = isCenter ? 'w-auto' : (isInner ? 'w-[200px] md:w-[240px]' : 'w-[160px] md:w-[180px]');
-                                const height = isCenter ? 'h-[50vh] sm:h-[60vh] md:h-[65vh]' : (isInner ? 'h-[40vh] sm:h-[48vh] md:h-[52vh]' : 'h-[35vh] sm:h-[42vh] md:h-[45vh]');
-                                const opacity = isCenter ? 1 : (isInner ? 0.6 : 0.4);
-                                const blur = isCenter ? 0 : (isInner ? 2 : 4);
-                                const scale = isCenter ? 1 : (isInner ? 0.9 : 0.85);
-                                const zIndex = isCenter ? 30 : (isInner ? 20 : 10);
+                            // Determine visibility based on breakpoints to prevent blur artifacts
+                            // Mobile (<768px): Only Center is visible
+                            // Tablet/Desktop (<1280px): Center and Inner are visible
+                            // XL (>1280px): All are visible
+                            // We set blur to 0 for hidden items so they don't "unblur" when appearing
+                            const isHiddenOnMobile = isMobile && !isCenter;
+                            // We can't easily detect XL here without another hook, but the mobile issue is the priority.
+                            // For desktop, the transition from Outer (Blur 4) to Inner (Blur 2) is fine.
 
-                                return (
+                            const widthClass = isCenter ? 'w-auto' : (isInner ? 'w-[200px] md:w-[240px]' : 'w-[160px] md:w-[180px]');
+                            const height = isCenter ? 'h-[50vh] sm:h-[60vh] md:h-[65vh]' : (isInner ? 'h-[40vh] sm:h-[48vh] md:h-[52vh]' : 'h-[35vh] sm:h-[42vh] md:h-[45vh]');
+                            const opacity = isCenter ? 1 : (isInner ? 0.6 : 0.4);
+
+                            // Force blur to 0 if mobile, or if it's the center item. 
+                            // For side items on mobile, they are hidden, so blur 0 prevents "unblurring" when they slide in.
+                            const blur = isMobile ? 0 : (isCenter ? 0 : (isInner ? 2 : 4));
+
+                            const scale = isCenter ? 1 : (isInner ? 0.9 : 0.85);
+                            const zIndex = isCenter ? 30 : (isInner ? 20 : 10);
+
+                            return (
+                                <motion.div
+                                    key={video.id}
+                                    className={cn(
+                                        "flex flex-col gap-4 items-center",
+                                        position !== 0 ? (Math.abs(position) === 1 ? "hidden md:flex" : "hidden xl:flex") : "flex",
+                                        widthClass
+                                    )}
+                                    style={{ zIndex }}
+                                    layout
+                                    initial={{ opacity: 0, scale: 0.8, filter: 'blur(0px)' }}
+                                    animate={{
+                                        opacity,
+                                        scale,
+                                        filter: `blur(${blur}px)`,
+                                        transition: {
+                                            duration: 0.5,
+                                            ease: [0.4, 0.0, 0.2, 1],
+                                            opacity: { duration: 0.3 },
+                                            scale: { duration: 0.5, ease: [0.34, 1.56, 0.64, 1] },
+                                            filter: { duration: 0.4 }
+                                        }
+                                    }}
+                                >
                                     <motion.div
-                                        key={video.id}
                                         className={cn(
-                                            "flex flex-col gap-4 items-center",
-                                            position !== 0 ? (Math.abs(position) === 1 ? "hidden md:flex" : "hidden xl:flex") : "flex",
-                                            widthClass
+                                            "relative rounded-3xl overflow-hidden shadow-2xl bg-black",
+                                            height,
+                                            isCenter ? "aspect-[9/16]" : "w-full"
                                         )}
-                                        style={{ zIndex }}
-                                        layout
-                                        initial={{ opacity: 0, scale: 0.8 }}
-                                        animate={{
-                                            opacity,
-                                            scale,
-                                            filter: `blur(${blur}px)`,
-                                            transition: {
-                                                duration: 0.5,
-                                                ease: [0.4, 0.0, 0.2, 1],
-                                                opacity: { duration: 0.3 },
-                                                scale: { duration: 0.5, ease: [0.34, 1.56, 0.64, 1] },
-                                                filter: { duration: 0.4 }
-                                            }
-                                        }}
-                                        exit={{ opacity: 0, scale: 0.8, transition: { duration: 0.3 } }}
+                                        whileHover={isCenter ? {
+                                            scale: 1.02,
+                                            boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.5)",
+                                            transition: { duration: 0.2 }
+                                        } : {}}
                                     >
-                                        <motion.div
-                                            className={cn(
-                                                "relative rounded-3xl overflow-hidden shadow-2xl bg-black",
-                                                height,
-                                                isCenter ? "aspect-[9/16]" : "w-full"
-                                            )}
-                                            whileHover={isCenter ? {
-                                                scale: 1.02,
-                                                boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.5)",
-                                                transition: { duration: 0.2 }
-                                            } : {}}
-                                        >
-                                            {isCenter && isPlaying ? (
-                                                <div
-                                                    className="relative w-full h-full overflow-hidden cursor-pointer"
-                                                    onClick={(e) => {
-                                                        e.stopPropagation();
+                                        {isCenter && isPlaying ? (
+                                            <div
+                                                className="relative w-full h-full overflow-hidden cursor-pointer"
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    setIsPlaying(false);
+                                                }}
+                                                role="button"
+                                                tabIndex={0}
+                                                aria-label="Pause video"
+                                                onKeyDown={(e) => {
+                                                    if (e.key === 'Enter' || e.key === ' ') {
+                                                        e.preventDefault();
                                                         setIsPlaying(false);
+                                                    }
+                                                }}
+                                            >
+                                                <iframe
+                                                    src={`${generateEmbedUrl(video.videoId)}&autoplay=1&controls=0&showinfo=0&rel=0&modestbranding=1&loop=1&playlist=${video.videoId}${isMuted ? '&mute=1' : '&mute=0'}&enablejsapi=1`}
+                                                    title={`${video.studentName} testimonial`}
+                                                    className="absolute inset-0 w-full h-full pointer-events-none"
+                                                    style={{
+                                                        transform: 'scale(1.01)',
+                                                        objectFit: 'cover'
                                                     }}
-                                                    role="button"
-                                                    tabIndex={0}
-                                                    aria-label="Pause video"
-                                                    onKeyDown={(e) => {
-                                                        if (e.key === 'Enter' || e.key === ' ') {
-                                                            e.preventDefault();
-                                                            setIsPlaying(false);
+                                                    allow="autoplay; encrypted-media; accelerometer; gyroscope; picture-in-picture"
+                                                    allowFullScreen
+                                                />
+                                                <div className="absolute bottom-6 right-6 flex gap-3 z-20">
+                                                    <button
+                                                        onClick={(e) => {
+                                                            e.stopPropagation();
+                                                            setIsMuted(!isMuted);
+                                                        }}
+                                                        className="p-3 rounded-full bg-black/40 hover:bg-black/60 text-white backdrop-blur-md transition-all border border-white/10 touch-manipulation"
+                                                        aria-label={isMuted ? 'Unmute video' : 'Mute video'}
+                                                        type="button"
+                                                    >
+                                                        {isMuted ? <VolumeX className="w-5 h-5" /> : <Volume2 className="w-5 h-5" />}
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        ) : (
+                                            <div
+                                                className="relative w-full h-full group cursor-pointer"
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    if (isCenter) handlePlayClick();
+                                                }}
+                                                role="button"
+                                                tabIndex={isCenter ? 0 : -1}
+                                                aria-label={`Play ${video.studentName} testimonial`}
+                                                onKeyDown={(e) => {
+                                                    if (isCenter && (e.key === 'Enter' || e.key === ' ')) {
+                                                        e.preventDefault();
+                                                        handlePlayClick();
+                                                    }
+                                                }}
+                                            >
+                                                <img
+                                                    src={getYouTubeThumbnail(video.videoId, '0')}
+                                                    alt={`${video.studentName} testimonial`}
+                                                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                                                    loading="eager"
+                                                    onError={(e) => {
+                                                        const current = e.currentTarget.src;
+                                                        if (current.includes('/0.jpg')) {
+                                                            e.currentTarget.src = `https://i.ytimg.com/vi/${video.videoId}/1.jpg`;
+                                                        } else if (current.includes('/1.jpg')) {
+                                                            e.currentTarget.src = `https://i.ytimg.com/vi/${video.videoId}/2.jpg`;
+                                                        } else if (current.includes('/2.jpg')) {
+                                                            e.currentTarget.src = `https://i.ytimg.com/vi/${video.videoId}/hqdefault.jpg`;
                                                         }
                                                     }}
-                                                >
-                                                    <iframe
-                                                        src={`${generateEmbedUrl(video.videoId)}&autoplay=1&controls=0&showinfo=0&rel=0&modestbranding=1&loop=1&playlist=${video.videoId}${isMuted ? '&mute=1' : '&mute=0'}&enablejsapi=1`}
-                                                        title={`${video.studentName} testimonial`}
-                                                        className="absolute inset-0 w-full h-full pointer-events-none"
-                                                        style={{
-                                                            transform: 'scale(1.01)',
-                                                            objectFit: 'cover'
-                                                        }}
-                                                        allow="autoplay; encrypted-media; accelerometer; gyroscope; picture-in-picture"
-                                                        allowFullScreen
-                                                    />
-                                                    <div className="absolute bottom-6 right-6 flex gap-3 z-20">
-                                                        <button
-                                                            onClick={(e) => {
-                                                                e.stopPropagation();
-                                                                setIsMuted(!isMuted);
-                                                            }}
-                                                            className="p-3 rounded-full bg-black/40 hover:bg-black/60 text-white backdrop-blur-md transition-all border border-white/10 touch-manipulation"
-                                                            aria-label={isMuted ? 'Unmute video' : 'Mute video'}
-                                                            type="button"
+                                                />
+                                                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                                                {isCenter && (
+                                                    <div className="absolute top-6 left-6 z-10">
+                                                        <motion.button
+                                                            className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-white/20 hover:bg-white/30 backdrop-blur-md text-white border border-white/30 transition-all shadow-lg"
+                                                            whileHover={{ scale: 1.05 }}
+                                                            whileTap={{ scale: 0.95 }}
                                                         >
-                                                            {isMuted ? <VolumeX className="w-5 h-5" /> : <Volume2 className="w-5 h-5" />}
-                                                        </button>
+                                                            <Play className="w-4 h-4 fill-current" />
+                                                            <span className="text-sm font-medium tracking-wide">Play Video</span>
+                                                        </motion.button>
                                                     </div>
-                                                </div>
-                                            ) : (
-                                                <div
-                                                    className="relative w-full h-full group cursor-pointer"
-                                                    onClick={(e) => {
-                                                        e.stopPropagation();
-                                                        if (isCenter) handlePlayClick();
-                                                    }}
-                                                    role="button"
-                                                    tabIndex={isCenter ? 0 : -1}
-                                                    aria-label={`Play ${video.studentName} testimonial`}
-                                                    onKeyDown={(e) => {
-                                                        if (isCenter && (e.key === 'Enter' || e.key === ' ')) {
-                                                            e.preventDefault();
-                                                            handlePlayClick();
-                                                        }
-                                                    }}
-                                                >
-                                                    <img
-                                                        src={getYouTubeThumbnail(video.videoId, '0')}
-                                                        alt={`${video.studentName} testimonial`}
-                                                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                                                        loading="eager"
-                                                        onError={(e) => {
-                                                            const current = e.currentTarget.src;
-                                                            if (current.includes('/0.jpg')) {
-                                                                e.currentTarget.src = `https://i.ytimg.com/vi/${video.videoId}/1.jpg`;
-                                                            } else if (current.includes('/1.jpg')) {
-                                                                e.currentTarget.src = `https://i.ytimg.com/vi/${video.videoId}/2.jpg`;
-                                                            } else if (current.includes('/2.jpg')) {
-                                                                e.currentTarget.src = `https://i.ytimg.com/vi/${video.videoId}/hqdefault.jpg`;
-                                                            }
-                                                        }}
-                                                    />
-                                                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-                                                    {isCenter && (
-                                                        <div className="absolute top-6 left-6 z-10">
-                                                            <motion.button
-                                                                className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-white/20 hover:bg-white/30 backdrop-blur-md text-white border border-white/30 transition-all shadow-lg"
-                                                                whileHover={{ scale: 1.05 }}
-                                                                whileTap={{ scale: 0.95 }}
-                                                            >
-                                                                <Play className="w-4 h-4 fill-current" />
-                                                                <span className="text-sm font-medium tracking-wide">Play Video</span>
-                                                            </motion.button>
-                                                        </div>
-                                                    )}
-                                                </div>
-                                            )}
-                                        </motion.div>
-
-                                        <motion.div
-                                            className="text-left px-2 w-full"
-                                            initial={{ opacity: 0, y: 10 }}
-                                            animate={{
-                                                opacity: isCenter ? 1 : 0.5,
-                                                y: 0,
-                                                transition: { duration: 0.4, delay: 0.15 }
-                                            }}
-                                        >
-                                            <h3 className={cn(
-                                                "font-bold text-slate-900 dark:text-white mb-1",
-                                                isCenter ? "text-2xl" : "text-lg"
-                                            )}>
-                                                {video.studentName}
-                                            </h3>
-                                            <p className={cn(
-                                                "text-slate-500 dark:text-slate-400 font-medium",
-                                                isCenter ? "text-base" : "text-sm"
-                                            )}>
-                                                {video.subjects?.join(", ") || student?.location || 'Aviation Student'}
-                                            </p>
-                                        </motion.div>
+                                                )}
+                                            </div>
+                                        )}
                                     </motion.div>
-                                );
-                            })}
-                        </motion.div>
-                    </AnimatePresence>
+
+                                    <motion.div
+                                        className="text-left px-2 w-full"
+                                        initial={{ opacity: 0, y: 10 }}
+                                        animate={{
+                                            opacity: isCenter ? 1 : 0.5,
+                                            y: 0,
+                                            transition: { duration: 0.4, delay: 0.15 }
+                                        }}
+                                    >
+                                        <h3 className={cn(
+                                            "font-bold text-slate-900 dark:text-white mb-1",
+                                            isCenter ? "text-2xl" : "text-lg"
+                                        )}>
+                                            {video.studentName}
+                                        </h3>
+                                        <p className={cn(
+                                            "text-slate-500 dark:text-slate-400 font-medium",
+                                            isCenter ? "text-base" : "text-sm"
+                                        )}>
+                                            {video.subjects?.join(", ") || student?.location || 'Aviation Student'}
+                                        </p>
+                                    </motion.div>
+                                </motion.div>
+                            );
+                        })}
+                    </motion.div>
                 </div>
 
                 {/* Pagination Dots */}

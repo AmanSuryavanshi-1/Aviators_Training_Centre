@@ -137,24 +137,24 @@ export default function HomePageClient() {
               className="text-center mt-12 space-y-6"
               variants={itemVariants}
             >
-              <div className="flex flex-row flex-wrap gap-3 sm:gap-4 justify-center items-center">
-                <div onClick={() => handleCTAClick('Browse All Testimonials', '/testimonials')}>
+              <div className="flex flex-wrap justify-center gap-3 sm:gap-4 w-full max-w-md mx-auto">
+                <div onClick={() => handleCTAClick('Browse All Testimonials', '/testimonials')} className="flex-1 min-w-[140px]">
                   <SolidButton
                     href="/testimonials"
                     icon={Users}
                     label="Browse All Testimonials"
                     mobileLabel="Testimonials"
-                    className="data-[conversion=true]:conversion-button"
+                    className="w-full data-[conversion=true]:conversion-button"
                   />
                 </div>
 
-                <div onClick={() => handleCTAClick('Contact Us', '/contact')}>
+                <div onClick={() => handleCTAClick('Contact Us', '/contact')} className="flex-1 min-w-[140px]">
                   <TransparentButton
                     href="/contact"
                     icon={GraduationCap}
                     label="Contact Us"
                     mobileLabel="Contact"
-                    className="data-[conversion=true]:conversion-button"
+                    className="w-full data-[conversion=true]:conversion-button"
                   />
                 </div>
               </div>

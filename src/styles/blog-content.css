@@ -3,7 +3,7 @@
 
   /* Tables */
   table {
-    @apply w-full border-collapse border border-aviation-accent/30 my-8 rounded-lg overflow-hidden shadow-sm;
+    @apply w-full border-collapse border border-aviation-accent/30 my-8 rounded-lg shadow-sm block overflow-x-auto whitespace-nowrap md:table md:whitespace-normal;
   }
 
   table th {

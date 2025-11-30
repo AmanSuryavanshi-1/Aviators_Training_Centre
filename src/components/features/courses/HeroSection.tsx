@@ -247,12 +247,17 @@ const HeroSectionInner = () => {
           </motion.p>
 
           {/* --- Action Buttons --- */}
-          <motion.div variants={itemVariants} className="flex flex-row flex-wrap gap-3 justify-center items-center sm:gap-4 md:gap-6">
+          <motion.div variants={itemVariants} className="flex flex-wrap justify-center gap-3 w-full max-w-md mx-auto">
             {/* Primary Action Button (Replaced with SolidButton) */}
             <SolidButton
               href={slides[currentSlide].buttonLink}
-              icon={ArrowRight} // Using ArrowRight icon
+              icon={ArrowRight}
               label={slides[currentSlide].buttonText}
+              mobileLabel={slides[currentSlide].buttonText === "Explore Courses" ? "Courses" :
+                slides[currentSlide].buttonText === "Meet Our Instructors" ? "Instructors" :
+                  slides[currentSlide].buttonText === "View Course Structure" ? "Structure" :
+                    slides[currentSlide].buttonText === "Contact Admissions" ? "Contact" : undefined}
+              className="flex-1 w-auto min-w-[140px]"
             />
 
             {/* Book a Demo Button (Assuming it might use new buttons internally or has its own style) */}
@@ -265,7 +270,7 @@ const HeroSectionInner = () => {
               mobileLabel="Demo"
               textColorClassName="text-white" // <-- Use the new prop for white text
               // Optional: Still override border if needed, separate from text color
-              className="border-white bg-transparent/30 dark:border-white"
+              className="border-white bg-transparent/30 dark:border-white flex-1 w-auto min-w-[140px]"
             />
             {/* Optional Secondary/Contact Button (Using TransparentButton if uncommented) */}
             {/*

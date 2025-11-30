@@ -12,7 +12,7 @@ interface SafePortableTextProps {
 // Helper function to validate and clean portable text data
 const validatePortableTextValue = (value: any): any[] | null => {
   if (!value) return null;
-  
+
   if (typeof value === 'string') {
     // Convert string to a simple block
     return [{
@@ -23,31 +23,31 @@ const validatePortableTextValue = (value: any): any[] | null => {
       }]
     }];
   }
-  
+
   if (!Array.isArray(value)) return null;
-  
+
   // Filter and validate blocks
   const validBlocks = value.filter(block => {
     if (!block || typeof block !== 'object') return false;
     if (!block._type) return false;
-    
+
     // For block types, ensure children exist and are valid
     if (block._type === 'block') {
       if (!Array.isArray(block.children)) return false;
-      
+
       // Validate children
       const validChildren = block.children.filter((child: any) => {
         return child && typeof child === 'object' && child._type === 'span' && typeof child.text === 'string';
       });
-      
+
       // Update block with valid children only
       block.children = validChildren;
       return validChildren.length > 0;
     }
-    
+
     return true;
   });
-  
+
   return validBlocks.length > 0 ? validBlocks : null;
 };
 
@@ -68,7 +68,7 @@ const SafePortableText: React.FC<SafePortableTextProps> = ({ value, className })
   try {
     return (
       <div className={className}>
-        <PortableText 
+        <PortableText
           value={cleanValue}
           components={{
             block: {
@@ -196,19 +196,19 @@ const SafePortableText: React.FC<SafePortableTextProps> = ({ value, className })
                 </div>
               ),
               htmlBlock: ({ value }) => (
-                <div 
-                  className="my-6"
-                  dangerouslySetInnerHTML={{ __html: value?.html || '' }}
-                />
+                <div className="my-6 overflow-x-auto">
+                  <div
+                    dangerouslySetInnerHTML={{ __html: value?.html || '' }}
+                  />
+                </div>
               ),
               callout: ({ value }) => (
-                <div className={`my-8 p-6 rounded-r-lg border-l-4 shadow-sm ${
-                  value?.type === 'warning' ? 'bg-yellow-50 border-yellow-500' :
-                  value?.type === 'error' ? 'bg-red-50 border-red-500' :
-                  value?.type === 'success' ? 'bg-green-50 border-green-500' :
-                  value?.type === 'tip' ? 'bg-blue-50 border-blue-500' :
-                  'bg-aviation-light/10 border-aviation-primary'
-                }`}>
+                <div className={`my-8 p-6 rounded-r-lg border-l-4 shadow-sm ${value?.type === 'warning' ? 'bg-yellow-50 border-yellow-500' :
+                    value?.type === 'error' ? 'bg-red-50 border-red-500' :
+                      value?.type === 'success' ? 'bg-green-50 border-green-500' :
+                        value?.type === 'tip' ? 'bg-blue-50 border-blue-500' :
+                          'bg-aviation-light/10 border-aviation-primary'
+                  }`}>
                   {value?.title && (
                     <h4 className="font-heading font-bold mb-3 text-aviation-primary">
                       {value.title}

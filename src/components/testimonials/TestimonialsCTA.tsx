@@ -44,8 +44,8 @@ export default function TestimonialsCTA({ className, variant = 'primary' }: Test
             <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
               Join hundreds of successful pilots who started their career with our comprehensive training programs.
             </p>
-            <div className="flex flex-row flex-wrap gap-4 justify-center items-center">
-              <div onClick={() => testimonialsAnalytics.trackCTAClick('demo', 'secondary-cta')}>
+            <div className="flex flex-wrap justify-center gap-4 w-full max-w-md mx-auto">
+              <div onClick={() => testimonialsAnalytics.trackCTAClick('demo', 'secondary-cta')} className="flex-1 min-w-[140px]">
                 <BookDemoButton
                   size="lg"
                   mobileLabel="Demo"
@@ -53,14 +53,16 @@ export default function TestimonialsCTA({ className, variant = 'primary' }: Test
                     subject: "Demo Request from Testimonials Page",
                     courseName: "DGCA Ground School"
                   }}
+                  className="w-full"
                 />
               </div>
-              <div onClick={() => testimonialsAnalytics.trackCTAClick('courses', 'secondary-cta')}>
+              <div onClick={() => testimonialsAnalytics.trackCTAClick('courses', 'secondary-cta')} className="flex-1 min-w-[140px]">
                 <TransparentButton
                   href="/courses"
                   icon={GraduationCap}
                   label="Explore Courses"
                   mobileLabel="Courses"
+                  className="w-full"
                 />
               </div>
             </div>
@@ -96,8 +98,8 @@ export default function TestimonialsCTA({ className, variant = 'primary' }: Test
           </p>
 
           {/* Primary CTAs */}
-          <div className="flex flex-row flex-wrap gap-4 justify-center items-center mb-12">
-            <div onClick={() => testimonialsAnalytics.trackCTAClick('demo', 'primary-cta')}>
+          <div className="flex flex-wrap justify-center gap-4 w-full max-w-md mx-auto mb-12">
+            <div onClick={() => testimonialsAnalytics.trackCTAClick('demo', 'primary-cta')} className="flex-1 min-w-[140px]">
               <BookDemoButton
                 size="lg"
                 mobileLabel="Demo"
@@ -105,14 +107,16 @@ export default function TestimonialsCTA({ className, variant = 'primary' }: Test
                   subject: "Demo Request from Testimonials Page",
                   courseName: "DGCA Ground School"
                 }}
+                className="w-full"
               />
             </div>
-            <div onClick={() => testimonialsAnalytics.trackCTAClick('courses', 'primary-cta')}>
+            <div onClick={() => testimonialsAnalytics.trackCTAClick('courses', 'primary-cta')} className="flex-1 min-w-[140px]">
               <TransparentButton
                 href="/courses"
                 icon={ArrowRight}
                 label="View All Courses"
                 mobileLabel="Courses"
+                className="w-full"
               />
             </div>
           </div>

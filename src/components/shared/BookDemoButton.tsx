@@ -29,7 +29,7 @@ interface BookDemoButtonProps extends VariantProps<typeof buttonVariants> {
   mobileLabel?: string;
 }
 
-export const BookDemoButton: React.FC<BookDemoButtonProps> = ({ className, size, state, ...props }) => {
+export const BookDemoButton: React.FC<BookDemoButtonProps> = ({ className, size, state, mobileLabel, ...props }) => {
   const defaultDemoMessage = `I would like to book a demo${state?.courseName ? ` for the ${state.courseName} course` : ''}. Please contact me to schedule a time.`;
   const href = `/contact${state ? `?subject=${encodeURIComponent(state.subject)}&courseName=${encodeURIComponent(state.courseName)}&message=${encodeURIComponent(defaultDemoMessage)}` : ''}#contact-form`;
 
@@ -37,9 +37,9 @@ export const BookDemoButton: React.FC<BookDemoButtonProps> = ({ className, size,
     <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} transition={{ type: 'spring', stiffness: 400, damping: 17 }}>
       <Link href={href}>
         <Button size={size} className={cn(buttonVariants({ size, className }), "conversion-button")} data-conversion="true">
-          <CalendarCheck className="mr-2 h-5 w-5" />
-          <span className="hidden sm:inline">{state ? 'Book a Demo' : 'Book a Demo'}</span>
-          <span className="sm:hidden">{props.mobileLabel || (state ? 'Book a Demo' : 'Book a Demo')}</span>
+          <CalendarCheck className="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
+          <span className="hidden sm:inline">Book a Demo</span>
+          <span className="sm:hidden">{mobileLabel || 'Demo'}</span>
         </Button>
       </Link>
     </motion.div>

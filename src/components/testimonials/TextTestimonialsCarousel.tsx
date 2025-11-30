@@ -1,6 +1,6 @@
 "use client"
 import React, { useState, useEffect, useRef } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Quote, Star, ChevronLeft, ChevronRight, Play, MapPin } from 'lucide-react';
 import { cn } from '@/components/ui/utils';
 import { testimonials } from '@/lib/testimonials/data';
@@ -22,7 +22,7 @@ const textTestimonials = testimonials.text.map((testimonial: any) => ({
   specificFeedback: testimonial.specificFeedback
 }));
 
-// StarRating component with clean design
+// StarRating component with clean design and subtle animations
 const StarRating: React.FC<{ rating: number }> = ({ rating }) => {
   const safeRating = Math.max(0, Math.min(5, typeof rating === 'number' ? rating : 5));
   const fullStars = Math.floor(safeRating);
@@ -32,12 +32,24 @@ const StarRating: React.FC<{ rating: number }> = ({ rating }) => {
   return (
     <div className="flex items-center gap-0.5 sm:gap-1">
       {[...Array(fullStars)].map((_, i) => (
-        <Star key={i} className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-yellow-500 fill-current" />
+        <motion.div
+          key={i}
+          initial={{ opacity: 0, scale: 0 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{
+            delay: i * 0.05,
+            type: "spring",
+            stiffness: 500,
+            damping: 15
+          }}
+        >
+          <Star className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-yellow-500 fill-current" />
+        </motion.div>
       ))}
       {hasPartialStar && (
         <div className="relative">
           <Star className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-gray-300" />
-          <div 
+          <div
             className="absolute top-0 left-0 overflow-hidden"
             style={{ width: `${partialStarWidth}%` }}
           >
@@ -55,46 +67,77 @@ const StarRating: React.FC<{ rating: number }> = ({ rating }) => {
   );
 };
 
-// Modern testimonial card component
-const TestimonialCard: React.FC<{ 
-  testimonial: any; 
+// Enhanced testimonial card component with smooth spring animations
+const TestimonialCard: React.FC<{
+  testimonial: any;
   index: number;
 }> = ({ testimonial, index }) => {
   const prefersReducedMotion = useReducedMotion();
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20, scale: 0.95 }}
+      initial={{ opacity: 0, y: 40, scale: 0.9 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
-      transition={{ 
-        delay: index * 0.1, 
-        duration: prefersReducedMotion ? 0.1 : 0.5,
-        ease: [0.25, 0.46, 0.45, 0.94], // Smooth easing
-        scale: { duration: prefersReducedMotion ? 0.1 : 0.4 }
+      exit={{ opacity: 0, y: -20, scale: 0.95 }}
+      transition={prefersReducedMotion ? {
+        duration: 0.15
+      } : {
+        delay: index * 0.08,
+        type: "spring",
+        stiffness: 300,
+        damping: 24,
+        mass: 0.8,
+        opacity: {
+          duration: 0.5,
+          ease: [0.23, 0.86, 0.39, 0.96]
+        }
       }}
-      whileHover={prefersReducedMotion ? {} : { 
-        y: -2, 
-        transition: { duration: 0.2, ease: "easeOut" }
+      whileHover={prefersReducedMotion ? {} : {
+        y: -12,
+        scale: 1.03,
+        transition: {
+          type: "spring",
+          stiffness: 500,
+          damping: 28,
+          mass: 0.6
+        }
       }}
       className="h-full"
     >
-      <Card className="h-full bg-card border border-border shadow-sm hover:shadow-lg transition-shadow duration-300 group">
-        <CardContent className="p-3 sm:p-4 md:p-5 h-full flex flex-col">
+      <Card className="h-full bg-card border border-border shadow-sm hover:shadow-2xl hover:shadow-primary/10 transition-shadow duration-500 group overflow-hidden">
+        <CardContent className="p-3 sm:p-4 md:p-5 h-full flex flex-col relative">
+          {/* Subtle hover gradient effect */}
+          <motion.div
+            className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+            initial={false}
+          />
+
           {/* Quote and Rating */}
-          <div className="flex items-start justify-between mb-2 sm:mb-3">
-            <Quote className="w-4 h-4 sm:w-5 sm:h-5 text-primary flex-shrink-0 mt-0.5" />
+          <div className="flex items-start justify-between mb-2 sm:mb-3 relative z-10">
+            <motion.div
+              initial={{ rotate: 0 }}
+              whileHover={{ rotate: 5, scale: 1.1 }}
+              transition={{ type: "spring", stiffness: 400, damping: 15 }}
+            >
+              <Quote className="w-4 h-4 sm:w-5 sm:h-5 text-primary flex-shrink-0 mt-0.5" />
+            </motion.div>
             <StarRating rating={testimonial.rating} />
           </div>
 
           {/* Testimonial Text */}
-          <div className="flex-1 mb-3 sm:mb-4">
-            <p className="text-foreground leading-relaxed text-xs sm:text-sm">
+          <div className="flex-1 mb-3 sm:mb-4 relative z-10">
+            <motion.p
+              className="text-foreground leading-relaxed text-xs sm:text-sm"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: index * 0.08 + 0.2, duration: 0.6 }}
+            >
               "{testimonial.text}"
-            </p>
+            </motion.p>
           </div>
 
           {/* Author Info */}
-          <div className="border-t border-border pt-2 sm:pt-3 mt-auto">
+          <div className="border-t border-border pt-2 sm:pt-3 mt-auto relative z-10">
             <div className="flex items-center justify-between mb-1.5 sm:mb-2">
               <div className="flex-1 min-w-0">
                 <h4 className="font-medium text-foreground text-xs sm:text-sm truncate">
@@ -105,9 +148,20 @@ const TestimonialCard: React.FC<{
                 </p>
               </div>
               {testimonial.verified && (
-                <div className="ml-2 px-1.5 py-0.5 sm:px-2 bg-primary/10 text-primary text-xs rounded-full font-medium flex-shrink-0">
+                <motion.div
+                  className="ml-2 px-1.5 py-0.5 sm:px-2 bg-primary/10 text-primary text-xs rounded-full font-medium flex-shrink-0"
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{
+                    delay: index * 0.08 + 0.3,
+                    type: "spring",
+                    stiffness: 500,
+                    damping: 15
+                  }}
+                  whileHover={{ scale: 1.1 }}
+                >
                   ✓
-                </div>
+                </motion.div>
               )}
             </div>
 
@@ -116,17 +170,25 @@ const TestimonialCard: React.FC<{
               <MapPin className="w-2.5 h-2.5 sm:w-3 sm:h-3 mr-1 flex-shrink-0" />
               <span className="truncate">{testimonial.location}</span>
             </div>
-            
+
             {/* Subjects */}
             {testimonial.subjects && testimonial.subjects.length > 0 && (
               <div className="flex flex-wrap gap-1">
                 {testimonial.subjects.slice(0, 2).map((subject: string, idx: number) => (
-                  <span
+                  <motion.span
                     key={idx}
                     className="px-1.5 py-0.5 sm:px-2 text-xs bg-primary/10 text-primary rounded-full"
+                    initial={{ opacity: 0, x: -10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{
+                      delay: index * 0.08 + 0.35 + idx * 0.05,
+                      type: "spring",
+                      stiffness: 400,
+                      damping: 20
+                    }}
                   >
                     {subject}
-                  </span>
+                  </motion.span>
                 ))}
                 {testimonial.subjects.length > 2 && (
                   <span className="px-1.5 py-0.5 sm:px-2 text-xs bg-muted text-muted-foreground rounded-full">
@@ -144,12 +206,13 @@ const TestimonialCard: React.FC<{
 
 /**
  * TextTestimonialsCarousel - A clean, modern testimonials carousel component
- * Designed to fit within 100vh with professional styling
+ * Designed to fit within 100vh with professional styling and smooth animations
  */
 export default function TextTestimonialsCarousel() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
   const [isDragging, setIsDragging] = useState(false);
+  const [direction, setDirection] = useState(0);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const sectionRef = useRef<HTMLDivElement>(null);
   const [itemsPerPage, setItemsPerPage] = useState(3);
@@ -183,8 +246,9 @@ export default function TextTestimonialsCarousel() {
   useEffect(() => {
     if (isAutoPlaying && !isDragging && totalPages > 1) {
       intervalRef.current = setInterval(() => {
+        setDirection(1);
         setCurrentIndex((prev) => (prev + 1) % totalPages);
-      }, 3000); // 3 seconds interval
+      }, 3500); // 3.5 seconds interval
     } else {
       if (intervalRef.current) {
         clearInterval(intervalRef.current);
@@ -201,11 +265,13 @@ export default function TextTestimonialsCarousel() {
   }, [isAutoPlaying, isDragging, totalPages]);
 
   const handlePrevious = () => {
+    setDirection(-1);
     const newIndex = (currentIndex - 1 + totalPages) % totalPages;
     setCurrentIndex(newIndex);
   };
 
   const handleNext = () => {
+    setDirection(1);
     const newIndex = (currentIndex + 1) % totalPages;
     setCurrentIndex(newIndex);
   };
@@ -224,20 +290,20 @@ export default function TextTestimonialsCarousel() {
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, []);
+  }, [currentIndex, totalPages]);
 
-  // Touch gesture handlers
+  // Touch gesture handlers with improved animation
   const handleDragStart = () => {
     setIsDragging(true);
   };
 
   const handleDragEnd = (_event: any, info: any) => {
     setIsDragging(false);
-    
-    const { offset } = info;
+
+    const { offset, velocity } = info;
     const threshold = 50;
 
-    if (Math.abs(offset.x) > threshold) {
+    if (Math.abs(offset.x) > threshold || Math.abs(velocity.x) > 500) {
       if (offset.x > 0) {
         handlePrevious();
       } else {
@@ -248,6 +314,25 @@ export default function TextTestimonialsCarousel() {
 
   const visibleTestimonials = textTestimonials.slice(currentIndex * itemsPerPage, (currentIndex + 1) * itemsPerPage);
 
+  // Smooth slide animation variants
+  const slideVariants = {
+    enter: (direction: number) => ({
+      x: direction > 0 ? 60 : -60,
+      opacity: 0,
+      scale: 0.92
+    }),
+    center: {
+      x: 0,
+      opacity: 1,
+      scale: 1
+    },
+    exit: (direction: number) => ({
+      x: direction > 0 ? -60 : 60,
+      opacity: 0,
+      scale: 0.92
+    })
+  };
+
   return (
     <section
       ref={sectionRef}
@@ -257,72 +342,97 @@ export default function TextTestimonialsCarousel() {
       tabIndex={0}
     >
       <div className="container relative z-10 max-w-full mx-auto px-3 sm:px-4 md:px-6 lg:px-8 overflow-hidden">
-        {/* Header - Responsive */}
+        {/* Header with enhanced animation */}
         <motion.div
           className="text-center mb-4 sm:mb-6 md:mb-8"
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
+          transition={{
+            type: "spring",
+            stiffness: 200,
+            damping: 25,
+            mass: 1
+          }}
         >
-          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-primary mb-2 sm:mb-3 md:mb-4 px-2">
+          <motion.h2
+            className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-primary mb-2 sm:mb-3 md:mb-4 px-2"
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.1, duration: 0.6, ease: [0.23, 0.86, 0.39, 0.96] }}
+          >
             Student Success Stories
-          </h2>
-          <p className="text-sm sm:text-base md:text-lg lg:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed px-4">
+          </motion.h2>
+          <motion.p
+            className="text-sm sm:text-base md:text-lg lg:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed px-4"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.2, duration: 0.8 }}
+          >
             Authentic testimonials from DGCA CPL graduates who achieved their pilot dreams
-          </p>
+          </motion.p>
         </motion.div>
 
-        {/* Controls - Responsive */}
+        {/* Controls with enhanced interactions */}
         <div className="flex items-center justify-center gap-2 sm:gap-3 mb-4 sm:mb-5 md:mb-6">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={handlePrevious}
-            className="rounded-full w-7 h-7 sm:w-8 sm:h-8 p-0 bg-card/80 backdrop-blur-sm hover:bg-card border-border shadow-sm"
-            aria-label="Previous testimonials"
+          <motion.div
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.95 }}
           >
-            <ChevronLeft className="w-3 h-3 sm:w-4 sm:h-4" />
-          </Button>
-          
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handlePrevious}
+              className="rounded-full w-7 h-7 sm:w-8 sm:h-8 p-0 bg-card/80 backdrop-blur-sm hover:bg-card border-border shadow-sm hover:shadow-md transition-all duration-300"
+              aria-label="Previous testimonials"
+            >
+              <ChevronLeft className="w-3 h-3 sm:w-4 sm:h-4" />
+            </Button>
+          </motion.div>
+
           <div className="flex gap-1 sm:gap-1.5" role="tablist" aria-label="Testimonial pages">
             {Array.from({ length: totalPages }).map((_, index) => (
               <motion.div
                 key={index}
                 initial={false}
                 animate={{
-                  scale: index === currentIndex ? 1.1 : 1,
-                  opacity: index === currentIndex ? 1 : 0.7
+                  scale: index === currentIndex ? 1.2 : 1,
+                  opacity: index === currentIndex ? 1 : 0.6
                 }}
                 transition={{
-                  duration: prefersReducedMotion ? 0.1 : 0.3,
-                  ease: "easeInOut"
+                  type: "spring",
+                  stiffness: 500,
+                  damping: 30,
+                  mass: 0.5
                 }}
               >
                 <Button
                   variant={index === currentIndex ? "default" : "ghost"}
                   size="sm"
-                  onClick={() => setCurrentIndex(index)}
+                  onClick={() => {
+                    setDirection(index > currentIndex ? 1 : -1);
+                    setCurrentIndex(index);
+                  }}
                   className={cn(
                     "rounded-full transition-all duration-300 relative overflow-hidden",
-                    index === currentIndex 
-                      ? "bg-primary hover:bg-primary/90 text-primary-foreground w-2.5 h-2.5 sm:w-3 sm:h-3 p-0" 
+                    index === currentIndex
+                      ? "bg-primary hover:bg-primary/90 text-primary-foreground w-2.5 h-2.5 sm:w-3 sm:h-3 p-0"
                       : "bg-muted hover:bg-muted/80 w-2 h-2 sm:w-2.5 sm:h-2.5 p-0"
                   )}
                   aria-label={`Go to testimonial page ${index + 1}`}
                   aria-selected={index === currentIndex}
                   role="tab"
                 >
-                  {/* Auto-play progress indicator for current page */}
+                  {/* Auto-play progress indicator with smooth animation */}
                   {index === currentIndex && isAutoPlaying && (
                     <motion.div
                       className="absolute inset-0 bg-primary-foreground/20 rounded-full"
                       initial={{ scale: 0 }}
                       animate={{ scale: 1 }}
                       transition={{
-                        duration: 3,
-                        ease: "linear",
-                        repeat: Infinity
+                        duration: 3.5,
+                        ease: "linear"
                       }}
+                      key={`progress-${currentIndex}`}
                     />
                   )}
                 </Button>
@@ -330,54 +440,65 @@ export default function TextTestimonialsCarousel() {
             ))}
           </div>
 
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={handleNext}
-            className="rounded-full w-7 h-7 sm:w-8 sm:h-8 p-0 bg-card/80 backdrop-blur-sm hover:bg-card border-border shadow-sm"
-            aria-label="Next testimonials"
+          <motion.div
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.95 }}
           >
-            <ChevronRight className="w-3 h-3 sm:w-4 sm:h-4" />
-          </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleNext}
+              className="rounded-full w-7 h-7 sm:w-8 sm:h-8 p-0 bg-card/80 backdrop-blur-sm hover:bg-card border-border shadow-sm hover:shadow-md transition-all duration-300"
+              aria-label="Next testimonials"
+            >
+              <ChevronRight className="w-3 h-3 sm:w-4 sm:h-4" />
+            </Button>
+          </motion.div>
         </div>
 
-        {/* Testimonials Grid - Responsive with smooth auto-scroll animations */}
-        <motion.div
-          className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 md:gap-5 lg:gap-6 max-w-full mx-auto cursor-grab active:cursor-grabbing overflow-hidden"
-          key={currentIndex}
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0 }}
-          exit={{ opacity: 0, x: -20 }}
-          transition={{ 
-            duration: prefersReducedMotion ? 0.2 : 0.6, 
-            ease: [0.25, 0.46, 0.45, 0.94], // Custom easing for smooth feel
-            opacity: { duration: prefersReducedMotion ? 0.1 : 0.4 },
-            x: { duration: prefersReducedMotion ? 0.1 : 0.5 }
-          }}
-          drag="x"
-          dragConstraints={{ left: 0, right: 0 }}
-          dragElastic={0.2}
-          onDragStart={handleDragStart}
-          onDragEnd={handleDragEnd}
-          whileDrag={{ scale: 0.98 }}
-          role="group"
-          aria-label={`Testimonials page ${currentIndex + 1} of ${totalPages}`}
-          style={{
-            height: 'auto', // Auto height for responsive design
-            minHeight: '280px', // Minimum height for consistency
-            touchAction: 'pan-y pinch-zoom'
-          }}
-        >
-          {visibleTestimonials.map((testimonial, index) => (
-            <TestimonialCard
-              key={testimonial.id}
-              testimonial={testimonial}
-              index={index}
-            />
-          ))}
-        </motion.div>
-
-
+        {/* Testimonials Grid with AnimatePresence for smooth page transitions */}
+        <AnimatePresence mode="wait" custom={direction}>
+          <motion.div
+            key={currentIndex}
+            custom={direction}
+            variants={slideVariants}
+            initial="enter"
+            animate="center"
+            exit="exit"
+            transition={prefersReducedMotion ? {
+              duration: 0.2
+            } : {
+              type: "spring",
+              stiffness: 300,
+              damping: 30,
+              mass: 1,
+              opacity: { duration: 0.4 }
+            }}
+            className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 md:gap-5 lg:gap-6 max-w-full mx-auto cursor-grab active:cursor-grabbing"
+            drag="x"
+            dragConstraints={{ left: 0, right: 0 }}
+            dragElastic={0.15}
+            onDragStart={handleDragStart}
+            onDragEnd={handleDragEnd}
+            whileDrag={{
+              scale: 0.98,
+              cursor: "grabbing"
+            }}
+            role="group"
+            aria-label={`Testimonials page ${currentIndex + 1} of ${totalPages}`}
+            style={{
+              touchAction: 'pan-y pinch-zoom'
+            }}
+          >
+            {visibleTestimonials.map((testimonial, index) => (
+              <TestimonialCard
+                key={testimonial.id}
+                testimonial={testimonial}
+                index={index}
+              />
+            ))}
+          </motion.div>
+        </AnimatePresence>
       </div>
     </section>
   );

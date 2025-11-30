@@ -54,7 +54,7 @@ export default function Hero({
             className={cn(
               "font-extrabold leading-tight tracking-tight drop-shadow-md",
               variant === 'standard'
-                ? "text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl"
+                ? "text-xl sm:text-2xl md:text-4xl lg:text-5xl xl:text-6xl"
                 : "text-2xl sm:text-3xl md:text-4xl"
             )}
             initial={{ opacity: 0, y: 30 }}
@@ -70,7 +70,7 @@ export default function Hero({
             className={cn(
               "mx-auto drop-shadow-md text-white/90 leading-relaxed",
               variant === 'standard'
-                ? "max-w-4xl text-sm sm:text-base md:text-lg lg:text-xl"
+                ? "max-w-4xl text-xs sm:text-sm md:text-lg lg:text-xl"
                 : "max-w-xl text-base md:text-lg"
             )}
             initial={{ opacity: 0, y: 20 }}

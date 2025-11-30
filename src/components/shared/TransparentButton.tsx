@@ -54,7 +54,7 @@ export function TransparentButton({
       variant="outline"
       // Integrate className and conditionally apply text color
       className={cn(
-        "group relative rounded-full px-4 py-2 sm:px-5 sm:py-2.5 md:px-6 md:py-3 overflow-hidden border-2 border-teal-500 bg-transparent shadow-sm transition-all duration-300 ease-out hover:bg-teal-500 hover:text-white hover:shadow-md dark:border-teal-400 dark:hover:bg-teal-500 dark:hover:text-white conversion-button min-h-[44px] sm:min-h-[48px] text-sm sm:text-base", // Base styles
+        "group relative rounded-full px-4 py-2 sm:px-5 sm:py-2.5 md:px-6 md:py-3 overflow-hidden border-2 border-teal-500 bg-transparent shadow-sm transition-all duration-300 ease-out hover:bg-teal-500 hover:text-white hover:shadow-md dark:border-teal-400 dark:hover:bg-teal-500 dark:hover:text-white w-full sm:w-auto conversion-button min-h-[44px] sm:min-h-[48px] text-sm sm:text-base", // Base styles
         textColorClassName ? textColorClassName : defaultTextColors,
         className // Apply any other passed classNames
       )}

@@ -75,13 +75,13 @@ const WhyChooseUs: React.FC = () => {
       <div className="mb-8 text-center md:mb-10">
         <motion.h2
           variants={itemVariants}
-          className={cn("mb-4 text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold", aviationPrimary)} // Consistent heading
+          className={cn("mb-4 text-lg sm:text-xl md:text-3xl lg:text-4xl font-bold", aviationPrimary)} // Consistent heading
         >
           Why Choose Aviators Training Centre?
         </motion.h2>
         <motion.p
           variants={itemVariants}
-          className="mx-auto max-w-2xl text-sm sm:text-base md:text-lg leading-relaxed text-foreground/80"
+          className="mx-auto max-w-2xl text-xs sm:text-sm md:text-lg leading-relaxed text-foreground/80"
         >
           We deliver focused, high-quality online ground training designed to help you ace your DGCA exams and launch your pilot career.
         </motion.p>
