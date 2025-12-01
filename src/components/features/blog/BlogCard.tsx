@@ -89,10 +89,10 @@ const ProductionBlogImage: React.FC<{
   title: string;
 }> = ({ src, alt, className, title }) => {
   const [imgError, setImgError] = useState(false);
-  
+
   // Use local fallback image from public/Blogs folder
   const fallbackSrc = getLocalFallbackImage(title);
-  
+
   // Check if src is valid (not null, undefined, or contains 'undefined')
   const isValidSrc = src && !src.includes('undefined') && (src.startsWith('http') || src.startsWith('/'));
   const imageSrc = (isValidSrc && !imgError) ? src : fallbackSrc;
@@ -123,14 +123,14 @@ const formatDate = (dateString: string) => {
 };
 
 // Inner component for performance optimization
-const BlogCardInner: React.FC<BlogCardProps> = ({ 
-  post, 
-  viewMode = 'grid', 
+const BlogCardInner: React.FC<BlogCardProps> = ({
+  post,
+  viewMode = 'grid',
   variant = 'default',
-  featured = false, 
+  featured = false,
   priority = false,
   showExcerpt = true,
-  className 
+  className
 }) => {
   const isListView = viewMode === 'list';
   const isCompact = variant === 'compact';
@@ -199,9 +199,9 @@ const BlogCardInner: React.FC<BlogCardProps> = ({
       return null;
     }
   };
-  
+
   return (
-    <motion.div
+    <motion.article
       variants={cardVariants}
       initial="hidden"
       animate="visible"
@@ -218,8 +218,8 @@ const BlogCardInner: React.FC<BlogCardProps> = ({
         {/* Image Section */}
         <div className={cn(
           "relative overflow-hidden bg-muted",
-          isListView 
-            ? "w-full sm:w-72 md:w-80 md:flex-shrink-0 aspect-[16/10] sm:aspect-[4/3]" 
+          isListView
+            ? "w-full sm:w-72 md:w-80 md:flex-shrink-0 aspect-[16/10] sm:aspect-[4/3]"
             : "aspect-[16/10]",
           !isListView && (featured ? "aspect-[16/10]" : "aspect-[16/10]")
         )}>
@@ -230,10 +230,10 @@ const BlogCardInner: React.FC<BlogCardProps> = ({
               title={safePost.title}
               className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
             />
-            
+
             {/* Overlay gradient */}
             <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-            
+
             {/* Featured badge */}
             {featured && (
               <div className="absolute top-3 left-3">
@@ -242,12 +242,12 @@ const BlogCardInner: React.FC<BlogCardProps> = ({
                 </Badge>
               </div>
             )}
-            
+
             {/* Difficulty badge */}
             {safePost.difficulty && (
               <div className="absolute top-3 right-3">
-                <Badge 
-                  variant="secondary" 
+                <Badge
+                  variant="secondary"
                   className="bg-background/90 text-foreground backdrop-blur-sm"
                 >
                   {safePost.difficulty}
@@ -265,17 +265,17 @@ const BlogCardInner: React.FC<BlogCardProps> = ({
           <CardHeader className="pb-3">
             {/* Category Badge - Clean Single Row */}
             <div className="flex items-center justify-between gap-2 mb-3 flex-wrap">
-              <Badge 
-                variant="outline" 
+              <Badge
+                variant="outline"
                 className="text-xs font-medium border-current px-2 py-1 flex-shrink-0 bg-background/60 dark:bg-white/10 text-foreground whitespace-normal break-words"
-                style={{ 
+                style={{
                   borderColor: safePost.category.color || 'hsl(var(--border))',
                   backgroundColor: safePost.category.color ? `${safePost.category.color}20` : undefined
                 }}
               >
                 {safePost.category.title}
               </Badge>
-              
+
               <div className="flex items-center text-xs text-muted-foreground gap-2 flex-shrink-0">
                 <div className="flex items-center gap-1">
                   <Clock className="w-3 h-3" />
@@ -283,7 +283,7 @@ const BlogCardInner: React.FC<BlogCardProps> = ({
                 </div>
               </div>
             </div>
-            
+
             {/* Meta Information - Separate Row */}
             <div className="flex items-center text-xs text-muted-foreground mb-3">
               <div className="flex items-center gap-1">
@@ -298,10 +298,10 @@ const BlogCardInner: React.FC<BlogCardProps> = ({
             <Link href={`/blog/${safePost.slug.current}`}>
               <h3 className={cn(
                 "font-bold text-foreground leading-tight line-clamp-2 group-hover:text-primary transition-colors duration-200",
-                isListView 
-                  ? "text-xl md:text-2xl" 
-                  : featured 
-                    ? "text-xl md:text-2xl" 
+                isListView
+                  ? "text-xl md:text-2xl"
+                  : featured
+                    ? "text-xl md:text-2xl"
                     : "text-lg md:text-xl"
               )}>
                 {safePost.title}
@@ -329,11 +329,11 @@ const BlogCardInner: React.FC<BlogCardProps> = ({
                 </div>
                 <div className="flex gap-1 flex-wrap">
                   {safePost.tags.slice(0, 2).map((tag, index) => (
-                    <Badge 
+                    <Badge
                       key={`${tag.slug?.current || tag.title}-${index}`}
-                      variant="secondary" 
+                      variant="secondary"
                       className="text-[11px] px-2 py-0.5 bg-muted/60 text-foreground hover:bg-muted transition-colors flex-shrink-0 border border-border/50 dark:bg-teal-400/10 dark:text-teal-100 dark:border-teal-400/20 whitespace-normal break-words"
-                      style={{ 
+                      style={{
                         backgroundColor: tag.color ? `${tag.color}20` : undefined,
                         borderColor: tag.color || undefined
                       }}
@@ -343,8 +343,8 @@ const BlogCardInner: React.FC<BlogCardProps> = ({
                     </Badge>
                   ))}
                   {safePost.tags.length > 2 && (
-                    <Badge 
-                      variant="secondary" 
+                    <Badge
+                      variant="secondary"
                       className="text-[11px] px-2 py-0.5 bg-muted/60 text-foreground flex-shrink-0 border border-border/50 dark:bg-teal-400/10 dark:text-teal-100 dark:border-teal-400/20"
                     >
                       +{safePost.tags.length - 2}
@@ -386,7 +386,7 @@ const BlogCardInner: React.FC<BlogCardProps> = ({
           </CardContent>
         </div>
       </Card>
-    </motion.div>
+    </motion.article>
   );
 };
 

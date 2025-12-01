@@ -84,7 +84,7 @@
 
     /* Neutral tones */
     --muted: 185 30% 95%;
-    --muted-foreground: 215 20% 65%;
+    --muted-foreground: 215 25% 45%;
 
     /* System colors */
     --destructive: 0 84% 60%;

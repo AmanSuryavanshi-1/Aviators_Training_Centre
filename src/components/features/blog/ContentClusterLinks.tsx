@@ -200,29 +200,29 @@ const CONTENT_CLUSTERS: ContentCluster[] = [
 // Helper function to find related posts based on current post
 function getRelatedPosts(currentPost: { title: string; slug: string; category: string; tags?: string[] }): RelatedPost[] {
   const allPosts: RelatedPost[] = [];
-  
+
   // Collect all posts from clusters
   CONTENT_CLUSTERS.forEach(cluster => {
     allPosts.push(...cluster.posts);
   });
-  
+
   // Filter out current post and find related ones
   const relatedPosts = allPosts
     .filter(post => post.slug !== currentPost.slug)
     .map(post => {
       let relevanceScore = 0;
-      
+
       // Category match
       if (post.category === currentPost.category) relevanceScore += 10;
-      
+
       // Title keyword matching
       const currentTitleWords = currentPost.title.toLowerCase().split(' ');
       const postTitleWords = post.title.toLowerCase().split(' ');
-      const commonWords = currentTitleWords.filter(word => 
+      const commonWords = currentTitleWords.filter(word =>
         postTitleWords.includes(word) && word.length > 3
       );
       relevanceScore += commonWords.length * 5;
-      
+
       // Tag matching
       if (currentPost.tags) {
         currentPost.tags.forEach(tag => {
@@ -231,14 +231,14 @@ function getRelatedPosts(currentPost: { title: string; slug: string; category: s
           }
         });
       }
-      
+
       return { post, relevanceScore };
     })
     .filter(item => item.relevanceScore > 0)
     .sort((a, b) => b.relevanceScore - a.relevanceScore)
     .slice(0, 6)
     .map(item => item.post);
-  
+
   return relatedPosts;
 }
 
@@ -246,7 +246,7 @@ function getRelatedPosts(currentPost: { title: string; slug: string; category: s
 function getContentCluster(currentPost: { category: string; title: string }): ContentCluster | null {
   return CONTENT_CLUSTERS.find(cluster => {
     // Check if current post belongs to this cluster
-    return cluster.posts.some(post => 
+    return cluster.posts.some(post =>
       post.category === currentPost.category ||
       cluster.category === currentPost.category
     );
@@ -299,7 +299,7 @@ function RelatedPostsGrid({ posts, title }: { posts: RelatedPost[]; title: strin
                 <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300">
                   {post.category}
                 </span>
-                
+
                 <div className="flex items-center space-x-2">
                   {post.featured && (
                     <Star className="w-4 h-4 text-yellow-500" />
@@ -338,7 +338,7 @@ function RelatedPostsGrid({ posts, title }: { posts: RelatedPost[]; title: strin
                   className="inline-flex items-center text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium text-sm group-hover:translate-x-1 transition-all duration-300"
                   whileHover={{ x: 5 }}
                 >
-                  Read More
+                  Read Article
                   <ArrowRight className="w-4 h-4 ml-1" />
                 </motion.a>
               </div>
@@ -353,7 +353,7 @@ function RelatedPostsGrid({ posts, title }: { posts: RelatedPost[]; title: strin
 // Content Cluster Navigation Component
 function ContentClusterNavigation({ cluster, currentPostSlug }: { cluster: ContentCluster; currentPostSlug: string }) {
   const otherPosts = cluster.posts.filter(post => post.slug !== currentPostSlug);
-  
+
   if (otherPosts.length === 0) return null;
 
   return (
@@ -372,7 +372,7 @@ function ContentClusterNavigation({ cluster, currentPostSlug }: { cluster: Conte
         >
           <BookOpen className="w-8 h-8 text-white" />
         </motion.div>
-        
+
         <motion.h2
           className="text-2xl font-bold text-gray-900 dark:text-white mb-2"
           initial={{ opacity: 0, y: 10 }}
@@ -381,7 +381,7 @@ function ContentClusterNavigation({ cluster, currentPostSlug }: { cluster: Conte
         >
           {cluster.title}
         </motion.h2>
-        
+
         <motion.p
           className="text-gray-600 dark:text-gray-300"
           initial={{ opacity: 0, y: 10 }}
@@ -456,16 +456,16 @@ export function ContentClusterLinks({ currentPost, className }: ContentClusterLi
     <div className={cn('space-y-8', className)}>
       {/* Content Cluster Navigation */}
       {contentCluster && (
-        <ContentClusterNavigation 
-          cluster={contentCluster} 
-          currentPostSlug={currentPost.slug} 
+        <ContentClusterNavigation
+          cluster={contentCluster}
+          currentPostSlug={currentPost.slug}
         />
       )}
 
       {/* Related Posts Grid */}
-      <RelatedPostsGrid 
-        posts={relatedPosts} 
-        title="Related Articles You Might Find Helpful" 
+      <RelatedPostsGrid
+        posts={relatedPosts}
+        title="Related Articles You Might Find Helpful"
       />
     </div>
   );

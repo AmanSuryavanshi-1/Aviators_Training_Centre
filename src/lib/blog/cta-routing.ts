@@ -122,7 +122,7 @@ export class IntelligentCTARouter {
   private async getCourses(useCache: boolean = true): Promise<Course[]> {
     try {
       const now = Date.now();
-      
+
       // Return cached courses if valid and caching is enabled
       if (useCache && this.coursesCache && now < this.cacheExpiry) {
         return this.coursesCache;
@@ -303,7 +303,7 @@ export class IntelligentCTARouter {
         let score = 0;
         for (const keyword of course.keywords) {
           if (!keyword || typeof keyword !== 'string') continue;
-          
+
           const keywordLower = keyword.toLowerCase();
           const matches = (contentText.match(new RegExp(keywordLower, 'gi')) || []).length;
           score += matches;
@@ -319,7 +319,7 @@ export class IntelligentCTARouter {
       // Return the highest scoring course
       const topCourse = courseScores.sort((a, b) => b.score - a.score)[0];
       if (debugMode) console.log(`Found keyword-matched course: ${topCourse.course.name} (score: ${topCourse.score})`);
-      
+
       return topCourse.course;
     } catch (error) {
       console.error('Error getting course from keywords:', error);
@@ -342,7 +342,7 @@ export class IntelligentCTARouter {
       if (blogPost.category && course.category) {
         const categoryKeywords = this.getCategoryKeywords(blogPost.category.title);
         const courseCategory = course.category.toLowerCase();
-        
+
         if (categoryKeywords.some(keyword => courseCategory.includes(keyword))) {
           score += 20;
         }
@@ -508,11 +508,11 @@ export function generateCTAContent(
 } {
   try {
     const { position, blogTitle, category } = context;
-    
+
     // Customize content based on position and context
     let title = course.ctaSettings.ctaTitle || `Enroll in ${course.name}`;
     let message = course.ctaSettings.ctaMessage || 'Take the next step in your aviation career.';
-    let buttonText = course.ctaSettings.primaryButtonText || 'Learn More';
+    let buttonText = course.ctaSettings.primaryButtonText || 'View Course Details';
     let urgencyText = course.ctaSettings.urgencyText;
 
     // Position-specific customizations
@@ -538,7 +538,7 @@ export function generateCTAContent(
     return {
       title: `Enroll in ${course.name}`,
       message: 'Take the next step in your aviation career.',
-      buttonText: 'Learn More',
+      buttonText: 'View Course Details',
     };
   }
 }

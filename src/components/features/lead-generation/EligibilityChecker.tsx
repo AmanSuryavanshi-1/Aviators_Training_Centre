@@ -9,20 +9,20 @@ import { Input } from '@/components/ui/input';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
-import { 
-  UserProfile, 
-  EligibilityRequirement, 
-  EligibilityResult, 
-  EligibilityCheckResult 
+import {
+  UserProfile,
+  EligibilityRequirement,
+  EligibilityResult,
+  EligibilityCheckResult
 } from '@/lib/types/lead-generation';
-import { 
-  CheckCircle, 
-  XCircle, 
-  AlertTriangle, 
-  User, 
-  GraduationCap, 
-  Heart, 
-  Globe, 
+import {
+  CheckCircle,
+  XCircle,
+  AlertTriangle,
+  User,
+  GraduationCap,
+  Heart,
+  Globe,
   Clock,
   ArrowRight,
   FileText,
@@ -166,9 +166,9 @@ interface EligibilityCheckerProps {
   onLeadCapture?: (leadData: any) => void;
 }
 
-export default function EligibilityChecker({ 
-  onComplete, 
-  onLeadCapture 
+export default function EligibilityChecker({
+  onComplete,
+  onLeadCapture
 }: EligibilityCheckerProps) {
   const [userProfile, setUserProfile] = useState<UserProfile>({
     age: 18,
@@ -189,8 +189,8 @@ export default function EligibilityChecker({
   };
 
   const handleCourseToggle = (courseId: string, checked: boolean) => {
-    setSelectedCourses(prev => 
-      checked 
+    setSelectedCourses(prev =>
+      checked
         ? [...prev, courseId]
         : prev.filter(id => id !== courseId)
     );
@@ -299,8 +299,8 @@ export default function EligibilityChecker({
   };
 
   const generateRecommendations = (
-    courseId: string, 
-    missingReqs: EligibilityRequirement[], 
+    courseId: string,
+    missingReqs: EligibilityRequirement[],
     profile: UserProfile
   ): string[] => {
     const recommendations: string[] = [];
@@ -329,8 +329,8 @@ export default function EligibilityChecker({
   };
 
   const generateNextSteps = (
-    courseId: string, 
-    missingReqs: EligibilityRequirement[], 
+    courseId: string,
+    missingReqs: EligibilityRequirement[],
     isEligible: boolean
   ): string[] => {
     if (isEligible) {
@@ -343,7 +343,7 @@ export default function EligibilityChecker({
     }
 
     const steps: string[] = [];
-    
+
     missingReqs.forEach(req => {
       if (req.category === 'education') {
         steps.push('Complete educational requirements');
@@ -361,7 +361,7 @@ export default function EligibilityChecker({
   };
 
   const estimateTimeToEligibility = (
-    missingReqs: EligibilityRequirement[], 
+    missingReqs: EligibilityRequirement[],
     profile: UserProfile
   ): string => {
     if (missingReqs.length === 0) return 'Eligible now';
@@ -386,11 +386,11 @@ export default function EligibilityChecker({
   };
 
   const generateOverallRecommendation = (
-    results: EligibilityResult[], 
+    results: EligibilityResult[],
     profile: UserProfile
   ): string => {
     const eligibleCourses = results.filter(r => r.isEligible);
-    
+
     if (eligibleCourses.length > 0) {
       const topCourse = eligibleCourses[0];
       return `You're eligible for ${topCourse.courseName}! This is an excellent starting point for your aviation career.`;
@@ -406,7 +406,7 @@ export default function EligibilityChecker({
 
     // Group by category and prioritize
     const categories = ['education', 'medical', 'experience', 'language'];
-    
+
     categories.forEach(category => {
       const categoryReqs = allMissingReqs.filter(req => req.category === category);
       if (categoryReqs.length > 0) {
@@ -450,7 +450,7 @@ export default function EligibilityChecker({
                     <CardTitle className="flex items-center gap-2">
                       <GraduationCap className="h-5 w-5" />
                       {courseResult.courseName}
-                      <Badge 
+                      <Badge
                         variant={courseResult.isEligible ? 'default' : 'secondary'}
                         className={courseResult.isEligible ? 'bg-green-100 text-green-800' : ''}
                       >
@@ -536,7 +536,7 @@ export default function EligibilityChecker({
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Button>
                   <Button variant="outline">
-                    Learn More
+                    View Course Details
                   </Button>
                 </div>
               </CardContent>
@@ -606,8 +606,8 @@ export default function EligibilityChecker({
 
               <div>
                 <Label htmlFor="education">Educational Background</Label>
-                <Select 
-                  value={userProfile.education} 
+                <Select
+                  value={userProfile.education}
                   onValueChange={(value) => handleProfileChange('education', value)}
                 >
                   <SelectTrigger>
@@ -626,8 +626,8 @@ export default function EligibilityChecker({
 
               <div>
                 <Label htmlFor="experience">Aviation Experience</Label>
-                <Select 
-                  value={userProfile.experience} 
+                <Select
+                  value={userProfile.experience}
                   onValueChange={(value) => handleProfileChange('experience', value)}
                 >
                   <SelectTrigger>
@@ -645,8 +645,8 @@ export default function EligibilityChecker({
 
               <div>
                 <Label htmlFor="medical">Medical Status</Label>
-                <Select 
-                  value={userProfile.medicalStatus} 
+                <Select
+                  value={userProfile.medicalStatus}
                   onValueChange={(value: any) => handleProfileChange('medicalStatus', value)}
                 >
                   <SelectTrigger>
@@ -662,8 +662,8 @@ export default function EligibilityChecker({
 
               <div>
                 <Label htmlFor="english">English Proficiency</Label>
-                <Select 
-                  value={userProfile.englishProficiency} 
+                <Select
+                  value={userProfile.englishProficiency}
                   onValueChange={(value: any) => handleProfileChange('englishProficiency', value)}
                 >
                   <SelectTrigger>
@@ -679,8 +679,8 @@ export default function EligibilityChecker({
 
               <div>
                 <Label htmlFor="location">Location</Label>
-                <Select 
-                  value={userProfile.location} 
+                <Select
+                  value={userProfile.location}
                   onValueChange={(value) => handleProfileChange('location', value)}
                 >
                   <SelectTrigger>
@@ -707,7 +707,7 @@ export default function EligibilityChecker({
                         checked={userProfile.previousTraining?.includes(training) || false}
                         onCheckedChange={(checked) => {
                           const current = userProfile.previousTraining || [];
-                          const updated = checked 
+                          const updated = checked
                             ? [...current, training]
                             : current.filter(t => t !== training);
                           handleProfileChange('previousTraining', updated);
@@ -740,9 +740,9 @@ export default function EligibilityChecker({
               </div>
             </div>
 
-            <Button 
-              onClick={checkEligibility} 
-              className="w-full" 
+            <Button
+              onClick={checkEligibility}
+              className="w-full"
               size="lg"
               disabled={selectedCourses.length === 0}
             >

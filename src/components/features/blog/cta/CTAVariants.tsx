@@ -4,12 +4,12 @@ import { useCallback, useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { 
-  ArrowRight, 
-  BookOpen, 
-  Users, 
-  Award, 
-  Clock, 
+import {
+  ArrowRight,
+  BookOpen,
+  Users,
+  Award,
+  Clock,
   Star,
   CheckCircle,
   Phone,
@@ -33,13 +33,13 @@ export interface CTAVariantProps {
 }
 
 // Card variant - Professional card layout with course highlights
-export function CTACardVariant({ 
-  blogPost, 
-  course, 
-  position, 
+export function CTACardVariant({
+  blogPost,
+  course,
+  position,
   testId,
   className = '',
-  onInteraction 
+  onInteraction
 }: CTAVariantProps) {
   const handleClick = useCallback(async (action: 'primary' | 'secondary') => {
     const interaction = await trackCTAInteraction({
@@ -134,7 +134,7 @@ export function CTACardVariant({
               {course.ctaSettings.primaryButtonText}
               <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
-            
+
             <div className="flex items-center justify-center gap-4 text-sm">
               <button
                 onClick={() => handleClick('secondary')}
@@ -159,13 +159,13 @@ export function CTACardVariant({
 }
 
 // Banner variant - Full-width banner with strong visual impact
-export function CTABannerVariant({ 
-  blogPost, 
-  course, 
-  position, 
+export function CTABannerVariant({
+  blogPost,
+  course,
+  position,
   testId,
   className = '',
-  onInteraction 
+  onInteraction
 }: CTAVariantProps) {
   const handleClick = useCallback(async (action: 'primary' | 'secondary') => {
     const interaction = await trackCTAInteraction({
@@ -206,7 +206,7 @@ export function CTABannerVariant({
                 <p className="text-lg text-primary-foreground/90 mb-6">
                   {course.ctaSettings.ctaMessage}
                 </p>
-                
+
                 <div className="flex flex-col sm:flex-row gap-3">
                   <Button
                     onClick={() => handleClick('primary')}
@@ -237,7 +237,7 @@ export function CTABannerVariant({
                   <div className="text-2xl font-bold">95%</div>
                   <div className="text-sm opacity-90">Students pass on first attempt</div>
                 </div>
-                
+
                 <div className="grid grid-cols-2 gap-3">
                   <div className="bg-white/10 rounded-lg p-3 text-center">
                     <Users className="h-5 w-5 mx-auto mb-1" />
@@ -260,13 +260,13 @@ export function CTABannerVariant({
 }
 
 // Inline variant - Subtle integration within content
-export function CTAInlineVariant({ 
-  blogPost, 
-  course, 
-  position, 
+export function CTAInlineVariant({
+  blogPost,
+  course,
+  position,
   testId,
   className = '',
-  onInteraction 
+  onInteraction
 }: CTAVariantProps) {
   const handleClick = useCallback(async (action: 'primary' | 'secondary') => {
     const interaction = await trackCTAInteraction({
@@ -302,7 +302,7 @@ export function CTAInlineVariant({
             Ready to take the next step?
           </h4>
           <p className="text-muted-foreground mb-4">
-            Our <strong>{course.name}</strong> program covers everything discussed above and more. 
+            Our <strong>{course.name}</strong> program covers everything discussed above and more.
             Join hundreds of successful pilots who started their journey with us.
           </p>
           <div className="flex flex-col sm:flex-row gap-2">
@@ -329,13 +329,13 @@ export function CTAInlineVariant({
 }
 
 // Minimal variant - Clean and unobtrusive
-export function CTAMinimalVariant({ 
-  blogPost, 
-  course, 
-  position, 
+export function CTAMinimalVariant({
+  blogPost,
+  course,
+  position,
   testId,
   className = '',
-  onInteraction 
+  onInteraction
 }: CTAVariantProps) {
   const handleClick = useCallback(async (action: 'primary' | 'secondary') => {
     const interaction = await trackCTAInteraction({
@@ -381,7 +381,7 @@ export function CTAMinimalVariant({
             variant="ghost"
             className="font-medium"
           >
-            Learn More
+            Contact Us
           </Button>
         </div>
       </div>
@@ -390,13 +390,13 @@ export function CTAMinimalVariant({
 }
 
 // Gradient variant - Eye-catching with modern design
-export function CTAGradientVariant({ 
-  blogPost, 
-  course, 
-  position, 
+export function CTAGradientVariant({
+  blogPost,
+  course,
+  position,
   testId,
   className = '',
-  onInteraction 
+  onInteraction
 }: CTAVariantProps) {
   const handleClick = useCallback(async (action: 'primary' | 'secondary') => {
     const interaction = await trackCTAInteraction({
@@ -431,11 +431,11 @@ export function CTAGradientVariant({
               LIMITED TIME
             </Badge>
           </div>
-          
+
           <h3 className="text-2xl font-bold mb-3">
             {course.ctaSettings.ctaTitle}
           </h3>
-          
+
           <p className="text-white/90 mb-6">
             {course.ctaSettings.ctaMessage}
           </p>
@@ -460,7 +460,7 @@ export function CTAGradientVariant({
               {course.ctaSettings.primaryButtonText}
               <ArrowRight className="ml-2 h-5 w-5" />
             </Button>
-            
+
             <button
               onClick={() => handleClick('secondary')}
               className="text-white/80 hover:text-white text-sm underline underline-offset-2 transition-colors"
@@ -479,13 +479,13 @@ export function CTAGradientVariant({
 }
 
 // Testimonial variant - Social proof focused
-export function CTATestimonialVariant({ 
-  blogPost, 
-  course, 
-  position, 
+export function CTATestimonialVariant({
+  blogPost,
+  course,
+  position,
   testId,
   className = '',
-  onInteraction 
+  onInteraction
 }: CTAVariantProps) {
   const handleClick = useCallback(async (action: 'primary' | 'secondary') => {
     const interaction = await trackCTAInteraction({
@@ -521,8 +521,8 @@ export function CTATestimonialVariant({
             ))}
           </div>
           <blockquote className="text-lg italic mb-4">
-            "The {course.name} program at Aviators Training Centre was exactly what I needed. 
-            The instructors are knowledgeable and the study materials are comprehensive. 
+            "The {course.name} program at Aviators Training Centre was exactly what I needed.
+            The instructors are knowledgeable and the study materials are comprehensive.
             I passed my exam on the first attempt!"
           </blockquote>
           <div className="flex items-center gap-3">
@@ -544,7 +544,7 @@ export function CTATestimonialVariant({
           <p className="text-muted-foreground mb-4">
             Start your journey with {course.name} and become part of our growing community of successful pilots.
           </p>
-          
+
           <div className="flex flex-col sm:flex-row gap-3">
             <Button
               onClick={() => handleClick('primary')}

@@ -2,7 +2,7 @@ import React from 'react';
 // Removed import { Button } from '@/components/ui/button';
 // Consistent icons - Keeping ChevronRight and LinkIcon
 import { GraduationCap, RadioTower, PlaneTakeoff, ChevronRight, Link as LinkIcon } from 'lucide-react';
-import { Link } from 'next/link';
+import Link from 'next/link';
 import OptimizedImage from '@/components/shared/OptimizedImage';
 import { cn } from '@/components/ui/utils';
 import { motion } from 'framer-motion';
@@ -130,7 +130,7 @@ const CoursesSection: React.FC = () => {
                   <TransparentButton
                     href={course.path}
                     icon={ChevronRight} // Using the same icon
-                    label="Learn More"
+                    label="View Course Details"
                     // Add className if specific sizing needed, e.g., "w-full min-h-[44px]"
                     className="w-full"
                   />

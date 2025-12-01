@@ -24,7 +24,7 @@ function getRecommendedCourse(blogPost: BlogPost): Course {
 
   // Technical General keywords
   if (content.includes('dgca') || content.includes('ground school') ||
-      content.includes('aviation theory') || category.title.toLowerCase().includes('technical general')) {
+    content.includes('aviation theory') || category.title.toLowerCase().includes('technical general')) {
     return {
       _id: 'technical-general',
       _type: 'course',
@@ -40,7 +40,7 @@ function getRecommendedCourse(blogPost: BlogPost): Course {
       keywords: ['dgca', 'technical general', 'ground school', 'aviation theory'],
       ctaSettings: {
         primaryButtonText: 'Start Technical General Course',
-        secondaryButtonText: 'Learn More',
+        secondaryButtonText: 'View Course Details',
         ctaTitle: 'Master DGCA Technical General',
         ctaMessage: 'Join thousands of successful pilots who started with our comprehensive Technical General course.',
       },
@@ -50,7 +50,7 @@ function getRecommendedCourse(blogPost: BlogPost): Course {
 
   // Technical Specific keywords
   if (content.includes('aircraft systems') || content.includes('navigation') ||
-      content.includes('meteorology') || category.title.toLowerCase().includes('technical specific')) {
+    content.includes('meteorology') || category.title.toLowerCase().includes('technical specific')) {
     return {
       _id: 'technical-specific',
       _type: 'course',
@@ -76,7 +76,7 @@ function getRecommendedCourse(blogPost: BlogPost): Course {
 
   // CPL Ground School keywords
   if (content.includes('commercial pilot') || content.includes('cpl') ||
-      content.includes('career') || content.includes('pilot training')) {
+    content.includes('career') || content.includes('pilot training')) {
     return {
       _id: 'cpl-ground-school',
       _type: 'course',
@@ -102,7 +102,7 @@ function getRecommendedCourse(blogPost: BlogPost): Course {
 
   // ATPL Ground School keywords
   if (content.includes('airline') || content.includes('atpl') ||
-      content.includes('advanced') || content.includes('captain')) {
+    content.includes('advanced') || content.includes('captain')) {
     return {
       _id: 'atpl-ground-school',
       _type: 'course',
@@ -128,7 +128,7 @@ function getRecommendedCourse(blogPost: BlogPost): Course {
 
   // Type Rating keywords
   if (content.includes('type rating') || content.includes('aircraft type') ||
-      content.includes('specific aircraft')) {
+    content.includes('specific aircraft')) {
     return {
       _id: 'type-rating',
       _type: 'course',
@@ -176,9 +176,9 @@ function getRecommendedCourse(blogPost: BlogPost): Course {
   };
 }
 
-export default function CoursePromotionCTA({ 
-  blogPost, 
-  position, 
+export default function CoursePromotionCTA({
+  blogPost,
+  position,
   variant = 'primary',
   className = '',
   useIntelligentCTA = true
@@ -278,7 +278,7 @@ export default function CoursePromotionCTA({
               <span className="truncate">{recommendedCourse.ctaSettings.primaryButtonText}</span>
               <ArrowRight className="ml-1 sm:ml-2 h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
             </Button>
-            
+
             <div className="flex items-center justify-center gap-4 text-xs sm:text-sm">
               <button
                 onClick={handleSecondaryClick}

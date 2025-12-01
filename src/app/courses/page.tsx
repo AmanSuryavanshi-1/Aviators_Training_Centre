@@ -287,50 +287,47 @@ const Courses: React.FC = () => {
             {additionalServicesData.map((service, index) => (
               <motion.div key={index} variants={itemVariants}>
                 <motion.div id={service.id} className="relative h-full group" whileHover="hover" initial="rest" animate="rest" variants={cardHoverEffect} >
-                  <Card className="relative z-10 flex flex-col h-full overflow-hidden transition-shadow duration-300 border rounded-lg shadow-sm bg-card sm:flex-row border-border">
-                    <div className="relative flex-shrink-0 h-48 sm:h-auto sm:w-1/3 aspect-video sm:aspect-auto">
-                      <Image
-                        src={service.image}
-                        alt={service.title}
-                        fill
-                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                        className="object-cover"
-                        onError={handleImageError}
-                        loading="lazy"
-                      />
-                    </div>
-                    <div className="flex flex-col flex-grow p-4 sm:p-5 md:p-6">
-                      <CardHeader className="p-0 mb-2">
-                        <div className="flex items-center mb-2 space-x-2">
-                          <service.icon className={clsx("flex-shrink-0 w-4 h-4 sm:w-5 sm:h-5", aviationSecondary)} />
-                          <CardTitle className="text-lg font-semibold sm:text-xl text-foreground">{service.title}</CardTitle>
-                        </div>
-                      </CardHeader>
-                      <CardContent className="flex-grow p-0 mb-3 sm:mb-4">
-                        <CardDescription className="text-xs sm:text-sm text-foreground/80">
-                          {service.description}
-                        </CardDescription>
-                      </CardContent>
-                      <CardFooter className="flex flex-wrap gap-2 p-0 mt-auto w-full">
-                        <div className="flex-1 min-w-[120px]">
-                          <TransparentButton
-                            href={service.link}
-                            icon={ArrowRight}
-                            label={service.learnMoreText}
-                            mobileLabel="Learn More"
-                            className="min-h-[44px] w-full"
-                          />
-                        </div>
-                        <div className="flex-1 min-w-[120px]">
-                          <BookDemoButton
-                            size="sm"
-                            mobileLabel="Demo"
-                            className="min-h-[44px] w-full"
-                            state={{ subject: `Demo Request: ${service.title}`, courseName: service.title }}
-                          />
-                        </div>
-                      </CardFooter>
-                    </div>
+                  <Card className="relative z-10 flex flex-col h-full overflow-hidden transition-shadow duration-300 border rounded-lg shadow-sm bg-card border-border">
+                    <CardHeader className="relative p-0">
+                      <div className="relative h-40 overflow-hidden sm:h-48">
+                        <Image
+                          src={service.image}
+                          alt={service.title}
+                          fill
+                          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                          className="object-cover transition-transform duration-300 group-hover:scale-105"
+                          onError={handleImageError}
+                          loading="lazy"
+                        />
+                      </div>
+                    </CardHeader>
+                    <CardContent className="flex flex-col flex-grow p-4 sm:p-5">
+                      <div className="flex items-center mb-2 space-x-3 sm:mb-3">
+                        <service.icon className={clsx("flex-shrink-0 w-5 h-5 sm:w-6 sm:h-6", aviationSecondary)} />
+                        <CardTitle className="text-base font-semibold sm:text-lg md:text-xl text-foreground">{service.title}</CardTitle>
+                      </div>
+                      <CardDescription className="flex-grow mb-3 text-xs sm:text-sm md:text-base text-foreground/80 sm:mb-4">
+                        {service.description}
+                      </CardDescription>
+                    </CardContent>
+                    <CardFooter className="flex flex-col w-full gap-3 p-4 pt-3 mt-auto border-t sm:p-5 sm:pt-4 xl:flex-row xl:gap-2 border-border/30">
+                      <div className="w-full xl:flex-1">
+                        <TransparentButton
+                          href={service.link}
+                          icon={ArrowRight}
+                          label={service.learnMoreText}
+                          mobileLabel={service.learnMoreText}
+                          className="w-full min-h-[44px]"
+                        />
+                      </div>
+                      <div className="w-full xl:flex-1">
+                        <BookDemoButton
+                          mobileLabel="Demo"
+                          className="w-full min-h-[44px] sm:min-h-[48px] text-sm sm:text-base px-4 py-2 sm:px-5 sm:py-2.5 md:px-6 md:py-3"
+                          state={{ subject: `Demo Request: ${service.title}`, courseName: service.title }}
+                        />
+                      </div>
+                    </CardFooter>
                   </Card>
                 </motion.div>
               </motion.div>

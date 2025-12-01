@@ -148,18 +148,8 @@
     "build:safe": "next build || echo \"Build completed with warnings\"",
     "type-check:safe": "tsc --noEmit || echo \"Type check completed with warnings\"",
     "lint:safe": "next lint || echo \"Lint completed with warnings\"",
-    "test:safe": "npm run type-check:safe && npm run lint:safe",
-    "deploy:firestore-production": "node tools/scripts/deploy/deploy-firestore-production.js",
-    "validate:production-analytics": "node tools/scripts/production/validate-production-analytics.js",
-    "setup:monitoring": "node tools/scripts/production/setup-production-monitoring.js",
-    "configure:production-dashboard": "node tools/scripts/production/configure-production-dashboard.js",
-    "test:analytics": "jest --testPathPattern=\"src/lib/analytics/__tests__/.*\\.test\\.ts\"",
-    "test:analytics:unit": "jest --testPathPattern=\"src/lib/analytics/__tests__/.*\\.test\\.ts\"",
-    "test:analytics:integration": "playwright test tests/integration/analytics-flow.test.ts",
-    "test:analytics:e2e": "playwright test tests/e2e/analytics-dashboard.spec.ts",
-    "backup:analytics": "node tools/scripts/utilities/backup-manager.js create",
-    "restore:analytics": "node tools/scripts/utilities/backup-manager.js restore",
-    "health-check:analytics": "curl -f $NEXT_PUBLIC_SITE_URL/api/health/analytics || exit 1"
+    "health-check:analytics": "curl -f $NEXT_PUBLIC_SITE_URL/api/health/analytics || exit 1",
+    "test:e2e:critical": "playwright test tests/e2e/critical-paths.spec.ts"
   },
   "dependencies": {
     "@google-analytics/data": "^5.2.0",

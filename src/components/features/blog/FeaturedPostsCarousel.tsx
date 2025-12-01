@@ -290,12 +290,12 @@ const FeaturedPostsCarouselInner: React.FC<FeaturedPostsCarouselProps> = ({ post
               variant="outline"
               size="icon"
               onClick={prevSlide}
-              className="absolute left-2 sm:left-3 md:left-4 top-1/2 -translate-y-1/2 z-10 w-10 h-10 sm:w-12 sm:h-12 rounded-full
+              className="absolute left-2 sm:left-3 md:left-4 top-1/2 -translate-y-1/2 z-10 w-10 h-10 sm:w-12 sm:h-12 min-w-[48px] min-h-[48px] rounded-full
               bg-white/90 text-gray-900 border-black/10 backdrop-blur-md shadow-lg
               hover:bg-white hover:text-gray-900 hover:scale-105
               dark:bg-white/10 dark:text-white dark:border-white/20 dark:shadow-black/40 dark:hover:bg-white/20
               focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background
-              transition-all duration-200 touch-manipulation"
+              transition-all duration-200 touch-manipulation flex items-center justify-center"
               aria-label="Previous featured post"
             >
               <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5" aria-hidden="true" />
@@ -304,12 +304,12 @@ const FeaturedPostsCarouselInner: React.FC<FeaturedPostsCarouselProps> = ({ post
               variant="outline"
               size="icon"
               onClick={nextSlide}
-              className="absolute right-2 sm:right-3 md:right-4 top-1/2 -translate-y-1/2 z-10 w-10 h-10 sm:w-12 sm:h-12 rounded-full
+              className="absolute right-2 sm:right-3 md:right-4 top-1/2 -translate-y-1/2 z-10 w-10 h-10 sm:w-12 sm:h-12 min-w-[48px] min-h-[48px] rounded-full
               bg-white/90 text-gray-900 border-black/10 backdrop-blur-md shadow-lg
               hover:bg-white hover:text-gray-900 hover:scale-105
               dark:bg-white/10 dark:text-white dark:border-white/20 dark:shadow-black/40 dark:hover:bg-white/20
               focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background
-              transition-all duration-200 touch-manipulation"
+              transition-all duration-200 touch-manipulation flex items-center justify-center"
               aria-label="Next featured post"
             >
               <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5" aria-hidden="true" />

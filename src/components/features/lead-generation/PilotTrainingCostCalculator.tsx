@@ -9,19 +9,19 @@ import { Input } from '@/components/ui/input';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
-import { 
-  TrainingCostInput, 
-  CostBreakdown, 
-  FinancingOption, 
-  CostCalculatorResult 
+import {
+  TrainingCostInput,
+  CostBreakdown,
+  FinancingOption,
+  CostCalculatorResult
 } from '@/lib/types/lead-generation';
-import { 
-  Calculator, 
-  DollarSign, 
-  CreditCard, 
-  PiggyBank, 
-  TrendingUp, 
-  AlertCircle, 
+import {
+  Calculator,
+  DollarSign,
+  CreditCard,
+  PiggyBank,
+  TrendingUp,
+  AlertCircle,
   CheckCircle,
   Download,
   Phone,
@@ -164,9 +164,9 @@ interface PilotTrainingCostCalculatorProps {
   onLeadCapture?: (leadData: any) => void;
 }
 
-export default function PilotTrainingCostCalculator({ 
-  onComplete, 
-  onLeadCapture 
+export default function PilotTrainingCostCalculator({
+  onComplete,
+  onLeadCapture
 }: PilotTrainingCostCalculatorProps) {
   const [input, setInput] = useState<TrainingCostInput>({
     courseType: 'CPL',
@@ -177,7 +177,7 @@ export default function PilotTrainingCostCalculator({
     examAttempts: 1,
     additionalServices: []
   });
-  
+
   const [result, setResult] = useState<CostCalculatorResult | null>(null);
   const [isCalculated, setIsCalculated] = useState(false);
   const [selectedFinancing, setSelectedFinancing] = useState<string>('');
@@ -190,10 +190,10 @@ export default function PilotTrainingCostCalculator({
     const materialCost = STUDY_MATERIALS[input.studyMaterials];
 
     // Calculate training duration in months
-    const trainingDuration = input.courseType === 'CPL' ? 18 : 
-                           input.courseType === 'ATPL' ? 12 : 
-                           input.courseType === 'Type Rating' ? 2 : 
-                           input.courseType === 'RTR' ? 1 : 3;
+    const trainingDuration = input.courseType === 'CPL' ? 18 :
+      input.courseType === 'ATPL' ? 12 :
+        input.courseType === 'Type Rating' ? 2 :
+          input.courseType === 'RTR' ? 1 : 3;
 
     const breakdown: CostBreakdown[] = [];
 
@@ -239,9 +239,9 @@ export default function PilotTrainingCostCalculator({
     // Additional exam attempts
     if (input.examAttempts > 1) {
       const extraAttempts = input.examAttempts - 1;
-      const examFee = input.courseType === 'CPL' ? 25000 : 
-                     input.courseType === 'ATPL' ? 35000 : 
-                     input.courseType === 'Type Rating' ? 50000 : 5000;
+      const examFee = input.courseType === 'CPL' ? 25000 :
+        input.courseType === 'ATPL' ? 35000 :
+          input.courseType === 'Type Rating' ? 50000 : 5000;
       breakdown.push({
         category: 'Additional Exam Attempts',
         amount: extraAttempts * examFee,
@@ -268,20 +268,20 @@ export default function PilotTrainingCostCalculator({
     // Calculate financing options
     const financingOptions = FINANCING_OPTIONS.map(option => {
       const finOption = { ...option };
-      
+
       if (option.type === 'loan' || option.type === 'emi') {
         const principal = totalCost;
         const monthlyRate = (option.interestRate || 0) / 100 / 12;
         const tenure = option.tenure || 60;
-        
+
         if (monthlyRate > 0) {
-          const monthlyPayment = (principal * monthlyRate * Math.pow(1 + monthlyRate, tenure)) / 
-                               (Math.pow(1 + monthlyRate, tenure) - 1);
+          const monthlyPayment = (principal * monthlyRate * Math.pow(1 + monthlyRate, tenure)) /
+            (Math.pow(1 + monthlyRate, tenure) - 1);
           finOption.monthlyPayment = Math.round(monthlyPayment);
           finOption.totalAmount = Math.round(monthlyPayment * tenure);
         }
       }
-      
+
       return finOption;
     });
 
@@ -323,7 +323,7 @@ export default function PilotTrainingCostCalculator({
   const handleAdditionalServiceToggle = (serviceId: string, checked: boolean) => {
     setInput(prev => ({
       ...prev,
-      additionalServices: checked 
+      additionalServices: checked
         ? [...prev.additionalServices, serviceId]
         : prev.additionalServices.filter(id => id !== serviceId)
     }));
@@ -405,7 +405,7 @@ export default function PilotTrainingCostCalculator({
                       {option.type}
                     </Badge>
                   </div>
-                  
+
                   {option.monthlyPayment && (
                     <div className="grid grid-cols-2 gap-4 mt-3 text-sm">
                       <div>
@@ -418,7 +418,7 @@ export default function PilotTrainingCostCalculator({
                       </div>
                     </div>
                   )}
-                  
+
                   <div className="mt-3">
                     <span className="text-sm text-muted-foreground">Eligibility:</span>
                     <ul className="text-sm list-disc list-inside mt-1">
@@ -427,14 +427,14 @@ export default function PilotTrainingCostCalculator({
                       ))}
                     </ul>
                   </div>
-                  
+
                   <div className="flex gap-2 mt-4">
                     <Button size="sm" className="flex-1">
                       Apply Now
                       <ArrowRight className="ml-2 h-4 w-4" />
                     </Button>
                     <Button size="sm" variant="outline">
-                      Learn More
+                      View Details
                     </Button>
                   </div>
                 </div>
@@ -505,8 +505,8 @@ export default function PilotTrainingCostCalculator({
         </Card>
 
         <div className="text-center">
-          <Button 
-            variant="outline" 
+          <Button
+            variant="outline"
             onClick={() => {
               setIsCalculated(false);
               setResult(null);
@@ -536,8 +536,8 @@ export default function PilotTrainingCostCalculator({
             <div className="grid gap-4">
               <div>
                 <Label htmlFor="courseType">Course Type</Label>
-                <Select 
-                  value={input.courseType} 
+                <Select
+                  value={input.courseType}
                   onValueChange={(value: any) => handleInputChange('courseType', value)}
                 >
                   <SelectTrigger>
@@ -555,8 +555,8 @@ export default function PilotTrainingCostCalculator({
 
               <div>
                 <Label htmlFor="location">Training Location</Label>
-                <Select 
-                  value={input.location} 
+                <Select
+                  value={input.location}
                   onValueChange={(value: any) => handleInputChange('location', value)}
                 >
                   <SelectTrigger>
@@ -573,8 +573,8 @@ export default function PilotTrainingCostCalculator({
 
               <div>
                 <Label htmlFor="accommodation">Accommodation Type</Label>
-                <Select 
-                  value={input.accommodationType} 
+                <Select
+                  value={input.accommodationType}
                   onValueChange={(value: any) => handleInputChange('accommodationType', value)}
                 >
                   <SelectTrigger>
@@ -591,8 +591,8 @@ export default function PilotTrainingCostCalculator({
 
               <div>
                 <Label htmlFor="meals">Meal Plan</Label>
-                <Select 
-                  value={input.mealPlan} 
+                <Select
+                  value={input.mealPlan}
                   onValueChange={(value: any) => handleInputChange('mealPlan', value)}
                 >
                   <SelectTrigger>
@@ -608,8 +608,8 @@ export default function PilotTrainingCostCalculator({
 
               <div>
                 <Label htmlFor="materials">Study Materials</Label>
-                <Select 
-                  value={input.studyMaterials} 
+                <Select
+                  value={input.studyMaterials}
                   onValueChange={(value: any) => handleInputChange('studyMaterials', value)}
                 >
                   <SelectTrigger>
@@ -645,7 +645,7 @@ export default function PilotTrainingCostCalculator({
                     <Checkbox
                       id={service.id}
                       checked={input.additionalServices.includes(service.id)}
-                      onCheckedChange={(checked) => 
+                      onCheckedChange={(checked) =>
                         handleAdditionalServiceToggle(service.id, checked as boolean)
                       }
                     />

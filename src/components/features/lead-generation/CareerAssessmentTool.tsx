@@ -8,18 +8,18 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
 import { Slider } from '@/components/ui/slider';
 import { Badge } from '@/components/ui/badge';
-import { 
-  CareerAssessmentQuestion, 
-  CareerPath, 
-  CareerAssessmentResult 
+import {
+  CareerAssessmentQuestion,
+  CareerPath,
+  CareerAssessmentResult
 } from '@/lib/types/lead-generation';
-import { 
-  Plane, 
-  Award, 
-  TrendingUp, 
-  Clock, 
-  DollarSign, 
-  CheckCircle, 
+import {
+  Plane,
+  Award,
+  TrendingUp,
+  Clock,
+  DollarSign,
+  CheckCircle,
   AlertCircle,
   ArrowRight,
   Star,
@@ -256,9 +256,9 @@ interface CareerAssessmentToolProps {
   onLeadCapture?: (leadData: any) => void;
 }
 
-export default function CareerAssessmentTool({ 
-  onComplete, 
-  onLeadCapture 
+export default function CareerAssessmentTool({
+  onComplete,
+  onLeadCapture
 }: CareerAssessmentToolProps) {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [responses, setResponses] = useState<Record<string, number | string>>({});
@@ -399,7 +399,7 @@ export default function CareerAssessmentTool({
 
   const generateSkillGaps = (responses: Record<string, number | string>, topCareer: CareerPath): string[] => {
     const gaps: string[] = [];
-    
+
     const techScore = responses.technical_aptitude as number || 3;
     const stressScore = responses.stress_management as number || 3;
     const commScore = responses.communication_skills as number || 3;
@@ -434,7 +434,7 @@ export default function CareerAssessmentTool({
     const topCareer = careerPaths[0];
 
     recommendations.push(`Focus on ${topCareer.title} as your primary career path with ${topCareer.matchScore}% compatibility`);
-    
+
     if (skillGaps.length > 0) {
       recommendations.push('Address identified skill gaps through targeted training and development');
     }
@@ -461,7 +461,7 @@ export default function CareerAssessmentTool({
 
   const completeAssessment = async () => {
     setIsLoading(true);
-    
+
     try {
       const careerMatches = calculateCareerMatches(responses);
       const topCareer = careerMatches[0];
@@ -603,7 +603,7 @@ export default function CareerAssessmentTool({
               </CardHeader>
               <CardContent>
                 <p className="text-muted-foreground mb-4">{career.description}</p>
-                
+
                 <div className="grid md:grid-cols-2 gap-4 mb-4">
                   <div>
                     <h4 className="font-semibold mb-2 flex items-center gap-1">
@@ -644,7 +644,7 @@ export default function CareerAssessmentTool({
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Button>
                   <Button variant="outline">
-                    Learn More
+                    View Career Details
                   </Button>
                 </div>
               </CardContent>

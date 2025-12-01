@@ -382,7 +382,7 @@ export default function TextTestimonialsCarousel() {
               variant="outline"
               size="sm"
               onClick={handlePrevious}
-              className="rounded-full w-7 h-7 sm:w-8 sm:h-8 p-0 bg-card/80 backdrop-blur-sm hover:bg-card border-border shadow-sm hover:shadow-md transition-all duration-300"
+              className="rounded-full w-7 h-7 sm:w-8 sm:h-8 min-w-[48px] min-h-[48px] p-0 bg-card/80 backdrop-blur-sm hover:bg-card border-border shadow-sm hover:shadow-md transition-all duration-300 flex items-center justify-center"
               aria-label="Previous testimonials"
             >
               <ChevronLeft className="w-3 h-3 sm:w-4 sm:h-4" aria-hidden="true" />
@@ -448,7 +448,7 @@ export default function TextTestimonialsCarousel() {
               variant="outline"
               size="sm"
               onClick={handleNext}
-              className="rounded-full w-7 h-7 sm:w-8 sm:h-8 p-0 bg-card/80 backdrop-blur-sm hover:bg-card border-border shadow-sm hover:shadow-md transition-all duration-300"
+              className="rounded-full w-7 h-7 sm:w-8 sm:h-8 min-w-[48px] min-h-[48px] p-0 bg-card/80 backdrop-blur-sm hover:bg-card border-border shadow-sm hover:shadow-md transition-all duration-300 flex items-center justify-center"
               aria-label="Next testimonials"
             >
               <ChevronRight className="w-3 h-3 sm:w-4 sm:h-4" aria-hidden="true" />

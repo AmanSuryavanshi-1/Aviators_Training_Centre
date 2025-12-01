@@ -71,7 +71,7 @@ const Header: React.FC = () => {
                   variant="ghost"
                   size="icon"
                   className={cn(
-                    "relative w-8 h-8",
+                    "relative w-8 h-8 min-w-[48px] min-h-[48px]",
                     "text-foreground/90 dark:text-foreground/90",
                     "hover:text-primary dark:hover:text-teal-300 transition-colors duration-150"
                   )}

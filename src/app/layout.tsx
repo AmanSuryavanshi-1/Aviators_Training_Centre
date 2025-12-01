@@ -4,7 +4,7 @@ import { ThemeProvider } from "./providers";
 // import { Toaster } from "@/components/ui/sonner"; // Removed to avoid conflict with custom toast system
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
-import WhatsAppChat from "@/components/shared/WhatsAppChat";
+import WhatsAppChatWrapper from "@/components/shared/WhatsAppChatWrapper";
 import { Analytics } from '@vercel/analytics/react';
 import Script from 'next/script';
 import ServiceWorkerRegistration from "@/components/features/blog/ServiceWorkerRegistration";

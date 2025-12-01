@@ -91,7 +91,7 @@ export default function TestimonialsVideoCarousel() {
                             e.stopPropagation();
                             prevSlide();
                         }}
-                        className="absolute left-2 md:left-4 z-30 p-2 md:p-3 rounded-full bg-white/70 md:bg-white/80 hover:bg-white shadow-lg backdrop-blur-sm transition-all flex items-center justify-center touch-manipulation"
+                        className="absolute left-2 md:left-4 z-30 min-w-[48px] min-h-[48px] p-2 md:p-3 rounded-full bg-white/70 md:bg-white/80 hover:bg-white shadow-lg backdrop-blur-sm transition-all flex items-center justify-center touch-manipulation"
                         aria-label="Previous testimonial"
                         type="button"
                     >
@@ -103,7 +103,7 @@ export default function TestimonialsVideoCarousel() {
                             e.stopPropagation();
                             nextSlide();
                         }}
-                        className="absolute right-2 md:right-4 z-30 p-2 md:p-3 rounded-full bg-white/70 md:bg-white/80 hover:bg-white shadow-lg backdrop-blur-sm transition-all flex items-center justify-center touch-manipulation"
+                        className="absolute right-2 md:right-4 z-30 min-w-[48px] min-h-[48px] p-2 md:p-3 rounded-full bg-white/70 md:bg-white/80 hover:bg-white shadow-lg backdrop-blur-sm transition-all flex items-center justify-center touch-manipulation"
                         aria-label="Next testimonial"
                         type="button"
                     >
@@ -213,7 +213,7 @@ export default function TestimonialsVideoCarousel() {
                                                             e.stopPropagation();
                                                             setIsMuted(!isMuted);
                                                         }}
-                                                        className="p-3 rounded-full bg-black/40 hover:bg-black/60 text-white backdrop-blur-md transition-all border border-white/10 touch-manipulation"
+                                                        className="min-w-[48px] min-h-[48px] flex items-center justify-center p-3 rounded-full bg-black/40 hover:bg-black/60 text-white backdrop-blur-md transition-all border border-white/10 touch-manipulation"
                                                         aria-label={isMuted ? 'Unmute video' : 'Mute video'}
                                                         type="button"
                                                     >
@@ -258,7 +258,7 @@ export default function TestimonialsVideoCarousel() {
                                                 {isCenter && (
                                                     <div className="absolute top-6 left-6 z-10">
                                                         <motion.button
-                                                            className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-white/20 hover:bg-white/30 backdrop-blur-md text-white border border-white/30 transition-all shadow-lg"
+                                                            className="flex items-center gap-2 px-5 py-2.5 min-h-[48px] rounded-full bg-white/20 hover:bg-white/30 backdrop-blur-md text-white border border-white/30 transition-all shadow-lg"
                                                             whileHover={{ scale: 1.05 }}
                                                             whileTap={{ scale: 0.95 }}
                                                         >
