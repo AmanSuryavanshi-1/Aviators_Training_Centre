@@ -36,9 +36,19 @@ const nextConfig = {
 
   images: {
     domains: ['localhost', 'cdn.sanity.io', 'images.unsplash.com', 'img.youtube.com', 'i.ytimg.com'],
-    formats: ['image/webp', 'image/avif'],
+    formats: ['image/avif', 'image/webp'],
     dangerouslyAllowSVG: true,
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
+
+    // Optimized device sizes for responsive images
+    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048],
+    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
+
+    // Minimum cache time for optimized images (1 year)
+    minimumCacheTTL: 31536000,
+
+    // Disable static image import for better control
+    disableStaticImages: false,
   },
 
   typescript: {

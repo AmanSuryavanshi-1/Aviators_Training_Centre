@@ -49,7 +49,7 @@ const FeaturedPostsCarouselInner: React.FC<FeaturedPostsCarouselProps> = ({ post
     setDirection(1);
     const nextIndex = (currentIndex + 1) % posts.length;
     setCurrentIndex(nextIndex);
-    
+
     // Preload the next image for smooth transitions
     const afterNextIndex = (nextIndex + 1) % posts.length;
     if (posts[afterNextIndex]?.image) {
@@ -61,7 +61,7 @@ const FeaturedPostsCarouselInner: React.FC<FeaturedPostsCarouselProps> = ({ post
     setDirection(-1);
     const prevIndex = (currentIndex - 1 + posts.length) % posts.length;
     setCurrentIndex(prevIndex);
-    
+
     // Preload the previous image for smooth transitions
     const beforePrevIndex = (prevIndex - 1 + posts.length) % posts.length;
     if (posts[beforePrevIndex]?.image) {
@@ -72,11 +72,11 @@ const FeaturedPostsCarouselInner: React.FC<FeaturedPostsCarouselProps> = ({ post
   const goToSlide = useCallback((index: number) => {
     setDirection(index > currentIndex ? 1 : -1);
     setCurrentIndex(index);
-    
+
     // Preload adjacent images when user navigates directly
     const nextIndex = (index + 1) % posts.length;
     const prevIndex = (index - 1 + posts.length) % posts.length;
-    
+
     if (posts[nextIndex]?.image) {
       preloadImage(getImageUrl(posts[nextIndex].image, 800, 600), 'high');
     }
@@ -88,12 +88,12 @@ const FeaturedPostsCarouselInner: React.FC<FeaturedPostsCarouselProps> = ({ post
   // Preload carousel images on mount
   useEffect(() => {
     if (posts.length === 0) return;
-    
+
     // Preload current and next images immediately
     const currentPost = posts[currentIndex];
     const nextIndex = (currentIndex + 1) % posts.length;
     const nextPost = posts[nextIndex];
-    
+
     if (currentPost?.image) {
       preloadImage(getImageUrl(currentPost.image, 800, 600), 'high');
     }
@@ -124,7 +124,7 @@ const FeaturedPostsCarouselInner: React.FC<FeaturedPostsCarouselProps> = ({ post
     const touchStartX = parseFloat((e.currentTarget as HTMLElement).dataset.touchStartX || '0');
     const touchEndX = e.changedTouches[0].clientX;
     const diff = touchStartX - touchEndX;
-    
+
     if (Math.abs(diff) > 50) {
       if (diff > 0) {
         nextSlide();
@@ -185,7 +185,7 @@ const FeaturedPostsCarouselInner: React.FC<FeaturedPostsCarouselProps> = ({ post
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent lg:bg-gradient-to-r lg:from-transparent lg:to-black/20" />
                     </div>
-                    
+
                     {/* Featured Badge */}
                     <div className="absolute top-4 left-4">
                       <Badge className="bg-primary text-white font-medium px-3 py-1">
@@ -199,10 +199,10 @@ const FeaturedPostsCarouselInner: React.FC<FeaturedPostsCarouselProps> = ({ post
                     <div className="space-y-3 sm:space-y-4 lg:space-y-6">
                       {/* Category */}
                       <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3">
-                        <Badge 
-                          variant="outline" 
+                        <Badge
+                          variant="outline"
                           className="text-xs sm:text-sm font-medium w-fit bg-background/60 dark:bg-white/10 text-foreground whitespace-normal break-words"
-                          style={{ 
+                          style={{
                             borderColor: currentPost.category.color || 'hsl(var(--border))',
                             backgroundColor: currentPost.category.color ? `${currentPost.category.color}20` : undefined
                           }}
@@ -211,7 +211,7 @@ const FeaturedPostsCarouselInner: React.FC<FeaturedPostsCarouselProps> = ({ post
                         </Badge>
                         <div className="flex items-center text-xs sm:text-sm text-muted-foreground gap-2 sm:gap-4">
                           <div className="flex items-center gap-1">
-                            <Calendar className="w-3 h-3 sm:w-4 sm:h-4" />
+                            <Calendar className="w-3 h-3 sm:w-4 sm:h-4" aria-hidden="true" />
                             <time dateTime={currentPost.publishedAt}>
                               {new Date(currentPost.publishedAt).toLocaleDateString('en-US', {
                                 year: 'numeric',
@@ -221,7 +221,7 @@ const FeaturedPostsCarouselInner: React.FC<FeaturedPostsCarouselProps> = ({ post
                             </time>
                           </div>
                           <div className="flex items-center gap-1">
-                            <Clock className="w-3 h-3 sm:w-4 sm:h-4" />
+                            <Clock className="w-3 h-3 sm:w-4 sm:h-4" aria-hidden="true" />
                             <span>{currentPost.readingTime || 8} min read</span>
                           </div>
                         </div>
@@ -250,7 +250,7 @@ const FeaturedPostsCarouselInner: React.FC<FeaturedPostsCarouselProps> = ({ post
                               />
                             ) : (
                               <div className="flex items-center justify-center w-full h-full bg-primary/10">
-                                <User className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
+                                <User className="w-4 h-4 sm:w-5 sm:h-5 text-primary" aria-hidden="true" />
                               </div>
                             )}
                           </div>
@@ -298,7 +298,7 @@ const FeaturedPostsCarouselInner: React.FC<FeaturedPostsCarouselProps> = ({ post
               transition-all duration-200 touch-manipulation"
               aria-label="Previous featured post"
             >
-              <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5" />
+              <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5" aria-hidden="true" />
             </Button>
             <Button
               variant="outline"
@@ -312,7 +312,7 @@ const FeaturedPostsCarouselInner: React.FC<FeaturedPostsCarouselProps> = ({ post
               transition-all duration-200 touch-manipulation"
               aria-label="Next featured post"
             >
-              <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5" />
+              <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5" aria-hidden="true" />
             </Button>
           </>
         )}

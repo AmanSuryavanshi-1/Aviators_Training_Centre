@@ -20,20 +20,20 @@
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 4;
   }
-  
+
   /* Prevent horizontal overflow */
   .no-horizontal-overflow {
     overflow-x: hidden;
     max-width: 100vw;
   }
-  
+
   /* Responsive container that prevents overflow */
   .responsive-container {
     max-width: 100vw;
     overflow-x: hidden;
     box-sizing: border-box;
   }
-  
+
   /* Fix for elements that might cause horizontal scroll */
   .prevent-overflow {
     max-width: 100%;
@@ -47,47 +47,52 @@
     /* Base colors */
     --background: 0 0% 100%;
     --foreground: 215 25% 17%;
-    
+
     /* Aviation color palette - Teal/Blue-Green */
-    --aviation-primary: 187 87% 22%;    /* #075E68 - Deep teal */
-    --aviation-primary-dark: 185 80% 25%;  /* #0C6E72 - Dark teal */
-    --aviation-secondary: 184 63% 36%;  /* #219099 - Medium teal */
-    --aviation-tertiary: 184 35% 51%;   /* #56A7B0 - Light teal */
-    --aviation-light: 184 32% 60%;      /* #73B5BD - Pale teal */
-    
+    --aviation-primary: 187 87% 22%;
+    /* #075E68 - Deep teal */
+    --aviation-primary-dark: 185 80% 25%;
+    /* #0C6E72 - Dark teal */
+    --aviation-secondary: 184 63% 36%;
+    /* #219099 - Medium teal */
+    --aviation-tertiary: 184 35% 51%;
+    /* #56A7B0 - Light teal */
+    --aviation-light: 184 32% 60%;
+    /* #73B5BD - Pale teal */
+
     /* Primary - Deep teal for trust and professionalism */
     --primary: 187 87% 22%;
     --primary-foreground: 0 0% 100%;
-    
+
     /* Secondary - Medium teal for emphasis */
     --secondary: 184 63% 36%;
     --secondary-foreground: 0 0% 100%;
-    
+
     /* Accent - Light teal for highlights */
     --accent: 184 35% 51%;
     --accent-foreground: 215 25% 17%;
-    
+
     /* UI Elements */
     --card: 0 0% 100%;
     --card-foreground: 215 25% 17%;
     --popover: 0 0% 100%;
     --popover-foreground: 215 25% 17%;
-    
+
     /* Gradients - Teal-inspired */
     --gradient-start: 187 87% 22%;
     --gradient-end: 184 32% 60%;
-    
+
     /* Neutral tones */
     --muted: 185 30% 95%;
     --muted-foreground: 215 20% 65%;
-    
+
     /* System colors */
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
     --border: 185 30% 90%;
     --input: 185 30% 90%;
     --ring: 187 87% 22%;
-    
+
     /* Border radius */
     --radius: 0.5rem;
   }
@@ -112,71 +117,33 @@
     --border: 187 30% 22%;
     --input: 187 30% 22%;
     --ring: 184 63% 45%;
-    
+
     /* Enhanced aviation colors for dark mode */
-    --aviation-primary: 184 63% 45%;    /* Lighter teal for dark mode */
-    --aviation-primary-dark: 184 55% 50%;  /* Medium teal */
-    --aviation-secondary: 184 50% 55%;  /* Light teal */
-    --aviation-tertiary: 184 40% 65%;   /* Very light teal */
-    --aviation-light: 184 35% 75%;      /* Pale teal */
+    --aviation-primary: 184 63% 45%;
+    /* Lighter teal for dark mode */
+    --aviation-primary-dark: 184 55% 50%;
+    /* Medium teal */
   }
-}
 
-@layer base {
-  * {
-    @apply border-border;
-  }
-  html {
-    overflow-y: auto;
-    overflow-x: hidden;
-    height: auto;
-    max-width: 100vw;
-  }
-  body {
-    @apply antialiased bg-background text-foreground;
-    font-family: var(--body-font, 'Roboto'), system-ui, sans-serif;
-    overflow-y: auto;
-    overflow-x: hidden;
-    height: auto;
-    min-height: 100vh;
-    max-width: 100vw;
-  }
-  h1, h2, h3, h4, h5, h6 {
-    @apply font-semibold tracking-tight font-heading;
-    font-family: var(--heading-font, 'Montserrat'), system-ui, sans-serif;
-  }
-  h1 { @apply text-4xl md:text-5xl lg:text-6xl; }
-  h2 { @apply text-3xl md:text-4xl lg:text-5xl; }
-  h3 { @apply text-2xl md:text-3xl lg:text-4xl; }
-  h4 { @apply text-xl md:text-2xl lg:text-3xl; }
-  h5 { @apply text-lg md:text-xl lg:text-2xl; }
-  h6 { @apply text-base md:text-lg lg:text-xl; }
-}
-
-@layer components {
-  .section-padding {
-    @apply px-4 py-16 md:py-24 md:px-8 lg:px-12;
-  }
-  
   .container {
     @apply px-4 mx-auto max-w-7xl sm:px-6 lg:px-8;
   }
-  
+
   .gradient-bg {
     @apply bg-gradient-to-br from-[hsl(var(--gradient-start))] to-[hsl(var(--gradient-end))];
   }
-  
+
   /* Animation for gradient borders */
   .animate-gradient-xy {
     animation: gradient-xy 3s linear infinite;
     background-size: 200% 200%;
   }
-  
+
   /* Enhanced blog content styling */
   .blog-content-enhanced {
     @apply text-aviation-text;
   }
-  
+
   .blog-content-enhanced h1,
   .blog-content-enhanced h2,
   .blog-content-enhanced h3,
@@ -185,24 +152,24 @@
   .blog-content-enhanced h6 {
     @apply text-aviation-primary font-bold;
   }
-  
+
   .blog-content-enhanced p {
     @apply text-aviation-text font-medium leading-relaxed;
   }
-  
+
   .blog-content-enhanced strong {
     @apply text-aviation-primary font-bold;
   }
-  
+
   .blog-content-enhanced a {
     @apply text-aviation-secondary font-semibold hover:text-aviation-primary transition-colors;
   }
-  
+
   /* Dark mode blog content */
   .dark .blog-content-enhanced {
     @apply text-foreground;
   }
-  
+
   .dark .blog-content-enhanced h1,
   .dark .blog-content-enhanced h2,
   .dark .blog-content-enhanced h3,
@@ -211,83 +178,83 @@
   .dark .blog-content-enhanced h6 {
     @apply text-teal-300 font-bold;
   }
-  
+
   .dark .blog-content-enhanced p {
     @apply text-foreground font-medium;
   }
-  
+
   .dark .blog-content-enhanced strong {
     @apply text-teal-200 font-bold;
   }
-  
+
   .dark .blog-content-enhanced a {
     @apply text-teal-400 font-semibold hover:text-teal-300 transition-colors;
   }
-  
+
   .text-balance {
     text-wrap: balance;
   }
-  
+
   /* Studio Layout Styling */
   .studio-layout {
     @apply min-h-screen bg-[hsl(var(--aviation-bg))];
   }
-  
+
   .studio-container {
     @apply min-h-screen;
     /* Remove fixed height to allow proper scrolling */
     height: auto;
     min-height: 100vh;
   }
-  
+
   /* Admin Layout Styling */
   .admin-layout {
     @apply min-h-screen bg-gradient-to-br from-slate-50 via-teal-50/30 to-sky-50/20;
     @apply dark:from-slate-900 dark:via-teal-950/20 dark:to-slate-800;
   }
-  
+
   /* Ensure proper scrolling for all admin content */
   .admin-layout .table-wrapper {
     @apply overflow-x-auto overflow-y-auto max-h-[calc(100vh-200px)];
   }
-  
+
   /* Studio specific overrides */
   .studio-layout [data-ui="RootTheme"] {
     min-height: 100vh !important;
     height: auto !important;
   }
-  
+
   /* Admin page content scrolling fix */
   .admin-content {
     @apply overflow-y-auto max-h-screen;
   }
-  
+
   /* Ensure admin layout allows scrolling */
   .admin-layout-container {
     overflow-y: auto !important;
     height: auto !important;
     min-height: 100vh !important;
   }
-  
+
   /* Fix for admin main content */
   .admin-main-content {
     overflow-y: auto !important;
     max-height: none !important;
     height: auto !important;
   }
-  
+
   /* Force scrolling on admin pages */
   .admin-page-wrapper {
     overflow-y: auto !important;
     height: auto !important;
     min-height: 100vh !important;
   }
-  
+
   /* Ensure no fixed heights prevent scrolling */
   .admin-layout-container * {
     max-height: none !important;
   }
-  
+
   .admin-layout-container .flex-1 {
     overflow-y: auto !important;
     height: auto !important;
@@ -297,15 +264,15 @@
   .perspective-1000 {
     perspective: 1000px;
   }
-  
+
   .preserve-3d {
     transform-style: preserve-3d;
   }
-  
+
   .backface-hidden {
     backface-visibility: hidden;
   }
-  
+
   .rotate-y-180 {
     transform: rotateY(180deg);
   }
@@ -328,15 +295,19 @@
   0% {
     background-position: 0% 0%;
   }
+
   25% {
     background-position: 100% 0%;
   }
+
   50% {
     background-position: 100% 100%;
   }
+
   75% {
     background-position: 0% 100%;
   }
+
   100% {
     background-position: 0% 0%;
   }
@@ -347,12 +318,15 @@
     transform: translateX(-100px) translateY(0px) rotate(0deg);
     opacity: 0;
   }
+
   25% {
     opacity: 1;
   }
+
   75% {
     opacity: 1;
   }
+
   100% {
     transform: translateX(100px) translateY(-20px) rotate(15deg);
     opacity: 0;
@@ -360,12 +334,16 @@
 }
 
 @keyframes cloud-float {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: translateY(0px) translateX(0px);
   }
+
   33% {
     transform: translateY(-10px) translateX(5px);
   }
+
   66% {
     transform: translateY(5px) translateX(-5px);
   }
@@ -375,6 +353,7 @@
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(1080deg);
   }

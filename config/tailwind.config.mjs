@@ -4,14 +4,67 @@ import tailwindcssAnimate from 'tailwindcss-animate';
 import typography from '@tailwindcss/typography';
 
 const config = {
+  // Enable JIT mode (default in Tailwind CSS v3+)
+  mode: 'jit',
+
   darkMode: ['class'],
+
+  // Optimized content paths for aggressive CSS purging
   content: [
+    // App directory
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
-    './src/components/**/*.{ts,tsx}',
+
+    // Components
+    './src/components/**/*.{js,ts,jsx,tsx,mdx}',
+
+    // Lib utilities
+    './src/lib/**/*.{js,ts,jsx,tsx,mdx}',
+
+    // All src files
     './src/**/*.{js,ts,jsx,tsx,mdx}',
-    './public/**/*.{js,ts,jsx,tsx,mdx}'
+
+    // Public files
+    './public/**/*.{js,ts,jsx,tsx,mdx}',
+
+    // Styles
+    './src/styles/**/*.{css,scss}',
+    './styles/**/*.{css,scss}',
   ],
+
+  // Safelist for dynamically generated classes
+  safelist: [
+    // Color variants for dynamic classes (SocialProofIntegration, ErrorDisplay)
+    'text-yellow-500', 'text-yellow-600', 'text-yellow-400',
+    'bg-yellow-100', 'bg-yellow-900/30',
+    'text-blue-500', 'text-blue-600', 'text-blue-400',
+    'bg-blue-100', 'bg-blue-900/30',
+    'text-green-500', 'text-green-600', 'text-green-400',
+    'bg-green-100', 'bg-green-900/30',
+    'text-purple-500', 'text-purple-600', 'text-purple-400',
+    'bg-purple-100', 'bg-purple-900/30',
+    'text-red-500', 'text-red-600', 'text-red-400',
+    'bg-red-100', 'bg-red-900/30',
+    'text-teal-500', 'text-teal-600', 'text-teal-400',
+    'bg-teal-100', 'bg-teal-900/30',
+
+    // Animation patterns
+    {
+      pattern: /animate-(spin|pulse|bounce|ping)/,
+    },
+
+    // Transform patterns
+    {
+      pattern: /-?rotate-(0|45|90|180)/,
+    },
+
+    // Transition patterns  
+    {
+      pattern: /transition-(all|colors|opacity|transform)/,
+    },
+  ],
+
   prefix: '',
+
   theme: {
     container: {
       center: true,

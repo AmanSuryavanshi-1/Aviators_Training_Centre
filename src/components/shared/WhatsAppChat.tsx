@@ -66,7 +66,7 @@ const WhatsAppChat: React.FC = () => {
     const action = quickActions[actionKey];
     const message = encodeURIComponent(action.message);
     const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${message}`;
-    
+
     // Add a small delay to show the selection before opening WhatsApp
     setTimeout(() => {
       window.open(whatsappUrl, '_blank');
@@ -75,8 +75,8 @@ const WhatsAppChat: React.FC = () => {
   };
 
   const handleWhatsAppClick = () => {
-    const message = selectedQuery ? 
-      encodeURIComponent(quickActions[selectedQuery as keyof typeof quickActions].message) : 
+    const message = selectedQuery ?
+      encodeURIComponent(quickActions[selectedQuery as keyof typeof quickActions].message) :
       encodeURIComponent(defaultMessage);
     const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${message}`;
     window.open(whatsappUrl, '_blank');
@@ -84,8 +84,8 @@ const WhatsAppChat: React.FC = () => {
 
   const buttonVariants = {
     initial: { scale: 0, rotate: -180 },
-    animate: { 
-      scale: 1, 
+    animate: {
+      scale: 1,
       rotate: 0,
       transition: {
         type: "spring",
@@ -93,7 +93,7 @@ const WhatsAppChat: React.FC = () => {
         damping: 20
       }
     },
-    hover: { 
+    hover: {
       scale: 1.1,
       transition: { duration: 0.2 }
     },
@@ -113,15 +113,15 @@ const WhatsAppChat: React.FC = () => {
   };
 
   const chatBoxVariants = {
-    hidden: { 
-      opacity: 0, 
-      scale: 0.8, 
+    hidden: {
+      opacity: 0,
+      scale: 0.8,
       y: 20,
       transition: { duration: 0.2 }
     },
-    visible: { 
-      opacity: 1, 
-      scale: 1, 
+    visible: {
+      opacity: 1,
+      scale: 1,
       y: 0,
       transition: {
         type: "spring",
@@ -151,7 +151,7 @@ const WhatsAppChat: React.FC = () => {
           variants={pulseVariants}
           animate="animate"
         />
-        
+
         {/* Main button */}
         <motion.button
           onClick={() => setIsOpen(!isOpen)}
@@ -162,11 +162,12 @@ const WhatsAppChat: React.FC = () => {
           data-conversion="true"
           data-analytics-event="whatsapp_chat_open"
           data-analytics-source="floating_button"
+          aria-label={isOpen ? "Close WhatsApp chat menu" : "Open WhatsApp chat for inquiries"}
         >
           {/* Background gradient animation - themed */}
           <div className="absolute inset-0 bg-gradient-to-r from-aviation-800 to-aviation-600 dark:from-aviation-600 dark:to-aviation-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
           <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 mix-blend-overlay" />
-          
+
           {/* Aviation-themed sparkle decorations */}
           <motion.div
             className="absolute -top-2 -left-2 w-2 h-2 text-aviation-200"
@@ -180,10 +181,11 @@ const WhatsAppChat: React.FC = () => {
               repeat: Infinity,
               delay: 0
             }}
+            aria-hidden="true"
           >
-            <Star className="w-full h-full" />
+            <Star className="w-full h-full" aria-hidden="true" />
           </motion.div>
-          
+
           <motion.div
             className="absolute -bottom-2 -right-2 w-2 h-2 text-aviation-300"
             animate={{
@@ -196,10 +198,11 @@ const WhatsAppChat: React.FC = () => {
               repeat: Infinity,
               delay: 1
             }}
+            aria-hidden="true"
           >
-            <Zap className="w-full h-full" />
+            <Zap className="w-full h-full" aria-hidden="true" />
           </motion.div>
-          
+
           {/* Aviation-themed decorative elements */}
           <motion.div
             className="absolute -top-1 -right-1 w-3 h-3 bg-aviation-300 dark:bg-aviation-200 rounded-full opacity-60"
@@ -213,7 +216,7 @@ const WhatsAppChat: React.FC = () => {
               delay: 0.5
             }}
           />
-          
+
           <AnimatePresence mode="wait">
             {isOpen ? (
               <motion.div
@@ -224,7 +227,7 @@ const WhatsAppChat: React.FC = () => {
                 transition={{ duration: 0.2 }}
                 className="relative z-10"
               >
-                <X className="w-7 h-7 text-white" />
+                <X className="w-7 h-7 text-white" aria-hidden="true" />
               </motion.div>
             ) : (
               <motion.div
@@ -235,7 +238,7 @@ const WhatsAppChat: React.FC = () => {
                 transition={{ duration: 0.2 }}
                 className="relative z-10 flex items-center justify-center"
               >
-                <MessageCircle className="w-7 h-7 text-white" />
+                <MessageCircle className="w-7 h-7 text-white" aria-hidden="true" />
                 {/* Small notification dot */}
                 <motion.div
                   className="absolute -top-1 -right-1 w-3 h-3 bg-aviation-300 dark:bg-aviation-400 rounded-full border-2 border-white/90"
@@ -268,8 +271,8 @@ const WhatsAppChat: React.FC = () => {
               {/* Header */}
               <div className="bg-gradient-to-r from-aviation-700 to-aviation-500 dark:from-aviation-600 dark:to-aviation-500 p-3 text-white">
                 <div className="flex items-center space-x-2">
-                  <div className="w-8 h-8 bg-white/20 dark:bg-white/15 rounded-full flex items-center justify-center">
-                    <Plane className="w-4 h-4 text-white" />
+                  <div className="w-8 h-8 bg-white/20 dark:bg-white/15 rounded-full flex items-center justify-center" aria-hidden="true">
+                    <Plane className="w-4 h-4 text-white" aria-hidden="true" />
                   </div>
                   <div>
                     <h3 className="font-semibold text-xs">Aviators Training Centre</h3>
@@ -281,8 +284,8 @@ const WhatsAppChat: React.FC = () => {
               {/* Chat Content */}
               <div className="p-3 space-y-2">
                 <div className="flex items-start space-x-2">
-                  <div className="w-6 h-6 bg-aviation-100 dark:bg-aviation-500/20 rounded-full flex items-center justify-center flex-shrink-0">
-                    <MessageCircle className="w-3 h-3 text-aviation-700 dark:text-aviation-200" />
+                  <div className="w-6 h-6 bg-aviation-100 dark:bg-aviation-500/20 rounded-full flex items-center justify-center flex-shrink-0" aria-hidden="true">
+                    <MessageCircle className="w-3 h-3 text-aviation-700 dark:text-aviation-200" aria-hidden="true" />
                   </div>
                   <div className="bg-gray-100 dark:bg-aviation-700/25 rounded-lg rounded-tl-md p-2 max-w-[180px]">
                     <p className="text-xs text-gray-800 dark:text-aviation-50">
@@ -318,8 +321,9 @@ const WhatsAppChat: React.FC = () => {
                   className="w-full bg-gradient-to-r from-aviation-700 to-aviation-500 dark:from-aviation-600 dark:to-aviation-500 hover:from-aviation-800 hover:to-aviation-600 dark:hover:from-aviation-700 dark:hover:to-aviation-600 text-white rounded-lg py-2.5 px-3 flex items-center justify-center space-x-2 text-sm font-medium transition-all duration-200 hover:shadow-lg ring-1 ring-aviation-800/20 dark:ring-aviation-700/30"
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
+                  aria-label="Continue conversation on WhatsApp"
                 >
-                  <Send className="w-3 h-3" />
+                  <Send className="w-3 h-3" aria-hidden="true" />
                   <span>Continue on WhatsApp</span>
                 </motion.button>
               </div>

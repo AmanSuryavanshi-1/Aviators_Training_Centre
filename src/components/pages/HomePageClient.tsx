@@ -46,10 +46,17 @@ export default function HomePageClient() {
             initial="visible"
             whileInView="visible"
             viewport={{ once: true, amount: 0.3 }}
+            aria-labelledby="main-heading"
           >
+            {/* Screen reader only H1 for SEO */}
+            <h1 id="main-heading" className="sr-only">
+              Aviators Training Centre - India's Premier DGCA Ground School for CPL/ATPL Training
+            </h1>
+
             <motion.h2
               className={cn("text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold leading-tight", aviationPrimary)}
               variants={itemVariants}
+              aria-label="Main page heading"
             >
               Aviators Training Centre - India's Premier ATC Training Institute
             </motion.h2>

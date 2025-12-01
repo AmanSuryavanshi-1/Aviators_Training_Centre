@@ -43,22 +43,22 @@ const StarRating: React.FC<{ rating: number }> = ({ rating }) => {
             damping: 15
           }}
         >
-          <Star className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-yellow-500 fill-current" />
+          <Star className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-yellow-500 fill-current" aria-hidden="true" />
         </motion.div>
       ))}
       {hasPartialStar && (
         <div className="relative">
-          <Star className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-gray-300" />
+          <Star className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-gray-300" aria-hidden="true" />
           <div
             className="absolute top-0 left-0 overflow-hidden"
             style={{ width: `${partialStarWidth}%` }}
           >
-            <Star className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-yellow-500 fill-current" />
+            <Star className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-yellow-500 fill-current" aria-hidden="true" />
           </div>
         </div>
       )}
       {[...Array(Math.max(0, 5 - Math.ceil(safeRating)))].map((_, i) => (
-        <Star key={`empty-${i}`} className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-gray-300" />
+        <Star key={`empty-${i}`} className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-gray-300" aria-hidden="true" />
       ))}
       <span className="ml-1 sm:ml-1.5 text-xs font-medium text-muted-foreground">
         {safeRating.toFixed(1)}
@@ -119,7 +119,7 @@ const TestimonialCard: React.FC<{
               whileHover={{ rotate: 5, scale: 1.1 }}
               transition={{ type: "spring", stiffness: 400, damping: 15 }}
             >
-              <Quote className="w-4 h-4 sm:w-5 sm:h-5 text-primary flex-shrink-0 mt-0.5" />
+              <Quote className="w-4 h-4 sm:w-5 sm:h-5 text-primary flex-shrink-0 mt-0.5" aria-hidden="true" />
             </motion.div>
             <StarRating rating={testimonial.rating} />
           </div>
@@ -167,7 +167,7 @@ const TestimonialCard: React.FC<{
 
             {/* Location */}
             <div className="flex items-center text-xs text-muted-foreground mb-1.5 sm:mb-2">
-              <MapPin className="w-2.5 h-2.5 sm:w-3 sm:h-3 mr-1 flex-shrink-0" />
+              <MapPin className="w-2.5 h-2.5 sm:w-3 sm:h-3 mr-1 flex-shrink-0" aria-hidden="true" />
               <span className="truncate">{testimonial.location}</span>
             </div>
 
@@ -385,7 +385,7 @@ export default function TextTestimonialsCarousel() {
               className="rounded-full w-7 h-7 sm:w-8 sm:h-8 p-0 bg-card/80 backdrop-blur-sm hover:bg-card border-border shadow-sm hover:shadow-md transition-all duration-300"
               aria-label="Previous testimonials"
             >
-              <ChevronLeft className="w-3 h-3 sm:w-4 sm:h-4" />
+              <ChevronLeft className="w-3 h-3 sm:w-4 sm:h-4" aria-hidden="true" />
             </Button>
           </motion.div>
 
@@ -451,7 +451,7 @@ export default function TextTestimonialsCarousel() {
               className="rounded-full w-7 h-7 sm:w-8 sm:h-8 p-0 bg-card/80 backdrop-blur-sm hover:bg-card border-border shadow-sm hover:shadow-md transition-all duration-300"
               aria-label="Next testimonials"
             >
-              <ChevronRight className="w-3 h-3 sm:w-4 sm:h-4" />
+              <ChevronRight className="w-3 h-3 sm:w-4 sm:h-4" aria-hidden="true" />
             </Button>
           </motion.div>
         </div>

@@ -95,7 +95,7 @@ export default function TestimonialsVideoCarousel() {
                         aria-label="Previous testimonial"
                         type="button"
                     >
-                        <ChevronLeft className="w-5 h-5 md:w-6 md:h-6 text-slate-800" />
+                        <ChevronLeft className="w-5 h-5 md:w-6 md:h-6 text-slate-800" aria-hidden="true" />
                     </button>
 
                     <button
@@ -107,7 +107,7 @@ export default function TestimonialsVideoCarousel() {
                         aria-label="Next testimonial"
                         type="button"
                     >
-                        <ChevronRight className="w-5 h-5 md:w-6 md:h-6 text-slate-800" />
+                        <ChevronRight className="w-5 h-5 md:w-6 md:h-6 text-slate-800" aria-hidden="true" />
                     </button>
 
                     {/* Video Cards */}
@@ -217,7 +217,7 @@ export default function TestimonialsVideoCarousel() {
                                                         aria-label={isMuted ? 'Unmute video' : 'Mute video'}
                                                         type="button"
                                                     >
-                                                        {isMuted ? <VolumeX className="w-5 h-5" /> : <Volume2 className="w-5 h-5" />}
+                                                        {isMuted ? <VolumeX className="w-5 h-5" aria-hidden="true" /> : <Volume2 className="w-5 h-5" aria-hidden="true" />}
                                                     </button>
                                                 </div>
                                             </div>
@@ -262,7 +262,7 @@ export default function TestimonialsVideoCarousel() {
                                                             whileHover={{ scale: 1.05 }}
                                                             whileTap={{ scale: 0.95 }}
                                                         >
-                                                            <Play className="w-4 h-4 fill-current" />
+                                                            <Play className="w-4 h-4 fill-current" aria-hidden="true" />
                                                             <span className="text-sm font-medium tracking-wide">Play Video</span>
                                                         </motion.button>
                                                     </div>

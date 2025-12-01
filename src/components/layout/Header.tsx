@@ -84,9 +84,9 @@ const Header: React.FC = () => {
                     className="relative z-10"
                   >
                     {isOpen ? (
-                      <X className="w-5 h-5" />
+                      <X className="w-5 h-5" aria-hidden="true" />
                     ) : (
-                      <Menu className="w-5 h-5" />
+                      <Menu className="w-5 h-5" aria-hidden="true" />
                     )}
                   </motion.div>
                   <span className="sr-only">Toggle Menu</span>
@@ -130,7 +130,7 @@ const Header: React.FC = () => {
                             : "text-foreground/80 hover:text-primary dark:text-foreground/80 dark:hover:text-teal-300"
                         )}
                         onClick={() => setIsOpen(false)}>
-                        <link.icon className="w-4 h-4 opacity-80" />
+                        <link.icon className="w-4 h-4 opacity-80" aria-hidden="true" />
                         {link.label}
                       </NextLink>
                     ))}
@@ -145,7 +145,7 @@ const Header: React.FC = () => {
                       )}
                       onClick={() => setIsOpen(false)}
                     >
-                      <Mail className="w-4 h-4 opacity-80" />
+                      <Mail className="w-4 h-4 opacity-80" aria-hidden="true" />
                       Contact
                     </NextLink>
                   </div>
@@ -197,7 +197,7 @@ const Header: React.FC = () => {
                   : "text-foreground/70 dark:text-foreground/80" // Enhanced dark mode inactive color
               )}
             >
-              <link.icon className="w-4 h-4 opacity-80" /> {/* Added icon */}
+              <link.icon className="w-4 h-4 opacity-80" aria-hidden="true" /> {/* Added icon */}
               <span>{link.label}</span> {/* Wrapped label in span */}
               {pathname === link.href && (
                 <motion.div

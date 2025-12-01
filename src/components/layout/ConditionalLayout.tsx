@@ -8,19 +8,20 @@ import ScrollIndicator from "@/components/shared/ScrollIndicator";
 
 interface ConditionalLayoutProps {
   children: React.ReactNode;
+  id?: string;
 }
 
-export default function ConditionalLayout({ children }: ConditionalLayoutProps) {
+export default function ConditionalLayout({ children, id }: ConditionalLayoutProps) {
   const pathname = usePathname();
-  
+
   // Check if current route is studio
   const isStudioRoute = pathname?.startsWith('/studio');
-  
+
   if (isStudioRoute) {
     // Studio layout: Full height, no header, no footer, no WhatsApp chat
     // Allow scrolling for admin routes but keep overflow hidden for Sanity studio
     const isAdminRoute = pathname?.includes('/admin');
-    
+
     if (isAdminRoute) {
       return (
         <div className="min-h-screen overflow-y-auto bg-background text-foreground">
@@ -30,7 +31,7 @@ export default function ConditionalLayout({ children }: ConditionalLayoutProps) 
         </div>
       );
     }
-    
+
     return (
       <div className="h-screen overflow-hidden bg-background text-foreground">
         <main className="h-full">
@@ -39,13 +40,13 @@ export default function ConditionalLayout({ children }: ConditionalLayoutProps) 
       </div>
     );
   }
-  
+
   // Regular layout: Header, Footer, and WhatsApp chat
   return (
     <div className="flex flex-col min-h-screen bg-background text-foreground overflow-visible">
       <Header />
       {/* Reserve space for fixed header: header heights are h-14 on base, h-16 on sm+ */}
-      <main className="flex-grow pt-14 sm:pt-16">
+      <main id={id} className="flex-grow pt-14 sm:pt-16">
         {children}
       </main>
       <Footer />
