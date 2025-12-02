@@ -55,6 +55,9 @@ const nextConfig = {
 
     // Disable static image import for better control
     disableStaticImages: false,
+
+    // Mobile-specific optimization
+    loader: 'default',
   },
 
   typescript: {

@@ -83,7 +83,22 @@ export default function RootLayout({
       <head>
         <link rel="icon" href="/AVIATORS_TRAINING_CENTRE_LOGO_LightMode.png" type="image/png" sizes="any" />
         <link rel="apple-touch-icon" href="/AVIATORS_TRAINING_CENTRE_LOGO_LightMode.png" />
-        <link rel="preload" as="image" href="/HomePage/Hero3.webp" fetchPriority="high" />
+        {/* Mobile-specific preload */}
+        <link
+          rel="preload"
+          as="image"
+          href="/_next/image?url=%2FHomePage%2FHero3.webp&w=828&q=60"
+          media="(max-width: 768px)"
+          fetchPriority="high"
+        />
+        {/* Desktop preload */}
+        <link
+          rel="preload"
+          as="image"
+          href="/_next/image?url=%2FHomePage%2FHero3.webp&w=1920&q=85"
+          media="(min-width: 769px)"
+          fetchPriority="high"
+        />
 
         {/* Enhanced Structured Data for Organization */}
         <Script
