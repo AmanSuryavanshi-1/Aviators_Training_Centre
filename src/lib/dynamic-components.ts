@@ -8,7 +8,7 @@ export const TestimonialsSection = dynamic(
 
 export const CoursesSection = dynamic(
     () => import('@/components/features/courses/CoursesSection'),
-    { ssr: false }
+    { ssr: true }
 );
 
 export const FAQSection = dynamic(
@@ -23,7 +23,7 @@ export const ContactForm = dynamic(
 
 export const WhyChooseUs = dynamic(
     () => import('@/components/features/courses/WhyChooseUs'),
-    { ssr: false }
+    { ssr: true }
 );
 
 export const FeaturedBlogSection = dynamic(

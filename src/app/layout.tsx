@@ -81,6 +81,13 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
+        {/* Resource hints for third-party domains */}
+        <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+        <link rel="dns-prefetch" href="https://connect.facebook.net" />
+        <link rel="dns-prefetch" href="https://cdn.sanity.io" />
+        <link rel="preconnect" href="https://www.googletagmanager.com" crossOrigin="anonymous" />
+        <link rel="preconnect" href="https://connect.facebook.net" crossOrigin="anonymous" />
+
         <link rel="icon" href="/AVIATORS_TRAINING_CENTRE_LOGO_LightMode.png" type="image/png" sizes="any" />
         <link rel="apple-touch-icon" href="/AVIATORS_TRAINING_CENTRE_LOGO_LightMode.png" />
         {/* Mobile-specific preload */}
@@ -103,7 +110,7 @@ export default function RootLayout({
         {/* Enhanced Structured Data for Organization */}
         <Script
           id="organization-schema"
-          strategy="lazyOnload"
+          strategy="afterInteractive"
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
@@ -174,7 +181,7 @@ export default function RootLayout({
         {/* Meta Pixel Code */}
         <Script
           id="meta-pixel"
-          strategy="lazyOnload"
+          strategy="worker"
           dangerouslySetInnerHTML={{
             __html: `
               !function(f,b,e,v,n,t,s)
@@ -200,7 +207,7 @@ export default function RootLayout({
         {/* Global Image Optimization */}
         <Script
           id="global-image-optimization"
-          strategy="lazyOnload"
+          strategy="worker"
           dangerouslySetInnerHTML={{
             __html: `
               // Initialize global image optimization
@@ -232,12 +239,12 @@ export default function RootLayout({
 
         {/* Google tag (gtag.js) - Enhanced for proper domain tracking */}
         <Script
-          strategy="lazyOnload"
+          strategy="worker"
           src={`https://www.googletagmanager.com/gtag/js?id=G-XSRFEJCB7N`}
         />
         <Script
           id="gtag-init"
-          strategy="lazyOnload"
+          strategy="worker"
           dangerouslySetInnerHTML={{
             __html: `
               window.dataLayer = window.dataLayer || [];
