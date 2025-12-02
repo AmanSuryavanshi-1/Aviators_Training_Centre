@@ -10,6 +10,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { easingFunctions } from '@/lib/animations/easing';
 import { SolidButton } from '@/components/shared/SolidButton'; // Import SolidButton
 import { TransparentButton } from '@/components/shared/TransparentButton'; // Import TransparentButton
+import CourseCard from './CourseCard';
 
 // --- Configuration (Removed button style variables) ---
 const aviationPrimary = 'text-teal-700 dark:text-teal-300';
@@ -86,58 +87,7 @@ const CoursesSection: React.FC = () => {
       {/* Grid using standard Card component */}
       <ul className="grid grid-cols-1 gap-8 items-stretch md:grid-cols-2 lg:grid-cols-3 list-none p-0 m-0">
         {courses.map((course, index) => (
-          <motion.li
-            key={index}
-            variants={itemVariants}
-            className="flex"
-          >
-            <motion.div
-              className="relative w-full h-full group rounded-3xl"
-              whileHover="hover"
-              initial="rest"
-              animate="rest"
-              variants={cardHoverEffect}
-            >
-              <Card className="flex overflow-hidden relative z-10 flex-col w-full h-full rounded-3xl border shadow-sm transition-shadow duration-300 bg-card border-border">
-                <CardHeader className="relative p-0">
-                  {/* Image Section - Fixed Height */}
-                  <div className="overflow-hidden h-48 relative"> {/* Fixed height */}
-                    <OptimizedImage
-                      src={course.image}
-                      alt={course.title}
-                      fill
-                      className="object-cover transition-transform duration-300 group-hover:scale-105"
-                      fallbackSrc={FALLBACK_IMAGE}
-                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                    />
-                  </div>
-                </CardHeader>
-                <CardContent className="flex flex-col flex-grow p-4">
-                  {/* Title and Icon */}
-                  <div className="flex items-center mb-3 space-x-3">
-                    <div className={cn("flex-shrink-0 p-1.5 rounded-md bg-teal-100/70 dark:bg-teal-900/40", aviationSecondary)}>
-                      <course.icon className="w-5 h-5" />
-                    </div>
-                    <CardTitle className="text-lg font-semibold text-foreground">{course.title}</CardTitle>
-                  </div>
-                  {/* Description */}
-                  <CardDescription className="flex-grow mb-4 text-sm text-foreground/80">
-                    {course.description}
-                  </CardDescription>
-                </CardContent>
-                <CardFooter className="p-5 pt-0 mt-auto">
-                  {/* Replaced Button with TransparentButton */}
-                  <TransparentButton
-                    href={course.path}
-                    icon={ChevronRight} // Using the same icon
-                    label="View Course Details"
-                    // Add className if specific sizing needed, e.g., "w-full min-h-[44px]"
-                    className="w-full"
-                  />
-                </CardFooter>
-              </Card>
-            </motion.div>
-          </motion.li>
+          <CourseCard key={index} course={course} index={index} />
         ))}
       </ul>
 

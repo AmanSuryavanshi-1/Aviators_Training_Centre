@@ -9,16 +9,15 @@ import { useAnalytics } from '@/hooks/useAnalytics';
 import { commonVariants } from '@/lib/animations/easing';
 import { SolidButton } from '@/components/shared/SolidButton';
 import { TransparentButton } from '@/components/shared/TransparentButton';
-import dynamic from 'next/dynamic';
-
-// Dynamically import heavy components to reduce TBT
-const WhyChooseUs = dynamic(() => import("@/components/features/courses/WhyChooseUs"));
-const CoursesSection = dynamic(() => import("@/components/features/courses/CoursesSection"));
-const FeaturedBlogSection = dynamic(() => import("@/components/features/courses/FeaturedBlogSection"));
-const PilotPathway = dynamic(() => import("@/components/features/courses/PilotPathway"));
-const FAQ = dynamic(() => import("@/components/shared/FAQ"));
-const CTASection = dynamic(() => import("@/components/features/courses/CTASection"));
-const TestimonialsVideoCarousel = dynamic(() => import("@/components/testimonials/TestimonialsVideoCarousel"));
+import {
+  WhyChooseUs,
+  CoursesSection,
+  FeaturedBlogSection,
+  PilotPathway,
+  FAQSection as FAQ,
+  CTASection,
+  TestimonialsVideoCarousel
+} from '@/lib/dynamic-components';
 
 // Use consistent animation variants with proper easing
 const { sectionVariants, itemVariants } = commonVariants;

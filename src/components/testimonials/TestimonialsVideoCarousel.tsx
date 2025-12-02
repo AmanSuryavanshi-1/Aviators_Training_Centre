@@ -14,7 +14,7 @@ export default function TestimonialsVideoCarousel() {
     const autoPlayRef = useRef<NodeJS.Timeout | null>(null);
     const isMobile = useIsMobile();
 
-    const studentMap = new Map(studentsData.map(s => [s.id, s]));
+    const studentMap = React.useMemo(() => new Map(studentsData.map(s => [s.id, s])), []);
 
     // Auto-play carousel
     useEffect(() => {
@@ -55,16 +55,14 @@ export default function TestimonialsVideoCarousel() {
         setIsPlaying(false);
     };
 
-    const getVisibleVideos = () => {
+    const visibleVideos = React.useMemo(() => {
         const videos = [];
         for (let i = -2; i <= 2; i++) {
             const index = (currentIndex + i + youtubeShorts.length) % youtubeShorts.length;
             videos.push({ video: youtubeShorts[index], position: i });
         }
         return videos;
-    };
-
-    const visibleVideos = getVisibleVideos();
+    }, [currentIndex]);
 
     const handlePlayClick = () => {
         setIsPlaying(true);

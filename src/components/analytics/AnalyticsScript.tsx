@@ -21,7 +21,7 @@ export default function AnalyticsScript() {
   return (
     <>
       {/* Analytics tracking script */}
-      <Script id="analytics-tracker" strategy="afterInteractive">
+      <Script id="analytics-tracker" strategy="lazyOnload">
         {`
           // Initialize analytics tracking
           window.analyticsConfig = {

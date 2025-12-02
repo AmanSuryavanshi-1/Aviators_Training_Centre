@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import Image from 'next/image';
 import { ArrowRight, CalendarCheck, Phone } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'next/link';
@@ -195,26 +196,17 @@ const HeroSectionInner = () => {
           transition={{ x: { type: "spring", stiffness: 300, damping: 30 }, opacity: { duration: 0.3 } }}
           className="absolute inset-0 w-full h-full"
         >
-          <div data-hero-image>
-            <OptimizedImage
-              src={slides[currentSlide].image}
-              alt={slides[currentSlide].title}
-              fill
-              className="object-cover"
-              loadingPriority="critical"
-              lazyLoad={false}
-              fetchPriority="high"
-              preload={true}
-              connectionAware={true}
-              respectDataSaver={true}
-              performanceTracking={true}
-              fallbackSrc={FALLBACK_IMAGE}
-              onLoad={() => handleImageLoad(currentSlide)}
-              onError={() => handleImageError(currentSlide)}
-              sizes="(max-width: 768px) 100vw, 100vw"
-              placeholder={currentSlide === 0 ? "empty" : "blur"}
-            />
-          </div>
+          <Image
+            src={slides[currentSlide].image}
+            alt={slides[currentSlide].title}
+            fill
+            className="object-cover"
+            priority={true} // CRITICAL: Forces immediate load
+            quality={85}
+            sizes="100vw"
+            placeholder="blur"
+            blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCKSAA//9k="
+          />
         </motion.div>
       </AnimatePresence>
 

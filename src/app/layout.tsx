@@ -83,10 +83,12 @@ export default function RootLayout({
       <head>
         <link rel="icon" href="/AVIATORS_TRAINING_CENTRE_LOGO_LightMode.png" type="image/png" sizes="any" />
         <link rel="apple-touch-icon" href="/AVIATORS_TRAINING_CENTRE_LOGO_LightMode.png" />
+        <link rel="preload" as="image" href="/HomePage/Hero3.webp" fetchPriority="high" />
 
         {/* Enhanced Structured Data for Organization */}
         <Script
           id="organization-schema"
+          strategy="lazyOnload"
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
