@@ -43,6 +43,16 @@ export default function TestimonialsVideoCarousel() {
         return () => window.removeEventListener('keydown', handleKeyPress);
     }, [isPlaying]);
 
+    // Preload current thumbnail for instant display
+    useEffect(() => {
+        const currentVideo = youtubeShorts[currentIndex];
+        if (currentVideo) {
+            const img = new Image();
+            img.src = getYouTubeThumbnail(currentVideo.videoId, 'hq');
+            // Preload immediately to ensure it's in cache
+        }
+    }, [currentIndex]);
+
     const nextSlide = () => {
         setCurrentIndex((prev) => (prev + 1) % youtubeShorts.length);
         setIsAutoPlaying(false);
@@ -237,18 +247,22 @@ export default function TestimonialsVideoCarousel() {
                                                 }}
                                             >
                                                 <img
-                                                    src={getYouTubeThumbnail(video.videoId, '0')}
+                                                    src={getYouTubeThumbnail(video.videoId, 'hq')}
                                                     alt={`${video.studentName} testimonial`}
                                                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                                                     loading="eager"
+                                                    fetchPriority={isCenter ? "high" : "low"}
                                                     onError={(e) => {
                                                         const current = e.currentTarget.src;
-                                                        if (current.includes('/0.jpg')) {
-                                                            e.currentTarget.src = `https://i.ytimg.com/vi/${video.videoId}/1.jpg`;
-                                                        } else if (current.includes('/1.jpg')) {
-                                                            e.currentTarget.src = `https://i.ytimg.com/vi/${video.videoId}/2.jpg`;
-                                                        } else if (current.includes('/2.jpg')) {
-                                                            e.currentTarget.src = `https://i.ytimg.com/vi/${video.videoId}/hqdefault.jpg`;
+                                                        // Fallback chain: hqdefault → maxresdefault → mqdefault → sddefault
+                                                        if (current.includes('hqdefault.jpg')) {
+                                                            e.currentTarget.src = getYouTubeThumbnail(video.videoId, 'maxres');
+                                                        } else if (current.includes('maxresdefault.jpg')) {
+                                                            e.currentTarget.src = getYouTubeThumbnail(video.videoId, 'mq');
+                                                        } else if (current.includes('mqdefault.jpg')) {
+                                                            e.currentTarget.src = getYouTubeThumbnail(video.videoId, 'sd');
+                                                        } else if (current.includes('sddefault.jpg')) {
+                                                            e.currentTarget.src = getYouTubeThumbnail(video.videoId, 'default');
                                                         }
                                                     }}
                                                 />

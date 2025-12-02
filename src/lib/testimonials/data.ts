@@ -29,15 +29,19 @@ export function generateEmbedUrl(videoId: string): string {
 }
 
 // Utility function to generate reliable YouTube thumbnail URL
-export function getYouTubeThumbnail(videoId: string, quality: 'default' | 'hq' | 'mq' | 'sd' | '0' = '0'): string {
-  // For maximum reliability, use frame thumbnails (0.jpg, 1.jpg, etc.)
-  // These are ALWAYS available for any YouTube video including Shorts
-  // 0.jpg is the most reliable as it's the first frame
-  if (quality === '0') {
-    return `https://i.ytimg.com/vi/${videoId}/0.jpg`;
-  }
-  // Fallback to quality defaults for manual overrides
-  return `https://i.ytimg.com/vi/${videoId}/${quality}default.jpg`;
+export function getYouTubeThumbnail(videoId: string, quality: 'default' | 'hq' | 'mq' | 'sd' | 'maxres' = 'hq'): string {
+  // Use hqdefault by default - it's the most reliable for both regular videos and Shorts
+  // maxresdefault is the highest quality but may not exist for all videos (especially Shorts)
+  // hqdefault (480x360) is ALWAYS available and loads reliably on first visit
+  const qualityMap = {
+    'default': 'default',      // 120x90
+    'mq': 'mqdefault',         // 320x180
+    'hq': 'hqdefault',         // 480x360 - MOST RELIABLE
+    'sd': 'sddefault',         // 640x480
+    'maxres': 'maxresdefault'  // 1280x720 (may not exist for all videos)
+  };
+
+  return `https://i.ytimg.com/vi/${videoId}/${qualityMap[quality]}.jpg`;
 }
 
 // Utility function to extract video ID from YouTube URL
