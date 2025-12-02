@@ -1,6 +1,6 @@
 "use client"
 import React from 'react';
-import HeroSection from "@/components/features/courses/HeroSection";
+// import HeroSection from "@/components/features/courses/HeroSection"; // Moved to page.tsx
 import { motion } from 'framer-motion';
 import { cn } from "@/components/ui/utils";
 import { Plane, Target, Radio, GraduationCap, TrendingUp, ArrowRight, Users } from 'lucide-react';
@@ -34,7 +34,7 @@ export default function HomePageClient() {
 
   return (
     <div className="flex flex-col min-h-screen bg-background text-foreground">
-      <HeroSection />
+      {/* HeroSection moved to page.tsx for LCP optimization */}
 
       <main>
         <div className="container px-4 py-16 mx-auto space-y-20 sm:px-6 md:py-24 md:space-y-28 max-w-full overflow-hidden">

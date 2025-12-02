@@ -1,3 +1,4 @@
+"use client";
 import React, { useState, useEffect, useCallback } from 'react';
 import Image from 'next/image';
 import { ArrowRight, CalendarCheck, Phone } from 'lucide-react';
@@ -7,7 +8,7 @@ import { cn } from "./../ui/utils";
 import { BookDemoButton } from '@/components/shared/BookDemoButton';
 import { SolidButton } from '@/components/shared/SolidButton';
 import { TransparentButton } from '@/components/shared/TransparentButton';
-import OptimizedImage from '@/components/shared/OptimizedImage';
+// import OptimizedImage from '@/components/shared/OptimizedImage'; // Removed to reduce bundle size for LCP
 import { PerformanceImageProvider, useImagePerformanceMetrics } from '@/lib/image-optimization';
 import HeroImagePerformanceMonitor from './HeroImagePerformanceMonitor';
 import { easingFunctions } from '@/lib/animations/easing';
@@ -194,7 +195,7 @@ const HeroSectionInner = () => {
           animate="center"
           exit="exit"
           transition={{ x: { type: "spring", stiffness: 300, damping: 30 }, opacity: { duration: 0.3 } }}
-          className="absolute inset-0 w-full h-full"
+          className="absolute inset-0 w-full h-full opacity-100"
         >
           <Image
             src={slides[currentSlide].image}
@@ -203,9 +204,10 @@ const HeroSectionInner = () => {
             className="object-cover"
             priority={true} // CRITICAL: Forces immediate load
             quality={85}
-            sizes="100vw"
-            placeholder="blur"
-            blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCKSAA//9k="
+
+
+            placeholder={currentSlide === 0 ? undefined : "blur"}
+            blurDataURL={currentSlide === 0 ? undefined : "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCKSAA//9k="}
           />
         </motion.div>
       </AnimatePresence>

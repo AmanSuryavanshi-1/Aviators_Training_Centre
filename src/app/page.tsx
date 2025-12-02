@@ -1,5 +1,6 @@
 import React from 'react';
 import HomePageClient from '@/components/pages/HomePageClient';
+import HeroSection from '@/components/features/courses/HeroSection';
 
 // ISR Configuration - Revalidate every 30 minutes for home page
 export const revalidate = 1800;
@@ -77,6 +78,7 @@ export default function Home() {
         }}
       />
 
+      <HeroSection />
       <HomePageClient />
     </>
   );
