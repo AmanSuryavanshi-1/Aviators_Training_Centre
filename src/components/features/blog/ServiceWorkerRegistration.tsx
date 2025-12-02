@@ -29,6 +29,9 @@ const ServiceWorkerRegistration: React.FC = () => {
 
       console.log('Service Worker registered successfully:', registration);
 
+      // Force an immediate update check to ensure we have the latest version
+      registration.update();
+
       // Preload critical resources immediately for Core Web Vitals optimization
       if (registration.active) {
         registration.active.postMessage({
@@ -51,7 +54,7 @@ const ServiceWorkerRegistration: React.FC = () => {
             if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
               // New service worker is available
               console.log('New service worker available');
-              
+
               // Show a subtle notification instead of intrusive alert
               showUpdateNotification();
             }
@@ -64,7 +67,7 @@ const ServiceWorkerRegistration: React.FC = () => {
         if (event.data && event.data.type === 'CACHE_UPDATED') {
           console.log('Cache updated:', event.data.payload);
         }
-        
+
         if (event.data && event.data.type === 'PERFORMANCE_METRIC') {
           // Report performance metrics from service worker
           if (typeof window !== 'undefined' && (window as any).gtag) {
@@ -114,7 +117,7 @@ const ServiceWorkerRegistration: React.FC = () => {
 
     } catch (error) {
       console.error('Service Worker registration failed:', error);
-      
+
       // If registration fails, try to clear any existing problematic service workers
       if ('serviceWorker' in navigator) {
         try {
@@ -153,21 +156,21 @@ const ServiceWorkerRegistration: React.FC = () => {
         ✨ New content available! Click to refresh
       </div>
     `;
-    
+
     const notificationEl = notification.firstElementChild as HTMLElement;
     document.body.appendChild(notificationEl);
-    
+
     // Add hover effect
     notificationEl.addEventListener('mouseenter', () => {
       notificationEl.style.transform = 'translateY(-2px)';
       notificationEl.style.boxShadow = '0 6px 20px rgba(0,0,0,0.2)';
     });
-    
+
     notificationEl.addEventListener('mouseleave', () => {
       notificationEl.style.transform = 'translateY(0)';
       notificationEl.style.boxShadow = '0 4px 12px rgba(0,0,0,0.15)';
     });
-    
+
     notificationEl.addEventListener('click', () => {
       // Smooth reload with loading indicator
       notificationEl.innerHTML = '🔄 Refreshing...';
@@ -176,7 +179,7 @@ const ServiceWorkerRegistration: React.FC = () => {
         window.location.reload();
       }, 500);
     });
-    
+
     // Auto-hide after 15 seconds
     setTimeout(() => {
       if (notificationEl.parentNode) {
@@ -192,7 +195,7 @@ const ServiceWorkerRegistration: React.FC = () => {
   const showOfflineIndicator = () => {
     // Show offline indicator with better styling
     if (document.getElementById('offline-indicator')) return; // Prevent duplicates
-    
+
     const offlineIndicator = document.createElement('div');
     offlineIndicator.innerHTML = `
       <div id="offline-indicator" style="
@@ -215,10 +218,10 @@ const ServiceWorkerRegistration: React.FC = () => {
         📡 You're offline. Browsing cached content.
       </div>
     `;
-    
+
     const indicatorEl = offlineIndicator.firstElementChild as HTMLElement;
     document.body.appendChild(indicatorEl);
-    
+
     // Slide in animation
     setTimeout(() => {
       indicatorEl.style.transform = 'translateY(0)';

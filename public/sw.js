@@ -1,5 +1,5 @@
 // Enhanced Service Worker for Core Web Vitals Optimization
-const CACHE_VERSION = 'v1754837742123';
+const CACHE_VERSION = 'v1754837742124'; // Updated timestamp for cache refresh
 const STATIC_CACHE_NAME = `aviators-static-${CACHE_VERSION}`;
 const DYNAMIC_CACHE_NAME = `aviators-dynamic-${CACHE_VERSION}`;
 const IMAGE_CACHE_NAME = `aviators-images-${CACHE_VERSION}`;
@@ -35,7 +35,7 @@ const CACHE_STRATEGIES = {
     /\.ttf$/,
     /\.eot$/,
   ],
-  
+
   // Images - Cache first with fallback
   images: [
     /\.jpg$/,
@@ -46,13 +46,13 @@ const CACHE_STRATEGIES = {
     /\.svg$/,
     /cdn\.sanity\.io/,
   ],
-  
+
   // API calls - Network first with cache fallback
   api: [
     /\/api\//,
     /\.sanity\.io/,
   ],
-  
+
   // Blog pages - Stale while revalidate
   pages: [
     /\/blog\//,
@@ -62,7 +62,7 @@ const CACHE_STRATEGIES = {
 // Install event - cache critical assets for Core Web Vitals
 self.addEventListener('install', (event) => {
   console.log('Enhanced Service Worker installing for Core Web Vitals...');
-  
+
   event.waitUntil(
     Promise.allSettled([
       // Cache critical assets first for LCP optimization
@@ -81,11 +81,11 @@ self.addEventListener('install', (event) => {
             console.warn('Error caching asset:', asset, error.message);
           }
         });
-        
+
         await Promise.allSettled(cachePromises);
         return 'critical-assets-cached';
       }),
-      
+
       // Cache additional static assets
       caches.open(STATIC_CACHE_NAME).then(async (cache) => {
         console.log('Caching additional static assets...');
@@ -102,54 +102,54 @@ self.addEventListener('install', (event) => {
             console.warn('Error caching static asset:', asset, error.message);
           }
         });
-        
+
         await Promise.allSettled(cachePromises);
         return 'static-assets-cached';
       })
     ])
-    .then((results) => {
-      console.log('Service Worker installation completed');
-      console.log('Installation results:', results);
-      
-      // Report installation success for monitoring
-      self.clients.matchAll().then(clients => {
-        clients.forEach(client => {
-          client.postMessage({
-            type: 'PERFORMANCE_METRIC',
-            metric: 'sw_install_success',
-            value: 1,
-            timestamp: Date.now()
+      .then((results) => {
+        console.log('Service Worker installation completed');
+        console.log('Installation results:', results);
+
+        // Report installation success for monitoring
+        self.clients.matchAll().then(clients => {
+          clients.forEach(client => {
+            client.postMessage({
+              type: 'PERFORMANCE_METRIC',
+              metric: 'sw_install_success',
+              value: 1,
+              timestamp: Date.now()
+            });
           });
         });
-      });
-      
-      return self.skipWaiting();
-    })
-    .catch((error) => {
-      console.error('Service Worker installation failed:', error);
-      
-      // Report installation failure
-      self.clients.matchAll().then(clients => {
-        clients.forEach(client => {
-          client.postMessage({
-            type: 'PERFORMANCE_METRIC',
-            metric: 'sw_install_failure',
-            value: 1,
-            timestamp: Date.now()
+
+        return self.skipWaiting();
+      })
+      .catch((error) => {
+        console.error('Service Worker installation failed:', error);
+
+        // Report installation failure
+        self.clients.matchAll().then(clients => {
+          clients.forEach(client => {
+            client.postMessage({
+              type: 'PERFORMANCE_METRIC',
+              metric: 'sw_install_failure',
+              value: 1,
+              timestamp: Date.now()
+            });
           });
         });
-      });
-      
-      // Don't prevent installation, just log the error
-      return self.skipWaiting();
-    })
+
+        // Don't prevent installation, just log the error
+        return self.skipWaiting();
+      })
   );
 });
 
 // Activate event - clean up old caches and optimize for Core Web Vitals
 self.addEventListener('activate', (event) => {
   console.log('Enhanced Service Worker activating...');
-  
+
   event.waitUntil(
     Promise.all([
       // Clean up old caches
@@ -166,23 +166,23 @@ self.addEventListener('activate', (event) => {
       // Claim clients immediately for better performance
       self.clients.claim()
     ])
-    .then(() => {
-      console.log('Service Worker activated successfully');
-      // Report activation success
-      self.clients.matchAll().then(clients => {
-        clients.forEach(client => {
-          client.postMessage({
-            type: 'PERFORMANCE_METRIC',
-            metric: 'sw_activate_success',
-            value: 1,
-            timestamp: Date.now()
+      .then(() => {
+        console.log('Service Worker activated successfully');
+        // Report activation success
+        self.clients.matchAll().then(clients => {
+          clients.forEach(client => {
+            client.postMessage({
+              type: 'PERFORMANCE_METRIC',
+              metric: 'sw_activate_success',
+              value: 1,
+              timestamp: Date.now()
+            });
           });
         });
-      });
-    })
-    .catch((error) => {
-      console.error('Service Worker activation failed:', error);
-    })
+      })
+      .catch((error) => {
+        console.error('Service Worker activation failed:', error);
+      })
   );
 });
 
@@ -191,11 +191,11 @@ self.addEventListener('message', (event) => {
   if (event.data && event.data.type === 'PRELOAD_CRITICAL_RESOURCES') {
     event.waitUntil(preloadCriticalResources(event.data.resources));
   }
-  
+
   if (event.data && event.data.type === 'SYNC_DATA') {
     event.waitUntil(syncOfflineData());
   }
-  
+
   if (event.data && event.data.type === 'CLEAR_CACHE') {
     event.waitUntil(clearAllCaches());
   }
@@ -216,7 +216,7 @@ async function preloadCriticalResources(resources) {
         console.warn('Failed to preload resource:', resource, error);
       }
     });
-    
+
     await Promise.allSettled(preloadPromises);
     console.log('Critical resources preloading completed');
   } catch (error) {
@@ -229,11 +229,11 @@ async function syncOfflineData() {
   try {
     // Sync any queued analytics data
     await syncAnalytics();
-    
+
     // Update dynamic caches with fresh content
     const dynamicCache = await caches.open(DYNAMIC_CACHE_NAME);
     const cachedRequests = await dynamicCache.keys();
-    
+
     // Update blog posts and API responses
     const updatePromises = cachedRequests
       .filter(request => request.url.includes('/blog') || request.url.includes('/api'))
@@ -247,7 +247,7 @@ async function syncOfflineData() {
           console.warn('Failed to update cached resource:', request.url);
         }
       });
-    
+
     await Promise.allSettled(updatePromises);
     console.log('Offline data sync completed');
   } catch (error) {
@@ -269,25 +269,25 @@ async function clearAllCaches() {
 // Fetch event - implement caching strategies
 self.addEventListener('fetch', (event) => {
   const { request } = event;
-  
+
   try {
     const url = new URL(request.url);
-    
+
     // Skip non-GET requests
     if (request.method !== 'GET') {
       return;
     }
-    
+
     // Skip chrome-extension and other non-http requests
     if (!url.protocol.startsWith('http')) {
       return;
     }
-    
+
     // Skip requests with no-cache headers
     if (request.headers.get('cache-control') === 'no-cache') {
       return;
     }
-    
+
     // Skip requests to localhost during development
     if (url.hostname === 'localhost' && url.port !== '3000') {
       return;
@@ -303,46 +303,46 @@ self.addEventListener('fetch', (event) => {
 
 async function handleRequest(request) {
   const url = new URL(request.url);
-  
+
   try {
     // Skip requests to chrome-extension, moz-extension, etc.
     if (!url.protocol.startsWith('http')) {
       return fetch(request);
     }
-    
+
     // Skip requests to different origins unless it's a known CDN
-    if (url.origin !== self.location.origin && 
-        !url.hostname.includes('cdn.sanity.io') && 
-        !url.hostname.includes('images.unsplash.com')) {
+    if (url.origin !== self.location.origin &&
+      !url.hostname.includes('cdn.sanity.io') &&
+      !url.hostname.includes('images.unsplash.com')) {
       return fetch(request);
     }
-    
+
     // Static assets - Cache first
     if (matchesPattern(url.href, CACHE_STRATEGIES.static)) {
       return await cacheFirst(request, STATIC_CACHE_NAME);
     }
-    
+
     // Images - Cache first with fallback
     if (matchesPattern(url.href, CACHE_STRATEGIES.images)) {
       return await cacheFirstWithFallback(request, IMAGE_CACHE_NAME);
     }
-    
+
     // API calls - Network first
     if (matchesPattern(url.href, CACHE_STRATEGIES.api)) {
       return await networkFirst(request, API_CACHE_NAME);
     }
-    
+
     // Blog pages - Stale while revalidate
     if (matchesPattern(url.href, CACHE_STRATEGIES.pages)) {
       return await staleWhileRevalidate(request, DYNAMIC_CACHE_NAME);
     }
-    
+
     // Default - Network first with timeout
     return await networkFirstWithTimeout(request, DYNAMIC_CACHE_NAME, 5000);
-    
+
   } catch (error) {
     console.error('Service Worker fetch error:', error);
-    
+
     // Try to return a cached response as fallback
     try {
       const cache = await caches.open(DYNAMIC_CACHE_NAME);
@@ -353,7 +353,7 @@ async function handleRequest(request) {
     } catch (cacheError) {
       console.error('Cache fallback failed:', cacheError);
     }
-    
+
     // Final fallback - let the browser handle it
     return fetch(request);
   }
@@ -363,17 +363,17 @@ async function handleRequest(request) {
 async function cacheFirst(request, cacheName) {
   const cache = await caches.open(cacheName);
   const cachedResponse = await cache.match(request);
-  
+
   if (cachedResponse) {
     return cachedResponse;
   }
-  
+
   try {
     const networkResponse = await fetch(request, {
       mode: 'cors',
       credentials: 'same-origin'
     });
-    
+
     if (networkResponse.ok) {
       // Clone before caching to avoid consuming the response
       const responseToCache = networkResponse.clone();
@@ -382,16 +382,16 @@ async function cacheFirst(request, cacheName) {
     return networkResponse;
   } catch (error) {
     console.error('Network request failed for:', request.url, error);
-    
+
     // Return a fallback response for critical assets
     if (request.url.includes('fonts/') || request.url.includes('logo')) {
-      return new Response('', { 
-        status: 404, 
+      return new Response('', {
+        status: 404,
         statusText: 'Asset not found',
         headers: { 'Content-Type': 'text/plain' }
       });
     }
-    
+
     throw error;
   }
 }
@@ -413,14 +413,14 @@ async function cacheFirstWithFallback(request, cacheName) {
 // Network first strategy
 async function networkFirst(request, cacheName) {
   const cache = await caches.open(cacheName);
-  
+
   try {
     const networkResponse = await fetch(request, {
       mode: 'cors',
       credentials: 'same-origin',
       cache: 'default'
     });
-    
+
     if (networkResponse.ok) {
       // Only cache successful responses
       cache.put(request, networkResponse.clone());
@@ -432,15 +432,15 @@ async function networkFirst(request, cacheName) {
     if (cachedResponse) {
       return cachedResponse;
     }
-    
+
     // Return a fallback response instead of throwing
     if (request.destination === 'image') {
       return new Response('', { status: 404, statusText: 'Image not found' });
     }
-    
+
     // For other resources, return a minimal response
-    return new Response('Offline', { 
-      status: 503, 
+    return new Response('Offline', {
+      status: 503,
       statusText: 'Service Unavailable',
       headers: { 'Content-Type': 'text/plain' }
     });
@@ -451,7 +451,7 @@ async function networkFirst(request, cacheName) {
 async function staleWhileRevalidate(request, cacheName) {
   const cache = await caches.open(cacheName);
   const cachedResponse = await cache.match(request);
-  
+
   // Always try to fetch from network in background
   const networkResponsePromise = fetch(request, {
     mode: 'cors',
@@ -467,23 +467,23 @@ async function staleWhileRevalidate(request, cacheName) {
       console.log('Background fetch failed:', error);
       return null;
     });
-  
+
   // Return cached response immediately if available
   if (cachedResponse) {
     // Don't await the network promise, let it update in background
-    networkResponsePromise.catch(() => {}); // Prevent unhandled rejection
+    networkResponsePromise.catch(() => { }); // Prevent unhandled rejection
     return cachedResponse;
   }
-  
+
   // If no cached response, wait for network
   const networkResponse = await networkResponsePromise;
   if (networkResponse) {
     return networkResponse;
   }
-  
+
   // Final fallback
-  return new Response('Content not available', { 
-    status: 503, 
+  return new Response('Content not available', {
+    status: 503,
     statusText: 'Service Unavailable',
     headers: { 'Content-Type': 'text/plain' }
   });
@@ -492,13 +492,13 @@ async function staleWhileRevalidate(request, cacheName) {
 // Network first with timeout strategy
 async function networkFirstWithTimeout(request, cacheName, timeout = 5000) {
   const cache = await caches.open(cacheName);
-  
+
   try {
     // Create a timeout promise
     const timeoutPromise = new Promise((_, reject) => {
       setTimeout(() => reject(new Error('Network timeout')), timeout);
     });
-    
+
     // Race between network request and timeout
     const networkResponse = await Promise.race([
       fetch(request, {
@@ -507,7 +507,7 @@ async function networkFirstWithTimeout(request, cacheName, timeout = 5000) {
       }),
       timeoutPromise
     ]);
-    
+
     if (networkResponse.ok) {
       cache.put(request, networkResponse.clone());
     }
@@ -518,10 +518,10 @@ async function networkFirstWithTimeout(request, cacheName, timeout = 5000) {
     if (cachedResponse) {
       return cachedResponse;
     }
-    
+
     // Return a fallback response
-    return new Response('Service temporarily unavailable', { 
-      status: 503, 
+    return new Response('Service temporarily unavailable', {
+      status: 503,
       statusText: 'Service Unavailable',
       headers: { 'Content-Type': 'text/plain' }
     });
@@ -545,7 +545,7 @@ async function syncAnalytics() {
   try {
     const cache = await caches.open('analytics-queue');
     const requests = await cache.keys();
-    
+
     for (const request of requests) {
       try {
         await fetch(request);
@@ -569,7 +569,7 @@ self.addEventListener('push', (event) => {
       badge: '/AVIATORS_TRAINING_CENTRE_LOGO_LightMode.png',
       data: data.url,
     };
-    
+
     event.waitUntil(
       self.registration.showNotification(data.title, options)
     );
@@ -579,7 +579,7 @@ self.addEventListener('push', (event) => {
 // Handle notification clicks
 self.addEventListener('notificationclick', (event) => {
   event.notification.close();
-  
+
   if (event.notification.data) {
     event.waitUntil(
       clients.openWindow(event.notification.data)
