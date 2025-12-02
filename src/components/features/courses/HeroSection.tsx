@@ -203,7 +203,8 @@ const HeroSectionInner = () => {
             fill
             className="object-cover"
             priority={true} // CRITICAL: Forces immediate load
-            quality={85}
+            quality={75}
+            sizes="(max-width: 768px) 100vw, 1920px"
 
 
             placeholder={currentSlide === 0 ? undefined : "blur"}

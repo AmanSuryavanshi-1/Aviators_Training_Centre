@@ -2,6 +2,12 @@
   "name": "vite_react_shadcn_ts",
   "private": true,
   "version": "0.0.0",
+  "browserslist": [
+    ">0.5%",
+    "not dead",
+    "not ie 11",
+    "not ios_saf < 13"
+  ],
   "overrides": {
     "canvas": "^3.1.2",
     "@sanity/types": "3.88.2",
