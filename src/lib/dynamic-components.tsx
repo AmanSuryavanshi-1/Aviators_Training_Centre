@@ -24,7 +24,7 @@ export const EnhancedTestimonialsSection = dynamic(
 export const CoursesSection = dynamic(
     () => import('@/components/features/courses/CoursesSection'),
     {
-        ssr: true, // Keep SSR for SEO as it's a main section
+        ssr: false, // Client-side only for better TBT
         loading: SectionLoader
     }
 );
@@ -48,7 +48,7 @@ export const ContactForm = dynamic(
 export const WhyChooseUs = dynamic(
     () => import('@/components/features/courses/WhyChooseUs'),
     {
-        ssr: true,
+        ssr: false, // Client-side only for better TBT
         loading: SectionLoader
     }
 );
