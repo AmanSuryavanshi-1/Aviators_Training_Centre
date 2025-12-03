@@ -32,7 +32,7 @@ Transformed India's premier DGCA ground school from 100% paid advertising depend
 
 *The production website achieving 95+ Lighthouse score and driving 50+ organic leads*
 
-<img src="./Docs_Assets/ASSET-28%20Mobile%20Homepage.png" alt="Mobile Homepage" width="400"/>
+<img src="./Docs_Assets/ASSET-19%20Mobile%20Homepage.png" alt="Mobile Homepage" width="400"/>
 
 *Mobile-optimized homepage with responsive design - 95+ Lighthouse score on mobile devices ensuring excellent user experience across all screen sizes*
 
@@ -61,7 +61,7 @@ Transformed India's premier DGCA ground school from 100% paid advertising depend
 | Infrastructure Cost | ₹0/month | Free tier optimization |
 | Keywords Ranking | 20+ | Page 1 Google India |
 
-<img src="./Docs_Assets/ASSET-17%20Google%20Search%20Console%20Performance.png" alt="Google Search Console Performance" width="900"/>
+<img src="./Docs_Assets/ASSET-16%20Google%20Search%20Console%20Performance.png" alt="Google Search Console Performance" width="900"/>
 
 *Google Search Console performance: 19.3K impressions and 146 clicks over 6 months - demonstrating strong organic growth alongside other lead channels*
 
@@ -253,7 +253,7 @@ Meta announced that AI-initiated conversations will be banned from WhatsApp Busi
 - Target keywords: "DGCA ground school", "CPL training cost", "How to become pilot"
 - 20+ keywords ranking page 1 Google India
 
-<img src="./Docs_Assets/ASSET-16%20Blog%20Post%20Example.png" alt="Blog Post Example" width="800"/>
+<img src="./Docs_Assets/ASSET-15%20Blog%20Post%20Example.png" alt="Blog Post Example" width="800"/>
 
 *Example blog post showing SEO optimization - 2,000+ word comprehensive guide with structured headings, internal links, and keyword targeting driving organic traffic*
 

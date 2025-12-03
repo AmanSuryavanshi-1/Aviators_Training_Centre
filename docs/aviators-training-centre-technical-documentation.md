@@ -86,7 +86,7 @@ A complete full-stack platform combining modern web technologies, intelligent n8
 | | Total Nodes | 74+ across all workflows |
 | | Email Automation | 100% automated |
 
-<img src="./Docs_Assets/ASSET-17%20Google%20Search%20Console%20Performance.png" alt="Google Search Console Performance" width="900"/>
+<img src="./Docs_Assets/ASSET-16%20Google%20Search%20Console%20Performance.png" alt="Google Search Console Performance" width="900"/>
 
 *Figure 2: Google Search Console performance showing 19.3K impressions and 146 clicks over 6 months - demonstrating strong organic growth alongside other lead channels*
 
@@ -300,7 +300,7 @@ atc-n8n-meeting-scheduler/workflows/
 
 *Figure 5: Complete end-to-end flow from user form submission to Airtable CRM update - 7 steps completing in <2 seconds with 99.7% reliability*
 
-<img src="./Docs_Assets/ASSET-15%20Contact%20Form%20Screenshot.png" alt="Contact Form Screenshot" width="700"/>
+<img src="./Docs_Assets/ASSET-14%20Contact%20Form%20Screenshot.png" alt="Contact Form Screenshot" width="700"/>
 
 *Screenshot: Actual contact form on aviatorstrainingcentre.in that triggers the n8n automation workflow*
 
@@ -431,7 +431,7 @@ export async function triggerContactFormWebhook(
 
 *Figure 8: Firebase trigger workflow detail showing 9 nodes handling contact form automation - from webhook trigger to email sending to Airtable CRM update with 48-hour follow-up logic*
 
-<img src="./Docs_Assets/ASSET-19%20n8n%20Workflow%20Canvas%20-%20Firebase%20Trigger.png" alt="n8n Firebase Workflow Canvas" width="1000"/>
+<img src="./Docs_Assets/ASSET-17%20n8n%20Workflow%20Canvas%20-%20Firebase%20Trigger.png" alt="n8n Firebase Workflow Canvas" width="1000"/>
 
 *Figure 9: Actual n8n workflow canvas for Firebase trigger - visual representation of the 9-node automation handling contact form submissions*
 
@@ -521,7 +521,7 @@ export async function triggerContactFormWebhook(
 
 *Figure 11: Cal.com booking workflow with 3-layer validation - 18 nodes handling booking confirmation with duplicate prevention, validation logic, and Airtable CRM integration*
 
-<img src="./Docs_Assets/ASSET-20%20n8n%20Workflow%20Canvas%20-%20Cal.com%20Trigger.png" alt="n8n Cal.com Workflow Canvas" width="1000"/>
+<img src="./Docs_Assets/ASSET-18%20n8n%20Workflow%20Canvas%20-%20Cal.com%20Trigger.png" alt="n8n Cal.com Workflow Canvas" width="1000"/>
 
 *Figure 12: Actual n8n workflow canvas for Cal.com trigger - visual representation of the 11-node automation with 3-layer validation preventing empty object bug*
 
@@ -1715,7 +1715,7 @@ module.exports = {
 
 ### 8.2 Lighthouse Optimization Strategy (Deep Dive)
 
-<img src="./Docs_Assets/AvaitorsTrainingCenter_LighthouseScores.png" alt="Latest Lighthouse Scores" width="900"/>
+<img src="./Docs_Assets/ASSET-20%20AvaitorsTrainingCenter_LighthouseScores.png" alt="Latest Lighthouse Scores" width="900"/>
 
 **The Goal:** Achieve 90+ Mobile Performance Score while maintaining rich UI/UX.
 
