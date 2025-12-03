@@ -62,7 +62,7 @@ A complete full-stack platform combining modern web technologies, intelligent n8
 
 **ROI:** Infinite on organic channel (₹0 cost vs ₹3L+ revenue)
 
-<img src="./Docs_Assets/ASSET-13%20Homepage%20Screenshot.png" alt="Homepage Screenshot" width="800"/>
+<img src="https://res.cloudinary.com/dr0lrme36/image/upload/v1764761377/aviators-training-centre/docs-assets/ASSET-13_Homepage_Screenshot.png" alt="Homepage Screenshot" width="800"/>
 
 *Figure 1: Production website achieving 95+ Lighthouse score - www.aviatorstrainingcentre.in*
 
@@ -86,7 +86,7 @@ A complete full-stack platform combining modern web technologies, intelligent n8
 | | Total Nodes | 74+ across all workflows |
 | | Email Automation | 100% automated |
 
-<img src="./Docs_Assets/ASSET-16%20Google%20Search%20Console%20Performance.png" alt="Google Search Console Performance" width="900"/>
+<img src="https://res.cloudinary.com/dr0lrme36/image/upload/v1764761381/aviators-training-centre/docs-assets/ASSET-16_Google_Search_Console_Performance.png" alt="Google Search Console Performance" width="900"/>
 
 *Figure 2: Google Search Console performance showing 19.3K impressions and 146 clicks over 6 months - demonstrating strong organic growth alongside other lead channels*
 
@@ -109,7 +109,7 @@ A complete full-stack platform combining modern web technologies, intelligent n8
 
 ### 2.1 High-Level Architecture
 
-<img src="./Docs_Assets/ASSET-1%20Complete%20System%20Architecture%20Diagram.png" alt="Complete System Architecture" width="1000"/>
+<img src="https://res.cloudinary.com/dr0lrme36/image/upload/v1764761370/aviators-training-centre/docs-assets/ASSET-1_Complete_System_Architecture_Diagram.png" alt="Complete System Architecture" width="1000"/>
 
 *Figure 3: Complete system architecture showing five layers from user interaction to external services - demonstrates zero-cost infrastructure design using free tiers*
 
@@ -289,18 +289,18 @@ atc-n8n-meeting-scheduler/workflows/
 
 ### 3.3 The 3 Production Workflows
 
-<img src="./Docs_Assets/ASSET-2%20n8n%203%20Production%20Workflows%20Overview.png" alt="n8n Workflows Overview" width="900"/>
+<img src="https://res.cloudinary.com/dr0lrme36/image/upload/v1764761386/aviators-training-centre/docs-assets/ASSET-2_n8n_3_Production_Workflows_Overview.png" alt="n8n Workflows Overview" width="900"/>
 
 *Figure 4: Three production n8n workflows handling contact forms, bookings, and cancellation recovery - 74+ nodes with 99.7% reliability saving owner 3-4 hours daily*
 
 
 ### 3.4 Website Contact Form to n8n Automation Flow
 
-<img src="./Docs_Assets/ASSET-3%20Contact%20Form%20to%20n8n%20End-to-End%20Flow.png" alt="Contact Form to n8n Flow" width="900"/>
+<img src="https://res.cloudinary.com/dr0lrme36/image/upload/v1764761388/aviators-training-centre/docs-assets/ASSET-3_Contact_Form_to_n8n_End-to-End_Flow.png" alt="Contact Form to n8n Flow" width="900"/>
 
 *Figure 5: Complete end-to-end flow from user form submission to Airtable CRM update - 7 steps completing in <2 seconds with 99.7% reliability*
 
-<img src="./Docs_Assets/ASSET-14%20Contact%20Form%20Screenshot.png" alt="Contact Form Screenshot" width="700"/>
+<img src="https://res.cloudinary.com/dr0lrme36/image/upload/v1764761378/aviators-training-centre/docs-assets/ASSET-14_Contact_Form_Screenshot.png" alt="Contact Form Screenshot" width="700"/>
 
 *Screenshot: Actual contact form on aviatorstrainingcentre.in that triggers the n8n automation workflow*
 
@@ -427,11 +427,11 @@ export async function triggerContactFormWebhook(
 **Trigger:** Firebase Realtime Database webhook  
 **Nodes:** 12 nodes
 
-<img src="./Docs_Assets/ASSET-4%20Firebase%20Trigger%20Workflow%20Detail.png" alt="Firebase Trigger Workflow" width="850"/>
+<img src="https://res.cloudinary.com/dr0lrme36/image/upload/v1764761390/aviators-training-centre/docs-assets/ASSET-4_Firebase_Trigger_Workflow_Detail.png" alt="Firebase Trigger Workflow" width="850"/>
 
 *Figure 8: Firebase trigger workflow detail showing 9 nodes handling contact form automation - from webhook trigger to email sending to Airtable CRM update with 48-hour follow-up logic*
 
-<img src="./Docs_Assets/ASSET-17%20n8n%20Workflow%20Canvas%20-%20Firebase%20Trigger.png" alt="n8n Firebase Workflow Canvas" width="1000"/>
+<img src="https://res.cloudinary.com/dr0lrme36/image/upload/v1764761382/aviators-training-centre/docs-assets/ASSET-17_n8n_Workflow_Canvas_-_Firebase_Trigger.png" alt="n8n Firebase Workflow Canvas" width="1000"/>
 
 *Figure 9: Actual n8n workflow canvas for Firebase trigger - visual representation of the 9-node automation handling contact form submissions*
 
@@ -504,7 +504,7 @@ export async function triggerContactFormWebhook(
 | T+0 (Immediate) | Welcome | "Schedule Your Free Consultation" | First touch, booking link |
 | T+48 hours | Follow-up | "Don't Miss Out - Your Aviation Career Awaits! 🛩️" | Urgency, limited slots |
 
-<img src="./Docs_Assets/ASSET-12%20Email%20Sequence%20Timeline.png" alt="Email Sequence Timeline" width="900"/>
+<img src="https://res.cloudinary.com/dr0lrme36/image/upload/v1764761375/aviators-training-centre/docs-assets/ASSET-12_Email_Sequence_Timeline.png" alt="Email Sequence Timeline" width="900"/>
 
 *Figure 10: Complete email sequence timeline showing immediate welcome email, 48-hour follow-up, booking confirmation, and 7-day cancellation recovery - automated nurture sequence driving 12% conversion rate*
 
@@ -517,11 +517,11 @@ export async function triggerContactFormWebhook(
 **Trigger:** Cal.com BOOKING_CREATED webhook  
 **Nodes:** 11 nodes (includes 3-layer validation)
 
-<img src="./Docs_Assets/ASSET-5%20Cal.com%20Booking%20Workflow%20with%203-Layer%20Validation.png" alt="Cal.com Booking Workflow" width="850"/>
+<img src="https://res.cloudinary.com/dr0lrme36/image/upload/v1764761392/aviators-training-centre/docs-assets/ASSET-5_Cal.com_Booking_Workflow_with_3-Layer_Validation.png" alt="Cal.com Booking Workflow" width="850"/>
 
 *Figure 11: Cal.com booking workflow with 3-layer validation - 18 nodes handling booking confirmation with duplicate prevention, validation logic, and Airtable CRM integration*
 
-<img src="./Docs_Assets/ASSET-18%20n8n%20Workflow%20Canvas%20-%20Cal.com%20Trigger.png" alt="n8n Cal.com Workflow Canvas" width="1000"/>
+<img src="https://res.cloudinary.com/dr0lrme36/image/upload/v1764761383/aviators-training-centre/docs-assets/ASSET-18_n8n_Workflow_Canvas_-_Cal.com_Trigger.png" alt="n8n Cal.com Workflow Canvas" width="1000"/>
 
 *Figure 12: Actual n8n workflow canvas for Cal.com trigger - visual representation of the 11-node automation with 3-layer validation preventing empty object bug*
 
@@ -608,7 +608,7 @@ if (bookingData[0].name && bookingData[0].email && bookingData[0].startTime) {
 **Trigger:** Cal.com BOOKING_CANCELLED webhook  
 **Nodes:** 10 nodes
 
-<img src="./Docs_Assets/ASSET-6%20Cancellation%20Recovery%20Workflow.png" alt="Cancellation Recovery Workflow" width="850"/>
+<img src="https://res.cloudinary.com/dr0lrme36/image/upload/v1764761394/aviators-training-centre/docs-assets/ASSET-6_Cancellation_Recovery_Workflow.png" alt="Cancellation Recovery Workflow" width="850"/>
 
 *Figure 13: Cancellation recovery workflow - 10 nodes handling booking cancellations with immediate acknowledgment, 7-day wait period, and re-engagement email achieving 15-20% recovery rate*
 
@@ -1416,7 +1416,7 @@ Action: Focus more effort on WhatsApp marketing
 
 ### 6.1 Challenge 1: n8n Empty Object Bug
 
-<img src="./Docs_Assets/ASSET-7%203-Layer%20Validation%20Decision%20Tree.png" alt="3-Layer Validation" width="800"/>
+<img src="https://res.cloudinary.com/dr0lrme36/image/upload/v1764761396/aviators-training-centre/docs-assets/ASSET-7_3-Layer_Validation_Decision_Tree.png" alt="3-Layer Validation" width="800"/>
 
 *Figure 7: 3-layer validation decision tree solving the empty object bug - improved reliability from 60% to 99.7% by catching empty arrays, empty objects, and partial data*
 
@@ -1465,7 +1465,7 @@ if (validLeads.length === 0) {
 
 ### Challenge 2: Lighthouse Optimization (<50 → 95+)
 
-<img src="./Docs_Assets/ASSET-10%20Lighthouse%20Optimization%20BeforeAfter.png" alt="Lighthouse Optimization" width="900"/>
+<img src="https://res.cloudinary.com/dr0lrme36/image/upload/v1764761372/aviators-training-centre/docs-assets/ASSET-10_Lighthouse_Optimization_BeforeAfter.png" alt="Lighthouse Optimization" width="900"/>
 
 *Figure 6: Lighthouse optimization journey from <50 to 95+ score through systematic 5-part optimization - directly drove Page 1 rankings, 19.3K impressions, and ₹3L revenue*
 
@@ -1715,7 +1715,7 @@ module.exports = {
 
 ### 8.2 Lighthouse Optimization Strategy (Deep Dive)
 
-<img src="./Docs_Assets/ASSET-20%20AvaitorsTrainingCenter_LighthouseScores.png" alt="Latest Lighthouse Scores" width="900"/>
+<img src="https://res.cloudinary.com/dr0lrme36/image/upload/v1764761387/aviators-training-centre/docs-assets/ASSET-20_AvaitorsTrainingCenter_LighthouseScores.png" alt="Latest Lighthouse Scores" width="900"/>
 
 **The Goal:** Achieve 90+ Mobile Performance Score while maintaining rich UI/UX.
 
