@@ -117,7 +117,7 @@ export function PerformanceImageProvider({
     const connection = (navigator as any).connection;
     if (connection && connection.addEventListener) {
       connection.addEventListener('change', updateConnectionInfo);
-      
+
       return () => {
         connection.removeEventListener('change', updateConnectionInfo);
       };
@@ -158,18 +158,18 @@ export function PerformanceImageProvider({
     config: configRef.current,
     connectionInfo: connectionInfoRef.current,
     lazyLoadService: lazyLoadServiceRef.current,
-    
+
     updateConfig: (updates: Partial<ImageOptimizationConfig>) => {
       configRef.current = { ...configRef.current, ...updates };
     },
-    
+
     getOptimalConfig: (): ImageOptimizationConfig => {
       const connection = connectionInfoRef.current;
       if (!connection) return configRef.current;
 
       // Return connection-aware configuration
       const connectionConfig = CONNECTION_CONFIGS[connection.effectiveType] || CONNECTION_CONFIGS['4g'];
-      
+
       return {
         ...configRef.current,
         ...connectionConfig,
@@ -193,21 +193,26 @@ export function PerformanceImageProvider({
 // Custom hook to use the performance image context
 export function usePerformanceImage(): PerformanceImageContextValue {
   const context = useContext(PerformanceImageContext);
-  
+
   if (!context) {
     throw new Error(
       'usePerformanceImage must be used within a PerformanceImageProvider. ' +
       'Make sure to wrap your component tree with <PerformanceImageProvider>.'
     );
   }
-  
+
   return context;
+}
+
+// Safe version of the hook that returns null instead of throwing
+export function useOptionalPerformanceImage(): PerformanceImageContextValue | null {
+  return useContext(PerformanceImageContext);
 }
 
 // Hook for getting optimal image configuration
 export function useOptimalImageConfig(): ImageOptimizationConfig {
-  const { getOptimalConfig } = usePerformanceImage();
-  return getOptimalConfig();
+  const context = useContext(PerformanceImageContext);
+  return context ? context.getOptimalConfig() : DEFAULT_CONFIG;
 }
 
 // Hook for connection-aware image loading
@@ -218,15 +223,28 @@ export function useConnectionAwareLoading(): {
   isSlowConnection: boolean;
   isDataSaverEnabled: boolean;
 } {
-  const { connectionInfo, getOptimalConfig } = usePerformanceImage();
-  const config = getOptimalConfig();
-  
-  const isSlowConnection = connectionInfo ? 
-    (connectionInfo.effectiveType === '2g' || 
-     (connectionInfo.effectiveType === '3g' && connectionInfo.downlink < 1.5)) : false;
-  
+  const context = useContext(PerformanceImageContext);
+
+  if (!context) {
+    // Return default values if no provider
+    return {
+      shouldLazyLoad: true,
+      priority: 'medium',
+      rootMargin: '200px 0px',
+      isSlowConnection: false,
+      isDataSaverEnabled: false,
+    };
+  }
+
+  const config = context.getOptimalConfig();
+  const { connectionInfo } = context;
+
+  const isSlowConnection = connectionInfo ?
+    (connectionInfo.effectiveType === '2g' ||
+      (connectionInfo.effectiveType === '3g' && connectionInfo.downlink < 1.5)) : false;
+
   const isDataSaverEnabled = connectionInfo?.saveData || false;
-  
+
   return {
     shouldLazyLoad: config.enableLazyLoading,
     priority: config.defaultPriority,
@@ -238,12 +256,12 @@ export function useConnectionAwareLoading(): {
 
 // Hook for performance metrics
 export function useImagePerformanceMetrics() {
-  const { lazyLoadService } = usePerformanceImage();
-  
+  const context = useContext(PerformanceImageContext);
+
   return {
-    getMetrics: () => lazyLoadService.getPerformanceMetrics(),
-    preloadImage: (src: string, priority?: LoadingPriority) => 
-      lazyLoadService.preload(src, priority),
+    getMetrics: () => context?.lazyLoadService.getPerformanceMetrics() || [],
+    preloadImage: (src: string, priority?: LoadingPriority) =>
+      context?.lazyLoadService.preload(src, priority) || Promise.resolve(),
   };
 }
 
@@ -253,26 +271,26 @@ export function withPerformanceOptimization<P extends object>(
 ): React.ComponentType<P> {
   const WrappedComponent = (props: P) => {
     const { config } = usePerformanceImage();
-    
+
     // Add performance optimization props if the component accepts them
     const enhancedProps = {
       ...props,
       // Add performance-related props that components can use
       performanceConfig: config,
     };
-    
+
     return <Component {...enhancedProps} />;
   };
-  
+
   WrappedComponent.displayName = `withPerformanceOptimization(${Component.displayName || Component.name})`;
-  
+
   return WrappedComponent;
 }
 
 // Utility function to get connection-aware image quality
 export function getConnectionAwareQuality(connectionInfo: ConnectionInfo | null): number {
   if (!connectionInfo) return 85; // Default quality
-  
+
   switch (connectionInfo.effectiveType) {
     case '2g':
       return connectionInfo.saveData ? 60 : 70;
@@ -292,12 +310,12 @@ export function shouldPreloadImage(
 ): boolean {
   if (priority === 'critical') return true;
   if (!connectionInfo) return priority === 'high';
-  
+
   // Don't preload on slow connections or data saver mode
   if (connectionInfo.saveData) return false;
   if (connectionInfo.effectiveType === '2g') return false;
   if (connectionInfo.effectiveType === '3g' && connectionInfo.downlink < 1.5) return false;
-  
+
   return priority === 'high';
 }
 

@@ -13,7 +13,8 @@ import ConditionalLayout from "@/components/layout/ConditionalLayout";
 import ConditionalAnalytics from "@/components/analytics/ConditionalAnalytics";
 import { PerformanceImageProvider } from "@/lib/image-optimization";
 import UTMTracker from "@/components/analytics/UTMTracker";
-import { inter, montserrat, roboto } from "@/lib/fonts";
+import PerformanceMonitor from "@/components/performance/PerformanceMonitor";
+import { inter, montserrat, roboto, poppins } from "@/lib/fonts";
 
 // Initialize automation system
 if (typeof window === 'undefined') {
@@ -82,9 +83,12 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <head>
         {/* Resource hints for third-party domains */}
+        <link rel="preconnect" href="https://cdn.sanity.io" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+        <link rel="dns-prefetch" href="https://www.google-analytics.com" />
         <link rel="dns-prefetch" href="https://connect.facebook.net" />
-        <link rel="dns-prefetch" href="https://cdn.sanity.io" />
         <link rel="preconnect" href="https://www.googletagmanager.com" crossOrigin="anonymous" />
         <link rel="preconnect" href="https://connect.facebook.net" crossOrigin="anonymous" />
 
@@ -181,7 +185,7 @@ export default function RootLayout({
         {/* Meta Pixel Code */}
         <Script
           id="meta-pixel"
-          strategy="worker"
+          strategy="lazyOnload"
           dangerouslySetInnerHTML={{
             __html: `
               !function(f,b,e,v,n,t,s)
@@ -239,12 +243,12 @@ export default function RootLayout({
 
         {/* Google tag (gtag.js) - Enhanced for proper domain tracking */}
         <Script
-          strategy="worker"
+          strategy="afterInteractive"
           src={`https://www.googletagmanager.com/gtag/js?id=G-XSRFEJCB7N`}
         />
         <Script
           id="gtag-init"
-          strategy="worker"
+          strategy="afterInteractive"
           dangerouslySetInnerHTML={{
             __html: `
               window.dataLayer = window.dataLayer || [];
@@ -277,7 +281,7 @@ export default function RootLayout({
         />
       </head>
 
-      <body className={`bg-background no-horizontal-overflow ${inter.variable} ${montserrat.variable} ${roboto.variable}`}>
+      <body className={`bg-background no-horizontal-overflow ${inter.variable} ${montserrat.variable} ${roboto.variable} ${poppins.variable}`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="light"
@@ -292,6 +296,7 @@ export default function RootLayout({
             >
               <PerformanceImageProvider>
                 <UTMTracker />
+                <PerformanceMonitor />
                 <ConditionalLayout>
                   {children}
                 </ConditionalLayout>

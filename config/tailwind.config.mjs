@@ -11,24 +11,11 @@ const config = {
 
   // Optimized content paths for aggressive CSS purging
   content: [
-    // App directory
-    './src/app/**/*.{js,ts,jsx,tsx,mdx}',
-
-    // Components
+    './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
     './src/components/**/*.{js,ts,jsx,tsx,mdx}',
-
-    // Lib utilities
+    './src/app/**/*.{js,ts,jsx,tsx,mdx}',
     './src/lib/**/*.{js,ts,jsx,tsx,mdx}',
-
-    // All src files
     './src/**/*.{js,ts,jsx,tsx,mdx}',
-
-    // Public files
-    './public/**/*.{js,ts,jsx,tsx,mdx}',
-
-    // Styles
-    './src/styles/**/*.{css,scss}',
-    './styles/**/*.{css,scss}',
   ],
 
   // Safelist for dynamically generated classes
@@ -57,7 +44,7 @@ const config = {
       pattern: /-?rotate-(0|45|90|180)/,
     },
 
-    // Transition patterns  
+    // Transition patterns
     {
       pattern: /transition-(all|colors|opacity|transform)/,
     },
@@ -126,31 +113,72 @@ const config = {
           light: '#73B5BD',      /* Pale teal */
           text: '#1F2937',       /* Dark grey */
         },
-      },
-      borderRadius: {
-        lg: 'var(--radius)',
-        md: 'calc(var(--radius) - 2px)',
-        sm: 'calc(var(--radius) - 4px)',
-      },
-      fontFamily: {
-        sans: ['var(--font-roboto)', ...fontFamily.sans],
-        heading: ['var(--font-montserrat)', ...fontFamily.sans],
-        inter: ['var(--font-inter)', ...fontFamily.sans],
-      },
-      keyframes: {
-        'accordion-down': {
-          from: { height: '0' },
-          to: { height: 'var(--radix-accordion-content-height)' },
-        },
         'accordion-up': {
           from: { height: 'var(--radix-accordion-content-height)' },
           to: { height: '0' },
         },
       },
+      fontFamily: {
+        sans: ['var(--font-inter)', ...fontFamily.sans],
+        heading: ['var(--font-montserrat)', ...fontFamily.sans],
+        body: ['var(--font-inter)', ...fontFamily.sans],
+      },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
       },
+      typography: ({ theme }) => ({
+        DEFAULT: {
+          css: {
+            '--tw-prose-body': theme('colors.aviation.text'),
+            '--tw-prose-headings': theme('colors.aviation.primary'),
+            '--tw-prose-links': theme('colors.aviation.primary'),
+            '--tw-prose-bold': theme('colors.aviation.primary'),
+            '--tw-prose-counters': theme('colors.aviation.primary'),
+            '--tw-prose-bullets': theme('colors.aviation.primary'),
+            '--tw-prose-hr': theme('colors.aviation.accent'),
+            '--tw-prose-quotes': theme('colors.aviation.secondary'),
+            '--tw-prose-quote-borders': theme('colors.aviation.primary'),
+            '--tw-prose-captions': theme('colors.aviation.text'),
+            '--tw-prose-code': theme('colors.aviation.primary'),
+            '--tw-prose-pre-code': theme('colors.white'),
+            '--tw-prose-pre-bg': theme('colors.aviation.text'),
+            '--tw-prose-th-borders': theme('colors.aviation.primary'),
+            '--tw-prose-td-borders': theme('colors.aviation.accent'),
+
+            maxWidth: 'none',
+
+            // Links
+            a: {
+              textDecoration: 'none',
+              fontWeight: '600',
+              transition: 'all 0.2s',
+              '&:hover': {
+                color: theme('colors.aviation.secondary'),
+                textDecoration: 'underline',
+                boxShadow: '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
+              },
+            },
+
+            // Dark Mode Overrides
+            '.dark &': {
+              '--tw-prose-body': theme('colors.foreground'),
+              '--tw-prose-headings': theme('colors.teal.300'),
+              '--tw-prose-links': theme('colors.teal.400'),
+              '--tw-prose-bold': theme('colors.teal.200'),
+              '--tw-prose-counters': theme('colors.teal.400'),
+              '--tw-prose-bullets': theme('colors.teal.400'),
+              '--tw-prose-hr': theme('colors.teal.600'),
+              '--tw-prose-quotes': theme('colors.teal.300'),
+              '--tw-prose-quote-borders': theme('colors.teal.600'),
+              '--tw-prose-captions': theme('colors.teal.100'),
+              '--tw-prose-code': theme('colors.teal.200'),
+              '--tw-prose-th-borders': theme('colors.teal.600'),
+              '--tw-prose-td-borders': theme('colors.teal.700'),
+            },
+          },
+        },
+      }),
     },
   },
   plugins: [tailwindcssAnimate, typography],

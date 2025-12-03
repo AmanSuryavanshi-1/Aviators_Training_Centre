@@ -16,6 +16,7 @@ export type {
 export {
   default as PerformanceImageProvider,
   usePerformanceImage,
+  useOptionalPerformanceImage,
   useOptimalImageConfig,
   useConnectionAwareLoading,
   useImagePerformanceMetrics,

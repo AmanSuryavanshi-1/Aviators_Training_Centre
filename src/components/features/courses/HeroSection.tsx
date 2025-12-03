@@ -3,8 +3,8 @@ import React, { useState, useEffect, useCallback } from 'react';
 import Image from 'next/image';
 import { ArrowRight, CalendarCheck, Phone } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Link } from 'next/link';
-import { cn } from "./../ui/utils";
+import Link from 'next/link';
+import { cn } from "@/components/ui/utils";
 import { BookDemoButton } from '@/components/shared/BookDemoButton';
 import { SolidButton } from '@/components/shared/SolidButton';
 import { TransparentButton } from '@/components/shared/TransparentButton';
@@ -83,14 +83,6 @@ const HeroSectionInner = () => {
     recommendations: string[];
   } | null>(null);
   const SWIPE_THRESHOLD_PX = 50;
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 768);
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
 
   // Performance metrics for hero images (now inside provider context)
   const { preloadImage } = useImagePerformanceMetrics();
@@ -205,38 +197,19 @@ const HeroSectionInner = () => {
           transition={{ x: { type: "spring", stiffness: 300, damping: 30 }, opacity: { duration: 0.3 } }}
           className="absolute inset-0 w-full h-full opacity-100"
         >
-          {!isMobile && (
-            <Image
-              src={slides[currentSlide].image}
-              alt={slides[currentSlide].title}
-              fill
-              className="object-cover"
-              priority={true} // CRITICAL: Forces immediate load
-              quality={85}
-              sizes="1920px"
-              placeholder={currentSlide === 0 ? undefined : "blur"}
-              blurDataURL={currentSlide === 0 ? undefined : "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCKSAA//9k="}
-            />
-          )}
-
-          {/* Mobile - aggressive optimization */}
-          {isMobile && (
-            <Image
-              src={slides[currentSlide].image}
-              alt={slides[currentSlide].title}
-              width={768}
-              height={432}
-              className="object-cover w-full h-full"
-              priority={true}
-              quality={60}  // Lower quality for mobile
-              sizes="100vw"
-              loading="eager"
-              fetchPriority="high"
-              unoptimized={false}
-              placeholder={currentSlide === 0 ? undefined : "blur"}
-              blurDataURL={currentSlide === 0 ? undefined : "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCKSAA//9k="}
-            />
-          )}
+          <Image
+            src={slides[currentSlide].image}
+            alt={slides[currentSlide].title}
+            fill
+            className="object-cover"
+            priority={true}
+            quality={85}
+            sizes="100vw"
+            loading="eager"
+            fetchPriority="high"
+            placeholder={currentSlide === 0 ? undefined : "blur"}
+            blurDataURL={currentSlide === 0 ? undefined : "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCKSAA//9k="}
+          />
         </motion.div>
       </AnimatePresence>
 

@@ -1,243 +1,243 @@
 /* Aviation-themed Blog Content Styles with Dark Mode Support */
 .prose {
 
-  /* Tables */
-  table {
-    @apply w-full border-collapse border border-aviation-accent/30 my-8 rounded-lg shadow-sm block overflow-x-auto whitespace-nowrap md:table md:whitespace-normal;
-  }
+    /* Tables */
+    table {
+        @apply w-full border-collapse border border-aviation-accent/30 my-8 rounded-lg shadow-sm block overflow-x-auto whitespace-nowrap md:table md:whitespace-normal;
+    }
 
-  table th {
-    @apply bg-aviation-primary text-white border border-aviation-primary px-4 py-3 text-left font-semibold;
-  }
+    table th {
+        @apply bg-aviation-primary text-white border border-aviation-primary px-4 py-3 text-left font-semibold;
+    }
 
-  table td {
-    @apply border border-aviation-accent/20 px-4 py-3 text-aviation-text;
-  }
+    table td {
+        @apply border border-aviation-accent/20 px-4 py-3 text-aviation-text;
+    }
 
-  table thead tr {
-    @apply bg-aviation-primary;
-  }
+    table thead tr {
+        @apply bg-aviation-primary;
+    }
 
-  table tbody tr:nth-child(even) {
-    @apply bg-aviation-light/10;
-  }
+    table tbody tr:nth-child(even) {
+        @apply bg-aviation-light/10;
+    }
 
-  table tbody tr:hover {
-    @apply bg-aviation-accent/10 transition-colors;
-  }
+    table tbody tr:hover {
+        @apply bg-aviation-accent/10 transition-colors;
+    }
 
-  /* Dark mode table styles */
-  .dark & table {
-    @apply border-teal-600/40;
-  }
+    /* Dark mode table styles */
+    .dark & table {
+        @apply border-teal-600/40;
+    }
 
-  .dark & table th {
-    @apply bg-teal-600 border-teal-600;
-  }
+    .dark & table th {
+        @apply bg-teal-600 border-teal-600;
+    }
 
-  .dark & table td {
-    @apply border-teal-700/30 text-foreground;
-  }
+    .dark & table td {
+        @apply border-teal-700/30 text-foreground;
+    }
 
-  .dark & table tbody tr:nth-child(even) {
-    @apply bg-teal-900/20;
-  }
+    .dark & table tbody tr:nth-child(even) {
+        @apply bg-teal-900/20;
+    }
 
-  .dark & table tbody tr:hover {
-    @apply bg-teal-800/20;
-  }
+    .dark & table tbody tr:hover {
+        @apply bg-teal-800/20;
+    }
 
-  /* Sections */
-  section {
-    @apply mb-10;
-  }
+    /* Sections */
+    section {
+        @apply mb-10;
+    }
 
-  /* Navigation */
-  nav ul {
-    @apply list-none pl-0;
-  }
+    /* Navigation */
+    nav ul {
+        @apply list-none pl-0;
+    }
 
-  nav li {
-    @apply mb-3;
-  }
+    nav li {
+        @apply mb-3;
+    }
 
-  nav a {
-    @apply text-aviation-primary hover:text-aviation-secondary hover:underline font-medium transition-colors;
-  }
+    nav a {
+        @apply text-aviation-primary underline hover:text-aviation-secondary font-medium transition-colors;
+    }
 
-  /* Lists */
-  ul {
-    @apply list-disc pl-6 mb-6 space-y-2;
-  }
+    /* Lists */
+    ul {
+        @apply list-disc pl-6 mb-6 space-y-2;
+    }
 
-  ol {
-    @apply list-decimal pl-6 mb-6 space-y-2;
-  }
+    ol {
+        @apply list-decimal pl-6 mb-6 space-y-2;
+    }
 
-  li {
-    @apply leading-relaxed text-aviation-text;
-  }
+    li {
+        @apply leading-relaxed text-aviation-text;
+    }
 
-  li::marker {
-    @apply text-aviation-primary;
-  }
+    li::marker {
+        @apply text-aviation-primary;
+    }
 
-  /* Headings with aviation theme */
-  h1 {
-    @apply text-2xl sm:text-3xl md:text-4xl font-heading font-bold mt-12 mb-6 text-aviation-primary border-b-2 border-aviation-accent/30 pb-3;
-  }
+    /* Headings with aviation theme */
+    h1 {
+        @apply text-2xl sm:text-3xl md:text-4xl font-heading font-bold mt-12 mb-6 text-aviation-primary border-b-2 border-aviation-accent/30 pb-3;
+    }
 
-  h2 {
-    @apply text-xl sm:text-2xl md:text-3xl font-heading font-bold mt-10 mb-5 text-aviation-secondary relative;
-  }
+    h2 {
+        @apply text-xl sm:text-2xl md:text-3xl font-heading font-bold mt-10 mb-5 text-aviation-secondary relative;
+    }
 
-  h2::before {
-    content: '';
-    @apply absolute -left-4 top-1/2 transform -translate-y-1/2 w-1 h-6 sm:h-8 bg-aviation-primary rounded;
-  }
+    h2::before {
+        content: '';
+        @apply absolute -left-4 top-1/2 transform -translate-y-1/2 w-1 h-6 sm:h-8 bg-aviation-primary rounded;
+    }
 
-  h3 {
-    @apply text-lg sm:text-xl md:text-2xl font-heading font-bold mt-8 mb-4 text-aviation-tertiary;
-  }
+    h3 {
+        @apply text-lg sm:text-xl md:text-2xl font-heading font-bold mt-8 mb-4 text-aviation-tertiary;
+    }
 
-  h4 {
-    @apply text-lg sm:text-xl font-heading font-semibold mt-6 mb-3 text-aviation-text;
-  }
+    h4 {
+        @apply text-lg sm:text-xl font-heading font-semibold mt-6 mb-3 text-aviation-text;
+    }
 
-  h5 {
-    @apply text-lg font-heading font-semibold mt-4 mb-2 text-aviation-text;
-  }
+    h5 {
+        @apply text-lg font-heading font-semibold mt-4 mb-2 text-aviation-text;
+    }
 
-  h6 {
-    @apply text-base font-heading font-semibold mt-3 mb-2 text-aviation-text;
-  }
+    h6 {
+        @apply text-base font-heading font-semibold mt-3 mb-2 text-aviation-text;
+    }
 
-  /* Dark mode headings */
-  .dark & h1 {
-    @apply text-teal-300 border-teal-600/40;
-  }
+    /* Dark mode headings */
+    .dark & h1 {
+        @apply text-teal-300 border-teal-600/40;
+    }
 
-  .dark & h2 {
-    @apply text-teal-400;
-  }
+    .dark & h2 {
+        @apply text-teal-400;
+    }
 
-  .dark & h2::before {
-    @apply bg-teal-400;
-  }
+    .dark & h2::before {
+        @apply bg-teal-400;
+    }
 
-  .dark & h3 {
-    @apply text-teal-300;
-  }
+    .dark & h3 {
+        @apply text-teal-300;
+    }
 
-  .dark & h4,
-  .dark & h5,
-  .dark & h6 {
-    @apply text-foreground;
-  }
+    .dark & h4,
+    .dark & h5,
+    .dark & h6 {
+        @apply text-foreground;
+    }
 
-  /* Paragraphs */
-  p {
-    @apply mb-6 leading-relaxed text-aviation-text text-lg font-medium;
-  }
+    /* Paragraphs */
+    p {
+        @apply mb-6 leading-relaxed text-aviation-text text-lg font-medium;
+    }
 
-  .dark & p {
-    @apply text-foreground font-medium;
-  }
+    .dark & p {
+        @apply text-foreground font-medium;
+    }
 
-  /* Emphasis */
-  strong {
-    @apply font-bold text-aviation-primary;
-  }
+    /* Emphasis */
+    strong {
+        @apply font-bold text-aviation-primary;
+    }
 
-  .dark & strong {
-    @apply text-teal-200 font-bold;
-  }
+    .dark & strong {
+        @apply text-teal-200 font-bold;
+    }
 
-  em {
-    @apply italic text-aviation-secondary;
-  }
+    em {
+        @apply italic text-aviation-secondary;
+    }
 
-  .dark & em {
-    @apply text-teal-300;
-  }
+    .dark & em {
+        @apply text-teal-300;
+    }
 
-  /* Links with aviation theme */
-  a {
-    @apply text-aviation-primary hover:text-aviation-secondary hover:underline font-semibold transition-all duration-200 relative;
-  }
+    /* Links with aviation theme */
+    a {
+        @apply text-aviation-primary underline hover:text-aviation-secondary font-semibold transition-all duration-200 relative;
+    }
 
-  .dark & a {
-    @apply text-teal-400 hover:text-teal-300 font-semibold;
-  }
+    .dark & a {
+        @apply text-teal-400 hover:text-teal-300 font-semibold;
+    }
 
-  a:hover {
-    @apply shadow-sm;
-  }
+    a:hover {
+        @apply shadow-sm;
+    }
 
-  /* Blockquotes */
-  blockquote {
-    @apply border-l-4 border-aviation-primary bg-aviation-light/10 pl-6 pr-4 py-4 my-8 italic rounded-r-lg;
-  }
+    /* Blockquotes */
+    blockquote {
+        @apply border-l-4 border-aviation-primary bg-aviation-light/10 pl-6 pr-4 py-4 my-8 italic rounded-r-lg;
+    }
 
-  blockquote p {
-    @apply text-aviation-secondary mb-0;
-  }
+    blockquote p {
+        @apply text-aviation-secondary mb-0;
+    }
 
-  /* Code blocks */
-  pre {
-    @apply bg-aviation-text text-white p-6 rounded-lg my-8 overflow-x-auto;
-  }
+    /* Code blocks */
+    pre {
+        @apply bg-aviation-text text-white p-6 rounded-lg my-8 overflow-x-auto;
+    }
 
-  code {
-    @apply bg-aviation-light/20 text-aviation-primary px-2 py-1 rounded text-sm font-mono;
-  }
+    code {
+        @apply bg-aviation-light/20 text-aviation-primary px-2 py-1 rounded text-sm font-mono;
+    }
 
-  pre code {
-    @apply bg-transparent text-white px-0 py-0;
-  }
+    pre code {
+        @apply bg-transparent text-white px-0 py-0;
+    }
 
-  /* Images */
-  img {
-    @apply rounded-lg shadow-md my-8 border border-aviation-accent/20;
-  }
+    /* Images */
+    img {
+        @apply rounded-lg shadow-md my-8 border border-aviation-accent/20;
+    }
 
-  /* Footer */
-  footer {
-    @apply mt-16 pt-8 border-t-2 border-aviation-accent/30;
-  }
+    /* Footer */
+    footer {
+        @apply mt-16 pt-8 border-t-2 border-aviation-accent/30;
+    }
 
-  footer small {
-    @apply text-sm text-aviation-text/70;
-  }
+    footer small {
+        @apply text-sm text-aviation-text/70;
+    }
 
-  /* Article structure */
-  article {
-    @apply max-w-none;
-  }
+    /* Article structure */
+    article {
+        @apply max-w-none;
+    }
 
-  /* Header */
-  header {
-    @apply mb-10;
-  }
+    /* Header */
+    header {
+        @apply mb-10;
+    }
 
-  /* Custom callout boxes */
-  .callout {
-    @apply border-l-4 p-6 my-8 rounded-r-lg shadow-sm;
-  }
+    /* Custom callout boxes */
+    .callout {
+        @apply border-l-4 p-6 my-8 rounded-r-lg shadow-sm;
+    }
 
-  .callout-info {
-    @apply border-aviation-primary bg-aviation-light/10;
-  }
+    .callout-info {
+        @apply border-aviation-primary bg-aviation-light/10;
+    }
 
-  .callout-warning {
-    @apply border-yellow-500 bg-yellow-50;
-  }
+    .callout-warning {
+        @apply border-yellow-500 bg-yellow-50;
+    }
 
-  .callout-success {
-    @apply border-green-500 bg-green-50;
-  }
+    .callout-success {
+        @apply border-green-500 bg-green-50;
+    }
 
-  .callout-error {
-    @apply border-red-500 bg-red-50;
-  }
+    .callout-error {
+        @apply border-red-500 bg-red-50;
+    }
 }

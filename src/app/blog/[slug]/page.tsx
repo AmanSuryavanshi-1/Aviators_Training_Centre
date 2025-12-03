@@ -9,7 +9,7 @@ import BlogAnalyticsWrapper from '@/components/features/blog/BlogAnalyticsWrappe
 import BlogSEOEnhancer from '@/components/features/blog/BlogSEOEnhancer';
 import ShareButton from '@/components/features/blog/ShareButton';
 import DynamicCTA from '@/components/features/blog/DynamicCTA';
-import '@/styles/blog-content.css';
+// import '@/styles/blog-content.css'; // Migrated to tailwind.config.mjs
 
 export const revalidate = 60;
 

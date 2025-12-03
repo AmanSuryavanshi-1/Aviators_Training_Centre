@@ -1,4 +1,3 @@
-/** @type {import('next').NextConfig} */
 import crypto from 'crypto';
 const nextConfig = {
   reactStrictMode: true,
@@ -32,9 +31,39 @@ const nextConfig = {
         path: false,
       };
 
-      // Optimization: Split chunks - Removed due to build errors with Sanity Studio
-      // Relying on Next.js default chunk splitting which is already optimized
-
+      // Optimization: Aggressive Split Chunks
+      if (!dev) {
+        config.optimization = {
+          ...config.optimization,
+          splitChunks: {
+            chunks: 'all',
+            cacheGroups: {
+              default: false,
+              vendors: false,
+              framework: {
+                name: 'framework',
+                chunks: 'all',
+                test: /[\\/]node_modules[\\/](react|react-dom|scheduler)[\\/]/,
+                priority: 40,
+                enforce: true,
+              },
+              lib: {
+                test: /[\\/]node_modules[\\/]/,
+                name(module) {
+                  const match = module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/);
+                  const packageName = match ? match[1] : 'unknown';
+                  return `npm.${packageName.replace('@', '')}`;
+                },
+                priority: 30,
+                minChunks: 1,
+                reuseExistingChunk: true,
+              },
+            },
+            maxInitialRequests: 25,
+            minSize: 20000,
+          },
+        };
+      }
     }
 
     return config;
@@ -73,21 +102,16 @@ const nextConfig = {
   },
 
   // Experimental features
+  // Experimental features
   experimental: {
     ppr: false, // Disable partial prerendering for now, enable when stable
-    optimizeCss: true, // Enable critical CSS inlining
+    optimizeCss: false, // Enable critical CSS inlining
+    optimizePackageImports: ['framer-motion', 'lucide-react', '@radix-ui/react-icons', 'date-fns'],
   },
 
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production',
-  },
-
-  // Cache configuration for better performance
-  onDemandEntries: {
-    // Period (in ms) where the server will keep pages in the buffer
-    maxInactiveAge: 25 * 1000,
-    // Number of pages that should be kept simultaneously without being disposed
-    pagesBufferLength: 2,
+    reactRemoveProperties: process.env.NODE_ENV === 'production',
   },
 
   // Optimize builds for ISR
@@ -99,43 +123,61 @@ const nextConfig = {
   async headers() {
     return [
       {
-        source: '/:path*',
+        source: '/(.*)',
         headers: [
           {
-            key: 'X-DNS-Prefetch-Control',
-            value: 'on'
-          },
-          {
-            key: 'Strict-Transport-Security',
-            value: 'max-age=63072000; includeSubDomains; preload'
-          },
-          {
-            key: 'X-XSS-Protection',
-            value: '1; mode=block'
+            key: 'X-Content-Type-Options',
+            value: 'nosniff',
           },
           {
             key: 'X-Frame-Options',
-            value: 'SAMEORIGIN'
+            value: 'DENY',
           },
           {
-            key: 'X-Content-Type-Options',
-            value: 'nosniff'
+            key: 'X-XSS-Protection',
+            value: '1; mode=block',
           },
           {
             key: 'Referrer-Policy',
-            value: 'origin-when-cross-origin'
+            value: 'strict-origin-when-cross-origin',
           },
           {
-            key: 'Content-Security-Policy',
-            value: "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline' https://*.googletagmanager.com https://*.google-analytics.com https://connect.facebook.net https://www.facebook.com https://va.vercel-scripts.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' blob: data: https://cdn.sanity.io https://images.unsplash.com https://*.google-analytics.com https://www.facebook.com https://www.googletagmanager.com https://img.youtube.com https://i.ytimg.com https://*.ytimg.com; font-src 'self' https://fonts.gstatic.com; frame-src 'self' https://www.facebook.com https://www.youtube.com; connect-src 'self' https://*.googleapis.com https://*.google-analytics.com https://*.facebook.com https://vitals.vercel-insights.com https://cdn.sanity.io https://*.sanity.io;"
+            key: 'Permissions-Policy',
+            value: 'camera=(), microphone=(), geolocation=()',
           },
+        ],
+      },
+      // Static assets - long cache
+      {
+        source: '/images/:path*',
+        headers: [
           {
             key: 'Cache-Control',
-            value: 'public, max-age=0, must-revalidate'
-          }
-        ]
-      }
-    ]
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
+      // Fonts - long cache
+      {
+        source: '/:path*.woff2',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
+      // HTML pages - short cache with revalidation
+      {
+        source: '/:path*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=3600, stale-while-revalidate=86400',
+          },
+        ],
+      },
+    ];
   },
 };
 

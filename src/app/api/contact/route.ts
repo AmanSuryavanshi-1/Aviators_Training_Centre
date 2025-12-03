@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { db } from '@/lib/firebase';
+import { initFirebase } from '@/lib/firebase';
 import { ref, push, serverTimestamp } from 'firebase/database';
 import { Resend } from 'resend';
 import { triggerContactFormWebhook } from '@/lib/n8n/contact-webhook';
@@ -31,7 +31,7 @@ export async function OPTIONS() {
   headers.set('Access-Control-Allow-Origin', '*');
   headers.set('Access-Control-Allow-Methods', 'POST, OPTIONS');
   headers.set('Access-Control-Allow-Headers', 'Content-Type, Accept');
-  
+
   return new NextResponse(null, { status: 204, headers });
 }
 
@@ -221,18 +221,18 @@ const EMAIL_TEMPLATES = {
 function getEmailTemplate(templateName: string, variables: Record<string, string>): string {
   try {
     let template = EMAIL_TEMPLATES[templateName as keyof typeof EMAIL_TEMPLATES];
-    
+
     if (!template) {
       console.error(`Template ${templateName} not found`);
       return '';
     }
-    
+
     // Replace template variables
     Object.entries(variables).forEach(([key, value]) => {
       const regex = new RegExp(`{{\\s*${key}\\s*}}`, 'g');
       template = template.replace(regex, value);
     });
-    
+
     return template;
   } catch (error) {
     console.error(`Error processing template ${templateName}:`, error);
@@ -246,7 +246,7 @@ export async function POST(req: NextRequest) {
   headers.set('Access-Control-Allow-Origin', '*');
   headers.set('Access-Control-Allow-Methods', 'POST, OPTIONS');
   headers.set('Access-Control-Allow-Headers', 'Content-Type, Accept');
-  
+
   // Handle preflight request (should be handled by OPTIONS function, but adding as fallback)
   if (req.method === 'OPTIONS') {
     return new NextResponse(null, { status: 204, headers });
@@ -264,12 +264,12 @@ export async function POST(req: NextRequest) {
       console.error('JSON parsing error:', jsonError);
       return NextResponse.json({ error: 'Invalid request format. Please send valid JSON data.' }, { status: 400, headers });
     }
-    
-    const { 
-      name, 
-      email, 
-      phone, 
-      subject, 
+
+    const {
+      name,
+      email,
+      phone,
+      subject,
       message,
       utm_source,
       utm_medium,
@@ -306,8 +306,9 @@ export async function POST(req: NextRequest) {
       if (process.env.NODE_ENV === 'development') {
         console.log('Attempting to save to Firebase...');
       }
+      const { db } = await initFirebase();
       const contactsRef = ref(db, 'contacts');
-      
+
       // Add timeout to prevent hanging
       // Prepare data for Firebase with UTM tracking
       const firebaseData = {
@@ -317,7 +318,7 @@ export async function POST(req: NextRequest) {
         phone: phone || '',
         subject,
         message,
-        
+
         // UTM tracking data
         utm_source: utm_source || '',
         utm_medium: utm_medium || '',
@@ -327,18 +328,18 @@ export async function POST(req: NextRequest) {
         referrer: referrer || 'direct',
         landing_page: landing_page || '',
         source_description: source_description || 'Direct Traffic',
-        
+
         // Metadata
         timestamp: serverTimestamp(),
         submitted_at: new Date().toISOString(),
       };
 
       const savePromise = push(contactsRef, firebaseData);
-      
+
       const timeoutPromise = new Promise((_, reject) => {
         setTimeout(() => reject(new Error('Firebase operation timed out')), 10000); // 10 second timeout
       });
-      
+
       const newContactRef = await Promise.race([savePromise, timeoutPromise]) as any;
       if (process.env.NODE_ENV === 'development') {
         console.log('Data saved to Firebase with ID:', newContactRef?.key);
@@ -364,7 +365,7 @@ export async function POST(req: NextRequest) {
       }
     } catch (firebaseError) {
       console.error('Firebase error:', firebaseError);
-      
+
       // If it's a timeout or connection error, still return success to user
       // but log the error for debugging
       if (firebaseError.message?.includes('timeout') || firebaseError.message?.includes('region')) {
@@ -394,14 +395,14 @@ export async function POST(req: NextRequest) {
       console.log('Setting up Resend...');
       console.log('API Key exists:', !!process.env.RESEND_API_KEY);
     }
-    
+
     const resend = new Resend(process.env.RESEND_API_KEY);
     const fromEmail = process.env.FROM_EMAIL;
     const owner1Email = process.env.OWNER1_EMAIL;
     const owner2Email = process.env.OWNER2_EMAIL;
 
     if (process.env.NODE_ENV === 'development') {
-      console.log('Email config check:', { 
+      console.log('Email config check:', {
         fromEmailExists: !!fromEmail,
         owner1Exists: !!owner1Email,
         owner2Exists: !!owner2Email
@@ -416,7 +417,7 @@ export async function POST(req: NextRequest) {
         owner2Email: !!owner2Email
       });
       // Still return success to the user, but log the error server-side
-      return NextResponse.json({ 
+      return NextResponse.json({
         message: 'Form submitted successfully! Your message has been saved and you will receive a response soon.',
         warning: 'Email notifications may be delayed due to configuration issues.'
       }, { status: 200, headers });
@@ -440,14 +441,14 @@ export async function POST(req: NextRequest) {
       if (process.env.NODE_ENV === 'development') {
         console.log('Preparing user confirmation email...');
       }
-      
+
       const userTemplateVariables = {
         name: name,
         message: message
       };
-      
+
       const userHtmlContent = getEmailTemplate('user-confirmation', userTemplateVariables);
-      
+
       if (userHtmlContent) {
         const userEmailResult = await resend.emails.send({
           from: `Aviators Training Centre <${fromEmail}>`,
@@ -455,7 +456,7 @@ export async function POST(req: NextRequest) {
           subject: 'Thank you for contacting Aviators Training Centre',
           html: userHtmlContent,
         });
-        
+
         if (process.env.NODE_ENV === 'development') {
           console.log('User confirmation email sent successfully:', userEmailResult);
         }
@@ -477,34 +478,34 @@ export async function POST(req: NextRequest) {
       timestamp: timestamp,
       year: year
     };
-    
+
     const ownerHtmlContent = getEmailTemplate('owner-notification', ownerTemplateVariables);
-    
+
     if (ownerHtmlContent) {
       // Send to both owners in a single API call
       try {
         if (process.env.NODE_ENV === 'development') {
           console.log('Preparing owner notification emails for both owners...');
         }
-        
+
         const ownerEmailResult = await resend.emails.send({
           from: `Aviators Training Centre <${fromEmail}>`,
           to: [owner1Email, owner2Email], // Send to both owners at once
           subject: `New Contact Form Submission from ${name}`,
           html: ownerHtmlContent,
         });
-        
+
         if (process.env.NODE_ENV === 'development') {
           console.log('Owner notification emails sent successfully to both owners:', ownerEmailResult);
         }
       } catch (ownerEmailError) {
         console.error('Error sending owner notification emails:', ownerEmailError);
-        
+
         // Fallback: Try sending individually with delay if batch sending fails
         if (process.env.NODE_ENV === 'development') {
           console.log('Attempting to send owner emails individually as fallback...');
         }
-        
+
         try {
           if (process.env.NODE_ENV === 'development') {
             console.log('Sending to owner 1...');
@@ -518,13 +519,13 @@ export async function POST(req: NextRequest) {
           if (process.env.NODE_ENV === 'development') {
             console.log('Owner 1 notification email sent successfully:', owner1EmailResult);
           }
-          
+
           // Wait 1 second to respect rate limits
           if (process.env.NODE_ENV === 'development') {
             console.log('Waiting 1 second before sending to owner 2...');
           }
           await new Promise(resolve => setTimeout(resolve, 1000));
-          
+
           if (process.env.NODE_ENV === 'development') {
             console.log('Sending to owner 2...');
           }
@@ -537,7 +538,7 @@ export async function POST(req: NextRequest) {
           if (process.env.NODE_ENV === 'development') {
             console.log('Owner 2 notification email sent successfully:', owner2EmailResult);
           }
-          
+
         } catch (fallbackError) {
           console.error('Fallback email sending also failed:', fallbackError);
         }

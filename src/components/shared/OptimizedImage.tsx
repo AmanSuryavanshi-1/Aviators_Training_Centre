@@ -13,6 +13,7 @@ import Image from 'next/image';
 import { cn } from '@/lib/utils';
 import {
   usePerformanceImage,
+  useOptionalPerformanceImage,
   useConnectionAwareLoading,
   PerformanceMetricsCollector,
 } from '@/lib/image-optimization';
@@ -45,13 +46,13 @@ interface OptimizedImagePropsExtended extends BulletproofImageProps {
   onLoadStart?: () => void;
   onLoadComplete?: () => void;
   performanceTracking?: boolean;
-  
+
   // Advanced optimization props
   fetchPriority?: 'high' | 'low' | 'auto';
   preload?: boolean;
   connectionAware?: boolean;
   respectDataSaver?: boolean;
-  
+
   // Responsive image props
   responsiveBreakpoints?: {
     mobile?: number;
@@ -72,7 +73,7 @@ const OptimizedImage: React.FC<OptimizedImagePropsExtended> = ({
   sizes,
   onError,
   onLoad,
-  
+
   // Enhanced props with defaults
   loadingPriority = 'medium',
   lazyLoad = true,
@@ -85,33 +86,24 @@ const OptimizedImage: React.FC<OptimizedImagePropsExtended> = ({
   connectionAware = true,
   respectDataSaver = true,
   responsiveBreakpoints,
-  
+
   ...restProps
 }) => {
   // State management
   const [imgSrc, setImgSrc] = useState(src);
   const [hasError, setHasError] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [isVisible, setIsVisible] = useState(!lazyLoad || priority);
-  
-  // Refs
-  const imgRef = useRef<HTMLImageElement>(null);
-  const metricsCollector = useRef<PerformanceMetricsCollector | null>(null);
-  
-  // Hooks for performance optimization (with fallback for when provider is not available)
+
+  // Hooks for performance optimization (safe to use without provider now)
+  const performanceContext = useOptionalPerformanceImage();
+  const connectionContext = useConnectionAwareLoading();
+
   let config, lazyLoadService, shouldLazyLoad, connectionPriority, isSlowConnection, isDataSaverEnabled;
-  
-  try {
-    const performanceContext = usePerformanceImage();
+
+  if (performanceContext) {
     config = performanceContext.config;
     lazyLoadService = performanceContext.lazyLoadService;
-    
-    const connectionContext = useConnectionAwareLoading();
-    shouldLazyLoad = connectionContext.shouldLazyLoad;
-    connectionPriority = connectionContext.priority;
-    isSlowConnection = connectionContext.isSlowConnection;
-    isDataSaverEnabled = connectionContext.isDataSaverEnabled;
-  } catch (error) {
+  } else {
     // Fallback when PerformanceImageProvider is not available
     config = {
       enableLazyLoading: true,
@@ -124,23 +116,29 @@ const OptimizedImage: React.FC<OptimizedImagePropsExtended> = ({
       respectReducedMotion: false,
     };
     lazyLoadService = null;
-    shouldLazyLoad = lazyLoad;
-    connectionPriority = loadingPriority;
-    isSlowConnection = false;
-    isDataSaverEnabled = false;
   }
+
+  shouldLazyLoad = connectionContext.shouldLazyLoad;
+  connectionPriority = connectionContext.priority;
+  isSlowConnection = connectionContext.isSlowConnection;
+  isDataSaverEnabled = connectionContext.isDataSaverEnabled;
 
   // Determine final loading strategy
   const finalPriority = loadingPriority === 'medium' ? connectionPriority : loadingPriority;
   const shouldUseLazyLoading = connectionAware ? shouldLazyLoad && lazyLoad : lazyLoad;
   const shouldRespectDataSaver = respectDataSaver && isDataSaverEnabled;
-  
+  const isVisible = !shouldUseLazyLoading || priority;
+
   // Determine Next.js Image props based on priority and connection
   const nextImageProps = {
     priority: finalPriority === 'critical' || priority,
     loading: (finalPriority === 'critical' || priority) ? 'eager' as const : 'lazy' as const,
     ...(fetchPriority !== 'auto' && { fetchPriority }),
   };
+
+  // Refs
+  const imgRef = useRef<HTMLImageElement>(null);
+  const metricsCollector = useRef<PerformanceMetricsCollector | null>(null);
 
   // Initialize performance tracking
   useEffect(() => {
@@ -152,7 +150,7 @@ const OptimizedImage: React.FC<OptimizedImagePropsExtended> = ({
   // Handle image loading start
   const handleLoadStart = useCallback(() => {
     setIsLoading(true);
-    
+
     if (metricsCollector.current && imgRef.current) {
       metricsCollector.current.startTracking(
         imgRef.current,
@@ -161,18 +159,18 @@ const OptimizedImage: React.FC<OptimizedImagePropsExtended> = ({
         shouldUseLazyLoading
       );
     }
-    
+
     onLoadStart?.();
   }, [imgSrc, finalPriority, shouldUseLazyLoading, onLoadStart]);
 
   // Handle successful image load
   const handleLoad = useCallback(() => {
     setIsLoading(false);
-    
+
     if (metricsCollector.current && imgRef.current) {
       metricsCollector.current.markAsLoaded(imgRef.current);
     }
-    
+
     onLoadComplete?.();
     onLoad?.();
   }, [onLoadComplete, onLoad]);
@@ -182,19 +180,19 @@ const OptimizedImage: React.FC<OptimizedImagePropsExtended> = ({
     if (!hasError && imgSrc !== fallbackSrc) {
       setImgSrc(fallbackSrc);
       setHasError(true);
-      
+
       if (metricsCollector.current && imgRef.current) {
         metricsCollector.current.markAsError(imgRef.current, 'Image load failed, using fallback');
       }
     } else {
       // Fallback also failed
       setIsLoading(false);
-      
+
       if (metricsCollector.current && imgRef.current) {
         metricsCollector.current.markAsError(imgRef.current, 'Both primary and fallback images failed');
       }
     }
-    
+
     onError?.();
   }, [hasError, imgSrc, fallbackSrc, onError]);
 
@@ -210,19 +208,10 @@ const OptimizedImage: React.FC<OptimizedImagePropsExtended> = ({
   // Generate responsive sizes if breakpoints are provided
   const responsiveSizes = React.useMemo(() => {
     if (!responsiveBreakpoints || sizes) return sizes;
-    
+
     const { mobile = 100, tablet = 50, desktop = 33 } = responsiveBreakpoints;
     return `(max-width: 768px) ${mobile}vw, (max-width: 1024px) ${tablet}vw, ${desktop}vw`;
   }, [responsiveBreakpoints, sizes]);
-
-  // Cleanup performance tracking on unmount
-  useEffect(() => {
-    return () => {
-      if (metricsCollector.current && imgRef.current) {
-        metricsCollector.current.stopTracking(imgRef.current);
-      }
-    };
-  }, []);
 
   // Generate optimized image props
   const imageProps = {
@@ -238,11 +227,12 @@ const OptimizedImage: React.FC<OptimizedImagePropsExtended> = ({
     onLoad: handleLoad,
     onError: handleError,
     ...nextImageProps,
-    ...(fill ? { fill: true } : { 
-      width: width || 400, 
-      height: height || 300 
+    ...(fill ? { fill: true } : {
+      width: width || 400,
+      height: height || 300
     }),
-    ...(responsiveSizes && { sizes: responsiveSizes }),
+    sizes: responsiveSizes || "(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw",
+    quality: restProps.quality || 75,
     ...restProps,
   };
 
@@ -250,8 +240,8 @@ const OptimizedImage: React.FC<OptimizedImagePropsExtended> = ({
   if (shouldRespectDataSaver) {
     // For data saver mode, we might want to add quality parameters to the src
     // This would depend on your image CDN/optimization service
-    const optimizedSrc = imgSrc.includes('?') 
-      ? `${imgSrc}&quality=70` 
+    const optimizedSrc = imgSrc.includes('?')
+      ? `${imgSrc}&quality=70`
       : `${imgSrc}?quality=70`;
     imageProps.src = optimizedSrc;
   }
@@ -273,8 +263,8 @@ const OptimizedImage: React.FC<OptimizedImagePropsExtended> = ({
 
   // Render blur placeholder (requires blur data URL)
   if (isLoading && placeholder === 'blur') {
-    const blurDataURL = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImciPjxzdG9wIHN0b3AtY29sb3I9IiNmM2Y0ZjYiLz48c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiNlNWU3ZWIiLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0idXJsKCNnKSIvPjwvc3ZnPg==';
-    
+    const blurDataURL = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMueG9yZy8yMDAwL3N2ZyI+PGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJnIj48c3RvcCBzdG9wLWNvbG9yPSIjZjNmNGY2Ii8+PHN0b3Agb2Zmc2V0PSIxIiBzdG9vcC1jb2xvcj0iI2U1ZTdlYiIvPjwvbGluZWFyR3JhZGllbnQ+PC9kZWZzPjxyZWN0IHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIiBmaWxsPSJ1cmwoI2cpIi8+PC9zdmc+';
+
     return (
       <Image
         {...imageProps}
@@ -293,19 +283,11 @@ export const withImageOptimization = <P extends object>(
   Component: React.ComponentType<P>
 ) => {
   const OptimizedComponent = (props: P) => {
-    let isSlowConnection = false;
-    let isDataSaverEnabled = false;
-    
-    try {
-      const connectionContext = useConnectionAwareLoading();
-      isSlowConnection = connectionContext.isSlowConnection;
-      isDataSaverEnabled = connectionContext.isDataSaverEnabled;
-    } catch (error) {
-      // Fallback when provider is not available
-      isSlowConnection = false;
-      isDataSaverEnabled = false;
-    }
-    
+    // Hooks are now safe to use without provider
+    const connectionContext = useConnectionAwareLoading();
+    const isSlowConnection = connectionContext.isSlowConnection;
+    const isDataSaverEnabled = connectionContext.isDataSaverEnabled;
+
     // Add performance hints to component props
     const enhancedProps = {
       ...props,
@@ -316,12 +298,12 @@ export const withImageOptimization = <P extends object>(
         recommendedPriority: isSlowConnection ? 'low' : 'medium',
       },
     };
-    
+
     return <Component {...enhancedProps} />;
   };
-  
+
   OptimizedComponent.displayName = `withImageOptimization(${Component.displayName || Component.name})`;
-  
+
   return OptimizedComponent;
 };
 
@@ -330,34 +312,26 @@ export const useImageOptimizationRecommendations = (
   imageCount: number,
   averageSize: number
 ) => {
-  let isSlowConnection = false;
-  let isDataSaverEnabled = false;
-  
-  try {
-    const connectionContext = useConnectionAwareLoading();
-    isSlowConnection = connectionContext.isSlowConnection;
-    isDataSaverEnabled = connectionContext.isDataSaverEnabled;
-  } catch (error) {
-    // Fallback when provider is not available
-    isSlowConnection = false;
-    isDataSaverEnabled = false;
-  }
-  
+  // Hooks are now safe to use without provider
+  const connectionContext = useConnectionAwareLoading();
+  const isSlowConnection = connectionContext.isSlowConnection;
+  const isDataSaverEnabled = connectionContext.isDataSaverEnabled;
+
   return React.useMemo(() => {
     const recommendations: string[] = [];
-    
+
     if (isSlowConnection && imageCount > 5) {
       recommendations.push('Consider reducing the number of images on slow connections');
     }
-    
+
     if (isDataSaverEnabled && averageSize > 100000) { // 100KB
       recommendations.push('Use lower quality images for users with data saver enabled');
     }
-    
+
     if (imageCount > 10) {
       recommendations.push('Implement progressive loading for large image sets');
     }
-    
+
     return recommendations;
   }, [isSlowConnection, isDataSaverEnabled, imageCount, averageSize]);
 };

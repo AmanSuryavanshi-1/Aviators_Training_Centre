@@ -81,45 +81,30 @@ const getLocalFallbackImage = (title: string): string => {
   return LOCAL_BLOG_IMAGES[index];
 };
 
-// Production-ready image component using Next.js Image
-const ProductionBlogImage: React.FC<{
-  src?: string | null;
-  alt: string;
-  className?: string;
-  title: string;
-}> = ({ src, alt, className, title }) => {
-  const [imgError, setImgError] = useState(false);
+// Format date helper
+const formatDate = (dateString: string) => {
+  return new Date(dateString).toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+  });
+};
 
-  // Use local fallback image from public/Blogs folder
-  const fallbackSrc = getLocalFallbackImage(title);
-
-  // Check if src is valid (not null, undefined, or contains 'undefined')
-  const isValidSrc = src && !src.includes('undefined') && (src.startsWith('http') || src.startsWith('/'));
-  const imageSrc = (isValidSrc && !imgError) ? src : fallbackSrc;
+// Production-ready image component with proper optimization
+const ProductionBlogImage = ({ src, alt, title, className, ...props }: any) => {
+  // Use a reliable fallback if src is missing
+  const imageSrc = src || getLocalFallbackImage(title || '');
 
   return (
     <Image
       src={imageSrc}
-      alt={alt}
+      alt={alt || title || 'Blog Image'}
       fill
-      className={cn("object-cover", className)}
-      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-      onError={() => setImgError(true)}
+      className={className}
+      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+      {...props}
     />
   );
-};
-
-// Format date utility
-const formatDate = (dateString: string) => {
-  try {
-    return new Date(dateString).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-    });
-  } catch {
-    return 'Recent';
-  }
 };
 
 // Inner component for performance optimization
