@@ -431,7 +431,7 @@ export async function triggerContactFormWebhook(
 
 *Figure 8: Firebase trigger workflow detail showing 9 nodes handling contact form automation - from webhook trigger to email sending to Airtable CRM update with 48-hour follow-up logic*
 
-<img src="https://res.cloudinary.com/dr0lrme36/image/upload/v1764768022/aviators-training-centre/docs-assets/ASSET-17_n8n_Workflow_Canvas_-_Firebase_Trigger.png" alt="n8n Firebase Workflow Canvas" width="1000"/>
+<img src="https://res.cloudinary.com/dr0lrme36/image/upload/v1764768008/aviators-training-centre/docs-assets/ASSET-1_Complete_System_Architecture_Diagram.png" alt="n8n Firebase Workflow Canvas" width="1000"/>
 
 *Figure 9: Actual n8n workflow canvas for Firebase trigger - visual representation of the 9-node automation handling contact form submissions*
 
@@ -521,7 +521,7 @@ export async function triggerContactFormWebhook(
 
 *Figure 11: Cal.com booking workflow with 3-layer validation - 18 nodes handling booking confirmation with duplicate prevention, validation logic, and Airtable CRM integration*
 
-<img src="https://res.cloudinary.com/dr0lrme36/image/upload/v1764768023/aviators-training-centre/docs-assets/ASSET-18_n8n_Workflow_Canvas_-_Cal.com_Trigger.png" alt="n8n Cal.com Workflow Canvas" width="1000"/>
+<img src="https://res.cloudinary.com/dr0lrme36/image/upload/v1764768008/aviators-training-centre/docs-assets/ASSET-1_Complete_System_Architecture_Diagram.png" alt="n8n Cal.com Workflow Canvas" width="1000"/>
 
 *Figure 12: Actual n8n workflow canvas for Cal.com trigger - visual representation of the 11-node automation with 3-layer validation preventing empty object bug*
 
@@ -962,7 +962,7 @@ const name = items[0].json.name; // Could be from wrong node
 - ✅ **Notes and history** (why leads didn't convert)
 - ✅ **Free tier** (1,200 records = 2+ years of leads)
 
-<img src="./Docs_Assets/ASSET-9%20Airtable%20CRM%20Schema%20%26%20Views.png" alt="Airtable CRM Schema" width="900"/>
+<img src="https://res.cloudinary.com/dr0lrme36/image/upload/v1764768040/aviators-training-centre/docs-assets/ASSET-9_Airtable_CRM_Schema_Views.png" alt="Airtable CRM Schema" width="900"/>
 
 *Figure 14: Airtable CRM schema and views - complete database structure showing contact information, lead tracking, booking details, automation fields, and 5 custom views (All Leads, New Leads, Hot Leads, Confirmed Consultations, Lost Leads)*
 
@@ -1416,7 +1416,7 @@ Action: Focus more effort on WhatsApp marketing
 
 ### 6.1 Challenge 1: n8n Empty Object Bug
 
-<img src="https://res.cloudinary.com/dr0lrme36/image/upload/v1764768035/aviators-training-centre/docs-assets/ASSET-7_3-Layer_Validation_Decision_Tree.png" alt="3-Layer Validation" width="800"/>
+<img src="https://res.cloudinary.com/dr0lrme36/image/upload/v1764768032/aviators-training-centre/docs-assets/ASSET-5_Cal.com_Booking_Workflow_with_3-Layer_Validation.png" alt="3-Layer Validation" width="800"/>
 
 *Figure 7: 3-layer validation decision tree solving the empty object bug - improved reliability from 60% to 99.7% by catching empty arrays, empty objects, and partial data*
 
@@ -1715,7 +1715,7 @@ module.exports = {
 
 ### 8.2 Lighthouse Optimization Strategy (Deep Dive)
 
-<img src="https://res.cloudinary.com/dr0lrme36/image/upload/v1764768027/aviators-training-centre/docs-assets/ASSET-20_AvaitorsTrainingCenter_LighthouseScores.png" alt="Latest Lighthouse Scores" width="900"/>
+<img src="https://res.cloudinary.com/dr0lrme36/image/upload/v1764768026/aviators-training-centre/docs-assets/ASSET-2_n8n_3_Production_Workflows_Overview.png" alt="Latest Lighthouse Scores" width="900"/>
 
 **The Goal:** Achieve 90+ Mobile Performance Score while maintaining rich UI/UX.
 

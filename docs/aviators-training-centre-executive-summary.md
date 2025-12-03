@@ -96,7 +96,7 @@ Transformed India's premier DGCA ground school from 100% paid advertising depend
 
 *Three production n8n workflows: Firebase contact form automation, Cal.com booking confirmation with 3-layer validation, and cancellation recovery - 74+ nodes achieving 99.7% reliability*
 
-<img src="https://res.cloudinary.com/dr0lrme36/image/upload/v1764768035/aviators-training-centre/docs-assets/ASSET-7_3-Layer_Validation_Decision_Tree.png" alt="3-Layer Validation" width="800"/>
+<img src="https://res.cloudinary.com/dr0lrme36/image/upload/v1764768032/aviators-training-centre/docs-assets/ASSET-5_Cal.com_Booking_Workflow_with_3-Layer_Validation.png" alt="3-Layer Validation" width="800"/>
 
 *Critical innovation: 3-layer validation decision tree solving the empty object bug - improved reliability from 60% to 99.7%*
 

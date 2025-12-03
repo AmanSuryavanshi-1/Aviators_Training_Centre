@@ -213,7 +213,7 @@
 
 ### Story 2: n8n Empty Object Bug (The "Multi-Layer Validation" Story)
 
-<img src="https://res.cloudinary.com/dr0lrme36/image/upload/v1764768035/aviators-training-centre/docs-assets/ASSET-7_3-Layer_Validation_Decision_Tree.png" alt="3-Layer Validation" width="800"/>
+<img src="https://res.cloudinary.com/dr0lrme36/image/upload/v1764768032/aviators-training-centre/docs-assets/ASSET-5_Cal.com_Booking_Workflow_with_3-Layer_Validation.png" alt="3-Layer Validation" width="800"/>
 
 *Visual aid: 3-layer validation decision tree showing how each layer catches different failure modes*
 
