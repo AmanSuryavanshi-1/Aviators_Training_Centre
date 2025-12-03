@@ -178,27 +178,26 @@
 
 **ACTION (5-Part System):**
 
-1. **Images:** Next.js Image component
-   - Before: 2.5MB of images
-   - After: 180KB (93% reduction)
-   - How: WebP conversion, lazy loading, responsive sizes
+1.  **LCP (Largest Contentful Paint):** Hero Image Optimization
+    *   **Problem:** Lazy-loading hero image caused 5.8s LCP.
+    *   **Fix:** Applied `priority={true}` and `fetchPriority="high"`. Moved to server-side import.
+    *   **Result:** LCP < 1.4s.
 
-2. **JavaScript:** Code splitting
-   - Before: 850KB bundle
-   - After: 280KB (67% reduction)
-   - How: Dynamic imports for heavy components
+2.  **TBT (Total Blocking Time):** Deferred Analytics
+    *   **Problem:** Meta Pixel & GA4 blocking main thread.
+    *   **Fix:** Created `deferredLoader.ts` to load scripts *only* after user interaction.
+    *   **Result:** TBT < 120ms.
 
-3. **Fonts:** Next.js font optimization
-   - Before: Render-blocking Google Fonts
-   - After: Self-hosted with font-display: swap
+3.  **Bundle Size:** Tree Shaking & Code Splitting
+    *   **Problem:** Large initial JS payload (850KB).
+    *   **Fix:** Enabled `optimizePackageImports` for Framer Motion. Dynamic imports for below-fold components.
+    *   **Result:** 280KB bundle (67% reduction).
 
-4. **Scripts:** Lazy loading
-   - Before: Analytics blocking page load
-   - After: lazyOnload strategy
+4.  **Fonts:** Next.js Font Optimization
+    *   **Fix:** Self-hosted with `font-display: swap` to eliminate layout shifts.
 
-5. **Caching:** Aggressive strategy
-   - Before: No caching
-   - After: 1-year cache for static assets
+5.  **Caching:** Aggressive Strategy
+    *   **Fix:** 1-year cache headers for static assets (images, fonts).
 
 **RESULT (Chain Reaction):**
 - Lighthouse: <50 → 95+

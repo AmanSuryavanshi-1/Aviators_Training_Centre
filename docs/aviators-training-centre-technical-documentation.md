@@ -1713,7 +1713,38 @@ module.exports = {
 - Deploy Time: 30-60 seconds
 - Rollback Time: <30 seconds
 
-### 7.2 Firebase Cost Optimization
+### 8.2 Lighthouse Optimization Strategy (Deep Dive)
+
+<img src="./Docs_Assets/AvaitorsTrainingCenter_LighthouseScores.png" alt="Latest Lighthouse Scores" width="900"/>
+
+**The Goal:** Achieve 90+ Mobile Performance Score while maintaining rich UI/UX.
+
+**1. Largest Contentful Paint (LCP) Optimization**
+*   **Problem:** Hero image was lazy-loaded, causing 5.8s LCP.
+*   **Solution:**
+    *   **Server-Side Import:** Moved `HeroSection` from dynamic import to direct import in `page.tsx` to ensure immediate discovery.
+    *   **Priority Loading:** Applied `priority={true}`, `fetchPriority="high"`, and `loading="eager"` to the Hero image in `HeroSection.tsx`.
+    *   **Resource Hint:** Added `<link rel="preload" as="image" fetchPriority="high">` in `layout.tsx` for the specific hero image.
+
+**2. Total Blocking Time (TBT) Reduction**
+*   **Problem:** Third-party scripts (Meta Pixel, Google Analytics) and heavy UI components blocked the main thread (TBT > 800ms).
+*   **Solution:**
+    *   **Deferred Analytics Loader:** Created `deferredLoader.ts` to load heavy scripts *only* after user interaction or a 3-second delay.
+    *   **Client-Side Rendering:** Forced `ssr: false` for heavy below-the-fold components (Video Carousel, Testimonials) using `dynamic-components.tsx`.
+    *   **Script Strategies:** Switched non-critical scripts to `strategy="lazyOnload"` or `strategy="worker"`.
+
+**3. Bundle Size Optimization**
+*   **Problem:** Large initial JavaScript payload.
+*   **Solution:**
+    *   **Tree Shaking:** Enabled `experimental.optimizePackageImports` in `next.config.mjs` for `framer-motion` and `lucide-react`.
+    *   **Aggressive Code Splitting:** Configured Webpack `splitChunks` to separate vendor, framework, and app code.
+
+**4. Asset Optimization**
+*   **Images:** Utilized Next.js Image Optimization with specific `deviceSizes` configuration.
+*   **Videos:** Hosted heavy video assets on Cloudinary to offload bandwidth from Vercel.
+*   **Fonts:** Used `next/font` with `preload: true` to eliminate layout shifts (CLS).
+
+### 8.3 Firebase Cost Optimization
 
 **Free Tier Usage:**
 
@@ -1729,7 +1760,7 @@ module.exports = {
 - In-memory caching
 - Batch operations
 
-### 7.3 Monitoring
+### 8.4 Monitoring
 
 **Tracked Metrics:**
 - Core Web Vitals (LCP, FID, CLS)
