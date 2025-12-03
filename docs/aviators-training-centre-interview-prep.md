@@ -159,7 +159,7 @@
 
 ### Story 1: Lighthouse Optimization (The "Performance = Revenue" Story)
 
-<img src="https://res.cloudinary.com/dr0lrme36/image/upload/v1764761372/aviators-training-centre/docs-assets/ASSET-10_Lighthouse_Optimization_BeforeAfter.png" alt="Lighthouse Optimization" width="900"/>
+<img src="https://res.cloudinary.com/dr0lrme36/image/upload/v1764768010/aviators-training-centre/docs-assets/ASSET-10_Lighthouse_Optimization_BeforeAfter.png" alt="Lighthouse Optimization" width="900"/>
 
 *Visual aid: Lighthouse optimization journey showing before/after scores and 5-part optimization strategy*
 
@@ -213,7 +213,7 @@
 
 ### Story 2: n8n Empty Object Bug (The "Multi-Layer Validation" Story)
 
-<img src="https://res.cloudinary.com/dr0lrme36/image/upload/v1764761396/aviators-training-centre/docs-assets/ASSET-7_3-Layer_Validation_Decision_Tree.png" alt="3-Layer Validation" width="800"/>
+<img src="https://res.cloudinary.com/dr0lrme36/image/upload/v1764768035/aviators-training-centre/docs-assets/ASSET-7_3-Layer_Validation_Decision_Tree.png" alt="3-Layer Validation" width="800"/>
 
 *Visual aid: 3-layer validation decision tree showing how each layer catches different failure modes*
 
@@ -272,7 +272,7 @@ function isValidLead(lead) {
 
 ### Story 3: WhatsApp AI Adaptation (The "Platform Risk & Adaptation" Story)
 
-<img src="https://res.cloudinary.com/dr0lrme36/image/upload/v1764761398/aviators-training-centre/docs-assets/ASSET-8_WhatsApp_AI_2-Workflow_Architecture.png" alt="WhatsApp AI Architecture" width="900"/>
+<img src="https://res.cloudinary.com/dr0lrme36/image/upload/v1764768038/aviators-training-centre/docs-assets/ASSET-8_WhatsApp_AI_2-Workflow_Architecture.png" alt="WhatsApp AI Architecture" width="900"/>
 
 *Visual aid: Original WhatsApp AI 2-workflow architecture showing what was built and why it's being adapted for Meta policy compliance*
 

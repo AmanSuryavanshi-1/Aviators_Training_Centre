@@ -38,14 +38,13 @@ const MARKDOWN_FILES = [
 async function uploadImage(filePath: string): Promise<string | null> {
     try {
         const fileName = path.basename(filePath);
-        console.log(`Uploading ${fileName} with preset ml_default...`);
+        console.log(`Uploading ${fileName} (Clean, No Watermark)...`);
 
         const result = await cloudinary.uploader.upload(filePath, {
             folder: 'aviators-training-centre/docs-assets',
             use_filename: true,
             unique_filename: false,
             overwrite: true,
-            upload_preset: 'ml_default' // Added as requested
         });
 
         console.log(`Uploaded ${fileName} -> ${result.secure_url}`);
@@ -95,26 +94,15 @@ async function main() {
         let updated = false;
 
         for (const [fileName, url] of urlMap.entries()) {
-            // Regex to match: ./Docs_Assets/FILENAME or Docs_Assets/FILENAME
-            // We need to escape special characters in filename for regex
+            // Regex to match: 
+            // 1. Existing Cloudinary URLs (https://.../FILENAME)
+            // 2. Local paths (./Docs_Assets/FILENAME or Docs_Assets/FILENAME)
+
             const escapedFileName = fileName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-            // Match both encoded (%20) and unencoded spaces
-            const fileNamePattern = escapedFileName.replace(/ /g, '(?: |%20)');
+            // Match encoded (%20), unencoded spaces, AND underscores (Cloudinary sanitization)
+            const fileNamePattern = escapedFileName.replace(/ /g, '(?: |%20|_)');
 
-            // Also match existing Cloudinary URLs to replace them if they changed
-            // This regex is a bit broad, so we'll stick to replacing the asset references we know about
-            // or we can just replace the previous Cloudinary URLs if we can identify them.
-            // But simpler: The previous script replaced local paths with Cloudinary URLs.
-            // Now the file has Cloudinary URLs. We need to replace THOSE with the NEW Cloudinary URLs (if they changed).
-            // OR, we can revert to local paths logic if we assume the user hasn't changed the file structure.
-
-            // Strategy: Search for the filename in the content.
-            // It might be part of a local path OR a Cloudinary URL.
-            // We can search for `.../FILENAME` where `...` is anything ending in `/`.
-
-            // Let's match: (ANYTHING/)(FILENAME)
-            // And replace with new URL.
-
+            // Match any http/https URL ending with the filename, OR local paths
             const regex = new RegExp(`(?:https?:\\/\\/[^\\s)"']+\\/|\\.\\/Docs_Assets\\/|Docs_Assets\\/)${fileNamePattern}`, 'g');
 
             if (regex.test(content)) {
