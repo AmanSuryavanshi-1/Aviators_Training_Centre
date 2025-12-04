@@ -61,7 +61,7 @@ Transformed India's premier DGCA ground school from 100% paid advertising depend
 | Infrastructure Cost | ₹0/month | Free tier optimization |
 | Keywords Ranking | 20+ | Page 1 Google India |
 
-<img src="https://res.cloudinary.com/dr0lrme36/image/upload/f_auto,q_auto,w_1600,c_limithttps://res.cloudinary.com/dr0lrme36/image/upload/f_auto,q_auto,w_1600,c_limit/v1764821243/aviators-training-centre/docs-assets/ASSET-16_Google_Search_Console_Performance.png" alt="Google Search Console Performance" width="900"/>
+<img src="https://res.cloudinary.com/dr0lrme36/image/upload/f_auto,q_auto,w_1600,c_limit/v1764821243/aviators-training-centre/docs-assets/ASSET-16_Google_Search_Console_Performance.png" alt="Google Search Console Performance" width="900"/>
 
 *Google Search Console performance: 19.3K impressions and 146 clicks over 6 months - demonstrating strong organic growth alongside other lead channels*
 
