@@ -86,7 +86,7 @@ A complete full-stack platform combining modern web technologies, intelligent n8
 | | Total Nodes | 74+ across all workflows |
 | | Email Automation | 100% automated |
 
-<img src="https://res.cloudinary.com/dr0lrme36/image/upload/f_auto,q_auto,w_1600,c_limit/v1764768021/aviators-training-centre/docs-assets/ASSET-16_Google_Search_Console_Performance.png" alt="Google Search Console Performance" width="900"/>
+<img src="https://res.cloudinary.com/dr0lrme36/image/upload/f_auto,q_auto,w_1600,c_limithttps://res.cloudinary.com/dr0lrme36/image/upload/f_auto,q_auto,w_1600,c_limit/v1764821243/aviators-training-centre/docs-assets/ASSET-16_Google_Search_Console_Performance.png" alt="Google Search Console Performance" width="900"/>
 
 *Figure 2: Google Search Console performance showing 19.3K impressions and 146 clicks over 6 months - demonstrating strong organic growth alongside other lead channels*
 
