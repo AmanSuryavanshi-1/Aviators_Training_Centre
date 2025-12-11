@@ -159,7 +159,7 @@
 
 ### Story 1: Lighthouse Optimization (The "Performance = Revenue" Story)
 
-<img src="https://res.cloudinary.com/dr0lrme36/image/upload/f_auto,q_auto,w_1600,c_limit/v1764768010/aviators-training-centre/docs-assets/ASSET-10_Lighthouse_Optimization_BeforeAfter.png" alt="Lighthouse Optimization" width="900"/>
+<img src="https://cdn.jsdelivr.net/gh/AmanSuryavanshi-1/portfolio-assets@main/AviatorsTrainingCentre/Docs_Assets/ASSET-10%20Lighthouse%20Optimization%20BeforeAfter_zoomable.webp" alt="Lighthouse Optimization" width="900"/>
 
 *Visual aid: Lighthouse optimization journey showing before/after scores and 5-part optimization strategy*
 
@@ -213,7 +213,7 @@
 
 ### Story 2: n8n Empty Object Bug (The "Multi-Layer Validation" Story)
 
-<img src="https://res.cloudinary.com/dr0lrme36/image/upload/f_auto,q_auto,w_1600,c_limit/v1764768032/aviators-training-centre/docs-assets/ASSET-5_Cal.com_Booking_Workflow_with_3-Layer_Validation.png" alt="3-Layer Validation" width="800"/>
+<img src="https://cdn.jsdelivr.net/gh/AmanSuryavanshi-1/portfolio-assets@main/AviatorsTrainingCentre/Docs_Assets/ASSET-5%20Cal.com%20Booking%20Workflow%20with%203-Layer%20Validation_zoomable.webp" alt="3-Layer Validation" width="800"/>
 
 *Visual aid: 3-layer validation decision tree showing how each layer catches different failure modes*
 
@@ -272,7 +272,7 @@ function isValidLead(lead) {
 
 ### Story 3: WhatsApp AI Adaptation (The "Platform Risk & Adaptation" Story)
 
-<img src="https://res.cloudinary.com/dr0lrme36/image/upload/f_auto,q_auto,w_1600,c_limit/v1764768038/aviators-training-centre/docs-assets/ASSET-8_WhatsApp_AI_2-Workflow_Architecture.png" alt="WhatsApp AI Architecture" width="900"/>
+<img src="https://cdn.jsdelivr.net/gh/AmanSuryavanshi-1/portfolio-assets@main/AviatorsTrainingCentre/Docs_Assets/ASSET-8%20WhatsApp%20AI%202-Workflow%20Architecture_zoomable.webp" alt="WhatsApp AI Architecture" width="900"/>
 
 *Visual aid: Original WhatsApp AI 2-workflow architecture showing what was built and why it's being adapted for Meta policy compliance*
 

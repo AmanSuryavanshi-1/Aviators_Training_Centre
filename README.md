@@ -13,7 +13,7 @@ A comprehensive, production-ready aviation training platform built for India's p
 
 **Live Site:** [www.aviatorstrainingcentre.in](https://www.aviatorstrainingcentre.in)
 
-<img src="./docs/Docs_Assets/ASSET-13%20Homepage%20Screenshot.png" alt="Aviators Training Centre Homepage" width="800"/>
+<img src="https://cdn.jsdelivr.net/gh/AmanSuryavanshi-1/portfolio-assets@main/AviatorsTrainingCentre/Docs_Assets/ASSET-13%20Homepage%20Screenshot.webp" alt="Aviators Training Centre Homepage" width="800"/>
 
 *Production website achieving 95+ Lighthouse score and driving strong lead generation through multiple channels*
 
@@ -32,7 +32,7 @@ A comprehensive, production-ready aviation training platform built for India's p
 | **Automation Reliability** | 99.7% | 100+ bookings processed |
 | **Infrastructure Cost** | ₹0/month | Free tier optimization |
 
-<img src="./docs/Docs_Assets/ASSET-17%20Google%20Search%20Console%20Performance.png" alt="Google Search Console Performance" width="900"/>
+<img src="https://cdn.jsdelivr.net/gh/AmanSuryavanshi-1/portfolio-assets@main/AviatorsTrainingCentre/Docs_Assets/ASSET-16%20Google%20Search%20Console%20Performance.webp" alt="Google Search Console Performance" width="900"/>
 
 *Google Search Console: 19.3K impressions and 146 clicks over 6 months - proof of organic growth*
 
@@ -58,7 +58,7 @@ A comprehensive, production-ready aviation training platform built for India's p
 
 ### 🤖 Intelligent Lead Automation (n8n)
 
-<img src="./docs/Docs_Assets/ASSET-2%20n8n%203%20Production%20Workflows%20Overview.png" alt="n8n Workflows" width="900"/>
+<img src="https://cdn.jsdelivr.net/gh/AmanSuryavanshi-1/portfolio-assets@main/AviatorsTrainingCentre/Docs_Assets/ASSET-2%20n8n%203%20Production%20Workflows%20Overview.webp" alt="n8n Workflows" width="900"/>
 
 *Three production n8n workflows: 74+ nodes achieving 99.7% reliability, saving owner 3-4 hours daily*
 
@@ -90,7 +90,7 @@ A comprehensive, production-ready aviation training platform built for India's p
 
 ### 🚀 Performance & SEO Excellence
 
-<img src="./docs/Docs_Assets/ASSET-10%20Lighthouse%20Optimization%20BeforeAfter.png" alt="Lighthouse Optimization" width="900"/>
+<img src="https://cdn.jsdelivr.net/gh/AmanSuryavanshi-1/portfolio-assets@main/AviatorsTrainingCentre/Docs_Assets/ASSET-10%20Lighthouse%20Optimization%20BeforeAfter_zoomable.webp" alt="Lighthouse Optimization" width="900"/>
 
 *Lighthouse optimization: <50 to 95+ through systematic 5-part optimization*
 
@@ -495,7 +495,7 @@ Now you can answer questions like:
 
 ## 🤖 n8n Automation System
 
-<img src="./docs/Docs_Assets/ASSET-7%203-Layer%20Validation%20Decision%20Tree.png" alt="3-Layer Validation" width="800"/>
+<img src="https://cdn.jsdelivr.net/gh/AmanSuryavanshi-1/portfolio-assets@main/AviatorsTrainingCentre/Docs_Assets/ASSET-7%203-Layer%20Validation%20Decision%20Tree_zoomable.webp" alt="3-Layer Validation" width="800"/>
 
 *Critical innovation: 3-layer validation solving the empty object bug - 60% to 99.7% reliability*
 

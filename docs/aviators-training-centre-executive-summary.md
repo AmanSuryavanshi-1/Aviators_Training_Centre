@@ -28,11 +28,11 @@ Transformed India's premier DGCA ground school from 100% paid advertising depend
 
 **ROI:** Infinite (₹0 cost vs ₹3L+ revenue)
 
-<img src="https://res.cloudinary.com/dr0lrme36/image/upload/f_auto,q_auto,w_1600,c_limit/v1764768016/aviators-training-centre/docs-assets/ASSET-13_Homepage_Screenshot.png" alt="Homepage Screenshot" width="800"/>
+<img src="https://cdn.jsdelivr.net/gh/AmanSuryavanshi-1/portfolio-assets@main/AviatorsTrainingCentre/Docs_Assets/ASSET-13%20Homepage%20Screenshot.webp" alt="Homepage Screenshot" width="800"/>
 
 *The production website achieving 95+ Lighthouse score and driving 50+ organic leads*
 
-<img src="https://res.cloudinary.com/dr0lrme36/image/upload/f_auto,q_auto,w_1600,c_limit/v1764768024/aviators-training-centre/docs-assets/ASSET-19_Mobile_Homepage.png" alt="Mobile Homepage" width="400"/>
+<img src="https://cdn.jsdelivr.net/gh/AmanSuryavanshi-1/portfolio-assets@main/AviatorsTrainingCentre/Docs_Assets/ASSET-19%20Mobile%20Homepage.webp" alt="Mobile Homepage" width="400"/>
 
 *Mobile-optimized homepage with responsive design - 95+ Lighthouse score on mobile devices ensuring excellent user experience across all screen sizes*
 
@@ -61,11 +61,11 @@ Transformed India's premier DGCA ground school from 100% paid advertising depend
 | Infrastructure Cost | ₹0/month | Free tier optimization |
 | Keywords Ranking | 20+ | Page 1 Google India |
 
-<img src="https://res.cloudinary.com/dr0lrme36/image/upload/f_auto,q_auto,w_1600,c_limit/v1764821243/aviators-training-centre/docs-assets/ASSET-16_Google_Search_Console_Performance.png" alt="Google Search Console Performance" width="900"/>
+<img src="https://cdn.jsdelivr.net/gh/AmanSuryavanshi-1/portfolio-assets@main/AviatorsTrainingCentre/Docs_Assets/ASSET-16%20Google%20Search%20Console%20Performance.webp" alt="Google Search Console Performance" width="900"/>
 
 *Google Search Console performance: 19.3K impressions and 146 clicks over 6 months - demonstrating strong organic growth alongside other lead channels*
 
-<img src="https://res.cloudinary.com/dr0lrme36/image/upload/f_auto,q_auto,w_1600,c_limit/v1764768012/aviators-training-centre/docs-assets/ASSET-11_Lead_Generation_Funnel.png" alt="Lead Generation Funnel" width="800"/>
+<img src="https://cdn.jsdelivr.net/gh/AmanSuryavanshi-1/portfolio-assets@main/AviatorsTrainingCentre/Docs_Assets/ASSET-11%20Lead%20Generation%20Funnel_zoomable.webp" alt="Lead Generation Funnel" width="800"/>
 
 *Complete lead generation funnel: From 19.3K impressions to ₹3L revenue - showing 34% visit-to-lead conversion and 12% lead-to-customer conversion*
 
@@ -75,7 +75,7 @@ Transformed India's premier DGCA ground school from 100% paid advertising depend
 
 ### 1. Lighthouse Optimization (<50 → 95+)
 
-<img src="https://res.cloudinary.com/dr0lrme36/image/upload/f_auto,q_auto,w_1600,c_limit/v1764768010/aviators-training-centre/docs-assets/ASSET-10_Lighthouse_Optimization_BeforeAfter.png" alt="Lighthouse Optimization" width="900"/>
+<img src="https://cdn.jsdelivr.net/gh/AmanSuryavanshi-1/portfolio-assets@main/AviatorsTrainingCentre/Docs_Assets/ASSET-10%20Lighthouse%20Optimization%20BeforeAfter_zoomable.webp" alt="Lighthouse Optimization" width="900"/>
 
 *Lighthouse optimization journey: <50 to 95+ through 5-part systematic optimization (images 93% reduction, code 67% reduction, fonts, scripts, caching)*
 
@@ -92,11 +92,11 @@ Transformed India's premier DGCA ground school from 100% paid advertising depend
 
 ### 2. n8n Automation Architecture (3 Production Workflows)
 
-<img src="https://res.cloudinary.com/dr0lrme36/image/upload/f_auto,q_auto,w_1600,c_limit/v1764768026/aviators-training-centre/docs-assets/ASSET-2_n8n_3_Production_Workflows_Overview.png" alt="n8n Workflows" width="900"/>
+<img src="https://cdn.jsdelivr.net/gh/AmanSuryavanshi-1/portfolio-assets@main/AviatorsTrainingCentre/Docs_Assets/ASSET-2%20n8n%203%20Production%20Workflows%20Overview.webp" alt="n8n Workflows" width="900"/>
 
 *Three production n8n workflows: Firebase contact form automation, Cal.com booking confirmation with 3-layer validation, and cancellation recovery - 74+ nodes achieving 99.7% reliability*
 
-<img src="https://res.cloudinary.com/dr0lrme36/image/upload/f_auto,q_auto,w_1600,c_limit/v1764768032/aviators-training-centre/docs-assets/ASSET-5_Cal.com_Booking_Workflow_with_3-Layer_Validation.png" alt="3-Layer Validation" width="800"/>
+<img src="https://cdn.jsdelivr.net/gh/AmanSuryavanshi-1/portfolio-assets@main/AviatorsTrainingCentre/Docs_Assets/ASSET-5%20Cal.com%20Booking%20Workflow%20with%203-Layer%20Validation_zoomable.webp" alt="3-Layer Validation" width="800"/>
 
 *Critical innovation: 3-layer validation decision tree solving the empty object bug - improved reliability from 60% to 99.7%*
 
@@ -253,7 +253,7 @@ Meta announced that AI-initiated conversations will be banned from WhatsApp Busi
 - Target keywords: "DGCA ground school", "CPL training cost", "How to become pilot"
 - 20+ keywords ranking page 1 Google India
 
-<img src="https://res.cloudinary.com/dr0lrme36/image/upload/f_auto,q_auto,w_1600,c_limit/v1764768019/aviators-training-centre/docs-assets/ASSET-15_Blog_Post_Example.png" alt="Blog Post Example" width="800"/>
+<img src="https://cdn.jsdelivr.net/gh/AmanSuryavanshi-1/portfolio-assets@main/AviatorsTrainingCentre/Docs_Assets/ASSET-15%20Blog%20Post%20Example.webp" alt="Blog Post Example" width="800"/>
 
 *Example blog post showing SEO optimization - 2,000+ word comprehensive guide with structured headings, internal links, and keyword targeting driving organic traffic*
 

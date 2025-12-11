@@ -66,6 +66,7 @@ studio/test-studio.js
 # Other artifacts
 *.log
 *.md
+!README.md
 !aviators-training-centre-executive-summary.md 
 !aviators-training-centre-interview-prep.md 
 !aviators-training-centre-technical-documentation.md 
