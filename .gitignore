@@ -69,7 +69,9 @@ studio/test-studio.js
 !README.md
 !aviators-training-centre-executive-summary.md 
 !aviators-training-centre-interview-prep.md 
-!aviators-training-centre-technical-documentation.md 
+!aviators-training-centre-technical-documentation.md
+!docs/*.md
+!docs/**/*.md 
 *.backup
 
 # Specific test directories
