@@ -157,6 +157,7 @@
     "test:e2e:critical": "playwright test tests/e2e/critical-paths.spec.ts"
   },
   "dependencies": {
+    "@builder.io/partytown": "^0.10.3",
     "@google-analytics/data": "^5.2.0",
     "@hookform/resolvers": "^3.9.0",
     "@portabletext/react": "^3.2.1",

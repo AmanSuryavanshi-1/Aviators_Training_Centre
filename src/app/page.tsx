@@ -1,6 +1,6 @@
 import React from 'react';
-import HomePageClient from '@/components/pages/HomePageClient';
-import HeroSection from '@/components/features/courses/HeroSection';
+import { StaticHero } from '@/components/features/courses/StaticHero';
+import HomePageClientWrapper from '@/components/pages/HomePageClientWrapper';
 
 // ISR Configuration - Revalidate every 30 minutes for home page
 export const revalidate = 1800;
@@ -52,7 +52,7 @@ export default function Home() {
               "url": "https://www.aviatorstrainingcentre.in",
               "name": "Aviators Training Centre"
             },
-            "main Entity": {
+            "mainEntity": {
               "@type": "EducationalOrganization",
               "name": "Aviators Training Centre",
               "alternateName": "ATC",
@@ -78,8 +78,12 @@ export default function Home() {
         }}
       />
 
-      <HeroSection />
-      <HomePageClient />
+      {/* Server-rendered hero for instant LCP */}
+      <StaticHero />
+
+      {/* Client-side content loads after hero is visible */}
+      <HomePageClientWrapper />
     </>
   );
 }
+

@@ -4,6 +4,24 @@
 
 ---
 
+## [1.1.0] - December 21, 2025
+
+### Performance Improvements (LCP Optimization)
+
+#### Improvements
+- **Mobile LCP Optimization** - Fixed 10s+ LCP delay by implementing `StaticHero` server component.
+- **Hero Image Preload** - Corrected `layout.tsx` preload URL mismatch (q=60 -> q=85).
+- **Font Loading Strategy** - Added `preload: true` to primary fonts in `fonts.ts`.
+- **Hybrid Rendering Pattern** - Implemented "Static-to-Dynamic" hydration pattern in `page.tsx` for instant perceived load.
+
+#### Changed
+- **src/app/page.tsx** - Added `StaticHero` loading state and dynamic imports.
+- **src/components/features/courses/HeroSection.tsx** - Optimized image loading attributes.
+- **src/app/layout.tsx** - Fixed image preload tags.
+- **src/lib/fonts.ts** - Optimized font delivery.
+
+---
+
 ## [1.0.0] - December 20, 2025
 
 ### Initial Documentation Release

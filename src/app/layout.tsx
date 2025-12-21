@@ -7,6 +7,7 @@ import Footer from "@/components/layout/Footer";
 import WhatsAppChatWrapper from "@/components/shared/WhatsAppChatWrapper";
 import { Analytics } from '@vercel/analytics/react';
 import Script from 'next/script';
+
 import ServiceWorkerRegistration from "@/components/features/blog/ServiceWorkerRegistration";
 import ErrorHandlingProvider from "@/components/shared/ErrorHandlingProvider";
 import ConditionalLayout from "@/components/layout/ConditionalLayout";
@@ -16,15 +17,11 @@ import UTMTracker from "@/components/analytics/UTMTracker";
 import PerformanceMonitor from "@/components/performance/PerformanceMonitor";
 import { inter, montserrat, roboto, poppins } from "@/lib/fonts";
 
-// Initialize automation system
-if (typeof window === 'undefined') {
-  // Server-side initialization
-  import('@/lib/n8n/init').then(({ initializeAutomationSystem }) => {
-    initializeAutomationSystem();
-  }).catch(error => {
-    console.error('Failed to initialize automation system:', error);
-  });
-}
+// Google Analytics Measurement ID
+const GA_MEASUREMENT_ID = 'G-XSRFEJCB7N';
+
+// REMOVED: N8N automation initialization was pulling Sanity (1.29MB) into client bundle
+// N8N is server-side only and should be initialized via API routes or instrumentation.ts
 
 export const viewport: Viewport = {
   width: "device-width",
@@ -98,7 +95,7 @@ export default function RootLayout({
         <link
           rel="preload"
           as="image"
-          href="/_next/image?url=%2FHomePage%2FHero3.webp&w=828&q=60"
+          href="/_next/image?url=%2FHomePage%2FHero3.webp&w=828&q=85"
           media="(max-width: 768px)"
           fetchPriority="high"
         />
@@ -182,12 +179,27 @@ export default function RootLayout({
           }}
         />
 
-        {/* Meta Pixel Code */}
+        {/* Delayed Analytics Loading for Performance */}
         <Script
-          id="meta-pixel"
-          strategy="lazyOnload"
-          dangerouslySetInnerHTML={{
-            __html: `
+          id="delayed-analytics"
+          strategy="afterInteractive"
+        >
+          {`
+            setTimeout(function() {
+              // Load Google Analytics
+              const gaScript = document.createElement('script');
+              gaScript.src = 'https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}';
+              gaScript.async = true;
+              document.head.appendChild(gaScript);
+
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', '${GA_MEASUREMENT_ID}', {
+                page_path: window.location.pathname,
+              });
+
+              // Load Meta Pixel
               !function(f,b,e,v,n,t,s)
               {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
               n.callMethod.apply(n,arguments):n.queue.push(arguments)};
@@ -196,14 +208,14 @@ export default function RootLayout({
               t.src=v;s=b.getElementsByTagName(e)[0];
               s.parentNode.insertBefore(t,s)}(window, document,'script',
               'https://connect.facebook.net/en_US/fbevents.js');
-              fbq('init', '1982191385652109');
+              fbq('init', '796016392336829');
               fbq('track', 'PageView');
-            `,
-          }}
-        />
+            }, 4000); // 4 second delay to prioritize LCP
+          `}
+        </Script>
         <noscript>
           <img height="1" width="1" style={{ display: 'none' }}
-            src="https://www.facebook.com/tr?id=1982191385652109&ev=PageView&noscript=1"
+            src="https://www.facebook.com/tr?id=796016392336829&ev=PageView&noscript=1"
           />
         </noscript>
         {/* End Meta Pixel Code */}
@@ -241,10 +253,20 @@ export default function RootLayout({
           }}
         />
 
-        {/* Google tag (gtag.js) - Enhanced for proper domain tracking */}
+        {/* Google tag (gtag.js) - Deferred 3s for LCP */}
         <Script
+          id="gtag-loader"
           strategy="lazyOnload"
-          src={`https://www.googletagmanager.com/gtag/js?id=G-XSRFEJCB7N`}
+          dangerouslySetInnerHTML={{
+            __html: `
+              setTimeout(function() {
+                var s = document.createElement('script');
+                s.src = 'https://www.googletagmanager.com/gtag/js?id=G-XSRFEJCB7N';
+                s.async = true;
+                document.head.appendChild(s);
+              }, 3000);
+            `,
+          }}
         />
         <Script
           id="gtag-init"
@@ -307,6 +329,6 @@ export default function RootLayout({
           </ConditionalAnalytics>
         </ThemeProvider>
       </body>
-    </html>
+    </html >
   );
 }

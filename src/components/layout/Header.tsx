@@ -5,7 +5,6 @@ import { Button } from '@/components/ui/button';
 import NextLink from 'next/link';
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from '@/components/ui/sheet';
 import { Menu } from 'lucide-react';
-import { motion } from 'framer-motion';
 import { cn } from '@/components/ui/utils';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation'; // Import usePathname
@@ -77,18 +76,18 @@ const Header: React.FC = () => {
                   )}
                   aria-label={isOpen ? 'Close menu' : 'Open menu'}
                 >
-                  <motion.div
-                    initial={false}
-                    animate={{ rotate: isOpen ? 90 : 0, scale: isOpen ? 1.02 : 1 }}
-                    transition={{ type: 'spring', stiffness: 320, damping: 26 }}
-                    className="relative z-10"
+                  <div
+                    className={cn(
+                      "relative z-10 transition-transform duration-200 ease-out",
+                      isOpen ? "rotate-90 scale-105" : "rotate-0 scale-100"
+                    )}
                   >
                     {isOpen ? (
                       <X className="w-5 h-5" aria-hidden="true" />
                     ) : (
                       <Menu className="w-5 h-5" aria-hidden="true" />
                     )}
-                  </motion.div>
+                  </div>
                   <span className="sr-only">Toggle Menu</span>
                 </Button>
               </SheetTrigger>
@@ -200,10 +199,8 @@ const Header: React.FC = () => {
               <link.icon className="w-4 h-4 opacity-80" aria-hidden="true" /> {/* Added icon */}
               <span>{link.label}</span> {/* Wrapped label in span */}
               {pathname === link.href && (
-                <motion.div
+                <div
                   className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-teal-500 to-blue-500 dark:from-teal-400 dark:to-blue-400 rounded-full"
-                  layoutId="navIndicator"
-                  transition={{ type: "spring", duration: 0.5 }}
                 />
               )}
             </NextLink>

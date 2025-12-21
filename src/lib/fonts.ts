@@ -22,6 +22,8 @@ export const montserrat = Montserrat({
     subsets: ['latin'],
     display: 'swap',
     variable: '--font-montserrat',
+    preload: true,
+    adjustFontFallback: true,
 });
 
 export const roboto = Roboto({
@@ -29,4 +31,6 @@ export const roboto = Roboto({
     subsets: ['latin'],
     display: 'swap',
     variable: '--font-roboto',
+    preload: true,
+    adjustFontFallback: true,
 });

@@ -102,10 +102,9 @@ const nextConfig = {
   },
 
   // Experimental features
-  // Experimental features
   experimental: {
     ppr: false, // Disable partial prerendering for now, enable when stable
-    optimizeCss: false, // Enable critical CSS inlining
+    optimizeCss: false, // Disabled - caused performance regression in testing
     optimizePackageImports: ['framer-motion', 'lucide-react', '@radix-ui/react-icons', 'date-fns'],
   },
 
