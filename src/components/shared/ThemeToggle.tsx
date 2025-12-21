@@ -18,7 +18,7 @@ export function ThemeToggle() {
     if (theme !== 'light') {
       setTheme('light');
     }
-    
+
   }, []);
 
   if (!mounted) {
@@ -38,10 +38,10 @@ export function ThemeToggle() {
         animate={{
           rotate: theme === "light" ? 0 : 180,
           scale: [1, 1.1, 1],
-        }} 
+        }}
         transition={{
           duration: 0.4,
-          ease: easingFunctions.easeInOut,   
+          ease: easingFunctions.easeInOut,
           scale: { duration: 0.2 }
         }}
         className="relative flex items-center justify-center w-5 h-5"
@@ -54,9 +54,9 @@ export function ThemeToggle() {
           transition={{ duration: 0.2 }}
           className="absolute"
         >
-          <Sun className="w-5 h-5 text-amber-500" />
-        </motion.div>   
-        
+          <Sun className="w-5 h-5 text-amber-500" aria-hidden="true" />
+        </motion.div>
+
         <motion.div
           animate={{
             opacity: theme === "dark" ? 1 : 0,
@@ -65,7 +65,7 @@ export function ThemeToggle() {
           transition={{ duration: 0.2 }}
           className="absolute"
         >
-          <Moon className="w-5 h-5 text-indigo-300" />
+          <Moon className="w-5 h-5 text-indigo-300" aria-hidden="true" />
         </motion.div>
       </motion.div>
     </Button>

@@ -54,7 +54,7 @@ export const StaticHero = () => {
                             )}
                         >
                             <span className="relative z-10 flex items-center justify-center">
-                                <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
+                                <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 mr-2" aria-hidden="true" />
                                 <span>{slide.buttonText}</span>
                             </span>
                         </Link>
@@ -67,7 +67,7 @@ export const StaticHero = () => {
                             )}
                         >
                             <span className="relative z-10 flex items-center justify-center">
-                                <CalendarCheck className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
+                                <CalendarCheck className="w-4 h-4 sm:w-5 sm:h-5 mr-2" aria-hidden="true" />
                                 <span>Book a Demo</span>
                             </span>
                         </Link>

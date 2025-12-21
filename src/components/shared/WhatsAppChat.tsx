@@ -304,6 +304,7 @@ const WhatsAppChat: React.FC = () => {
                       whileHover={{ x: 2 }}
                       whileTap={{ scale: 0.98 }}
                       transition={{ duration: 0.15 }}
+                      aria-label={action.label}
                     >
                       <span className="flex items-center space-x-2">
                         <span className="text-sm">{action.icon}</span>

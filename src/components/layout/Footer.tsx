@@ -8,7 +8,7 @@ const Footer: React.FC = () => {
   const whatsappLink = "https://wa.me/919485687609"; // Example WhatsApp link
 
   return (
-    <footer className="py-8 text-white bg-teal-800">
+    <footer className="py-8 text-white bg-teal-800" role="contentinfo">
       {/* Main Footer Content */}
       <div className="container px-6 py-8 mx-auto">
         <div className="grid grid-cols-1 gap-10 md:grid-cols-4">
@@ -85,24 +85,24 @@ const Footer: React.FC = () => {
             <h3 className="pb-2 mb-6 text-lg font-semibold border-b border-teal-600">Contact Us</h3>
             <ul className="space-y-4">
               <li className="flex items-start space-x-3 text-sm text-gray-200">
-                <MapPin className="h-5 w-5 text-teal-300 flex-shrink-0 mt-0.5" />
+                <MapPin className="h-5 w-5 text-teal-300 flex-shrink-0 mt-0.5" aria-hidden="true" />
                 <span>Delhi, India</span>
               </li>
               <li className="flex items-center space-x-3 text-sm text-gray-200">
-                <Phone className="flex-shrink-0 w-5 h-5 text-teal-300" />
+                <Phone className="flex-shrink-0 w-5 h-5 text-teal-300" aria-hidden="true" />
                 <div className="flex flex-col">
                   <a href="tel:+919485687609" className="transition-colors hover:text-white conversion-button" data-conversion="true" data-analytics-event="phone_click" data-analytics-source="footer">+91 94856 87609</a>
                   <a href="tel:+917842401155" className="transition-colors hover:text-white conversion-button" data-conversion="true" data-analytics-event="phone_click" data-analytics-source="footer">+91 7842401155</a>
                 </div>
               </li>
               <li className="flex items-center space-x-3 text-sm text-gray-200">
-                <Mail className="flex-shrink-0 w-5 h-5 text-teal-300" />
+                <Mail className="flex-shrink-0 w-5 h-5 text-teal-300" aria-hidden="true" />
                 <div className="flex flex-col">
                   <a href="mailto:aviatorstrainingcentre@gmail.com" className="break-all transition-colors hover:text-white conversion-button" data-conversion="true" data-analytics-event="email_click" data-analytics-source="footer">aviatorstrainingcentre@gmail.com</a>
                 </div>
               </li>
               <li className="flex items-center space-x-3 text-sm text-gray-200">
-                <MessageCircle className="flex-shrink-0 w-5 h-5 text-teal-300" />
+                <MessageCircle className="flex-shrink-0 w-5 h-5 text-teal-300" aria-hidden="true" />
                 <a href={whatsappLink} target="_blank" rel="noopener noreferrer" className="transition-colors hover:text-white conversion-button" data-conversion="true" data-analytics-event="whatsapp_click" data-analytics-source="footer">WhatsApp</a>
               </li>
             </ul>
