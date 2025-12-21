@@ -3,8 +3,16 @@
 import { usePathname } from 'next/navigation';
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
-import WhatsAppChat from "@/components/shared/WhatsAppChat";
-import ScrollIndicator from "@/components/shared/ScrollIndicator";
+import dynamic from 'next/dynamic';
+
+const WhatsAppChat = dynamic(() => import("@/components/shared/WhatsAppChat"), {
+  ssr: false,
+  loading: () => null
+});
+const ScrollIndicator = dynamic(() => import("@/components/shared/ScrollIndicator"), {
+  ssr: false,
+  loading: () => null
+});
 
 interface ConditionalLayoutProps {
   children: React.ReactNode;

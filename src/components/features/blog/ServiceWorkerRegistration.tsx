@@ -105,13 +105,14 @@ const ServiceWorkerRegistration: React.FC = () => {
       // Register for background sync if supported
       if ('serviceWorker' in navigator && 'sync' in window.ServiceWorkerRegistration.prototype) {
         try {
-          // Background sync registration (if supported by browser)
-          if ('sync' in registration) {
-            (registration as any).sync.register('background-sync');
+          const readyRegistration = await navigator.serviceWorker.ready;
+          if (readyRegistration.active && 'sync' in readyRegistration) {
+            (readyRegistration as any).sync.register('background-sync');
             console.log('Background sync registered');
           }
         } catch (error) {
-          console.log('Background sync registration failed:', error);
+          // Silent fail for sync registration
+          console.debug('Background sync registration failed:', error);
         }
       }
 

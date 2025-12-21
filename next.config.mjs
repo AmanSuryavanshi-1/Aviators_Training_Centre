@@ -3,6 +3,7 @@ const nextConfig = {
   reactStrictMode: true,
   trailingSlash: false,
   compress: true,
+  productionBrowserSourceMaps: true,
 
   // Suppress React 19 warnings in development and handle Node.js modules
   webpack: (config, { dev, isServer }) => {

@@ -8,7 +8,7 @@ const Footer: React.FC = () => {
   const whatsappLink = "https://wa.me/919485687609"; // Example WhatsApp link
 
   return (
-    <footer className="py-8 text-white bg-teal-800" role="contentinfo">
+    <footer className="py-8 text-white bg-teal-800 min-h-[400px]" role="contentinfo">
       {/* Main Footer Content */}
       <div className="container px-6 py-8 mx-auto">
         <div className="grid grid-cols-1 gap-10 md:grid-cols-4">

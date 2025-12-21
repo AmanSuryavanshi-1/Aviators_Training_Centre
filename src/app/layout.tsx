@@ -81,32 +81,12 @@ export default function RootLayout({
       <head>
         {/* Resource hints for third-party domains */}
         <link rel="preconnect" href="https://cdn.sanity.io" />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
         <link rel="dns-prefetch" href="https://www.google-analytics.com" />
         <link rel="dns-prefetch" href="https://connect.facebook.net" />
-        <link rel="preconnect" href="https://www.googletagmanager.com" crossOrigin="anonymous" />
-        <link rel="preconnect" href="https://connect.facebook.net" crossOrigin="anonymous" />
 
         <link rel="icon" href="/AVIATORS_TRAINING_CENTRE_LOGO_LightMode.png" type="image/png" sizes="any" />
         <link rel="apple-touch-icon" href="/AVIATORS_TRAINING_CENTRE_LOGO_LightMode.png" />
-        {/* Mobile-specific preload */}
-        <link
-          rel="preload"
-          as="image"
-          href="/_next/image?url=%2FHomePage%2FHero3.webp&w=828&q=85"
-          media="(max-width: 768px)"
-          fetchPriority="high"
-        />
-        {/* Desktop preload */}
-        <link
-          rel="preload"
-          as="image"
-          href="/_next/image?url=%2FHomePage%2FHero3.webp&w=1920&q=85"
-          media="(min-width: 769px)"
-          fetchPriority="high"
-        />
 
         {/* Enhanced Structured Data for Organization */}
         <Script
