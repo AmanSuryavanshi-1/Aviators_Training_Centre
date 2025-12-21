@@ -67,12 +67,17 @@ export default function TestimonialsVideoCarousel() {
 
     const visibleVideos = React.useMemo(() => {
         const videos = [];
-        for (let i = -2; i <= 2; i++) {
+        // On mobile, reduce rendering to just current (0) and immediate neighbors (1)
+        // Actually for mobile performance, we only really need 0 and maybe 1.
+        // Let's stick to -1, 0, 1 for Mobile, and -2 to 2 for Desktop.
+        const range = isMobile ? 1 : 2;
+
+        for (let i = -range; i <= range; i++) {
             const index = (currentIndex + i + youtubeShorts.length) % youtubeShorts.length;
             videos.push({ video: youtubeShorts[index], position: i });
         }
         return videos;
-    }, [currentIndex]);
+    }, [currentIndex, isMobile]);
 
     const handlePlayClick = () => {
         setIsPlaying(true);

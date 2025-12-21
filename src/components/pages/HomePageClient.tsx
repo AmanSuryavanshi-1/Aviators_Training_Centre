@@ -16,8 +16,13 @@ import {
   PilotPathway,
   FAQSection as FAQ,
   CTASection,
-  TestimonialsVideoCarousel
 } from '@/lib/dynamic-components';
+// Lazy load TestimonialsVideoCarousel to reduce initial block time
+import dynamic from 'next/dynamic';
+const TestimonialsVideoCarousel = dynamic(
+  () => import('@/components/testimonials/TestimonialsVideoCarousel'),
+  { ssr: false, loading: () => <div className="h-[60vh] flex items-center justify-center">Loading...</div> }
+);
 
 // Use consistent animation variants with proper easing
 const { sectionVariants, itemVariants } = commonVariants;
