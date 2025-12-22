@@ -41,7 +41,13 @@ atc-n8n-meeting-scheduler/*.log
 # docs/
 scripts/
 tests/
-tools/
+tools/*
+!tools/scripts/
+tools/scripts/*
+!tools/scripts/security/
+tools/scripts/security/*
+!tools/scripts/security/handle-security-audit.js
+!tools/scripts/security/security-check.js
 
 # Studio specific exclusions (keep source, exclude sensitive files)
 studio/.env.local

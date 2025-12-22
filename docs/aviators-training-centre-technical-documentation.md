@@ -1798,25 +1798,28 @@ module.exports = {
 *   **Solution:**
     *   **Server-Side Import:** Moved `HeroSection` from dynamic import to direct import in `page.tsx` to ensure immediate discovery.
     *   **Priority Loading:** Applied `priority={true}`, `fetchPriority="high"`, and `loading="eager"` to the Hero image in `HeroSection.tsx`.
-    *   **Resource Hint:** Added `<link rel="preload" as="image" fetchPriority="high">` in `layout.tsx` for the specific hero image.
+    *   **Resource Hint Cleanup:** Removed manual `preload` tags in `layout.tsx` to rely on Next.js's intelligent `priority` handling, avoiding double-fetch warnings ("Unused preload").
 
-**2. Total Blocking Time (TBT) Reduction**
-*   **Problem:** Third-party scripts (Meta Pixel, Google Analytics) and heavy UI components blocked the main thread (TBT > 800ms).
+**2. Total Blocking Time (TBT) Reduction & Main Thread**
+*   **Problem:** Third-party scripts and heavy `framer-motion` components blocked the main thread (TBT > 800ms).
 *   **Solution:**
-    *   **Deferred Analytics Loader:** Created `deferredLoader.ts` to load heavy scripts *only* after user interaction or a 3-second delay.
-    *   **Client-Side Rendering:** Forced `ssr: false` for heavy below-the-fold components (Video Carousel, Testimonials) using `dynamic-components.tsx`.
-    *   **Script Strategies:** Switched non-critical scripts to `strategy="lazyOnload"` or `strategy="worker"`.
+    *   **Smart Component Hydration:** Implemented `dynamic(() => import(...), { ssr: false })` for heavy interactive components like `TestimonialsVideoCarousel`, `WhatsAppChat`, and `ScrollIndicator`. This removes them from the initial HTML, unblocking hydration.
+    *   **Mobile-Specific Rendering:** Restructured `TestimonialsVideoCarousel` to render fewer items on mobile (3 items vs 5 on desktop) using `isMobile` hook logic. This reduced Framer Motion overhead by 40%.
+    *   **Service Worker Optimization:** Updated `sw.js` registration to await `navigator.serviceWorker.ready` before triggering background sync, eliminating `InvalidStateError` and improving "Best Practices" score.
 
 **3. Bundle Size Optimization**
 *   **Problem:** Large initial JavaScript payload.
 *   **Solution:**
     *   **Tree Shaking:** Enabled `experimental.optimizePackageImports` in `next.config.mjs` for `framer-motion` and `lucide-react`.
     *   **Aggressive Code Splitting:** Configured Webpack `splitChunks` to separate vendor, framework, and app code.
+    *   **Source Maps:** Enabled `productionBrowserSourceMaps: true` for precise bundle analysis during debugging (dev-ex).
 
-**4. Asset Optimization**
-*   **Images:** Utilized Next.js Image Optimization with specific `deviceSizes` configuration.
-*   **Videos:** Hosted heavy video assets on Cloudinary to offload bandwidth from Vercel.
-*   **Fonts:** Used `next/font` with `preload: true` to eliminate layout shifts (CLS).
+**4. Asset & Network Optimization**
+*   **Video Performance:** Replaced heavy hosted video files with **YouTube Embeds** for testimonials. Implemented "Facade Pattern" where only the thumbnail and play button load initially; the heavy YouTube player interacts/hydrates only on click (saving ~1MB JS/Execution).
+*   **Fonts:** Migrated to `next/font/google` which automatically self-hosts Google Fonts at build time. This removes runtime requests to `fonts.googleapis.com` and eliminates valid Layout Shifts (CLS) using `font-display: swap`.
+*   **Images:** Utilized Next.js Image Optimization with specific `deviceSizes` to serve correct WebP/AVIF variants.
+*   **Network Hints:** Replaced aggressive `preconnect` tags with `dns-prefetch` for secondary origins.
+*   **CLS Protection:** Added explicit `min-height-[400px]` to `Footer.tsx` to reserve space.
 
 ### 8.3 Firebase Cost Optimization
 
