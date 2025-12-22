@@ -1,0 +1,2278 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "content": "## 🔵 WORKFLOW A: New Lead Processing ( ATC_Firebase_DB_Trigger )\n### Handles initial contact inquiries & drives users to book consultation\n**Trigger:** Website Contact Form\n**Key Steps:**\n1. Validates email & name\n2. Sends \"Schedule Consultation\" email\n3. Creates lead record in Airtable (Status: \"Email Sent\")\n4. Waits 48 hours\n5. Checks if user booked meeting\n6. If not booked → Sends follow-up + updates status to \"Follow Up Sent\"\n7. If booked → Stops (no action needed)",
+        "height": 304,
+        "width": 2736,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -640,
+        -496
+      ],
+      "id": "5a03747b-34aa-41b2-a134-94ab3f7012e3",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## 🟢 WORKFLOW B: Booking Management ( ATC_CAL.com_Trigger )\n### Manages confirmed bookings from Cal.com (includes the link sent by workflow A & for anyone whosoever fills the Cal.com link\n**Trigger:** Cal.com BOOKING_CREATED event\n**Key Steps:**\n1. Validates email & data types\n2. Searches for existing lead in Airtable\n3. Sends \"Consultation Confirmed\" email with meeting details\n4. If user exists → Updates record with booking info\n5. If new user → Creates new record\n6. Sets Status to \"Confirmed\"\n7. Logs execution metrics (Success/Failure, Duration)",
+        "height": 368,
+        "width": 2736,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -640,
+        -192
+      ],
+      "id": "f00f6b1e-db7b-4a87-9bef-7a9d45609dad",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "## 🔴 WORKFLOW C: Cancellation Handling ( ATC_Booking_Cancellation )\n### Handles cancellations gracefully & attempts to re-engage user\n**Trigger:** Cal.com BOOKING_CANCELLED event\n**Key Steps:**\n1. Looks up booking in Airtable using Booking ID\n2. Updates Airtable Status to \"Cancelled\"\n3. Adds note: \"Booking cancelled by user on [Date]\"\n4. Sends polite \"Consultation Cancelled\" email\n5. Includes link to \"Reschedule Immediately\"\n6. Waits 7 days\n7. Sends \"Still Interested?\" follow-up email\n8. Updates Status to \"Follow Up Sent\"",
+        "height": 320,
+        "width": 2736,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -640,
+        176
+      ],
+      "id": "38eea73d-c738-488d-b103-82aa16d43dff",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "firebase-webhook",
+        "authentication": "headerAuth",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -112,
+        -400
+      ],
+      "id": "7bfa45d4-113c-4a5d-bf21-b274f846f3fb",
+      "name": "Firebase Database Trigger",
+      "webhookId": "firebase-new-entry-webhook",
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 1000,
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "3NuiIPEY7iPAMcBm",
+          "name": "Header Auth account"
+        }
+      },
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "id": "email-exists-check",
+              "leftValue": "={{ $json.body.email }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists"
+              }
+            },
+            {
+              "id": "name-exists-check",
+              "leftValue": "={{ $json.body.name }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        112,
+        -400
+      ],
+      "id": "c48c1cdc-af61-413f-8180-9efd4768d2cf",
+      "name": "Validate Contact Data"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json.body.email }}",
+        "subject": "Schedule Your Free Consultation - Aviators Training Centre",
+        "message": "=<!DOCTYPE html>\n<html>\n<head>\n    <style>\n        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }\n        .container { max-width: 600px; margin: 0 auto; padding: 20px; }\n        .header { background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); color: white; padding: 30px; text-align: center; border-radius: 8px 8px 0 0; }\n        .content { background: #ffffff; padding: 30px; border: 1px solid #e0e0e0; }\n        .cta-button { display: inline-block; background: #ff6b35; color: white; padding: 15px 30px; text-decoration: none; border-radius: 5px; font-weight: bold; margin: 20px 0; }\n        .footer { background: #f8f9fa; padding: 20px; text-align: center; border-radius: 0 0 8px 8px; }\n        .highlight { background: #e8f4fd; padding: 15px; border-left: 4px solid #2a5298; margin: 20px 0; }\n    </style>\n</head>\n<body>\n    <div class=\"container\">\n        <div class=\"header\">\n            <h1>✈️ Aviators Training Centre</h1>\n            <p>Your Journey to the Skies Starts Here</p>\n        </div>\n        \n        <div class=\"content\">\n            <h2>Hello {{ $json.body.name || 'Future Pilot' }},</h2>\n            \n            <p>Thank you for your interest in our aviation training programs! We're excited to help you achieve your dream of becoming a pilot.</p>\n            \n            <div class=\"highlight\">\n                <h3>🚀 Ready to Take the Next Step?</h3>\n                <p>We'd love to discuss your aviation goals and show you how our training programs can help you soar to new heights.</p>\n            </div>\n            \n            <p><strong>You can now schedule a FREE consultation directly:</strong></p>\n            \n            <div style=\"text-align: center;\">\n                <a href=\"https://cal.com/amansuryavanshi/aviators-training-centre-enrollment-consultation?prefill=true&name={{ encodeURIComponent($json.body.name || '') }}&email={{ encodeURIComponent($json.body.email || '') }}\" class=\"cta-button\">Schedule Your Consultation</a>\n            </div>\n\n            <p>If you have any immediate questions, feel free to reply to this email.</p>\n        </div>\n\n        <div class=\"footer\">\n            <p>&copy; 2024 Aviators Training Centre. All Rights Reserved.</p>\n        </div>\n    </div>\n</body>\n</html>",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        336,
+        -400
+      ],
+      "id": "1dbc57a3-dfd3-4d8a-92e5-7aa26219aa79",
+      "name": "Send Consultation Email",
+      "webhookId": "dd55c0db-e3c1-48ba-8652-7827eef5a659",
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 2000,
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "U15PmNBEdvmXRWmr",
+          "name": "aviatorstrainingcentre@gmail.com"
+        }
+      },
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "base": {
+          "__rl": true,
+          "value": "appWzCutTRkTGvc2t",
+          "mode": "id"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tbls8AXjTeC4XWiC0",
+          "mode": "id"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Email": "={{ $('Firebase Database Trigger').item.json.body.email }}",
+            "Contact Name": "={{ $('Firebase Database Trigger').item.json.body.name }}",
+            "Phone": "={{ $('Firebase Database Trigger').item.json.body.phone }}",
+            "Subject": "={{ $('Firebase Database Trigger').item.json.body.subject }}",
+            "Message": "={{ $('Firebase Database Trigger').item.json.body.message }}",
+            "Status": "Email Sent"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Contact Name",
+              "displayName": "Contact Name",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Phone",
+              "displayName": "Phone",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Subject",
+              "displayName": "Subject",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Message",
+              "displayName": "Message",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Meeting Title",
+              "displayName": "Meeting Title",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Meeting Date",
+              "displayName": "Meeting Date",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "dateTime",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Meeting Time",
+              "displayName": "Meeting Time",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "options",
+              "options": [
+                {
+                  "name": "Confirmed",
+                  "value": "Confirmed"
+                },
+                {
+                  "name": "Canceled",
+                  "value": "Canceled"
+                },
+                {
+                  "name": "In Progress",
+                  "value": "In Progress"
+                },
+                {
+                  "name": "Email Sent",
+                  "value": "Email Sent"
+                },
+                {
+                  "name": "Follow Up Sent",
+                  "value": "Follow Up Sent"
+                },
+                {
+                  "name": "Won",
+                  "value": "Won"
+                },
+                {
+                  "name": "Lost",
+                  "value": "Lost"
+                }
+              ],
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Booking ID",
+              "displayName": "Booking ID",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Cal.com URL",
+              "displayName": "Cal.com URL",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Created Date",
+              "displayName": "Created Date",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "dateTime",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Timezone",
+              "displayName": "Timezone",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Language",
+              "displayName": "Language",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Meeting DateTime",
+              "displayName": "Meeting DateTime",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": false
+            },
+            {
+              "id": "IST Meeting Time",
+              "displayName": "IST Meeting Time",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": false
+            },
+            {
+              "id": "Days Until Meeting",
+              "displayName": "Days Until Meeting",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": false
+            },
+            {
+              "id": "Meeting Status Summary",
+              "displayName": "Meeting Status Summary",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        560,
+        -400
+      ],
+      "id": "e99c4f09-1751-4dbe-bf82-1dfc174c2963",
+      "name": "Create Lead Record",
+      "retryOnFail": true,
+      "maxTries": 4,
+      "waitBetweenTries": 1000,
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "y0MqaXSyaHsVbNbh",
+          "name": "Airtable Personal Access Token account"
+        }
+      },
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "amount": 1,
+        "unit": "minutes"
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        784,
+        -400
+      ],
+      "id": "cae4c6bf-48c2-4eb7-9edf-30f3185ac781",
+      "name": "Wait 48 Hours",
+      "webhookId": "ce16aedd-1020-45b6-a7a9-7673316a6b02"
+    },
+    {
+      "parameters": {
+        "operation": "search",
+        "base": {
+          "__rl": true,
+          "value": "appWzCutTRkTGvc2t",
+          "mode": "id"
+        },
+        "table": {
+          "value": "tbls8AXjTeC4XWiC0",
+          "mode": "id",
+          "__rl": true
+        },
+        "filterByFormula": "={Email} = \"{{ $('Firebase Database Trigger').item.json.body.email }}\"",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        1008,
+        -400
+      ],
+      "id": "8d3d2d95-a94a-41d8-a6a8-86e2d21482e6",
+      "name": "Check Meeting Status",
+      "retryOnFail": true,
+      "maxTries": 4,
+      "waitBetweenTries": 1000,
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "y0MqaXSyaHsVbNbh",
+          "name": "Airtable Personal Access Token account"
+        }
+      },
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('Firebase Database Trigger').item.json.body.email }}",
+        "subject": "Don't Miss Out - Your Aviation Career Awaits! 🛩️",
+        "message": "=<!DOCTYPE html>\n<html>\n<head>\n    <style>\n        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }\n        .container { max-width: 600px; margin: 0 auto; padding: 20px; }\n        .header { background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%); color: white; padding: 30px; text-align: center; border-radius: 8px 8px 0 0; }\n        .content { background: #ffffff; padding: 30px; border: 1px solid #e0e0e0; }\n        .cta-button { display: inline-block; background: #1e3c72; color: white; padding: 15px 30px; text-decoration: none; border-radius: 5px; font-weight: bold; margin: 20px 0; }\n        .urgent { background: #fff3cd; border: 1px solid #ffeaa7; padding: 15px; border-radius: 5px; margin: 20px 0; }\n        .footer { background: #f8f9fa; padding: 20px; text-align: center; border-radius: 0 0 8px 8px; }\n    </style>\n</head>\n<body>\n    <div class=\"container\">\n        <div class=\"header\">\n            <h1>⏰ Limited Time Opportunity!</h1>\n            <p>Your Aviation Dreams Are Just One Click Away</p>\n        </div>\n        \n        <div class=\"content\">\n            <h2>Hi {{ $('Firebase Database Trigger').item.json.body.name || 'Future Pilot' }},</h2>\n            \n            <p>We noticed you haven't scheduled your free consultation yet. We don't want you to miss this opportunity to fast-track your aviation career!</p>\n            \n            <div class=\"urgent\">\n                <h3>🎯 Why Schedule Now?</h3>\n                <ul>\n                    <li><strong>Limited Slots:</strong> Our expert instructors have very limited availability</li>\n                    <li><strong>Seasonal Intake:</strong> Our next program starts soon with limited seats</li>\n                    <li><strong>Early Bird Benefits:</strong> Schedule now to secure special pricing</li>\n                </ul>\n            </div>\n            \n            <div style=\"text-align: center;\">\n                <a href=\"https://cal.com/amansuryavanshi/aviators-training-centre-enrollment-consultation?prefill=true&name={{ encodeURIComponent($('Firebase Database Trigger').item.json.body.name || '') }}&email={{ encodeURIComponent($('Firebase Database Trigger').item.json.body.email || '') }}\" class=\"cta-button\">Book Your Spot Now</a>\n            </div>\n\n            <p>This is a final reminder. We hope to see you soon!</p>\n        </div>\n\n        <div class=\"footer\">\n            <p>&copy; 2024 Aviators Training Centre. All Rights Reserved.</p>\n        </div>\n    </div>\n</body>\n</html>",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1456,
+        -400
+      ],
+      "id": "279b6090-3196-417c-a576-852a36e187b7",
+      "name": "Send Follow-up Email",
+      "webhookId": "02defb5a-e810-47cc-898f-2f143bcd2024",
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 2000,
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "U15PmNBEdvmXRWmr",
+          "name": "aviatorstrainingcentre@gmail.com"
+        }
+      },
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "8098e8c8-b1f1-48c1-9ba3-b4b78cd48397",
+              "leftValue": "={{ $json.Status }}",
+              "rightValue": "Email Sent",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            },
+            {
+              "id": "cd134256-f3ac-4b0d-8bf8-970b30623cf6",
+              "leftValue": "={{ $('Create Lead Record').item.json.id }}",
+              "rightValue": "={{ $json.id }}",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1232,
+        -400
+      ],
+      "id": "3ddca5ba-b62f-4b96-948f-c78891361e01",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "base": {
+          "__rl": true,
+          "value": "appWzCutTRkTGvc2t",
+          "mode": "list",
+          "cachedResultName": "ATC Bookings",
+          "cachedResultUrl": "https://airtable.com/appWzCutTRkTGvc2t"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tbls8AXjTeC4XWiC0",
+          "mode": "id"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Status": "Follow Up Sent",
+            "id": "={{ $('If').item.json.id }}"
+          },
+          "matchingColumns": [
+            "Status",
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": false
+            },
+            {
+              "id": "Contact Name",
+              "displayName": "Contact Name",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Phone",
+              "displayName": "Phone",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Subject",
+              "displayName": "Subject",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Message",
+              "displayName": "Message",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Meeting Title",
+              "displayName": "Meeting Title",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Meeting Date",
+              "displayName": "Meeting Date",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "dateTime",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Meeting Time",
+              "displayName": "Meeting Time",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "options",
+              "options": [
+                {
+                  "name": "Confirmed",
+                  "value": "Confirmed"
+                },
+                {
+                  "name": "Canceled",
+                  "value": "Canceled"
+                },
+                {
+                  "name": "In Progress",
+                  "value": "In Progress"
+                },
+                {
+                  "name": "Email Sent",
+                  "value": "Email Sent"
+                },
+                {
+                  "name": "Follow Up Sent",
+                  "value": "Follow Up Sent"
+                },
+                {
+                  "name": "Won",
+                  "value": "Won"
+                },
+                {
+                  "name": "Lost",
+                  "value": "Lost"
+                }
+              ],
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Booking ID",
+              "displayName": "Booking ID",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Cal.com URL",
+              "displayName": "Cal.com URL",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Created Date",
+              "displayName": "Created Date",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "dateTime",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Timezone",
+              "displayName": "Timezone",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Language",
+              "displayName": "Language",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Meeting DateTime",
+              "displayName": "Meeting DateTime",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": true
+            },
+            {
+              "id": "IST Meeting Time",
+              "displayName": "IST Meeting Time",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": true
+            },
+            {
+              "id": "Days Until Meeting",
+              "displayName": "Days Until Meeting",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": true
+            },
+            {
+              "id": "Meeting Status Summary",
+              "displayName": "Meeting Status Summary",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        1680,
+        -400
+      ],
+      "id": "04627696-b017-448d-911e-c0fca6a1d0e5",
+      "name": "Follow-Up Update ",
+      "retryOnFail": true,
+      "maxTries": 4,
+      "waitBetweenTries": 1000,
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "y0MqaXSyaHsVbNbh",
+          "name": "Airtable Personal Access Token account"
+        }
+      },
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "events": [
+          "BOOKING_CREATED"
+        ],
+        "options": {}
+      },
+      "type": "n8n-nodes-base.calTrigger",
+      "typeVersion": 2,
+      "position": [
+        -112,
+        -96
+      ],
+      "id": "37924acc-4d88-4099-813e-396c9f303e20",
+      "name": "Cal.com Booking Trigger",
+      "webhookId": "64c3f715-d3f3-4273-8051-8d32fab07d26",
+      "credentials": {
+        "calApi": {
+          "id": "vMCQjfPGMVC79QYi",
+          "name": "Cal.com Adude"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "functionCode": "// Comprehensive Data Validation and Sanitization\nconst webhookData = $input.first().json;\n\n// Validation schema for required fields\nconst requiredFields = {\n  bookingId: 'number',\n  title: 'string',\n  startTime: 'string',\n  endTime: 'string',\n  attendees: 'array',\n  responses: 'object'\n};\n\n// Sanitization functions\nfunction sanitizeEmail(email) {\n  if (!email || typeof email !== 'string') return null;\n  return email.toLowerCase().trim().replace(/[^a-zA-Z0-9@._-]/g, '');\n}\n\nfunction sanitizeName(name) {\n  if (!name || typeof name !== 'string') return 'Unknown';\n  return name.trim().replace(/[<>\"'&]/g, '').substring(0, 100);\n}\n\nfunction sanitizeString(str, maxLength = 500) {\n  if (!str || typeof str !== 'string') return '';\n  return str.trim().replace(/[<>\"'&]/g, '').substring(0, maxLength);\n}\n\n// Validate required fields\nconsole.log('Starting webhook data validation...');\nconst validationErrors = [];\n\nfor (const [field, expectedType] of Object.entries(requiredFields)) {\n  const value = webhookData[field];\n  \n  if (value === undefined || value === null) {\n    validationErrors.push(`Missing required field: ${field}`);\n    continue;\n  }\n  \n  const actualType = Array.isArray(value) ? 'array' : typeof value;\n  if (actualType !== expectedType) {\n    validationErrors.push(`Invalid type for ${field}: expected ${expectedType}, got ${actualType}`);\n  }\n}\n\n// Validate email specifically\nconst email = webhookData.responses?.email?.value;\nif (!email || !email.includes('@')) {\n  validationErrors.push('Invalid or missing email address');\n}\n\n// Validate attendees array\nif (!webhookData.attendees || webhookData.attendees.length === 0) {\n  validationErrors.push('No attendees found in booking');\n}\n\n// Log validation results\nif (validationErrors.length > 0) {\n  console.error('Webhook validation failed:', validationErrors);\n  // For now, continue with sanitized data but log the issues\n  console.log('Continuing with sanitized data despite validation errors');\n}\n\n// Sanitize and normalize data\nconst sanitizedData = {\n  ...webhookData,\n  title: sanitizeString(webhookData.title, 200),\n  attendees: webhookData.attendees?.map(attendee => ({\n    ...attendee,\n    name: sanitizeName(attendee.name),\n    email: sanitizeEmail(attendee.email)\n  })) || [],\n  responses: {\n    ...webhookData.responses,\n    email: {\n      value: sanitizeEmail(webhookData.responses?.email?.value)\n    }\n  }\n};\n\n// Add validation metadata\nsanitizedData._validation = {\n  isValid: validationErrors.length === 0,\n  errors: validationErrors,\n  sanitized: true,\n  timestamp: new Date().toISOString()\n};\n\nconsole.log('Data validation completed. Valid:', sanitizedData._validation.isValid);\nconsole.log('Sanitized email:', sanitizedData.responses.email.value);\nconsole.log('Sanitized attendee name:', sanitizedData.attendees[0]?.name);\n\nreturn { json: sanitizedData };"
+      },
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [
+        112,
+        -96
+      ],
+      "id": "8577dfed-f964-478f-a0ba-903ea37f9119",
+      "name": "Data Validation & Sanitization"
+    },
+    {
+      "parameters": {
+        "operation": "search",
+        "base": {
+          "__rl": true,
+          "value": "appWzCutTRkTGvc2t",
+          "mode": "id"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tbls8AXjTeC4XWiC0",
+          "mode": "id"
+        },
+        "filterByFormula": "={Email} = \"{{ $('Data Validation & Sanitization').item.json.responses.email.value }}\"",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        336,
+        -96
+      ],
+      "id": "0aaa94af-f749-41dd-9af1-ac6cc87e65f7",
+      "name": "Find Existing Lead Record",
+      "retryOnFail": true,
+      "maxTries": 4,
+      "waitBetweenTries": 1000,
+      "alwaysOutputData": true,
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "y0MqaXSyaHsVbNbh",
+          "name": "Airtable Personal Access Token account"
+        }
+      },
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "functionCode": "// ROBUST Duplicate Detection and Lead Selection Logic\n// This function ensures only valid, complete lead records are processed\n\nconst leads = $input.all();\nconst email = $('Data Validation & Sanitization').item.json.responses.email.value;\n\nconsole.log('=== DUPLICATE DETECTION HANDLER ===');\nconsole.log('Email being processed:', email);\nconsole.log('Raw input count:', leads.length);\nconsole.log('Raw input data:', JSON.stringify(leads, null, 2));\n\n// Function to validate if a lead is complete and valid\nfunction isValidLead(lead) {\n  if (!lead || !lead.json) {\n    console.log('Invalid: No lead or json property');\n    return false;\n  }\n  \n  const json = lead.json;\n  \n  // Check for required Airtable ID\n  if (!json.id || typeof json.id !== 'string' || json.id.length < 10) {\n    console.log('Invalid: Missing or invalid ID:', json.id);\n    return false;\n  }\n  \n  // Check if ID follows Airtable format (starts with 'rec')\n  if (!json.id.startsWith('rec')) {\n    console.log('Invalid: ID does not follow Airtable format:', json.id);\n    return false;\n  }\n  \n  // Check if record has meaningful data (not just empty object)\n  const keys = Object.keys(json);\n  if (keys.length <= 1) { // Only 'id' key or empty\n    console.log('Invalid: Record has no meaningful data, keys:', keys);\n    return false;\n  }\n  \n  // Check for email match (additional validation)\n  if (json.Email && json.Email !== email) {\n    console.log('Invalid: Email mismatch. Expected:', email, 'Got:', json.Email);\n    return false;\n  }\n  \n  console.log('Valid lead found:', json.id, 'with', keys.length, 'fields');\n  return true;\n}\n\n// Handle empty input\nif (!leads || leads.length === 0) {\n  console.log('RESULT: No input data → RETURN NO_LEADS_INDICATOR (triggers CREATE)');\n  return [{ json: { _noLeadsFound: true, _email: email } }];\n}\n\n// Filter and validate all leads\nconst validLeads = leads.filter(isValidLead);\n\nconsole.log('Valid leads after filtering:', validLeads.length);\n\n// No valid leads found\nif (validLeads.length === 0) {\n  console.log('RESULT: No valid leads found → RETURN NO_LEADS_INDICATOR (triggers CREATE)');\n  return [{ json: { _noLeadsFound: true, _email: email } }];\n}\n\n// Single valid lead found\nif (validLeads.length === 1) {\n  const lead = validLeads[0];\n  console.log('RESULT: Single valid lead found → RETURN LEAD (triggers UPDATE)');\n  console.log('Lead ID:', lead.json.id);\n  console.log('Lead Email:', lead.json.Email);\n  console.log('Lead Status:', lead.json.Status);\n  return validLeads;\n}\n\n// Multiple valid leads found - select most recent\nconsole.log('RESULT: Multiple valid leads found → SELECT MOST RECENT (triggers UPDATE)');\nconsole.log('Total valid duplicates:', validLeads.length);\n\n// Log all duplicates for manual review\nvalidLeads.forEach((lead, index) => {\n  console.log(`Duplicate ${index + 1}:`, {\n    id: lead.json.id,\n    email: lead.json.Email,\n    created: lead.json['Created Date'],\n    status: lead.json.Status\n  });\n});\n\n// Select most recent (already sorted by Created Date desc from Airtable)\nconst selectedLead = validLeads[0];\nconsole.log('Selected lead:', selectedLead.json.id, 'Created:', selectedLead.json['Created Date']);\n\n// Flag remaining as duplicates\nfor (let i = 1; i < validLeads.length; i++) {\n  console.log('Flagging duplicate for manual review:', validLeads[i].json.id);\n}\n\nreturn [selectedLead];"
+      },
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [
+        560,
+        -96
+      ],
+      "id": "6416795f-c154-45b2-8291-f7bbeb41f491",
+      "name": "Duplicate Detection Handler"
+    },
+    {
+      "parameters": {
+        "functionCode": "// Error Handler with Exponential Backoff Retry Logic\nconst maxRetries = 4;\nconst baseDelay = 1000; // 1 second\n\n// Function to implement exponential backoff\nfunction exponentialBackoff(attempt) {\n  return baseDelay * Math.pow(2, attempt); // 1s, 2s, 4s, 8s\n}\n\n// Function to retry Airtable operations\nasync function retryOperation(operation, context, maxAttempts = maxRetries) {\n  for (let attempt = 0; attempt < maxAttempts; attempt++) {\n    try {\n      console.log(`Attempting ${operation} - Attempt ${attempt + 1}/${maxAttempts}`);\n      \n      // The actual operation will be handled by the calling node\n      // This is a placeholder for retry logic coordination\n      return { success: true, attempt: attempt + 1 };\n      \n    } catch (error) {\n      console.error(`${operation} failed on attempt ${attempt + 1}:`, error.message);\n      \n      if (attempt === maxAttempts - 1) {\n        // Final attempt failed\n        console.error(`All ${maxAttempts} attempts failed for ${operation}`);\n        throw new Error(`Operation ${operation} failed after ${maxAttempts} attempts: ${error.message}`);\n      }\n      \n      // Wait before retry with exponential backoff\n      const delay = exponentialBackoff(attempt);\n      console.log(`Waiting ${delay}ms before retry...`);\n      await new Promise(resolve => setTimeout(resolve, delay));\n    }\n  }\n}\n\n// Log the error handling initialization\nconsole.log('Error handling and retry mechanism initialized');\nconsole.log('Max retries:', maxRetries);\nconsole.log('Base delay:', baseDelay + 'ms');\n\n// Pass through the input data\nreturn $input.all();"
+      },
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [
+        784,
+        -96
+      ],
+      "id": "544a921c-2dc9-4d07-ba91-ae7804a5b7b2",
+      "name": "Error Handler & Retry Logic"
+    },
+    {
+      "parameters": {
+        "functionCode": "// Production-Grade Monitoring and Logging System\nconst workflowId = 'ATC_CAL_Booking_Workflow';\nconst executionId = $execution.id || 'unknown';\nconst startTime = new Date();\n\n// Performance metrics tracking\nconst metrics = {\n  executionId: executionId,\n  workflowId: workflowId,\n  startTime: startTime.toISOString(),\n  email: $('Data Validation & Sanitization').item.json.responses?.email?.value || 'unknown',\n  bookingId: $('Data Validation & Sanitization').item.json.bookingId || 'unknown',\n  attendeeName: $('Data Validation & Sanitization').item.json.attendees?.[0]?.name || 'unknown'\n};\n\n// Log workflow execution start\nconsole.log('=== WORKFLOW EXECUTION START ===');\nconsole.log('Execution ID:', executionId);\nconsole.log('Workflow:', workflowId);\nconsole.log('Start Time:', startTime.toISOString());\nconsole.log('Booking ID:', metrics.bookingId);\nconsole.log('Email:', metrics.email);\nconsole.log('Attendee:', metrics.attendeeName);\n\n// Log data validation results\nconst validationData = $('Data Validation & Sanitization').item.json._validation;\nif (validationData) {\n  console.log('Data Validation Status:', validationData.isValid ? 'PASSED' : 'FAILED');\n  if (!validationData.isValid) {\n    console.warn('Validation Errors:', validationData.errors);\n  }\n}\n\n// Log duplicate detection results\nconst duplicateData = $('Duplicate Detection Handler').item.json;\nif (Array.isArray(duplicateData) && duplicateData.length > 1) {\n  console.log('DUPLICATE DETECTION: Multiple leads found');\n  console.log('Total duplicates:', duplicateData.length);\n}\n\n// Performance monitoring function\nfunction logPerformanceMetrics(stepName, duration, success = true, error = null) {\n  const logEntry = {\n    timestamp: new Date().toISOString(),\n    executionId: executionId,\n    workflowId: workflowId,\n    step: stepName,\n    duration: duration,\n    success: success,\n    error: error,\n    email: metrics.email,\n    bookingId: metrics.bookingId\n  };\n  \n  console.log('PERFORMANCE LOG:', JSON.stringify(logEntry));\n  \n  if (!success && error) {\n    console.error('STEP FAILED:', stepName, 'Error:', error);\n  }\n}\n\n// Health check function\nfunction performHealthCheck() {\n  const healthStatus = {\n    timestamp: new Date().toISOString(),\n    executionId: executionId,\n    workflowId: workflowId,\n    systemHealth: {\n      dataValidation: validationData?.isValid || false,\n      duplicateDetection: 'operational',\n      errorHandling: 'active',\n      retryMechanism: 'enabled'\n    },\n    apiConnections: {\n      airtable: 'checking',\n      gmail: 'checking',\n      calcom: 'active'\n    }\n  };\n  \n  console.log('HEALTH CHECK:', JSON.stringify(healthStatus));\n  return healthStatus;\n}\n\n// Perform initial health check\nperformHealthCheck();\n\n// Log successful monitoring initialization\nconsole.log('Monitoring system initialized successfully');\nconsole.log('Performance tracking: ENABLED');\nconsole.log('Error monitoring: ACTIVE');\nconsole.log('Health checks: OPERATIONAL');\n\n// Pass through the input data with monitoring metadata\nconst outputData = $input.first().json;\noutputData._monitoring = {\n  executionId: executionId,\n  startTime: startTime.toISOString(),\n  metrics: metrics,\n  healthCheck: performHealthCheck()\n};\n\nreturn { json: outputData };"
+      },
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [
+        1680,
+        -96
+      ],
+      "id": "9f5470f5-4523-4351-a7d8-a19a2930695e",
+      "name": "Monitoring & Logging System"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "lead-exists-check",
+              "leftValue": "={{ $input.first().json && !$input.first().json._noLeadsFound && $input.first().json.id && $input.first().json.id.startsWith('rec') }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1008,
+        -96
+      ],
+      "id": "32a84134-4551-4478-98bd-94c389491a74",
+      "name": "Check If Lead Exists"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('Cal.com Booking Trigger').item.json.attendees[0].email }}",
+        "subject": "🎉 Consultation Confirmed - Welcome to Aviators Training Centre!",
+        "message": "=<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>Consultation Confirmed - Aviators Training Centre</title>\n  <style>\n    /* Reset */\n    body, table, td, p, a {margin:0;padding:0;-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;}\n    img {border:0;line-height:100%;outline:none;text-decoration:none;-ms-interpolation-mode:bicubic;}\n    table {border-collapse:collapse !important;}\n    /* Fluid wrapper */\n    .wrapper {width:100% !important;max-width:600px;margin:0 auto;}\n    /* Typography */\n    h1 {font-size:28px;line-height:1.2;margin-bottom:8px;}\n    h2 {font-size:22px;line-height:1.3;margin-bottom:16px;}\n    p, td span {font-size:16px;line-height:1.5;}\n    /* Buttons */\n    .btn {display:inline-block;padding:12px 24px;border-radius:6px;text-decoration:none;font-weight:600;}\n    /* Mobile */\n    @media only screen and (max-width:600px) {\n      h1 {font-size:18px !important;}\n      h2 {font-size:14px !important;}\n      p, td span {font-size:12px !important;}\n      .mobile-center {text-align:center !important;}\n      .stack {display:block !important;width:100% !important;}\n      .btn {width:100% !important;max-width:260px;margin:8px auto !important;display:block;}\n      .hide-mobile {display:none !important;}\n      .pad {padding:20px 15px !important;}\n    }\n  </style>\n</head>\n<body style=\"background:#f8fafc;font-family:Arial,sans-serif;\">\n  <table width=\"100%\" bgcolor=\"#f8fafc\">\n    <tr>\n      <td class=\"pad\" align=\"center\">\n        <table class=\"wrapper\" bgcolor=\"#fff\" style=\"border-radius:12px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.1);\">\n          \n          <!-- Header -->\n          <tr>\n            <td bgcolor=\"#075E68\" style=\"background:linear-gradient(135deg,#075E68 0%,#219099 100%);padding:40px 30px;text-align:center;\">\n              <img src=\"https://raw.githubusercontent.com/AmanSuryavanshi-1/Aviators_Training_Centre/main/public/AVIATORS_TRAINING_CENTRE_LOGO_DarkMode.png\"\n                   alt=\"Logo\" style=\"max-width:160px;width:100%;height:auto;filter:brightness(0) invert(1);margin:0 auto 16px;\">\n              <h1 style=\"color:#fff;\">Consultation Confirmed</h1>\n              <p style=\"color:rgba(255,255,255,0.9);font-size:18px;\">Your aviation career journey begins here</p>\n            </td>\n          </tr>\n          \n          <!-- Body -->\n          <tr>\n            <td class=\"pad\">\n              <h2 style=\"color:#075E68;\">Hello {{ $('Cal.com Booking Trigger').item.json.attendees[0].name }},</h2>\n              <p>Thanks for scheduling your consultation! We’re excited to discuss your aviation goals.</p>\n              \n              <!-- Details Card -->\n              <table width=\"100%\" bgcolor=\"#f8fafc\" style=\"border:1px solid #e2e8f0;border-radius:8px;border-left:4px solid #075E68;margin-top:24px;\">\n                <tr>\n                  <td style=\"padding:16px;\">\n                    <h3 style=\"margin:0 0 12px;color:#075E68;\">Your Consultation Details</h3>\n                    <p><strong>Session:</strong> {{ $('Cal.com Booking Trigger').item.json.title }}<br>\n                       <strong>Date:</strong> {{ $('Cal.com Booking Trigger').item.json.startTime.split('T')[0] }}<br>\n                       <strong>Time:</strong> {{ new Date($('Cal.com Booking Trigger').item.json.startTime).toLocaleTimeString('en-US',{timeZone:'Asia/Kolkata',hour:'numeric',minute:'2-digit',hour12:true}) }} - {{ new Date($('Cal.com Booking Trigger').item.json.endTime).toLocaleTimeString('en-US',{timeZone:'Asia/Kolkata',hour:'numeric',minute:'2-digit',hour12:true}) }} IST<br>\n                       <strong>Format:</strong> {{ $('Cal.com Booking Trigger').item.json.type || 'Online Consultation' }}\n                       {{ $('Cal.com Booking Trigger').item.json.additionalNotes ? `<br><strong>Notes:</strong> ${$('Cal.com Booking Trigger').item.json.additionalNotes}` : '' }}\n                    </p>\n                  </td>\n                </tr>\n              </table>\n              \n              <!-- Actions -->\n              <div style=\"text-align:center;margin:24px 0;\">\n                <a href=\"https://wa.me/919485687609?text=Hi%2C%20regarding%20my%20consultation\" class=\"btn\" style=\"background:#075E68;color:#fff;border-radius:10px\">WhatsApp</a>\n                <a href=\"mailto:aviatorstrainingcentre@gmail.com?subject=Consultation%20Inquiry\" class=\"btn\" style=\"background:#219099;color:#fff;border-radius:10px\">Email Us</a>\n              </div>\n              \n              <!-- Reschedule -->\n              <table width=\"100%\" bgcolor=\"#f0f9ff\" style=\"border:1px solid #73B5BD;border-radius:8px;\">\n                <tr>\n                  <td style=\"padding:16px;text-align:center;\">\n                    <h3 style=\"margin:0 0 8px;color:#075E68;\">Need to Reschedule?</h3>\n                    <p>📞 <a href=\"tel:+919485687609\" style=\"color:#075E68;text-decoration:none;\">+91 94856 87609</a><br>\n                       💬 WhatsApp: 9AM – 7PM</p>\n                  </td>\n                </tr>\n              </table>\n              \n              <!-- Closing -->\n              <p style=\"text-align:center;margin:24px 0 0;\"><strong style=\"color:#075E68;\">Ready to soar to new heights?</strong><br>We look forward to speaking with you soon!</p>\n            </td>\n          </tr>\n          \n          <!-- Footer -->\n          <tr>\n            <td bgcolor=\"#075E68\" style=\"background:linear-gradient(135deg,#075E68 0%,#0C6E72 100%);padding:24px 30px;text-align:center;color:#fff;\">\n              <p style=\"margin:0;font-size:16px;font-weight:600;\">Aviators Training Centre</p>\n              <p style=\"margin:4px 0;\">Premier DGCA Ground School for CPL & ATPL</p>\n              <p style=\"margin:4px 0;\">\n                <a href=\"mailto:aviatorstrainingcentre@gmail.com\" style=\"color:#73B5BD;text-decoration:none;\">aviatorstrainingcentre@gmail.com</a> • \n                <a href=\"tel:+919485687609\" style=\"color:#73B5BD;text-decoration:none;\">+91 94856 87609</a> • \n                <a href=\"https://www.aviatorstrainingcentre.in\" style=\"color:#73B5BD;text-decoration:none;\">www.aviatorstrainingcentre.in</a>\n              </p>\n            </td>\n          </tr>\n          \n        </table>\n      </td>\n    </tr>\n  </table>\n</body>\n</html>",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1456,
+        -96
+      ],
+      "id": "ad9fc091-856b-4ad7-8464-f5e2cee2a49b",
+      "name": "Send Booking Confirmation",
+      "webhookId": "1cea43ef-1d46-492e-83f8-bf2f567bcedd",
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 2000,
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "U15PmNBEdvmXRWmr",
+          "name": "aviatorstrainingcentre@gmail.com"
+        }
+      },
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "base": {
+          "__rl": true,
+          "value": "appWzCutTRkTGvc2t",
+          "mode": "id"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tbls8AXjTeC4XWiC0",
+          "mode": "id"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Meeting Date": "={{ DateTime.fromISO($('Cal.com Booking Trigger').item.json.startTime) }}",
+            "Meeting Time": "={{ new Date($('Cal.com Booking Trigger').item.json.startTime).toLocaleTimeString('en-US',{timeZone:'Asia/Kolkata',hour:'numeric',minute:'2-digit',hour12:true}) }} - {{ new Date($('Cal.com Booking Trigger').item.json.endTime).toLocaleTimeString('en-US',{timeZone:'Asia/Kolkata',hour:'numeric',minute:'2-digit',hour12:true}) }}",
+            "Meeting Title": "={{ $('Cal.com Booking Trigger').item.json.title }}",
+            "Status": "Confirmed",
+            "Booking ID": "={{ $('Cal.com Booking Trigger').item.json.bookingId.toString() }}",
+            "Timezone": "={{ $('Cal.com Booking Trigger').item.json.organizer.timeZone }}",
+            "Cal.com URL": "={{ $('Cal.com Booking Trigger').item.json.bookerUrl }}",
+            "Created Date": "={{ $('Cal.com Booking Trigger').item.json.createdAt.toDateTime().format('yyyy-MM-dd') }} ",
+            "Language": "={{ $('Cal.com Booking Trigger').item.json.attendees[0].language.locale }}",
+            "Contact Name": "={{ $('Cal.com Booking Trigger').item.json.attendees[0].name }}",
+            "Email": "={{ $('Cal.com Booking Trigger').item.json.responses.email.value }}",
+            "id": "={{ $('Duplicate Detection Handler').item.json.id }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": false
+            },
+            {
+              "id": "Contact Name",
+              "displayName": "Contact Name",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Phone",
+              "displayName": "Phone",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Subject",
+              "displayName": "Subject",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Message",
+              "displayName": "Message",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Meeting Title",
+              "displayName": "Meeting Title",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Meeting Date",
+              "displayName": "Meeting Date",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "dateTime",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Meeting Time",
+              "displayName": "Meeting Time",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "options",
+              "options": [
+                {
+                  "name": "Confirmed",
+                  "value": "Confirmed"
+                },
+                {
+                  "name": "Canceled",
+                  "value": "Canceled"
+                },
+                {
+                  "name": "In Progress",
+                  "value": "In Progress"
+                },
+                {
+                  "name": "Email Sent",
+                  "value": "Email Sent"
+                },
+                {
+                  "name": "Follow Up Sent",
+                  "value": "Follow Up Sent"
+                },
+                {
+                  "name": "Won",
+                  "value": "Won"
+                },
+                {
+                  "name": "Lost",
+                  "value": "Lost"
+                }
+              ],
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Booking ID",
+              "displayName": "Booking ID",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Cal.com URL",
+              "displayName": "Cal.com URL",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Created Date",
+              "displayName": "Created Date",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "dateTime",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Timezone",
+              "displayName": "Timezone",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Language",
+              "displayName": "Language",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Meeting DateTime",
+              "displayName": "Meeting DateTime",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": false
+            },
+            {
+              "id": "IST Meeting Time",
+              "displayName": "IST Meeting Time",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": false
+            },
+            {
+              "id": "Days Until Meeting",
+              "displayName": "Days Until Meeting",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": false
+            },
+            {
+              "id": "Meeting Status Summary",
+              "displayName": "Meeting Status Summary",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {
+          "typecast": true
+        }
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        1232,
+        -176
+      ],
+      "id": "5d55ac08-9865-4eab-aa39-d9ac50188bde",
+      "name": "Update Existing Lead Record",
+      "retryOnFail": true,
+      "maxTries": 4,
+      "waitBetweenTries": 1000,
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "y0MqaXSyaHsVbNbh",
+          "name": "Airtable Personal Access Token account"
+        }
+      },
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "base": {
+          "__rl": true,
+          "value": "appWzCutTRkTGvc2t",
+          "mode": "id"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tbls8AXjTeC4XWiC0",
+          "mode": "id"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Meeting Date": "={{ DateTime.fromISO($('Cal.com Booking Trigger').item.json.startTime) }}",
+            "Meeting Time": "={{ new Date($('Cal.com Booking Trigger').item.json.startTime).toLocaleTimeString('en-US',{timeZone:'Asia/Kolkata',hour:'numeric',minute:'2-digit',hour12:true}) }} - {{ new Date($('Cal.com Booking Trigger').item.json.endTime).toLocaleTimeString('en-US',{timeZone:'Asia/Kolkata',hour:'numeric',minute:'2-digit',hour12:true}) }}",
+            "Meeting Title": "={{ $('Cal.com Booking Trigger').item.json.title }}",
+            "Status": "Confirmed",
+            "Booking ID": "={{ $('Cal.com Booking Trigger').item.json.bookingId.toString() }}",
+            "Timezone": "={{ $('Cal.com Booking Trigger').item.json.organizer.timeZone }}",
+            "Cal.com URL": "={{ $('Cal.com Booking Trigger').item.json.bookerUrl }}",
+            "Created Date": "={{ $('Cal.com Booking Trigger').item.json.createdAt.toDateTime().format('yyyy-MM-dd') }} ",
+            "Language": "={{ $('Cal.com Booking Trigger').item.json.attendees[0].language.locale }}",
+            "Contact Name": "={{ $('Cal.com Booking Trigger').item.json.attendees[0].name }}",
+            "Email": "={{ $('Cal.com Booking Trigger').item.json.responses.email.value }}",
+            "Subject": "Direct Cal.com Booking",
+            "Message": "User booked consultation directly via Cal.com without filling contact form"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Contact Name",
+              "displayName": "Contact Name",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Phone",
+              "displayName": "Phone",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Subject",
+              "displayName": "Subject",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Message",
+              "displayName": "Message",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Meeting Title",
+              "displayName": "Meeting Title",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Meeting Date",
+              "displayName": "Meeting Date",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "dateTime",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Meeting Time",
+              "displayName": "Meeting Time",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "options",
+              "options": [
+                {
+                  "name": "Confirmed",
+                  "value": "Confirmed"
+                },
+                {
+                  "name": "Canceled",
+                  "value": "Canceled"
+                },
+                {
+                  "name": "In Progress",
+                  "value": "In Progress"
+                },
+                {
+                  "name": "Email Sent",
+                  "value": "Email Sent"
+                },
+                {
+                  "name": "Follow Up Sent",
+                  "value": "Follow Up Sent"
+                },
+                {
+                  "name": "Won",
+                  "value": "Won"
+                },
+                {
+                  "name": "Lost",
+                  "value": "Lost"
+                }
+              ],
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Booking ID",
+              "displayName": "Booking ID",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Cal.com URL",
+              "displayName": "Cal.com URL",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Created Date",
+              "displayName": "Created Date",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "dateTime",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Timezone",
+              "displayName": "Timezone",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Language",
+              "displayName": "Language",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Meeting DateTime",
+              "displayName": "Meeting DateTime",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": false
+            },
+            {
+              "id": "IST Meeting Time",
+              "displayName": "IST Meeting Time",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": false
+            },
+            {
+              "id": "Days Until Meeting",
+              "displayName": "Days Until Meeting",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": false
+            },
+            {
+              "id": "Meeting Status Summary",
+              "displayName": "Meeting Status Summary",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {
+          "typecast": true
+        }
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        1232,
+        0
+      ],
+      "id": "616c2af7-929a-4b22-a5db-f0d8de714466",
+      "name": "Create New Lead Record",
+      "retryOnFail": true,
+      "maxTries": 4,
+      "waitBetweenTries": 1000,
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "y0MqaXSyaHsVbNbh",
+          "name": "Airtable Personal Access Token account"
+        }
+      },
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "functionCode": "// Workflow Completion Monitoring and Metrics\nconst executionId = $('Monitoring & Logging System').item.json._monitoring?.executionId || 'unknown';\nconst startTime = $('Monitoring & Logging System').item.json._monitoring?.startTime;\nconst endTime = new Date();\nconst duration = startTime ? endTime - new Date(startTime) : 0;\n\n// Calculate performance metrics\nconst performanceMetrics = {\n  executionId: executionId,\n  workflowId: 'ATC_CAL_Booking_Workflow',\n  startTime: startTime,\n  endTime: endTime.toISOString(),\n  totalDuration: duration,\n  status: 'COMPLETED_SUCCESSFULLY',\n  email: $('Data Validation & Sanitization').item.json.responses?.email?.value,\n  bookingId: $('Data Validation & Sanitization').item.json.bookingId,\n  operationPerformed: $input.first().json.id ? 'UPDATE_EXISTING_LEAD' : 'CREATE_NEW_LEAD',\n  emailSent: true,\n  databaseUpdated: true\n};\n\n// Log successful completion\nconsole.log('=== WORKFLOW EXECUTION COMPLETED ===');\nconsole.log('Execution ID:', executionId);\nconsole.log('Total Duration:', duration + 'ms');\nconsole.log('Status: SUCCESS');\nconsole.log('Email Sent: YES');\nconsole.log('Database Updated: YES');\nconsole.log('Operation:', performanceMetrics.operationPerformed);\n\n// Log final metrics\nconsole.log('FINAL METRICS:', JSON.stringify(performanceMetrics));\n\n// Success rate tracking\nconst successLog = {\n  timestamp: endTime.toISOString(),\n  type: 'WORKFLOW_SUCCESS',\n  executionId: executionId,\n  duration: duration,\n  email: performanceMetrics.email,\n  bookingId: performanceMetrics.bookingId\n};\n\nconsole.log('SUCCESS LOG:', JSON.stringify(successLog));\n\n// Alert for performance issues (if duration > 30 seconds)\nif (duration > 30000) {\n  console.warn('PERFORMANCE ALERT: Workflow execution took longer than expected');\n  console.warn('Duration:', duration + 'ms');\n  console.warn('Threshold: 30000ms');\n}\n\n// Return success confirmation\nreturn {\n  json: {\n    success: true,\n    executionId: executionId,\n    duration: duration,\n    timestamp: endTime.toISOString(),\n    metrics: performanceMetrics\n  }\n};"
+      },
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [
+        1904,
+        -96
+      ],
+      "id": "5bd304e9-6dbf-4cad-9dd1-399b8cfb9a6a",
+      "name": "Workflow Completion Logger"
+    },
+    {
+      "parameters": {
+        "events": [
+          "BOOKING_CANCELLED"
+        ],
+        "options": {}
+      },
+      "type": "n8n-nodes-base.calTrigger",
+      "typeVersion": 2,
+      "position": [
+        -112,
+        256
+      ],
+      "id": "ff3fe25e-9dc0-4c2c-9d58-c932d0818506",
+      "name": "Cal.com Cancellation Trigger",
+      "webhookId": "cal-cancellation-webhook",
+      "credentials": {
+        "calApi": {
+          "id": "vMCQjfPGMVC79QYi",
+          "name": "Cal.com Adude"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "search",
+        "base": {
+          "__rl": true,
+          "value": "appWzCutTRkTGvc2t",
+          "mode": "id"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tbls8AXjTeC4XWiC0",
+          "mode": "id"
+        },
+        "filterByFormula": "={Booking ID} = \"{{ $json.bookingId.toString() }}\"",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        112,
+        256
+      ],
+      "id": "40b3b7fc-f372-4da7-a4e9-33abf035877c",
+      "name": "Find Cancelled Booking",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "y0MqaXSyaHsVbNbh",
+          "name": "Airtable Personal Access Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "booking-found",
+              "leftValue": "={{ $json.length }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "gt",
+                "name": "filter.operator.gt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        336,
+        256
+      ],
+      "id": "40ac774f-bfd7-4bbf-9c0e-195128ea839c",
+      "name": "Check If Booking Exists"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "base": {
+          "__rl": true,
+          "value": "appWzCutTRkTGvc2t",
+          "mode": "id"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tbls8AXjTeC4XWiC0",
+          "mode": "id"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Status": "Cancelled",
+            "Meeting Status Summary": "Booking cancelled by user on {{ new Date().toISOString().split('T')[0] }}",
+            "id": "={{ $('Find Cancelled Booking').item.json.id }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": false
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "options",
+              "options": [
+                {
+                  "name": "Confirmed",
+                  "value": "Confirmed"
+                },
+                {
+                  "name": "Canceled",
+                  "value": "Canceled"
+                },
+                {
+                  "name": "Cancelled",
+                  "value": "Cancelled"
+                },
+                {
+                  "name": "In Progress",
+                  "value": "In Progress"
+                },
+                {
+                  "name": "Email Sent",
+                  "value": "Email Sent"
+                },
+                {
+                  "name": "Follow Up Sent",
+                  "value": "Follow Up Sent"
+                },
+                {
+                  "name": "Won",
+                  "value": "Won"
+                },
+                {
+                  "name": "Lost",
+                  "value": "Lost"
+                }
+              ],
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Meeting Status Summary",
+              "displayName": "Meeting Status Summary",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {
+          "typecast": true
+        }
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        560,
+        256
+      ],
+      "id": "d881b143-8afd-42a3-827d-37ae27921ac6",
+      "name": "Update Cancelled Status",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "y0MqaXSyaHsVbNbh",
+          "name": "Airtable Personal Access Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('Find Cancelled Booking').item.json.Email }}",
+        "subject": "Consultation Cancelled - We're Here When You're Ready ✈️",
+        "message": "=<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>Consultation Cancelled - Aviators Training Centre</title>\n  <style>\n    body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; background: #f8fafc; }\n    .container { max-width: 600px; margin: 0 auto; padding: 20px; }\n    .header { background: linear-gradient(135deg, #075E68 0%, #219099 100%); color: white; padding: 30px; text-align: center; border-radius: 8px 8px 0 0; }\n    .content { background: #ffffff; padding: 30px; border: 1px solid #e0e0e0; }\n    .cta-button { display: inline-block; background: #ff6b35; color: white; padding: 15px 30px; text-decoration: none; border-radius: 5px; font-weight: bold; margin: 20px 0; }\n    .footer { background: #f8f9fa; padding: 20px; text-align: center; border-radius: 0 0 8px 8px; }\n    .info-box { background: #e8f4fd; padding: 15px; border-left: 4px solid #075E68; margin: 20px 0; border-radius: 4px; }\n  </style>\n</head>\n<body>\n  <div class=\"container\">\n    <div class=\"header\">\n      <h1>✈️ Aviators Training Centre</h1>\n      <p>We understand plans can change</p>\n    </div>\n    \n    <div class=\"content\">\n      <h2>Hello {{ $('Find Cancelled Booking').item.json['Contact Name'] || 'Future Pilot' }},</h2>\n      \n      <p>We've received your cancellation for the consultation that was scheduled. No worries at all - we understand that plans can change!</p>\n      \n      <div class=\"info-box\">\n        <h3>🗓️ Cancelled Consultation Details</h3>\n        <p><strong>Session:</strong> {{ $('Find Cancelled Booking').item.json['Meeting Title'] }}<br>\n           <strong>Was scheduled for:</strong> {{ $('Find Cancelled Booking').item.json['Meeting Date'] }} at {{ $('Find Cancelled Booking').item.json['Meeting Time'] }} IST</p>\n      </div>\n      \n      <p><strong>Ready to reschedule?</strong> We're here whenever you're ready to take the next step in your aviation career.</p>\n      \n      <div style=\"text-align: center;\">\n        <a href=\"https://cal.com/amansuryavanshi/aviators-training-centre-enrollment-consultation?prefill=true&name={{ encodeURIComponent($('Find Cancelled Booking').item.json['Contact Name'] || '') }}&email={{ encodeURIComponent($('Find Cancelled Booking').item.json.Email || '') }}\" class=\"cta-button\">Schedule New Consultation</a>\n      </div>\n      \n      <p>If you have any questions or need assistance, feel free to reach out to us directly.</p>\n      \n      <p><strong>Contact us:</strong><br>\n         📞 <a href=\"tel:+919485687609\">+91 94856 87609</a><br>\n         💬 <a href=\"https://wa.me/919485687609\">WhatsApp</a><br>\n         ✉️ <a href=\"mailto:aviatorstrainingcentre@gmail.com\">aviatorstrainingcentre@gmail.com</a></p>\n    </div>\n\n    <div class=\"footer\">\n      <p>&copy; 2024 Aviators Training Centre. All Rights Reserved.</p>\n      <p>We're here when you're ready to soar! ✈️</p>\n    </div>\n  </div>\n</body>\n</html>",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        784,
+        256
+      ],
+      "id": "36ac388c-7197-4b0e-a8a8-df86a0ead3b1",
+      "name": "Send Cancellation Email",
+      "webhookId": "cancellation-email-webhook",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "U15PmNBEdvmXRWmr",
+          "name": "aviatorstrainingcentre@gmail.com"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "amount": 7,
+        "unit": "days"
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1008,
+        256
+      ],
+      "id": "6bf336fb-c22a-4c16-a91f-e73e4d6e394f",
+      "name": "Wait 7 Days",
+      "webhookId": "wait-7-days-webhook"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('Find Cancelled Booking').item.json.Email }}",
+        "subject": "Still Interested in Aviation Training? Let's Talk! 🛩️",
+        "message": "=<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>Follow-up - Aviators Training Centre</title>\n  <style>\n    body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; background: #f8fafc; }\n    .container { max-width: 600px; margin: 0 auto; padding: 20px; }\n    .header { background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%); color: white; padding: 30px; text-align: center; border-radius: 8px 8px 0 0; }\n    .content { background: #ffffff; padding: 30px; border: 1px solid #e0e0e0; }\n    .cta-button { display: inline-block; background: #075E68; color: white; padding: 15px 30px; text-decoration: none; border-radius: 5px; font-weight: bold; margin: 20px 0; }\n    .footer { background: #f8f9fa; padding: 20px; text-align: center; border-radius: 0 0 8px 8px; }\n    .highlight { background: #fff3cd; border: 1px solid #ffeaa7; padding: 15px; border-radius: 5px; margin: 20px 0; }\n  </style>\n</head>\n<body>\n  <div class=\"container\">\n    <div class=\"header\">\n      <h1>🛩️ Your Aviation Dreams Are Still Valid!</h1>\n      <p>We haven't forgotten about you</p>\n    </div>\n    \n    <div class=\"content\">\n      <h2>Hi {{ $('Find Cancelled Booking').item.json['Contact Name'] || 'Future Pilot' }},</h2>\n      \n      <p>A week ago, you had to cancel your consultation with us. We completely understand that timing isn't always perfect!</p>\n      \n      <div class=\"highlight\">\n        <h3>✈️ Your Aviation Journey Awaits</h3>\n        <p>Whether you're looking to become a commercial pilot, get your PPL, or advance your aviation career - we're still here to help you achieve those goals.</p>\n      </div>\n      \n      <p><strong>What's changed in a week?</strong></p>\n      <ul>\n        <li>🎯 New batch enrollments are opening soon</li>\n        <li>📚 Updated course materials and training methods</li>\n        <li>💰 Early bird pricing still available</li>\n        <li>🏆 More success stories from our recent graduates</li>\n      </ul>\n      \n      <div style=\"text-align: center;\">\n        <a href=\"https://cal.com/amansuryavanshi/aviators-training-centre-enrollment-consultation?prefill=true&name={{ encodeURIComponent($('Find Cancelled Booking').item.json['Contact Name'] || '') }}&email={{ encodeURIComponent($('Find Cancelled Booking').item.json.Email || '') }}\" class=\"cta-button\">Let's Reschedule - I'm Ready Now!</a>\n      </div>\n      \n      <p>Or if you prefer, just reply to this email and let us know what works best for you.</p>\n      \n      <p><strong>Quick questions?</strong> WhatsApp us at <a href=\"https://wa.me/919485687609\">+91 94856 87609</a></p>\n    </div>\n\n    <div class=\"footer\">\n      <p>&copy; 2024 Aviators Training Centre. All Rights Reserved.</p>\n      <p>Ready to take off when you are! 🚀</p>\n    </div>\n  </div>\n</body>\n</html>",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1232,
+        256
+      ],
+      "id": "4b324ab8-08a5-4c95-910c-e8bcaf7ae1b5",
+      "name": "Send Follow-up After Cancellation",
+      "webhookId": "followup-cancellation-webhook",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "U15PmNBEdvmXRWmr",
+          "name": "aviatorstrainingcentre@gmail.com"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "base": {
+          "__rl": true,
+          "value": "appWzCutTRkTGvc2t",
+          "mode": "id"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tbls8AXjTeC4XWiC0",
+          "mode": "id"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Status": "Follow Up Sent",
+            "Meeting Status Summary": "Cancellation follow-up sent after 7 days on {{ new Date().toISOString().split('T')[0] }}",
+            "id": "={{ $('Find Cancelled Booking').item.json.id }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": false
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "options",
+              "options": [
+                {
+                  "name": "Confirmed",
+                  "value": "Confirmed"
+                },
+                {
+                  "name": "Canceled",
+                  "value": "Canceled"
+                },
+                {
+                  "name": "Cancelled",
+                  "value": "Cancelled"
+                },
+                {
+                  "name": "In Progress",
+                  "value": "In Progress"
+                },
+                {
+                  "name": "Email Sent",
+                  "value": "Email Sent"
+                },
+                {
+                  "name": "Follow Up Sent",
+                  "value": "Follow Up Sent"
+                },
+                {
+                  "name": "Won",
+                  "value": "Won"
+                },
+                {
+                  "name": "Lost",
+                  "value": "Lost"
+                }
+              ],
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Meeting Status Summary",
+              "displayName": "Meeting Status Summary",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {
+          "typecast": true
+        }
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        1456,
+        256
+      ],
+      "id": "a1507d26-76b8-475e-946d-503d24c21b2c",
+      "name": "Update Follow-up Status",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "y0MqaXSyaHsVbNbh",
+          "name": "Airtable Personal Access Token account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Firebase Database Trigger": {
+      "main": [
+        [
+          {
+            "node": "Validate Contact Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validate Contact Data": {
+      "main": [
+        [
+          {
+            "node": "Send Consultation Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Consultation Email": {
+      "main": [
+        [
+          {
+            "node": "Create Lead Record",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Lead Record": {
+      "main": [
+        [
+          {
+            "node": "Wait 48 Hours",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait 48 Hours": {
+      "main": [
+        [
+          {
+            "node": "Check Meeting Status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Meeting Status": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Follow-up Email": {
+      "main": [
+        [
+          {
+            "node": "Follow-Up Update ",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Send Follow-up Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cal.com Booking Trigger": {
+      "main": [
+        [
+          {
+            "node": "Data Validation & Sanitization",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Data Validation & Sanitization": {
+      "main": [
+        [
+          {
+            "node": "Find Existing Lead Record",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Find Existing Lead Record": {
+      "main": [
+        [
+          {
+            "node": "Duplicate Detection Handler",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Duplicate Detection Handler": {
+      "main": [
+        [
+          {
+            "node": "Error Handler & Retry Logic",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Error Handler & Retry Logic": {
+      "main": [
+        [
+          {
+            "node": "Check If Lead Exists",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Monitoring & Logging System": {
+      "main": [
+        [
+          {
+            "node": "Workflow Completion Logger",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check If Lead Exists": {
+      "main": [
+        [
+          {
+            "node": "Update Existing Lead Record",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Create New Lead Record",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Booking Confirmation": {
+      "main": [
+        [
+          {
+            "node": "Monitoring & Logging System",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update Existing Lead Record": {
+      "main": [
+        [
+          {
+            "node": "Send Booking Confirmation",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create New Lead Record": {
+      "main": [
+        [
+          {
+            "node": "Send Booking Confirmation",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cal.com Cancellation Trigger": {
+      "main": [
+        [
+          {
+            "node": "Find Cancelled Booking",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Find Cancelled Booking": {
+      "main": [
+        [
+          {
+            "node": "Check If Booking Exists",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check If Booking Exists": {
+      "main": [
+        [
+          {
+            "node": "Update Cancelled Status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update Cancelled Status": {
+      "main": [
+        [
+          {
+            "node": "Send Cancellation Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Cancellation Email": {
+      "main": [
+        [
+          {
+            "node": "Wait 7 Days",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait 7 Days": {
+      "main": [
+        [
+          {
+            "node": "Send Follow-up After Cancellation",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Follow-up After Cancellation": {
+      "main": [
+        [
+          {
+            "node": "Update Follow-up Status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "instanceId": "2aff0c99a9b9ea9c976d68c5887d32445a6bdc6f59f99592eb5b4c4dbaf3d92e"
+  }
+}

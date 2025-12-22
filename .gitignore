@@ -96,7 +96,7 @@ src/app/api/admin/testing/
 # Custom test files and folders
 /test-env.js
 /test-blog-api.js
-/.github/workflows/comprehensive-tests.yml
+
 /public/test-analytics.html
 /src/app/api/**/test-*/
 /src/app/test-*/
