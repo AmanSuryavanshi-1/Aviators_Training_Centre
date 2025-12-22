@@ -1,0 +1,863 @@
+{
+  "name": "ATC Local Lead Import - Phone-Optimized Workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "lead-import",
+        "authentication": "headerAuth",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [-1000, 200],
+      "id": "lead-import-webhook",
+      "name": "Lead Import Webhook",
+      "webhookId": "atc-local-lead-import",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "webhook-auth-header",
+          "name": "ATC Webhook Auth"
+        }
+      },
+      "continueOnFail": true,
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 1000
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 */30 * * * *"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.cron",
+      "typeVersion": 1,
+      "position": [-1000, 400],
+      "id": "google-sheets-trigger",
+      "name": "Google Sheets Check (Every 30min)"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "manual-import",
+        "authentication": "headerAuth",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [-1000, 800],
+      "id": "manual-import-webhook",
+      "name": "Manual Import Trigger",
+      "webhookId": "atc-manual-import",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "webhook-auth-header",
+          "name": "ATC Webhook Auth"
+        }
+      },
+      "continueOnFail": true,
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 1000
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "csv-upload",
+        "authentication": "headerAuth",
+        "options": {
+          "binaryData": true
+        }
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [-1000, 600],
+      "id": "csv-upload-webhook",
+      "name": "CSV Upload Webhook",
+      "webhookId": "atc-csv-upload",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "webhook-auth-header",
+          "name": "ATC Webhook Auth"
+        }
+      },
+      "continueOnFail": true,
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 1000
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $vars.GOOGLE_SHEETS_LEAD_ID }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1"
+        },
+        "columnToMatchOn": "processed",
+        "valueToMatchOn": "false",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [-800, 400],
+      "id": "read-google-sheets",
+      "name": "Read Google Sheets",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "google-sheets-oauth",
+          "name": "Google Sheets OAuth"
+        }
+      },
+      "continueOnFail": true,
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 2000
+    },
+    {
+      "parameters": {
+        "jsCode": "// Parse CSV data - Phone-first approach\nconst inputData = $input.all()[0];\nlet csvData = '';\n\nif (inputData.binary && inputData.binary.data) {\n  csvData = Buffer.from(inputData.binary.data.data, 'base64').toString('utf8');\n} else if (inputData.json && inputData.json.body && inputData.json.body.csv) {\n  csvData = inputData.json.body.csv;\n} else {\n  throw new Error('No CSV data found in upload');\n}\n\n// Parse CSV to JSON - Phone is required, name/email optional\nfunction parseCSV(csvText) {\n  const lines = csvText.trim().split('\\n');\n  if (lines.length < 2) {\n    throw new Error('CSV must have at least header and one data row');\n  }\n  \n  const headers = lines[0].split(',').map(h => h.trim().toLowerCase());\n  const leads = [];\n  \n  for (let i = 1; i < lines.length; i++) {\n    const values = lines[i].split(',').map(v => v.trim());\n    if (values.length !== headers.length) continue;\n    \n    const lead = {};\n    headers.forEach((header, index) => {\n      let fieldName = header;\n      if (header.includes('name')) fieldName = 'name';\n      else if (header.includes('phone') || header.includes('mobile')) fieldName = 'phone';\n      else if (header.includes('email')) fieldName = 'email';\n      else if (header.includes('note') || header.includes('comment')) fieldName = 'notes';\n      \n      lead[fieldName] = values[index] || '';\n    });\n    \n    // Phone is required, name/email optional\n    if (lead.phone) {\n      leads.push({\n        phone: lead.phone,\n        name: lead.name || '', // Optional\n        email: lead.email || '', // Optional\n        notes: lead.notes || ''\n      });\n    }\n  }\n  \n  return leads;\n}\n\nconst leads = parseCSV(csvData);\n\nreturn {\n  body: {\n    leads: leads,\n    source: 'CSV Upload',\n    uploadedAt: new Date().toISOString()\n  }\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [-800, 600],
+      "id": "parse-csv-data",
+      "name": "Parse CSV Data"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Process Google Sheets data - Phone-first approach\nconst inputData = $input.all();\n\nif (!inputData || inputData.length === 0) {\n  return { body: { leads: [], source: 'Google Sheets', message: 'No new leads found' } };\n}\n\nconst leads = [];\nconst processedRows = [];\n\ninputData.forEach(row => {\n  if (row.json && row.json.processed !== 'true') {\n    const phone = row.json.phone || row.json.Phone || row.json.mobile || row.json.Mobile || '';\n    \n    // Phone is required, name/email optional\n    if (phone) {\n      const lead = {\n        phone: phone,\n        name: row.json.name || row.json.Name || '', // Optional\n        email: row.json.email || row.json.Email || '', // Optional\n        notes: row.json.notes || row.json.Notes || row.json.comments || row.json.Comments || ''\n      };\n      \n      leads.push(lead);\n      processedRows.push(row.json.row_number || leads.length);\n    }\n  }\n});\n\nreturn {\n  body: {\n    leads: leads,\n    source: 'Google Sheets',\n    processedRows: processedRows,\n    timestamp: new Date().toISOString()\n  }\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [-600, 400],
+      "id": "process-sheets-data",
+      "name": "Process Sheets Data"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Handle manual import trigger - fetch Google Sheets data\nconst triggerData = $input.all()[0]?.json?.body;\n\nif (!triggerData) {\n  throw new Error('No trigger data received');\n}\n\n// Manual trigger - return signal to fetch Google Sheets\nreturn {\n  body: {\n    leads: [],\n    source: 'Manual Trigger',\n    action: 'fetch_sheets',\n    timestamp: new Date().toISOString()\n  }\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [-800, 800],
+      "id": "process-manual-trigger",
+      "name": "Process Manual Trigger"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 2.1,
+      "position": [-600, 300],
+      "id": "merge-all-sources",
+      "name": "Merge All Sources"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "data-exists-check",
+              "leftValue": "={{ $json.body.leads }}",
+              "rightValue": "",
+              "operator": {
+                "type": "array",
+                "operation": "notEmpty"
+              }
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [-400, 300],
+      "id": "validate-import-data",
+      "name": "Validate Import Data"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Phone-first lead processing with E.164 normalization\nconst inputData = $input.all()[0].json.body;\nconst leads = inputData.leads || [];\nconst importSource = inputData.source || 'Manual';\nconst timestamp = new Date().toISOString();\n\n// Phone normalization to E.164 format\nfunction normalizePhoneToE164(phone) {\n  if (!phone) return null;\n  const cleaned = phone.replace(/[^\\d+]/g, '');\n  \n  // Handle various Indian phone number formats\n  if (cleaned.startsWith('+91')) {\n    const number = cleaned.substring(3);\n    if (number.length === 10 && /^[6-9]\\d{9}$/.test(number)) {\n      return '+91' + number;\n    }\n  } else if (cleaned.startsWith('91')) {\n    const number = cleaned.substring(2);\n    if (number.length === 10 && /^[6-9]\\d{9}$/.test(number)) {\n      return '+91' + number;\n    }\n  } else if (cleaned.length === 10 && /^[6-9]\\d{9}$/.test(cleaned)) {\n    return '+91' + cleaned;\n  }\n  \n  return null; // Invalid phone number\n}\n\n// Calculate data completeness percentage\nfunction calculateDataCompleteness(phone, name, email) {\n  let score = 0;\n  if (phone) score += 33; // Phone is required\n  if (name && name.trim()) score += 33; // Name is optional\n  if (email && email.trim()) score += 34; // Email is optional\n  return Math.min(score, 100);\n}\n\n// Process leads with phone-first approach\nconst validLeads = [];\nconst invalidLeads = [];\nconst duplicateMap = new Map();\n\nleads.forEach((lead, index) => {\n  const normalizedPhone = normalizePhoneToE164(lead.phone);\n  \n  if (!normalizedPhone) {\n    invalidLeads.push({\n      index: index,\n      originalData: lead,\n      errors: ['Invalid Indian mobile number format']\n    });\n    return;\n  }\n  \n  const processedLead = {\n    phone: normalizedPhone,\n    name: lead.name ? lead.name.trim() : '',\n    email: lead.email ? lead.email.trim().toLowerCase() : '',\n    notes: lead.notes || '',\n    leadSource: importSource,\n    status: 'New',\n    dataCompleteness: calculateDataCompleteness(normalizedPhone, lead.name, lead.email),\n    interestDetected: false,\n    whatsappScore: 0,\n    whatsappRating: 1,\n    whatsappLastConversation: '[]',\n    meetingBooked: false,\n    createdAt: timestamp,\n    updatedAt: timestamp\n  };\n  \n  // Check for duplicates by phone\n  if (duplicateMap.has(normalizedPhone)) {\n    duplicateMap.get(normalizedPhone).push({ index, lead: processedLead });\n  } else {\n    duplicateMap.set(normalizedPhone, [{ index, lead: processedLead }]);\n    validLeads.push({\n      index: index,\n      normalizedData: processedLead,\n      deduplicationKey: normalizedPhone\n    });\n  }\n});\n\n// Handle duplicates within batch\nconst duplicateLeads = [];\nduplicateMap.forEach((leadGroup, phone) => {\n  if (leadGroup.length > 1) {\n    leadGroup.slice(1).forEach(duplicate => {\n      duplicateLeads.push({\n        index: duplicate.index,\n        normalizedData: duplicate.lead,\n        deduplicationKey: phone\n      });\n    });\n  }\n});\n\nconst summary = {\n  total: leads.length,\n  valid: validLeads.length,\n  invalid: invalidLeads.length,\n  duplicates: duplicateLeads.length,\n  source: importSource,\n  timestamp: timestamp\n};\n\nconsole.log('Phone-first lead processing complete:', summary);\n\nreturn {\n  validLeads: validLeads,\n  invalidLeads: invalidLeads,\n  duplicateLeads: duplicateLeads,\n  summary: summary,\n  importSource: importSource,\n  timestamp: timestamp\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [-200, 300],
+      "id": "process-phone-first-leads",
+      "name": "Process Phone-First Leads"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "has-valid-leads",
+              "leftValue": "={{ $json.validLeads.length }}",
+              "rightValue": "0",
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [0, 300],
+      "id": "check-valid-leads",
+      "name": "Check Valid Leads"
+    },
+    {
+      "parameters": {
+        "operation": "search",
+        "base": {
+          "__rl": true,
+          "value": "={{ $vars.AIRTABLE_BASE_ID }}",
+          "mode": "id"
+        },
+        "table": {
+          "__rl": true,
+          "value": "={{ $vars.AIRTABLE_LEADS_TABLE_ID }}",
+          "mode": "id"
+        },
+        "filterByFormula": "=OR({{ $json.validLeads.map(lead => `{Phone} = \"${lead.deduplicationKey}\"`).join(', ') }})",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [200, 200],
+      "id": "check-existing-leads",
+      "name": "Check Existing Leads",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "airtable-token",
+          "name": "ATC Airtable Token"
+        }
+      },
+      "continueOnFail": true,
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 2000
+    },
+    {
+      "parameters": {
+        "jsCode": "// Deduplicate against existing Airtable records - Phone-first approach\nconst processedData = $input.first().json;\nconst existingLeads = $input.last().json || [];\nconst importSource = processedData.importSource;\nconst timestamp = processedData.timestamp;\n\n// Create map of existing leads by phone\nconst existingLeadsMap = new Map();\nif (Array.isArray(existingLeads)) {\n  existingLeads.forEach(lead => {\n    if (lead.fields && lead.fields.Phone) {\n      existingLeadsMap.set(lead.fields.Phone, lead);\n    }\n  });\n}\n\n// Separate new leads from duplicates\nconst newLeads = [];\nconst duplicateUpdates = [];\n\nprocessedData.validLeads.forEach(leadItem => {\n  const lead = leadItem.normalizedData;\n  const existingLead = existingLeadsMap.get(lead.phone);\n  \n  if (existingLead) {\n    // This is a duplicate - append import info to Notes\n    const importNote = `\\n--- DUPLICATE IMPORT (${timestamp}) ---\\n` +\n      `Source: ${importSource}\\n` +\n      `Phone: ${lead.phone}\\n` +\n      `Name: ${lead.name || 'Not provided'}\\n` +\n      `Email: ${lead.email || 'Not provided'}\\n` +\n      `Data Completeness: ${lead.dataCompleteness}%\\n` +\n      `Original Notes: ${lead.notes || 'None'}\\n` +\n      `--- END DUPLICATE IMPORT ---`;\n    \n    const updatedNotes = (existingLead.fields.Notes || '') + importNote;\n    \n    // Update data completeness if new data is more complete\n    const currentCompleteness = existingLead.fields.DataCompleteness || 33;\n    const newCompleteness = Math.max(currentCompleteness, lead.dataCompleteness);\n    \n    duplicateUpdates.push({\n      id: existingLead.id,\n      fields: {\n        Notes: updatedNotes,\n        LeadSource: lead.leadSource,\n        DataCompleteness: newCompleteness,\n        UpdatedAt: timestamp,\n        // Update name/email if they were empty and now provided\n        ...((!existingLead.fields.Name || existingLead.fields.Name === '') && lead.name ? { Name: lead.name } : {}),\n        ...((!existingLead.fields.Email || existingLead.fields.Email === '') && lead.email ? { Email: lead.email } : {})\n      }\n    });\n  } else {\n    // This is a new lead - create with phone-first approach\n    newLeads.push({\n      fields: {\n        Phone: lead.phone,\n        Name: lead.name || '', // Optional - can be empty\n        Email: lead.email || '', // Optional - can be empty\n        Status: 'New',\n        LeadSource: lead.leadSource,\n        Notes: lead.notes || '',\n        DataCompleteness: lead.dataCompleteness,\n        InterestDetected: false,\n        WhatsAppScore: 0,\n        WhatsAppRating: '1',\n        WhatsAppLastConversation: '[]',\n        MeetingBooked: false,\n        CreatedAt: timestamp,\n        UpdatedAt: timestamp\n      }\n    });\n  }\n});\n\nconsole.log(`Phone-first deduplication complete: ${newLeads.length} new leads, ${duplicateUpdates.length} duplicates`);\n\nreturn {\n  newLeads: newLeads,\n  duplicateUpdates: duplicateUpdates,\n  summary: {\n    ...processedData.summary,\n    newLeads: newLeads.length,\n    duplicateUpdates: duplicateUpdates.length\n  },\n  invalidLeads: processedData.invalidLeads,\n  importSource: importSource,\n  timestamp: timestamp\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [400, 300],
+      "id": "deduplicate-phone-leads",
+      "name": "Deduplicate Phone Leads"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "has-new-leads",
+              "leftValue": "={{ $json.newLeads.length }}",
+              "rightValue": "0",
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [600, 200],
+      "id": "check-new-leads",
+      "name": "Check New Leads"
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "base": {
+          "__rl": true,
+          "value": "={{ $vars.AIRTABLE_BASE_ID }}",
+          "mode": "id"
+        },
+        "table": {
+          "__rl": true,
+          "value": "={{ $vars.AIRTABLE_LEADS_TABLE_ID }}",
+          "mode": "id"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "schema": [
+            {
+              "id": "Phone",
+              "displayName": "Phone",
+              "required": true,
+              "type": "string"
+            },
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "type": "string"
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "type": "string"
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "type": "options",
+              "options": [
+                {"name": "New", "value": "New"},
+                {"name": "Hot", "value": "Hot"},
+                {"name": "Warm", "value": "Warm"},
+                {"name": "Cold", "value": "Cold"},
+                {"name": "Called", "value": "Called"},
+                {"name": "Converted", "value": "Converted"},
+                {"name": "DNC", "value": "DNC"}
+              ]
+            },
+            {
+              "id": "LeadSource",
+              "displayName": "LeadSource",
+              "required": false,
+              "type": "string"
+            },
+            {
+              "id": "Notes",
+              "displayName": "Notes",
+              "required": false,
+              "type": "string"
+            },
+            {
+              "id": "DataCompleteness",
+              "displayName": "DataCompleteness",
+              "required": false,
+              "type": "number"
+            },
+            {
+              "id": "InterestDetected",
+              "displayName": "InterestDetected",
+              "required": false,
+              "type": "boolean"
+            },
+            {
+              "id": "WhatsAppScore",
+              "displayName": "WhatsAppScore",
+              "required": false,
+              "type": "number"
+            },
+            {
+              "id": "WhatsAppRating",
+              "displayName": "WhatsAppRating",
+              "required": false,
+              "type": "options",
+              "options": [
+                {"name": "1", "value": "1"},
+                {"name": "2", "value": "2"},
+                {"name": "3", "value": "3"},
+                {"name": "4", "value": "4"},
+                {"name": "5", "value": "5"}
+              ]
+            },
+            {
+              "id": "WhatsAppLastConversation",
+              "displayName": "WhatsAppLastConversation",
+              "required": false,
+              "type": "string"
+            },
+            {
+              "id": "MeetingBooked",
+              "displayName": "MeetingBooked",
+              "required": false,
+              "type": "boolean"
+            },
+            {
+              "id": "CreatedAt",
+              "displayName": "CreatedAt",
+              "required": false,
+              "type": "dateTime"
+            },
+            {
+              "id": "UpdatedAt",
+              "displayName": "UpdatedAt",
+              "required": false,
+              "type": "dateTime"
+            }
+          ]
+        },
+        "options": {
+          "bulkSize": 10
+        }
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [800, 200],
+      "id": "create-phone-leads",
+      "name": "Create Phone Leads",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "airtable-token",
+          "name": "ATC Airtable Token"
+        }
+      },
+      "continueOnFail": true,
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 2000
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "has-duplicate-updates",
+              "leftValue": "={{ $('Deduplicate Phone Leads').item.json.duplicateUpdates.length }}",
+              "rightValue": "0",
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [600, 400],
+      "id": "check-duplicate-updates",
+      "name": "Check Duplicate Updates"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "base": {
+          "__rl": true,
+          "value": "={{ $vars.AIRTABLE_BASE_ID }}",
+          "mode": "id"
+        },
+        "table": {
+          "__rl": true,
+          "value": "={{ $vars.AIRTABLE_LEADS_TABLE_ID }}",
+          "mode": "id"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "type": "string",
+              "readOnly": true
+            },
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "type": "string"
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "type": "string"
+            },
+            {
+              "id": "Notes",
+              "displayName": "Notes",
+              "required": false,
+              "type": "string"
+            },
+            {
+              "id": "LeadSource",
+              "displayName": "LeadSource",
+              "required": false,
+              "type": "string"
+            },
+            {
+              "id": "DataCompleteness",
+              "displayName": "DataCompleteness",
+              "required": false,
+              "type": "number"
+            },
+            {
+              "id": "UpdatedAt",
+              "displayName": "UpdatedAt",
+              "required": false,
+              "type": "dateTime"
+            }
+          ]
+        },
+        "options": {
+          "bulkSize": 10
+        }
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [800, 400],
+      "id": "update-duplicate-leads",
+      "name": "Update Duplicate Leads",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "airtable-token",
+          "name": "ATC Airtable Token"
+        }
+      },
+      "continueOnFail": true,
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 2000
+    },
+    {
+      "parameters": {
+        "jsCode": "// Generate comprehensive import summary for phone-first approach\nconst dedupeData = $('Deduplicate Phone Leads').first().json;\nconst createResult = $('Create Phone Leads').first()?.json || [];\nconst updateResult = $('Update Duplicate Leads').first()?.json || [];\n\n// Create final summary\nconst finalSummary = {\n  ...dedupeData.summary,\n  createdLeads: Array.isArray(createResult) ? createResult.length : 0,\n  updatedLeads: Array.isArray(updateResult) ? updateResult.length : 0,\n  processingTime: new Date().toISOString(),\n  success: true,\n  approach: 'phone-first'\n};\n\n// Generate detailed report\nlet report = `📱 ATC Local Lead Import - Phone-First Summary\\n\\n`;\nreport += `Import Source: ${dedupeData.importSource}\\n`;\nreport += `Processing Time: ${finalSummary.processingTime}\\n`;\nreport += `Approach: Phone-first (name/email optional)\\n\\n`;\n\nreport += `📈 Import Results:\\n`;\nreport += `• Total Leads Processed: ${finalSummary.total}\\n`;\nreport += `• ✅ Valid Phone Numbers: ${finalSummary.valid}\\n`;\nreport += `• 🆕 New Leads Created: ${finalSummary.createdLeads}\\n`;\nreport += `• 🔄 Duplicate Leads Updated: ${finalSummary.updatedLeads}\\n`;\nreport += `• ❌ Invalid Phone Numbers: ${finalSummary.invalid}\\n\\n`;\n\nreport += `📊 Data Completeness Approach:\\n`;\nreport += `• Phone Only (33%): Ready for WhatsApp outreach\\n`;\nreport += `• Phone + Name/Email (66%): Partial data available\\n`;\nreport += `• Phone + Name + Email (100%): Complete profile\\n\\n`;\n\n// Add invalid lead details if any\nif (dedupeData.invalidLeads && dedupeData.invalidLeads.length > 0) {\n  report += `❌ Invalid Phone Numbers Details:\\n`;\n  dedupeData.invalidLeads.forEach((item, i) => {\n    report += `  ${i + 1}. Row ${item.index + 1}: ${item.errors.join(', ')} - Phone: ${item.originalData.phone}\\n`;\n  });\n  report += '\\n';\n}\n\nreport += `✅ Result: ${finalSummary.createdLeads + finalSummary.updatedLeads} leads ready for WhatsApp AI workflow\\n`;\nreport += `Processing completed at: ${finalSummary.processingTime}`;\n\nconsole.log('Final Phone-First Import Summary:', finalSummary);\n\nreturn {\n  summary: finalSummary,\n  report: report,\n  invalidLeads: dedupeData.invalidLeads || [],\n  timestamp: dedupeData.timestamp,\n  success: true,\n  readyForWhatsApp: finalSummary.createdLeads + finalSummary.updatedLeads\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1000, 300],
+      "id": "generate-import-summary",
+      "name": "Generate Import Summary"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ $json }}",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [1200, 300],
+      "id": "respond-to-webhook",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "{\n  \"success\": false,\n  \"error\": \"No valid leads found. Please provide leads with valid phone numbers.\",\n  \"timestamp\": \"{{ new Date().toISOString() }}\"\n}",
+        "options": {
+          "responseCode": 400,
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [-400, 500],
+      "id": "respond-error",
+      "name": "Respond Error"
+    }
+  ],
+  "connections": {
+    "Lead Import Webhook": {
+      "main": [
+        [
+          {
+            "node": "Merge All Sources",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets Check (Every 30min)": {
+      "main": [
+        [
+          {
+            "node": "Read Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CSV Upload Webhook": {
+      "main": [
+        [
+          {
+            "node": "Parse CSV Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Manual Import Trigger": {
+      "main": [
+        [
+          {
+            "node": "Process Manual Trigger",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Process Manual Trigger": {
+      "main": [
+        [
+          {
+            "node": "Read Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read Google Sheets": {
+      "main": [
+        [
+          {
+            "node": "Process Sheets Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse CSV Data": {
+      "main": [
+        [
+          {
+            "node": "Merge All Sources",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Process Sheets Data": {
+      "main": [
+        [
+          {
+            "node": "Merge All Sources",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
+    },
+    "Merge All Sources": {
+      "main": [
+        [
+          {
+            "node": "Validate Import Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validate Import Data": {
+      "main": [
+        [
+          {
+            "node": "Process Phone-First Leads",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Respond Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Process Phone-First Leads": {
+      "main": [
+        [
+          {
+            "node": "Check Valid Leads",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Valid Leads": {
+      "main": [
+        [
+          {
+            "node": "Check Existing Leads",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Generate Import Summary",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Existing Leads": {
+      "main": [
+        [
+          {
+            "node": "Deduplicate Phone Leads",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Deduplicate Phone Leads": {
+      "main": [
+        [
+          {
+            "node": "Check New Leads",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Check Duplicate Updates",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check New Leads": {
+      "main": [
+        [
+          {
+            "node": "Create Phone Leads",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Generate Import Summary",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Phone Leads": {
+      "main": [
+        [
+          {
+            "node": "Generate Import Summary",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Duplicate Updates": {
+      "main": [
+        [
+          {
+            "node": "Update Duplicate Leads",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Generate Import Summary",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update Duplicate Leads": {
+      "main": [
+        [
+          {
+            "node": "Generate Import Summary",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Import Summary": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [
+    {
+      "createdAt": "2024-01-01T00:00:00.000Z",
+      "updatedAt": "2024-01-01T00:00:00.000Z",
+      "id": "atc-local-lead-import",
+      "name": "ATC Local Lead Import"
+    }
+  ],
+  "triggerCount": 1,
+  "updatedAt": "2024-01-01T00:00:00.000Z",
+  "versionId": "1"
+}

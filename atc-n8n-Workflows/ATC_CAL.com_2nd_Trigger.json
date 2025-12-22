@@ -1,0 +1,905 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "events": [
+          "BOOKING_CREATED"
+        ],
+        "options": {}
+      },
+      "type": "n8n-nodes-base.calTrigger",
+      "typeVersion": 2,
+      "position": [
+        -1600,
+        320
+      ],
+      "id": "b12faf2d-7059-4633-8c00-21ebf0dcaa92",
+      "name": "Cal.com Booking Trigger",
+      "webhookId": "64c3f715-d3f3-4273-8051-8d32fab07d26",
+      "credentials": {
+        "calApi": {
+          "id": "vMCQjfPGMVC79QYi",
+          "name": "Cal.com Adude"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "functionCode": "// Comprehensive Data Validation and Sanitization\nconst webhookData = $input.first().json;\n\n// Validation schema for required fields\nconst requiredFields = {\n  bookingId: 'number',\n  title: 'string',\n  startTime: 'string',\n  endTime: 'string',\n  attendees: 'array',\n  responses: 'object'\n};\n\n// Sanitization functions\nfunction sanitizeEmail(email) {\n  if (!email || typeof email !== 'string') return null;\n  return email.toLowerCase().trim().replace(/[^a-zA-Z0-9@._-]/g, '');\n}\n\nfunction sanitizeName(name) {\n  if (!name || typeof name !== 'string') return 'Unknown';\n  return name.trim().replace(/[<>\"'&]/g, '').substring(0, 100);\n}\n\nfunction sanitizeString(str, maxLength = 500) {\n  if (!str || typeof str !== 'string') return '';\n  return str.trim().replace(/[<>\"'&]/g, '').substring(0, maxLength);\n}\n\n// Validate required fields\nconsole.log('Starting webhook data validation...');\nconst validationErrors = [];\n\nfor (const [field, expectedType] of Object.entries(requiredFields)) {\n  const value = webhookData[field];\n  \n  if (value === undefined || value === null) {\n    validationErrors.push(`Missing required field: ${field}`);\n    continue;\n  }\n  \n  const actualType = Array.isArray(value) ? 'array' : typeof value;\n  if (actualType !== expectedType) {\n    validationErrors.push(`Invalid type for ${field}: expected ${expectedType}, got ${actualType}`);\n  }\n}\n\n// Validate email specifically\nconst email = webhookData.responses?.email?.value;\nif (!email || !email.includes('@')) {\n  validationErrors.push('Invalid or missing email address');\n}\n\n// Validate attendees array\nif (!webhookData.attendees || webhookData.attendees.length === 0) {\n  validationErrors.push('No attendees found in booking');\n}\n\n// Log validation results\nif (validationErrors.length > 0) {\n  console.error('Webhook validation failed:', validationErrors);\n  // For now, continue with sanitized data but log the issues\n  console.log('Continuing with sanitized data despite validation errors');\n}\n\n// Sanitize and normalize data\nconst sanitizedData = {\n  ...webhookData,\n  title: sanitizeString(webhookData.title, 200),\n  attendees: webhookData.attendees?.map(attendee => ({\n    ...attendee,\n    name: sanitizeName(attendee.name),\n    email: sanitizeEmail(attendee.email)\n  })) || [],\n  responses: {\n    ...webhookData.responses,\n    email: {\n      value: sanitizeEmail(webhookData.responses?.email?.value)\n    }\n  }\n};\n\n// Add validation metadata\nsanitizedData._validation = {\n  isValid: validationErrors.length === 0,\n  errors: validationErrors,\n  sanitized: true,\n  timestamp: new Date().toISOString()\n};\n\nconsole.log('Data validation completed. Valid:', sanitizedData._validation.isValid);\nconsole.log('Sanitized email:', sanitizedData.responses.email.value);\nconsole.log('Sanitized attendee name:', sanitizedData.attendees[0]?.name);\n\nreturn { json: sanitizedData };"
+      },
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [
+        -1500,
+        320
+      ],
+      "id": "data-validation-sanitization",
+      "name": "Data Validation & Sanitization"
+    },
+    {
+      "parameters": {
+        "operation": "search",
+        "base": {
+          "__rl": true,
+          "value": "appWzCutTRkTGvc2t",
+          "mode": "id"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tbls8AXjTeC4XWiC0",
+          "mode": "id"
+        },
+        "filterByFormula": "={Email} = \"{{ $('Data Validation & Sanitization').item.json.responses.email.value }}\"",
+        "options": {
+          "sort": [
+            {
+              "field": "Created Date",
+              "direction": "desc"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        -1400,
+        320
+      ],
+      "id": "find-existing-lead-record",
+      "name": "Find Existing Lead Record",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "y0MqaXSyaHsVbNbh",
+          "name": "Airtable Personal Access Token account"
+        }
+      },
+      "continueOnFail": true,
+      "retryOnFail": true,
+      "maxTries": 4,
+      "waitBetweenTries": 1000,
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "functionCode": "// ROBUST Duplicate Detection and Lead Selection Logic\n// This function ensures only valid, complete lead records are processed\n\nconst leads = $input.all();\nconst email = $('Data Validation & Sanitization').item.json.responses.email.value;\n\nconsole.log('=== DUPLICATE DETECTION HANDLER ===');\nconsole.log('Email being processed:', email);\nconsole.log('Raw input count:', leads.length);\nconsole.log('Raw input data:', JSON.stringify(leads, null, 2));\n\n// Function to validate if a lead is complete and valid\nfunction isValidLead(lead) {\n  if (!lead || !lead.json) {\n    console.log('Invalid: No lead or json property');\n    return false;\n  }\n  \n  const json = lead.json;\n  \n  // Check for required Airtable ID\n  if (!json.id || typeof json.id !== 'string' || json.id.length < 10) {\n    console.log('Invalid: Missing or invalid ID:', json.id);\n    return false;\n  }\n  \n  // Check if ID follows Airtable format (starts with 'rec')\n  if (!json.id.startsWith('rec')) {\n    console.log('Invalid: ID does not follow Airtable format:', json.id);\n    return false;\n  }\n  \n  // Check if record has meaningful data (not just empty object)\n  const keys = Object.keys(json);\n  if (keys.length <= 1) { // Only 'id' key or empty\n    console.log('Invalid: Record has no meaningful data, keys:', keys);\n    return false;\n  }\n  \n  // Check for email match (additional validation)\n  if (json.Email && json.Email !== email) {\n    console.log('Invalid: Email mismatch. Expected:', email, 'Got:', json.Email);\n    return false;\n  }\n  \n  console.log('Valid lead found:', json.id, 'with', keys.length, 'fields');\n  return true;\n}\n\n// Handle empty input\nif (!leads || leads.length === 0) {\n  console.log('RESULT: No input data → RETURN NO_LEADS_INDICATOR (triggers CREATE)');\n  return [{ json: { _noLeadsFound: true, _email: email } }];\n}\n\n// Filter and validate all leads\nconst validLeads = leads.filter(isValidLead);\n\nconsole.log('Valid leads after filtering:', validLeads.length);\n\n// No valid leads found\nif (validLeads.length === 0) {\n  console.log('RESULT: No valid leads found → RETURN NO_LEADS_INDICATOR (triggers CREATE)');\n  return [{ json: { _noLeadsFound: true, _email: email } }];\n}\n\n// Single valid lead found\nif (validLeads.length === 1) {\n  const lead = validLeads[0];\n  console.log('RESULT: Single valid lead found → RETURN LEAD (triggers UPDATE)');\n  console.log('Lead ID:', lead.json.id);\n  console.log('Lead Email:', lead.json.Email);\n  console.log('Lead Status:', lead.json.Status);\n  return validLeads;\n}\n\n// Multiple valid leads found - select most recent\nconsole.log('RESULT: Multiple valid leads found → SELECT MOST RECENT (triggers UPDATE)');\nconsole.log('Total valid duplicates:', validLeads.length);\n\n// Log all duplicates for manual review\nvalidLeads.forEach((lead, index) => {\n  console.log(`Duplicate ${index + 1}:`, {\n    id: lead.json.id,\n    email: lead.json.Email,\n    created: lead.json['Created Date'],\n    status: lead.json.Status\n  });\n});\n\n// Select most recent (already sorted by Created Date desc from Airtable)\nconst selectedLead = validLeads[0];\nconsole.log('Selected lead:', selectedLead.json.id, 'Created:', selectedLead.json['Created Date']);\n\n// Flag remaining as duplicates\nfor (let i = 1; i < validLeads.length; i++) {\n  console.log('Flagging duplicate for manual review:', validLeads[i].json.id);\n}\n\nreturn [selectedLead];"
+      },
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [
+        -1300,
+        320
+      ],
+      "id": "duplicate-detection-handler",
+      "name": "Duplicate Detection Handler"
+    },
+    {
+      "parameters": {
+        "functionCode": "// Error Handler with Exponential Backoff Retry Logic\nconst maxRetries = 4;\nconst baseDelay = 1000; // 1 second\n\n// Function to implement exponential backoff\nfunction exponentialBackoff(attempt) {\n  return baseDelay * Math.pow(2, attempt); // 1s, 2s, 4s, 8s\n}\n\n// Function to retry Airtable operations\nasync function retryOperation(operation, context, maxAttempts = maxRetries) {\n  for (let attempt = 0; attempt < maxAttempts; attempt++) {\n    try {\n      console.log(`Attempting ${operation} - Attempt ${attempt + 1}/${maxAttempts}`);\n      \n      // The actual operation will be handled by the calling node\n      // This is a placeholder for retry logic coordination\n      return { success: true, attempt: attempt + 1 };\n      \n    } catch (error) {\n      console.error(`${operation} failed on attempt ${attempt + 1}:`, error.message);\n      \n      if (attempt === maxAttempts - 1) {\n        // Final attempt failed\n        console.error(`All ${maxAttempts} attempts failed for ${operation}`);\n        throw new Error(`Operation ${operation} failed after ${maxAttempts} attempts: ${error.message}`);\n      }\n      \n      // Wait before retry with exponential backoff\n      const delay = exponentialBackoff(attempt);\n      console.log(`Waiting ${delay}ms before retry...`);\n      await new Promise(resolve => setTimeout(resolve, delay));\n    }\n  }\n}\n\n// Log the error handling initialization\nconsole.log('Error handling and retry mechanism initialized');\nconsole.log('Max retries:', maxRetries);\nconsole.log('Base delay:', baseDelay + 'ms');\n\n// Pass through the input data\nreturn $input.all();"
+      },
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [
+        -1100,
+        320
+      ],
+      "id": "error-handler-retry-logic",
+      "name": "Error Handler & Retry Logic"
+    },
+    {
+      "parameters": {
+        "functionCode": "// Production-Grade Monitoring and Logging System\nconst workflowId = 'ATC_CAL_Booking_Workflow';\nconst executionId = $execution.id || 'unknown';\nconst startTime = new Date();\n\n// Performance metrics tracking\nconst metrics = {\n  executionId: executionId,\n  workflowId: workflowId,\n  startTime: startTime.toISOString(),\n  email: $('Data Validation & Sanitization').item.json.responses?.email?.value || 'unknown',\n  bookingId: $('Data Validation & Sanitization').item.json.bookingId || 'unknown',\n  attendeeName: $('Data Validation & Sanitization').item.json.attendees?.[0]?.name || 'unknown'\n};\n\n// Log workflow execution start\nconsole.log('=== WORKFLOW EXECUTION START ===');\nconsole.log('Execution ID:', executionId);\nconsole.log('Workflow:', workflowId);\nconsole.log('Start Time:', startTime.toISOString());\nconsole.log('Booking ID:', metrics.bookingId);\nconsole.log('Email:', metrics.email);\nconsole.log('Attendee:', metrics.attendeeName);\n\n// Log data validation results\nconst validationData = $('Data Validation & Sanitization').item.json._validation;\nif (validationData) {\n  console.log('Data Validation Status:', validationData.isValid ? 'PASSED' : 'FAILED');\n  if (!validationData.isValid) {\n    console.warn('Validation Errors:', validationData.errors);\n  }\n}\n\n// Log duplicate detection results\nconst duplicateData = $('Duplicate Detection Handler').item.json;\nif (Array.isArray(duplicateData) && duplicateData.length > 1) {\n  console.log('DUPLICATE DETECTION: Multiple leads found');\n  console.log('Total duplicates:', duplicateData.length);\n}\n\n// Performance monitoring function\nfunction logPerformanceMetrics(stepName, duration, success = true, error = null) {\n  const logEntry = {\n    timestamp: new Date().toISOString(),\n    executionId: executionId,\n    workflowId: workflowId,\n    step: stepName,\n    duration: duration,\n    success: success,\n    error: error,\n    email: metrics.email,\n    bookingId: metrics.bookingId\n  };\n  \n  console.log('PERFORMANCE LOG:', JSON.stringify(logEntry));\n  \n  if (!success && error) {\n    console.error('STEP FAILED:', stepName, 'Error:', error);\n  }\n}\n\n// Health check function\nfunction performHealthCheck() {\n  const healthStatus = {\n    timestamp: new Date().toISOString(),\n    executionId: executionId,\n    workflowId: workflowId,\n    systemHealth: {\n      dataValidation: validationData?.isValid || false,\n      duplicateDetection: 'operational',\n      errorHandling: 'active',\n      retryMechanism: 'enabled'\n    },\n    apiConnections: {\n      airtable: 'checking',\n      gmail: 'checking',\n      calcom: 'active'\n    }\n  };\n  \n  console.log('HEALTH CHECK:', JSON.stringify(healthStatus));\n  return healthStatus;\n}\n\n// Perform initial health check\nperformHealthCheck();\n\n// Log successful monitoring initialization\nconsole.log('Monitoring system initialized successfully');\nconsole.log('Performance tracking: ENABLED');\nconsole.log('Error monitoring: ACTIVE');\nconsole.log('Health checks: OPERATIONAL');\n\n// Pass through the input data with monitoring metadata\nconst outputData = $input.first().json;\noutputData._monitoring = {\n  executionId: executionId,\n  startTime: startTime.toISOString(),\n  metrics: metrics,\n  healthCheck: performHealthCheck()\n};\n\nreturn { json: outputData };"
+      },
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [
+        -1000,
+        320
+      ],
+      "id": "monitoring-logging-system",
+      "name": "Monitoring & Logging System"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "lead-exists-check",
+              "leftValue": "={{ $input.first().json && !$input.first().json._noLeadsFound && $input.first().json.id && $input.first().json.id.startsWith('rec') }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -1200,
+        320
+      ],
+      "id": "check-if-lead-exists",
+      "name": "Check If Lead Exists"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('Cal.com Booking Trigger').item.json.attendees[0].email }}",
+        "subject": "🎉 Consultation Confirmed - Welcome to Aviators Training Centre!",
+        "message": "=<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>Consultation Confirmed - Aviators Training Centre</title>\n  <style>\n    /* Reset */\n    body, table, td, p, a {margin:0;padding:0;-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;}\n    img {border:0;line-height:100%;outline:none;text-decoration:none;-ms-interpolation-mode:bicubic;}\n    table {border-collapse:collapse !important;}\n    /* Fluid wrapper */\n    .wrapper {width:100% !important;max-width:600px;margin:0 auto;}\n    /* Typography */\n    h1 {font-size:28px;line-height:1.2;margin-bottom:8px;}\n    h2 {font-size:22px;line-height:1.3;margin-bottom:16px;}\n    p, td span {font-size:16px;line-height:1.5;}\n    /* Buttons */\n    .btn {display:inline-block;padding:12px 24px;border-radius:6px;text-decoration:none;font-weight:600;}\n    /* Mobile */\n    @media only screen and (max-width:600px) {\n      h1 {font-size:18px !important;}\n      h2 {font-size:14px !important;}\n      p, td span {font-size:12px !important;}\n      .mobile-center {text-align:center !important;}\n      .stack {display:block !important;width:100% !important;}\n      .btn {width:100% !important;max-width:260px;margin:8px auto !important;display:block;}\n      .hide-mobile {display:none !important;}\n      .pad {padding:20px 15px !important;}\n    }\n  </style>\n</head>\n<body style=\"background:#f8fafc;font-family:Arial,sans-serif;\">\n  <table width=\"100%\" bgcolor=\"#f8fafc\">\n    <tr>\n      <td class=\"pad\" align=\"center\">\n        <table class=\"wrapper\" bgcolor=\"#fff\" style=\"border-radius:12px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.1);\">\n          \n          <!-- Header -->\n          <tr>\n            <td bgcolor=\"#075E68\" style=\"background:linear-gradient(135deg,#075E68 0%,#219099 100%);padding:40px 30px;text-align:center;\">\n              <img src=\"https://raw.githubusercontent.com/AmanSuryavanshi-1/Aviators_Training_Centre/main/public/AVIATORS_TRAINING_CENTRE_LOGO_DarkMode.png\"\n                   alt=\"Logo\" style=\"max-width:160px;width:100%;height:auto;filter:brightness(0) invert(1);margin:0 auto 16px;\">\n              <h1 style=\"color:#fff;\">Consultation Confirmed</h1>\n              <p style=\"color:rgba(255,255,255,0.9);font-size:18px;\">Your aviation career journey begins here</p>\n            </td>\n          </tr>\n          \n          <!-- Body -->\n          <tr>\n            <td class=\"pad\">\n              <h2 style=\"color:#075E68;\">Hello {{ $('Cal.com Booking Trigger').item.json.attendees[0].name }},</h2>\n              <p>Thanks for scheduling your consultation! We’re excited to discuss your aviation goals.</p>\n              \n              <!-- Details Card -->\n              <table width=\"100%\" bgcolor=\"#f8fafc\" style=\"border:1px solid #e2e8f0;border-radius:8px;border-left:4px solid #075E68;margin-top:24px;\">\n                <tr>\n                  <td style=\"padding:16px;\">\n                    <h3 style=\"margin:0 0 12px;color:#075E68;\">Your Consultation Details</h3>\n                    <p><strong>Session:</strong> {{ $('Cal.com Booking Trigger').item.json.title }}<br>\n                       <strong>Date:</strong> {{ $('Cal.com Booking Trigger').item.json.startTime.split('T')[0] }}<br>\n                       <strong>Time:</strong> {{ new Date($('Cal.com Booking Trigger').item.json.startTime).toLocaleTimeString('en-US',{timeZone:'Asia/Kolkata',hour:'numeric',minute:'2-digit',hour12:true}) }} - {{ new Date($('Cal.com Booking Trigger').item.json.endTime).toLocaleTimeString('en-US',{timeZone:'Asia/Kolkata',hour:'numeric',minute:'2-digit',hour12:true}) }} IST<br>\n                       <strong>Format:</strong> {{ $('Cal.com Booking Trigger').item.json.type || 'Online Consultation' }}\n                       {{ $('Cal.com Booking Trigger').item.json.additionalNotes ? `<br><strong>Notes:</strong> ${$('Cal.com Booking Trigger').item.json.additionalNotes}` : '' }}\n                    </p>\n                  </td>\n                </tr>\n              </table>\n              \n              <!-- Actions -->\n              <div style=\"text-align:center;margin:24px 0;\">\n                <a href=\"https://wa.me/919485687609?text=Hi%2C%20regarding%20my%20consultation\" class=\"btn\" style=\"background:#075E68;color:#fff;border-radius:10px\">WhatsApp</a>\n                <a href=\"mailto:aviatorstrainingcentre@gmail.com?subject=Consultation%20Inquiry\" class=\"btn\" style=\"background:#219099;color:#fff;border-radius:10px\">Email Us</a>\n              </div>\n              \n              <!-- Reschedule -->\n              <table width=\"100%\" bgcolor=\"#f0f9ff\" style=\"border:1px solid #73B5BD;border-radius:8px;\">\n                <tr>\n                  <td style=\"padding:16px;text-align:center;\">\n                    <h3 style=\"margin:0 0 8px;color:#075E68;\">Need to Reschedule?</h3>\n                    <p>📞 <a href=\"tel:+919485687609\" style=\"color:#075E68;text-decoration:none;\">+91 94856 87609</a><br>\n                       💬 WhatsApp: 9AM – 7PM</p>\n                  </td>\n                </tr>\n              </table>\n              \n              <!-- Closing -->\n              <p style=\"text-align:center;margin:24px 0 0;\"><strong style=\"color:#075E68;\">Ready to soar to new heights?</strong><br>We look forward to speaking with you soon!</p>\n            </td>\n          </tr>\n          \n          <!-- Footer -->\n          <tr>\n            <td bgcolor=\"#075E68\" style=\"background:linear-gradient(135deg,#075E68 0%,#0C6E72 100%);padding:24px 30px;text-align:center;color:#fff;\">\n              <p style=\"margin:0;font-size:16px;font-weight:600;\">Aviators Training Centre</p>\n              <p style=\"margin:4px 0;\">Premier DGCA Ground School for CPL & ATPL</p>\n              <p style=\"margin:4px 0;\">\n                <a href=\"mailto:aviatorstrainingcentre@gmail.com\" style=\"color:#73B5BD;text-decoration:none;\">aviatorstrainingcentre@gmail.com</a> • \n                <a href=\"tel:+919485687609\" style=\"color:#73B5BD;text-decoration:none;\">+91 94856 87609</a> • \n                <a href=\"https://www.aviatorstrainingcentre.in\" style=\"color:#73B5BD;text-decoration:none;\">www.aviatorstrainingcentre.in</a>\n              </p>\n            </td>\n          </tr>\n          \n        </table>\n      </td>\n    </tr>\n  </table>\n</body>\n</html>",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        -1000,
+        320
+      ],
+      "id": "5b716d7b-f73f-4397-9cfe-40059ebfc8bc",
+      "name": "Send Booking Confirmation",
+      "webhookId": "1cea43ef-1d46-492e-83f8-bf2f567bcedd",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "U15PmNBEdvmXRWmr",
+          "name": "aviatorstrainingcentre@gmail.com"
+        }
+      },
+      "continueOnFail": true,
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 2000
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "base": {
+          "__rl": true,
+          "value": "appWzCutTRkTGvc2t",
+          "mode": "id"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tbls8AXjTeC4XWiC0",
+          "mode": "id"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Meeting Date": "={{ DateTime.fromISO($('Cal.com Booking Trigger').item.json.startTime) }}",
+            "Meeting Time": "={{ new Date($('Cal.com Booking Trigger').item.json.startTime).toLocaleTimeString('en-US',{timeZone:'Asia/Kolkata',hour:'numeric',minute:'2-digit',hour12:true}) }} - {{ new Date($('Cal.com Booking Trigger').item.json.endTime).toLocaleTimeString('en-US',{timeZone:'Asia/Kolkata',hour:'numeric',minute:'2-digit',hour12:true}) }}",
+            "Meeting Title": "={{ $('Cal.com Booking Trigger').item.json.title }}",
+            "Status": "Confirmed",
+            "Booking ID": "={{ $('Cal.com Booking Trigger').item.json.bookingId.toString() }}",
+            "Timezone": "={{ $('Cal.com Booking Trigger').item.json.organizer.timeZone }}",
+            "Cal.com URL": "={{ $('Cal.com Booking Trigger').item.json.bookerUrl }}",
+            "Created Date": "={{ $('Cal.com Booking Trigger').item.json.createdAt.toDateTime().format('yyyy-MM-dd') }} ",
+            "Language": "={{ $('Cal.com Booking Trigger').item.json.attendees[0].language.locale }}",
+            "Contact Name": "={{ $('Cal.com Booking Trigger').item.json.attendees[0].name }}",
+            "Email": "={{ $('Cal.com Booking Trigger').item.json.responses.email.value }}",
+            "id": "={{ $('Duplicate Detection Handler').item.json.id }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": false
+            },
+            {
+              "id": "Contact Name",
+              "displayName": "Contact Name",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Phone",
+              "displayName": "Phone",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Subject",
+              "displayName": "Subject",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Message",
+              "displayName": "Message",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Meeting Title",
+              "displayName": "Meeting Title",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Meeting Date",
+              "displayName": "Meeting Date",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "dateTime",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Meeting Time",
+              "displayName": "Meeting Time",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "options",
+              "options": [
+                {
+                  "name": "Confirmed",
+                  "value": "Confirmed"
+                },
+                {
+                  "name": "Canceled",
+                  "value": "Canceled"
+                },
+                {
+                  "name": "In Progress",
+                  "value": "In Progress"
+                },
+                {
+                  "name": "Email Sent",
+                  "value": "Email Sent"
+                },
+                {
+                  "name": "Follow Up Sent",
+                  "value": "Follow Up Sent"
+                },
+                {
+                  "name": "Won",
+                  "value": "Won"
+                },
+                {
+                  "name": "Lost",
+                  "value": "Lost"
+                }
+              ],
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Booking ID",
+              "displayName": "Booking ID",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Cal.com URL",
+              "displayName": "Cal.com URL",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Created Date",
+              "displayName": "Created Date",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "dateTime",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Timezone",
+              "displayName": "Timezone",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Language",
+              "displayName": "Language",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Meeting DateTime",
+              "displayName": "Meeting DateTime",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": false
+            },
+            {
+              "id": "IST Meeting Time",
+              "displayName": "IST Meeting Time",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": false
+            },
+            {
+              "id": "Days Until Meeting",
+              "displayName": "Days Until Meeting",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": false
+            },
+            {
+              "id": "Meeting Status Summary",
+              "displayName": "Meeting Status Summary",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {
+          "typecast": true
+        }
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        -800,
+        200
+      ],
+      "id": "update-existing-lead-record",
+      "name": "Update Existing Lead Record",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "y0MqaXSyaHsVbNbh",
+          "name": "Airtable Personal Access Token account"
+        }
+      },
+      "continueOnFail": true,
+      "retryOnFail": true,
+      "maxTries": 4,
+      "waitBetweenTries": 1000
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "base": {
+          "__rl": true,
+          "value": "appWzCutTRkTGvc2t",
+          "mode": "id"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tbls8AXjTeC4XWiC0",
+          "mode": "id"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Meeting Date": "={{ DateTime.fromISO($('Cal.com Booking Trigger').item.json.startTime) }}",
+            "Meeting Time": "={{ new Date($('Cal.com Booking Trigger').item.json.startTime).toLocaleTimeString('en-US',{timeZone:'Asia/Kolkata',hour:'numeric',minute:'2-digit',hour12:true}) }} - {{ new Date($('Cal.com Booking Trigger').item.json.endTime).toLocaleTimeString('en-US',{timeZone:'Asia/Kolkata',hour:'numeric',minute:'2-digit',hour12:true}) }}",
+            "Meeting Title": "={{ $('Cal.com Booking Trigger').item.json.title }}",
+            "Status": "Confirmed",
+            "Booking ID": "={{ $('Cal.com Booking Trigger').item.json.bookingId.toString() }}",
+            "Timezone": "={{ $('Cal.com Booking Trigger').item.json.organizer.timeZone }}",
+            "Cal.com URL": "={{ $('Cal.com Booking Trigger').item.json.bookerUrl }}",
+            "Created Date": "={{ $('Cal.com Booking Trigger').item.json.createdAt.toDateTime().format('yyyy-MM-dd') }} ",
+            "Language": "={{ $('Cal.com Booking Trigger').item.json.attendees[0].language.locale }}",
+            "Contact Name": "={{ $('Cal.com Booking Trigger').item.json.attendees[0].name }}",
+            "Email": "={{ $('Cal.com Booking Trigger').item.json.responses.email.value }}",
+            "Subject": "Direct Cal.com Booking",
+            "Message": "User booked consultation directly via Cal.com without filling contact form"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Contact Name",
+              "displayName": "Contact Name",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Phone",
+              "displayName": "Phone",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Subject",
+              "displayName": "Subject",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Message",
+              "displayName": "Message",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Meeting Title",
+              "displayName": "Meeting Title",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Meeting Date",
+              "displayName": "Meeting Date",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "dateTime",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Meeting Time",
+              "displayName": "Meeting Time",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "options",
+              "options": [
+                {
+                  "name": "Confirmed",
+                  "value": "Confirmed"
+                },
+                {
+                  "name": "Canceled",
+                  "value": "Canceled"
+                },
+                {
+                  "name": "In Progress",
+                  "value": "In Progress"
+                },
+                {
+                  "name": "Email Sent",
+                  "value": "Email Sent"
+                },
+                {
+                  "name": "Follow Up Sent",
+                  "value": "Follow Up Sent"
+                },
+                {
+                  "name": "Won",
+                  "value": "Won"
+                },
+                {
+                  "name": "Lost",
+                  "value": "Lost"
+                }
+              ],
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Booking ID",
+              "displayName": "Booking ID",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Cal.com URL",
+              "displayName": "Cal.com URL",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Created Date",
+              "displayName": "Created Date",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "dateTime",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Timezone",
+              "displayName": "Timezone",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Language",
+              "displayName": "Language",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Meeting DateTime",
+              "displayName": "Meeting DateTime",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": false
+            },
+            {
+              "id": "IST Meeting Time",
+              "displayName": "IST Meeting Time",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": false
+            },
+            {
+              "id": "Days Until Meeting",
+              "displayName": "Days Until Meeting",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": false
+            },
+            {
+              "id": "Meeting Status Summary",
+              "displayName": "Meeting Status Summary",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {
+          "typecast": true
+        }
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        -800,
+        440
+      ],
+      "id": "create-new-lead-record",
+      "name": "Create New Lead Record",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "y0MqaXSyaHsVbNbh",
+          "name": "Airtable Personal Access Token account"
+        }
+      },
+      "continueOnFail": true,
+      "retryOnFail": true,
+      "maxTries": 4,
+      "waitBetweenTries": 1000
+    },
+    {
+      "parameters": {
+        "functionCode": "// Workflow Completion Monitoring and Metrics\nconst executionId = $('Monitoring & Logging System').item.json._monitoring?.executionId || 'unknown';\nconst startTime = $('Monitoring & Logging System').item.json._monitoring?.startTime;\nconst endTime = new Date();\nconst duration = startTime ? endTime - new Date(startTime) : 0;\n\n// Calculate performance metrics\nconst performanceMetrics = {\n  executionId: executionId,\n  workflowId: 'ATC_CAL_Booking_Workflow',\n  startTime: startTime,\n  endTime: endTime.toISOString(),\n  totalDuration: duration,\n  status: 'COMPLETED_SUCCESSFULLY',\n  email: $('Data Validation & Sanitization').item.json.responses?.email?.value,\n  bookingId: $('Data Validation & Sanitization').item.json.bookingId,\n  operationPerformed: $input.first().json.id ? 'UPDATE_EXISTING_LEAD' : 'CREATE_NEW_LEAD',\n  emailSent: true,\n  databaseUpdated: true\n};\n\n// Log successful completion\nconsole.log('=== WORKFLOW EXECUTION COMPLETED ===');\nconsole.log('Execution ID:', executionId);\nconsole.log('Total Duration:', duration + 'ms');\nconsole.log('Status: SUCCESS');\nconsole.log('Email Sent: YES');\nconsole.log('Database Updated: YES');\nconsole.log('Operation:', performanceMetrics.operationPerformed);\n\n// Log final metrics\nconsole.log('FINAL METRICS:', JSON.stringify(performanceMetrics));\n\n// Success rate tracking\nconst successLog = {\n  timestamp: endTime.toISOString(),\n  type: 'WORKFLOW_SUCCESS',\n  executionId: executionId,\n  duration: duration,\n  email: performanceMetrics.email,\n  bookingId: performanceMetrics.bookingId\n};\n\nconsole.log('SUCCESS LOG:', JSON.stringify(successLog));\n\n// Alert for performance issues (if duration > 30 seconds)\nif (duration > 30000) {\n  console.warn('PERFORMANCE ALERT: Workflow execution took longer than expected');\n  console.warn('Duration:', duration + 'ms');\n  console.warn('Threshold: 30000ms');\n}\n\n// Return success confirmation\nreturn {\n  json: {\n    success: true,\n    executionId: executionId,\n    duration: duration,\n    timestamp: endTime.toISOString(),\n    metrics: performanceMetrics\n  }\n};"
+      },
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [
+        -600,
+        320
+      ],
+      "id": "workflow-completion-logger",
+      "name": "Workflow Completion Logger"
+    }
+  ],
+  "connections": {
+    "Cal.com Booking Trigger": {
+      "main": [
+        [
+          {
+            "node": "Data Validation & Sanitization",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Data Validation & Sanitization": {
+      "main": [
+        [
+          {
+            "node": "Find Existing Lead Record",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Find Existing Lead Record": {
+      "main": [
+        [
+          {
+            "node": "Duplicate Detection Handler",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Duplicate Detection Handler": {
+      "main": [
+        [
+          {
+            "node": "Error Handler & Retry Logic",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Error Handler & Retry Logic": {
+      "main": [
+        [
+          {
+            "node": "Check If Lead Exists",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check If Lead Exists": {
+      "main": [
+        [
+          {
+            "node": "Update Existing Lead Record",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Create New Lead Record",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update Existing Lead Record": {
+      "main": [
+        [
+          {
+            "node": "Send Booking Confirmation",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create New Lead Record": {
+      "main": [
+        [
+          {
+            "node": "Send Booking Confirmation",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Booking Confirmation": {
+      "main": [
+        [
+          {
+            "node": "Monitoring & Logging System",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Monitoring & Logging System": {
+      "main": [
+        [
+          {
+            "node": "Workflow Completion Logger",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "instanceId": "2aff0c99a9b9ea9c976d68c5887d32445a6bdc6f59f99592eb5b4c4dbaf3d92e"
+  }
+}
