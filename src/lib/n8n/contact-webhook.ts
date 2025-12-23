@@ -31,7 +31,7 @@ export interface WebhookConfig {
 // Production-ready Bearer token authentication
 const getAuthHeaders = (): Record<string, string> => {
   const authToken = process.env.N8N_WEBHOOK_AUTH_TOKEN;
-  
+
   if (!authToken) {
     console.warn('⚠️ N8N_WEBHOOK_AUTH_TOKEN not set. Webhook will run without authentication.');
     return {};
@@ -45,7 +45,7 @@ const getAuthHeaders = (): Record<string, string> => {
 
 // Default webhook configuration with environment-based URL and authentication
 const DEFAULT_WEBHOOK_CONFIG: WebhookConfig = {
-  url: process.env.NODE_ENV === 'production' 
+  url: process.env.NODE_ENV === 'production'
     ? (process.env.N8N_WEBHOOK_URL_PROD || 'https://n8n.aviatorstrainingcentre.in/webhook/firebase-webhook')
     : (process.env.N8N_WEBHOOK_URL_TEST || 'https://n8n.aviatorstrainingcentre.in/webhook-test/firebase-webhook'),
   timeout: 5000,
@@ -113,6 +113,13 @@ export async function triggerN8nWebhook(
     });
   }
 
+  // 🔍 DEBUG: Log in ALL environments (remove after debugging)
+  console.log('🔗 [WEBHOOK DEBUG] Attempting webhook call:', {
+    url: webhookConfig.url,
+    formId: payload.formId,
+    env: process.env.NODE_ENV
+  });
+
   try {
     // Send the payload in the exact format n8n expects for your workflow
     // Since n8n wraps the data in a body object, we send it directly as individual fields
@@ -130,6 +137,14 @@ export async function triggerN8nWebhook(
     const response = await axios.post(webhookConfig.url, flatPayload, {
       headers: webhookConfig.headers,
       timeout: webhookConfig.timeout
+    });
+
+    // 🔍 DEBUG: Log success in ALL environments (remove after debugging)
+    console.log('✅ [WEBHOOK DEBUG] Success:', {
+      url: webhookConfig.url,
+      formId: payload.formId,
+      status: response.status,
+      responseData: response.data
     });
 
     // Log success in development mode
@@ -178,6 +193,9 @@ export async function triggerN8nWebhook(
       timestamp: payload.timestamp,
       isDemoBooking: payload.isDemoBooking
     });
+
+    // 🔍 DEBUG: Log full error in ALL environments (remove after debugging)
+    console.error('❌ [WEBHOOK DEBUG] Full error:', error);
 
     // Log additional error details in development
     if (process.env.NODE_ENV === 'development') {
