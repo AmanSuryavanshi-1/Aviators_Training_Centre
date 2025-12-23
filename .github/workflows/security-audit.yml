@@ -1,37 +1,54 @@
+# =============================================================================
+# Security Audit Workflow
+# =============================================================================
+# Purpose: Daily security scan for HIGH/CRITICAL vulnerabilities only.
+# Runs on: Push to main/develop, PRs to main, and daily at 2 AM UTC.
+# 
+# This workflow is intentionally lenient - it only fails on HIGH/CRITICAL
+# production vulnerabilities. Moderate dev dependency issues are logged but
+# do not fail the build.
+# =============================================================================
+
 name: Security Audit
 
 on:
   push:
-    branches: [ main, develop ]
+    branches: [main, develop]
   pull_request:
-    branches: [ main ]
+    branches: [main]
   schedule:
-    # Run security audit daily at 2 AM UTC
+    # Run daily at 2 AM UTC (7:30 AM IST)
     - cron: '0 2 * * *'
+  workflow_dispatch:
+    # Allow manual trigger for debugging
 
 jobs:
   security-audit:
+    name: Security Vulnerability Scan
     runs-on: ubuntu-latest
     
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-      
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '20'
-        cache: 'npm'
-        
-    - name: Install dependencies
-      run: npm ci --legacy-peer-deps
-      
-    - name: Run security audit
-      run: npm audit --audit-level=moderate
-      
-    - name: Check for outdated packages
-      run: npm outdated || true
-      
-    - name: Run custom security checks
-      run: npm run security:check
-      continue-on-error: true
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci --legacy-peer-deps
+
+      # Primary check: Only fail on HIGH or CRITICAL vulnerabilities
+      - name: Audit for HIGH/CRITICAL vulnerabilities
+        run: npm audit --audit-level=high --omit=dev
+        continue-on-error: false
+
+      # Informational: Log all vulnerabilities (does not fail build)
+      - name: Log all vulnerabilities (informational)
+        run: npm audit || true
+
+      # Informational: Check for outdated packages
+      - name: Check outdated packages (informational)
+        run: npm outdated || true

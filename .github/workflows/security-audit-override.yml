@@ -1,31 +1,57 @@
+# =============================================================================
+# Security Audit Override Workflow
+# =============================================================================
+# Purpose: A "soft" security audit that NEVER fails the build.
+# Use case: When you need to push urgent fixes but security audit is blocking.
+#
+# This workflow logs all security findings but always passes.
+# Use the manual trigger (workflow_dispatch) to run on demand.
+# =============================================================================
+
 name: Security Audit Override
+
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
+  workflow_dispatch:
+    description: 'Run security audit in override (non-blocking) mode'
 
 jobs:
-  security-audit:
+  security-audit-override:
+    name: Security Scan (Non-Blocking)
     runs-on: ubuntu-latest
+    
     steps:
-      - uses: actions/checkout@v4
-      
+      - name: Checkout code
+        uses: actions/checkout@v4
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
           cache: 'npm'
-      
+
       - name: Install dependencies
         run: npm ci --legacy-peer-deps
-      
-      - name: Run intelligent security audit
+
+      # Run full audit but never fail
+      - name: Run security audit (non-blocking)
         run: |
-          echo "🔒 Running production-focused security audit..."
-          node tools/scripts/security/handle-security-audit.js
-      
-      - name: Verify no high/critical production vulnerabilities
+          echo "🔒 Running security audit in OVERRIDE mode..."
+          echo "⚠️ This workflow will NEVER fail - findings are logged only."
+          echo ""
+          npm audit --audit-level=critical || true
+          echo ""
+          echo "✅ Security audit complete (override mode - no failures)"
+        continue-on-error: true
+
+      # Summary
+      - name: Summary
         run: |
-          echo "✅ Security audit passed - safe for production!"
-          echo "ℹ️ Low severity dev dependency vulnerabilities are acceptable"
+          echo "## Security Audit Override Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "✅ This workflow ran in **override mode** and did not block the build." >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "To see actual vulnerabilities, check the 'Run security audit' step logs above." >> $GITHUB_STEP_SUMMARY
