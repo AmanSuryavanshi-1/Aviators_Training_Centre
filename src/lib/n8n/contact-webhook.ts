@@ -29,6 +29,7 @@ export interface WebhookConfig {
 }
 
 // Production-ready Bearer token authentication
+// NOTE: This is a function, not a constant, to ensure env vars are read at runtime
 const getAuthHeaders = (): Record<string, string> => {
   const authToken = process.env.N8N_WEBHOOK_AUTH_TOKEN;
 
@@ -43,27 +44,29 @@ const getAuthHeaders = (): Record<string, string> => {
   };
 };
 
-// Default webhook configuration with environment-based URL and authentication
-const DEFAULT_WEBHOOK_CONFIG: WebhookConfig = {
-  url: process.env.NODE_ENV === 'production'
-    ? (process.env.N8N_WEBHOOK_URL_PROD || 'https://n8n.aviatorstrainingcentre.in/webhook/firebase-webhook')
-    : (process.env.N8N_WEBHOOK_URL_TEST || 'https://n8n.aviatorstrainingcentre.in/webhook-test/firebase-webhook'),
-  timeout: 5000,
-  headers: {
-    'Content-Type': 'application/json',
-    ...getAuthHeaders()
-  }
-};
-
-// Debug log for environment variables (only in development)
-if (process.env.NODE_ENV === 'development') {
-  console.log('🔧 Webhook configuration loaded:', {
-    NODE_ENV: process.env.NODE_ENV,
-    finalUrl: DEFAULT_WEBHOOK_CONFIG.url,
-    hasAuth: !!DEFAULT_WEBHOOK_CONFIG.headers['Authorization'],
-    authType: DEFAULT_WEBHOOK_CONFIG.headers['Authorization'] ? 'Bearer Token' : 'None'
+// Function to get webhook configuration at RUNTIME (not at module load time)
+// This ensures environment variables are properly read on Vercel
+const getWebhookConfig = (): WebhookConfig => {
+  const config = {
+    url: process.env.NODE_ENV === 'production'
+      ? (process.env.N8N_WEBHOOK_URL_PROD || 'https://n8n.aviatorstrainingcentre.in/webhook/firebase-webhook')
+      : (process.env.N8N_WEBHOOK_URL_TEST || 'https://n8n.aviatorstrainingcentre.in/webhook-test/firebase-webhook'),
+    timeout: 5000,
+    headers: {
+      'Content-Type': 'application/json',
+      ...getAuthHeaders()
+    }
+  };
+  // Log config in ALL environments temporarily to verify fix (remove after confirming)
+  console.log('🔧 [PROD DEBUG] Webhook config:', {
+    env: process.env.NODE_ENV,
+    url: config.url,
+    hasAuth: !!config.headers['Authorization'],
+    authTokenExists: !!process.env.N8N_WEBHOOK_AUTH_TOKEN
   });
-}
+
+  return config;
+};
 
 /**
  * Constructs webhook payload from contact form data
@@ -101,7 +104,9 @@ export async function triggerN8nWebhook(
   payload: ContactWebhookPayload,
   config: Partial<WebhookConfig> = {}
 ): Promise<void> {
-  const webhookConfig = { ...DEFAULT_WEBHOOK_CONFIG, ...config };
+  // Get config at runtime to ensure env vars are properly read
+  const defaultConfig = getWebhookConfig();
+  const webhookConfig = { ...defaultConfig, ...config };
 
   // Always log webhook attempt in development
   if (process.env.NODE_ENV === 'development') {
@@ -112,13 +117,6 @@ export async function triggerN8nWebhook(
       timeout: webhookConfig.timeout
     });
   }
-
-  // 🔍 DEBUG: Log in ALL environments (remove after debugging)
-  console.log('🔗 [WEBHOOK DEBUG] Attempting webhook call:', {
-    url: webhookConfig.url,
-    formId: payload.formId,
-    env: process.env.NODE_ENV
-  });
 
   try {
     // Send the payload in the exact format n8n expects for your workflow
@@ -137,14 +135,6 @@ export async function triggerN8nWebhook(
     const response = await axios.post(webhookConfig.url, flatPayload, {
       headers: webhookConfig.headers,
       timeout: webhookConfig.timeout
-    });
-
-    // 🔍 DEBUG: Log success in ALL environments (remove after debugging)
-    console.log('✅ [WEBHOOK DEBUG] Success:', {
-      url: webhookConfig.url,
-      formId: payload.formId,
-      status: response.status,
-      responseData: response.data
     });
 
     // Log success in development mode
@@ -193,9 +183,6 @@ export async function triggerN8nWebhook(
       timestamp: payload.timestamp,
       isDemoBooking: payload.isDemoBooking
     });
-
-    // 🔍 DEBUG: Log full error in ALL environments (remove after debugging)
-    console.error('❌ [WEBHOOK DEBUG] Full error:', error);
 
     // Log additional error details in development
     if (process.env.NODE_ENV === 'development') {
