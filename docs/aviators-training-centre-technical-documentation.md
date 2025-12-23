@@ -113,6 +113,47 @@ A complete full-stack platform combining modern web technologies, intelligent n8
 
 *Figure 3: Complete system architecture showing five layers from user interaction to external services - demonstrates zero-cost infrastructure design using free tiers*
 
+#### Data Flow Diagram
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                         USER                                 │
+│                    (Browser/Device)                          │
+└─────────────────────────────────────────────────────────────┘
+                              │
+        ┌─────────────────────┼─────────────────────┐
+        ▼                     ▼                     ▼
+┌───────────────┐     ┌───────────────┐     ┌───────────────┐
+│   Page View   │     │  Form Submit  │     │  Admin Login  │
+└───────────────┘     └───────────────┘     └───────────────┘
+        │                     │                     │
+        ▼                     ▼                     ▼
+┌───────────────┐     ┌───────────────┐     ┌───────────────┐
+│   Analytics   │     │  Contact API  │     │   Auth API    │
+│    Client     │     │    Route      │     │    Route      │
+└───────────────┘     └───────────────┘     └───────────────┘
+        │                     │                     │
+        ▼                     ▼                     ▼
+┌───────────────┐     ┌───────────────┐     ┌───────────────┐
+│   Firebase    │     │   Firebase    │     │     JWT       │
+│   Firestore   │     │  Realtime DB  │     │   Session     │
+│  (analytics)  │     │   (contacts)  │     │   (cookie)    │
+└───────────────┘     └───────────────┘     └───────────────┘
+                              │
+                              ▼
+                      ┌───────────────┐
+                      │   N8N         │
+                      │   Webhook     │
+                      └───────────────┘
+                              │
+        ┌─────────────────────┼─────────────────────┐
+        ▼                     ▼                     ▼
+┌───────────────┐     ┌───────────────┐     ┌───────────────┐
+│  User Email   │     │  Admin Email  │     │  Follow-up    │
+│ (Resend)      │     │ (Resend)      │     │   Sequence    │
+└───────────────┘     └───────────────┘     └───────────────┘
+```
+
 ### 2.2 Frontend Architecture
 
 **File Structure:**
@@ -1956,6 +1997,184 @@ curl -X POST 'https://www.aviatorstrainingcentre.in/api/revalidate' -d '{"path":
 
 ---
 
+## Part 12: Component Architecture & Patterns
+
+### 12.1 Component Statistics & Structure
+
+| Category | Count | Description |
+|----------|-------|-------------|
+| **UI Components** | 49 | Primitive building blocks (shadcn/ui) |
+| **Feature Components** | 70 | Feature-specific logic (Blog, Contact, Courses) |
+| **Admin Components** | 12 | Dashboard and admin UI |
+| **Shared Components** | 24 | Cross-feature utilities (Navbar, Footer) |
+
+**Directory Structure:**
+```
+src/components/
+├── ui/                         # Primitives (button, card, input)
+├── features/                   # Feature-specific
+│   ├── blog/                   # BlogCard, BlogPost, TOC
+│   ├── contact/                # ContactForm, Validation
+│   └── courses/                # CourseCard, Grid
+├── admin/                      # AnalyticsDashboard, Login
+├── analytics/                  # Trackers, Pixel
+└── shared/                     # Layout, wrapper, providers
+```
+
+### 12.2 Architectural Patterns
+
+#### Server vs. Client Components
+- **Server Components (Default):** Used for data fetching (Sanity, Firebase) and initial render.
+- **Client Components:** Used for interactivity (Forms, Hooks).
+- **Composition:** heavily used to avoid prop drilling (e.g., `<Card><CardHeader>...</CardHeader></Card>`).
+
+#### Custom Hooks
+- `useFormValidation`: Centralized form validation logic for Indian phone numbers and email.
+- `useAnalytics`: Singleton hook for tracking events across GA4, Firebase, and Pixel.
+- `useMediaQuery`: Responsive design logic.
+
+#### Error Handling & Resilience
+- **Timeout Protection:** 5-second timeout on all third-party API calls (N8N, Resend).
+- **Graceful Degradation:** Critical path (saving to DB) works even if non-critical path (Webhook) fails.
+- **Error Boundaries:** React Error Boundaries wrap feature sections to prevent full page crashes.
+
+---
+
+## Part 13: Data Schemas & Models
+
+### 13.1 Sanity CMS Schema
+
+The content model is defined in `studio/schemaTypes/`.
+
+**Core Types:**
+- **Post:** Blog posts with SEO status, rich text body, authors, and categories.
+- **Author:** Bio, social links, and role.
+- **Category:** Taxonomy for posts and courses.
+- **CTA Template:** Dynamic Call-to-Actions injected into blog posts.
+
+**Validation Rules:**
+- Title: 10-70 chars (SEO optimal)
+- Slug: Required, auto-generated
+- SEO Description: Max 160 chars
+
+### 13.2 Firebase Realtime Database (Contact Forms)
+
+Path: `/contacts/{contactId}`
+
+```typescript
+interface Contact {
+  name: string;
+  email: string; // Validated format
+  phone: string; // Indian format (+91...)
+  subject: string;
+  message: string;
+  
+  // Auto-captured UTM Data
+  utm_source: string;
+  utm_medium: string;
+  utm_campaign: string;
+  source_description: string; // e.g., "WhatsApp (Social)"
+  
+  timestamp: ServerTimestamp;
+}
+```
+
+### 13.3 Firestore (Analytics)
+
+**Collections:**
+1.  **analytics_events**: Raw event stream (page_view, form_submission).
+2.  **user_sessions**: Aggregated session data (duration, pages per session).
+3.  **traffic_sources**: Aggregated source metrics (visitors, conversions).
+
+**Data Flow Relationship:**
+Sanity (Content) → Next.js (ISR Cache) → User
+User Action → Analytics Client → Firestore (Batched)
+Form Submit → Realtime DB → N8N Webhook → Email/CRM
+
+---
+
+## Part 14: API Reference & Integrations
+
+### 14.1 Integration Matrix
+
+| Service | Purpose | Auth Method |
+|---------|---------|-------------|
+| **Sanity CMS** | Content Management | Project ID + Dataset (Public) |
+| **Firebase** | DB & Analytics | API Key + Service Account |
+| **Resend** | Email | API Key (Server-side) |
+| **N8N** | Automation | Webhook URL + Bearer Token |
+| **Google Analytics** | Tracking | Measurement ID |
+| **Meta Pixel** | Ad Tracking | Pixel ID |
+
+### 14.2 Environment Config
+
+Required variables in `.env.local` and Vercel:
+
+```bash
+# Sanity
+NEXT_PUBLIC_SANITY_PROJECT_ID=...
+NEXT_PUBLIC_SANITY_DATASET=production
+
+# Firebase
+NEXT_PUBLIC_FIREBASE_API_KEY=...
+FIREBASE_SERVICE_ACCOUNT_KEY=... (Base64)
+
+# App
+ADMIN_JWT_SECRET=...
+N8N_WEBHOOK_AUTH_TOKEN=...
+```
+
+---
+
+## Part 15: Deployment & Operations Manual
+
+### 15.1 Quick Start (Setup from Scratch)
+
+**Prerequisites:** Node.js 18+, npm/yarn, Git.
+
+**Step 1: Clone and Install**
+```bash
+git clone <repo-url>
+cd Aviators_Training_Centre
+npm install --legacy-peer-deps
+```
+
+**Step 2: Environment Setup**
+Create `.env.local` using the template above (Part 14.2).
+
+**Step 3: Run Development Server**
+```bash
+npm run dev
+# Open http://localhost:3000
+```
+
+### 15.2 Deployment (Vercel)
+
+The project is optimized for Vercel.
+- **Production:** Auto-deploys on push to `main`.
+- **Preview:** Auto-deploys on PRs.
+- **Rollback:** Use Vercel Dashboard → Deployments → Promote to Production.
+
+**Vercel Configuration (`vercel.json`):**
+- Headers: Security headers (HSTS, X-Frame-Options) and Cache-Control.
+- Rewrites: `/studio/*` → Sanity Studio.
+- Crons: `/api/maintenance` runs daily at 2 AM.
+
+### 15.3 UTM Tracking Operations
+
+**Creating Tracking Links:**
+Append these parameters to any usage URL:
+`?utm_source=PLATFORM&utm_medium=TYPE&utm_campaign=NAME`
+
+**Examples:**
+- **WhatsApp:** `?utm_source=whatsapp&utm_medium=social&utm_campaign=dec2024_promo`
+- **Facebook Ads:** `?utm_source=facebook&utm_medium=cpc&utm_campaign=pilot_batch`
+
+**Viewing Data:**
+Check Firebase Realtime Database in the `/contacts` path. Each submission includes the UTM parameters captured during the user's session.
+
+---
+
 ## Conclusion
 
 The Aviators Training Centre platform demonstrates how modern web technologies, intelligent n8n automation, and strategic SEO can transform a traditional business model:
@@ -1975,4 +2194,4 @@ This project showcases full-stack development expertise, automation mastery, and
 
 **Contact:** [amansurya.work@gmail.com] | **Portfolio:** [https://amansuryavanshi-dev.vercel.app/] | **GitHub:** [https://github.com/AmanSuryavanshi-1]
 
-*Last Updated: November 26, 2025*
+*Last Updated: December 23, 2025*

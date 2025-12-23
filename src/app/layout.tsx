@@ -12,6 +12,7 @@ import ServiceWorkerRegistration from "@/components/features/blog/ServiceWorkerR
 import ErrorHandlingProvider from "@/components/shared/ErrorHandlingProvider";
 import ConditionalLayout from "@/components/layout/ConditionalLayout";
 import ConditionalAnalytics from "@/components/analytics/ConditionalAnalytics";
+import MetaPixel from "@/components/analytics/MetaPixel";
 import { PerformanceImageProvider } from "@/lib/image-optimization";
 import UTMTracker from "@/components/analytics/UTMTracker";
 import PerformanceMonitor from "@/components/performance/PerformanceMonitor";
@@ -160,45 +161,8 @@ export default function RootLayout({
         />
 
         {/* Delayed Analytics Loading for Performance */}
-        <Script
-          id="delayed-analytics"
-          strategy="afterInteractive"
-        >
-          {`
-            setTimeout(function() {
-              // Load Google Analytics
-              const gaScript = document.createElement('script');
-              gaScript.src = 'https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}';
-              gaScript.async = true;
-              document.head.appendChild(gaScript);
-
-              window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
-              gtag('js', new Date());
-              gtag('config', '${GA_MEASUREMENT_ID}', {
-                page_path: window.location.pathname,
-              });
-
-              // Load Meta Pixel
-              !function(f,b,e,v,n,t,s)
-              {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-              n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-              if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-              n.queue=[];t=b.createElement(e);t.async=!0;
-              t.src=v;s=b.getElementsByTagName(e)[0];
-              s.parentNode.insertBefore(t,s)}(window, document,'script',
-              'https://connect.facebook.net/en_US/fbevents.js');
-              fbq('init', '796016392336829');
-              fbq('track', 'PageView');
-            }, 4000); // 4 second delay to prioritize LCP
-          `}
-        </Script>
-        <noscript>
-          <img height="1" width="1" style={{ display: 'none' }}
-            src="https://www.facebook.com/tr?id=796016392336829&ev=PageView&noscript=1"
-          />
-        </noscript>
-        {/* End Meta Pixel Code */}
+        {/* Standard Meta Pixel */}
+        <MetaPixel />
 
         {/* Global Image Optimization */}
         <Script
