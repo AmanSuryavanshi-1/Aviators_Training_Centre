@@ -8,7 +8,13 @@
 #   2. quality-check  - Runs linting and TypeScript checks
 #   3. security-scan  - Quick security audit (non-blocking)
 #
-# Note: Unit/integration/e2e tests are disabled until test files exist.
+# REQUIRED SECRETS for Build Verification:
+#   - NEXT_PUBLIC_SANITY_PROJECT_ID (required)
+#   - NEXT_PUBLIC_SANITY_DATASET (required)
+#   - SANITY_API_TOKEN (optional - for static generation)
+#
+# Note: If secrets are not configured, build may fail. Configure secrets in
+# GitHub Settings → Secrets → Actions.
 # =============================================================================
 
 name: CI Pipeline
@@ -51,21 +57,49 @@ jobs:
       - name: Build Next.js application
         run: npm run build
         env:
-          # Required environment variables for build
-          # These use secrets if available, otherwise safe defaults
-          NEXT_PUBLIC_SANITY_PROJECT_ID: ${{ secrets.NEXT_PUBLIC_SANITY_PROJECT_ID || 'placeholder' }}
+          # ===========================================
+          # SANITY (Required for build)
+          # ===========================================
+          NEXT_PUBLIC_SANITY_PROJECT_ID: ${{ secrets.NEXT_PUBLIC_SANITY_PROJECT_ID }}
           NEXT_PUBLIC_SANITY_DATASET: ${{ secrets.NEXT_PUBLIC_SANITY_DATASET || 'production' }}
-          NEXT_PUBLIC_SITE_URL: ${{ secrets.NEXT_PUBLIC_SITE_URL || 'https://aviatorsclub.in' }}
-          # Firebase (optional - build should work without these)
+          SANITY_API_TOKEN: ${{ secrets.SANITY_API_TOKEN || '' }}
+          NEXT_PUBLIC_SANITY_API_VERSION: '2024-01-01'
+          
+          # ===========================================
+          # SITE URL (Required for sitemap/SEO)
+          # ===========================================
+          NEXT_PUBLIC_SITE_URL: ${{ secrets.NEXT_PUBLIC_SITE_URL || 'https://www.aviatorstrainingcentre.in' }}
+          
+          # ===========================================
+          # FIREBASE (Optional - graceful fallback)
+          # ===========================================
           NEXT_PUBLIC_FIREBASE_API_KEY: ${{ secrets.NEXT_PUBLIC_FIREBASE_API_KEY || '' }}
           NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN: ${{ secrets.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN || '' }}
           NEXT_PUBLIC_FIREBASE_PROJECT_ID: ${{ secrets.NEXT_PUBLIC_FIREBASE_PROJECT_ID || '' }}
-          # Analytics (optional)
+          NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET: ${{ secrets.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET || '' }}
+          NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID: ${{ secrets.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID || '' }}
+          NEXT_PUBLIC_FIREBASE_APP_ID: ${{ secrets.NEXT_PUBLIC_FIREBASE_APP_ID || '' }}
+          FIREBASE_PRIVATE_KEY: ${{ secrets.FIREBASE_PRIVATE_KEY || '' }}
+          FIREBASE_CLIENT_EMAIL: ${{ secrets.FIREBASE_CLIENT_EMAIL || '' }}
+          
+          # ===========================================
+          # ANALYTICS (Optional)
+          # ===========================================
           NEXT_PUBLIC_GA_MEASUREMENT_ID: ${{ secrets.NEXT_PUBLIC_GA_MEASUREMENT_ID || '' }}
-          # Build mode
+          
+          # ===========================================
+          # OTHER (Optional)
+          # ===========================================
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY || '' }}
+          JWT_SECRET: ${{ secrets.JWT_SECRET || 'ci-placeholder-secret-minimum-32-chars' }}
+          
+          # ===========================================
+          # BUILD CONFIGURATION
+          # ===========================================
           NODE_ENV: production
-          # Disable telemetry
           NEXT_TELEMETRY_DISABLED: 1
+          
+        # Build is blocking - if it fails, the job fails
         continue-on-error: false
 
       - name: Build successful
@@ -153,3 +187,9 @@ jobs:
           echo "| Build | ${{ needs.build-check.result }} |" >> $GITHUB_STEP_SUMMARY
           echo "| Quality | ${{ needs.quality-check.result }} |" >> $GITHUB_STEP_SUMMARY
           echo "| Security | ${{ needs.security-scan.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Required Secrets for Build" >> $GITHUB_STEP_SUMMARY
+          echo "Configure these in **Settings → Secrets → Actions**:" >> $GITHUB_STEP_SUMMARY
+          echo "- \`NEXT_PUBLIC_SANITY_PROJECT_ID\` ✅ Required" >> $GITHUB_STEP_SUMMARY
+          echo "- \`NEXT_PUBLIC_SANITY_DATASET\` (defaults to 'production')" >> $GITHUB_STEP_SUMMARY
+          echo "- \`SANITY_API_TOKEN\` (for blog data fetching)" >> $GITHUB_STEP_SUMMARY

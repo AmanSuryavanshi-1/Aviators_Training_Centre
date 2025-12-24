@@ -108,3 +108,4 @@ src/app/api/admin/testing/
 # Specific n8n Docs to Ignore
 docs/n8n/HOSTING_RECOMMENDATION.md
 docs/n8n/DEMO_VIDEO_SCRIPT.md
+docs/n8n/VIDEO_SUBTITLE_GUIDE.md

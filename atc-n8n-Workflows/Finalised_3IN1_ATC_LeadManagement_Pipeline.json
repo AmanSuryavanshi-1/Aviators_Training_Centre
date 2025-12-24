@@ -11,7 +11,7 @@
       "typeVersion": 1,
       "position": [
         -640,
-        -496
+        -576
       ],
       "id": "5a03747b-34aa-41b2-a134-94ab3f7012e3",
       "name": "Sticky Note"
@@ -27,7 +27,7 @@
       "typeVersion": 1,
       "position": [
         -640,
-        -192
+        -224
       ],
       "id": "f00f6b1e-db7b-4a87-9bef-7a9d45609dad",
       "name": "Sticky Note1"
@@ -43,7 +43,7 @@
       "typeVersion": 1,
       "position": [
         -640,
-        176
+        192
       ],
       "id": "38eea73d-c738-488d-b103-82aa16d43dff",
       "name": "Sticky Note2"
@@ -59,7 +59,7 @@
       "typeVersion": 2,
       "position": [
         -112,
-        -400
+        -480
       ],
       "id": "7bfa45d4-113c-4a5d-bf21-b274f846f3fb",
       "name": "Firebase Database Trigger",
@@ -70,7 +70,7 @@
       "credentials": {
         "httpHeaderAuth": {
           "id": "3NuiIPEY7iPAMcBm",
-          "name": "Header Auth account"
+          "name": "Header Auth ATC"
         }
       },
       "continueOnFail": true
@@ -112,7 +112,7 @@
       "typeVersion": 2,
       "position": [
         112,
-        -400
+        -480
       ],
       "id": "c48c1cdc-af61-413f-8180-9efd4768d2cf",
       "name": "Validate Contact Data"
@@ -130,7 +130,7 @@
       "typeVersion": 2.1,
       "position": [
         336,
-        -400
+        -480
       ],
       "id": "1dbc57a3-dfd3-4d8a-92e5-7aa26219aa79",
       "name": "Send Consultation Email",
@@ -398,6 +398,101 @@
               "type": "string",
               "readOnly": false,
               "removed": false
+            },
+            {
+              "id": "Edited At",
+              "displayName": "Edited At",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": false
+            },
+            {
+              "id": "InsertedAt",
+              "displayName": "InsertedAt",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": false
+            },
+            {
+              "id": "ImportedFrom",
+              "displayName": "ImportedFrom",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "options",
+              "options": [
+                {
+                  "name": "WhatsAppIncoming",
+                  "value": "WhatsAppIncoming"
+                },
+                {
+                  "name": "Manual ",
+                  "value": "Manual "
+                },
+                {
+                  "name": "Sheet",
+                  "value": "Sheet"
+                },
+                {
+                  "name": "CSV",
+                  "value": "CSV"
+                }
+              ],
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "ImportHash",
+              "displayName": "ImportHash",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Notes",
+              "displayName": "Notes",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "DNC",
+              "displayName": "DNC",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "boolean",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "LastUpdatedBy",
+              "displayName": "LastUpdatedBy",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
             }
           ],
           "attemptToConvertTypes": false,
@@ -409,7 +504,7 @@
       "typeVersion": 2.1,
       "position": [
         560,
-        -400
+        -480
       ],
       "id": "e99c4f09-1751-4dbe-bf82-1dfc174c2963",
       "name": "Create Lead Record",
@@ -426,14 +521,14 @@
     },
     {
       "parameters": {
-        "amount": 1,
-        "unit": "minutes"
+        "amount": 48,
+        "unit": "hours"
       },
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1.1,
       "position": [
         784,
-        -400
+        -480
       ],
       "id": "cae4c6bf-48c2-4eb7-9edf-30f3185ac781",
       "name": "Wait 48 Hours",
@@ -459,7 +554,7 @@
       "typeVersion": 2.1,
       "position": [
         1008,
-        -400
+        -480
       ],
       "id": "8d3d2d95-a94a-41d8-a6a8-86e2d21482e6",
       "name": "Check Meeting Status",
@@ -487,7 +582,7 @@
       "typeVersion": 2.1,
       "position": [
         1456,
-        -400
+        -480
       ],
       "id": "279b6090-3196-417c-a576-852a36e187b7",
       "name": "Send Follow-up Email",
@@ -542,7 +637,7 @@
       "typeVersion": 2.2,
       "position": [
         1232,
-        -400
+        -480
       ],
       "id": "3ddca5ba-b62f-4b96-948f-c78891361e01",
       "name": "If"
@@ -810,6 +905,101 @@
               "type": "string",
               "readOnly": false,
               "removed": true
+            },
+            {
+              "id": "Edited At",
+              "displayName": "Edited At",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": false
+            },
+            {
+              "id": "InsertedAt",
+              "displayName": "InsertedAt",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": false
+            },
+            {
+              "id": "ImportedFrom",
+              "displayName": "ImportedFrom",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "options",
+              "options": [
+                {
+                  "name": "WhatsAppIncoming",
+                  "value": "WhatsAppIncoming"
+                },
+                {
+                  "name": "Manual ",
+                  "value": "Manual "
+                },
+                {
+                  "name": "Sheet",
+                  "value": "Sheet"
+                },
+                {
+                  "name": "CSV",
+                  "value": "CSV"
+                }
+              ],
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "ImportHash",
+              "displayName": "ImportHash",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Notes",
+              "displayName": "Notes",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "DNC",
+              "displayName": "DNC",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "boolean",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "LastUpdatedBy",
+              "displayName": "LastUpdatedBy",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
             }
           ],
           "attemptToConvertTypes": false,
@@ -821,7 +1011,7 @@
       "typeVersion": 2.1,
       "position": [
         1680,
-        -400
+        -480
       ],
       "id": "04627696-b017-448d-911e-c0fca6a1d0e5",
       "name": "Follow-Up Update ",
@@ -847,7 +1037,7 @@
       "typeVersion": 2,
       "position": [
         -112,
-        -96
+        -128
       ],
       "id": "37924acc-4d88-4099-813e-396c9f303e20",
       "name": "Cal.com Booking Trigger",
@@ -867,7 +1057,7 @@
       "typeVersion": 1,
       "position": [
         112,
-        -96
+        -128
       ],
       "id": "8577dfed-f964-478f-a0ba-903ea37f9119",
       "name": "Data Validation & Sanitization"
@@ -892,7 +1082,7 @@
       "typeVersion": 2.1,
       "position": [
         336,
-        -96
+        -128
       ],
       "id": "0aaa94af-f749-41dd-9af1-ac6cc87e65f7",
       "name": "Find Existing Lead Record",
@@ -916,7 +1106,7 @@
       "typeVersion": 1,
       "position": [
         560,
-        -96
+        -128
       ],
       "id": "6416795f-c154-45b2-8291-f7bbeb41f491",
       "name": "Duplicate Detection Handler"
@@ -929,7 +1119,7 @@
       "typeVersion": 1,
       "position": [
         784,
-        -96
+        -128
       ],
       "id": "544a921c-2dc9-4d07-ba91-ae7804a5b7b2",
       "name": "Error Handler & Retry Logic"
@@ -942,7 +1132,7 @@
       "typeVersion": 1,
       "position": [
         1680,
-        -96
+        -128
       ],
       "id": "9f5470f5-4523-4351-a7d8-a19a2930695e",
       "name": "Monitoring & Logging System"
@@ -975,7 +1165,7 @@
       "typeVersion": 2.2,
       "position": [
         1008,
-        -96
+        -128
       ],
       "id": "32a84134-4551-4478-98bd-94c389491a74",
       "name": "Check If Lead Exists"
@@ -993,7 +1183,7 @@
       "typeVersion": 2.1,
       "position": [
         1456,
-        -96
+        -128
       ],
       "id": "ad9fc091-856b-4ad7-8464-f5e2cee2a49b",
       "name": "Send Booking Confirmation",
@@ -1279,6 +1469,101 @@
               "type": "string",
               "readOnly": false,
               "removed": true
+            },
+            {
+              "id": "Edited At",
+              "displayName": "Edited At",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": false
+            },
+            {
+              "id": "InsertedAt",
+              "displayName": "InsertedAt",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": false
+            },
+            {
+              "id": "ImportedFrom",
+              "displayName": "ImportedFrom",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "options",
+              "options": [
+                {
+                  "name": "WhatsAppIncoming",
+                  "value": "WhatsAppIncoming"
+                },
+                {
+                  "name": "Manual ",
+                  "value": "Manual "
+                },
+                {
+                  "name": "Sheet",
+                  "value": "Sheet"
+                },
+                {
+                  "name": "CSV",
+                  "value": "CSV"
+                }
+              ],
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "ImportHash",
+              "displayName": "ImportHash",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Notes",
+              "displayName": "Notes",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "DNC",
+              "displayName": "DNC",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "boolean",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "LastUpdatedBy",
+              "displayName": "LastUpdatedBy",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
             }
           ],
           "attemptToConvertTypes": false,
@@ -1292,7 +1577,7 @@
       "typeVersion": 2.1,
       "position": [
         1232,
-        -176
+        -208
       ],
       "id": "5d55ac08-9865-4eab-aa39-d9ac50188bde",
       "name": "Update Existing Lead Record",
@@ -1566,6 +1851,101 @@
               "type": "string",
               "readOnly": false,
               "removed": true
+            },
+            {
+              "id": "Edited At",
+              "displayName": "Edited At",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": false
+            },
+            {
+              "id": "InsertedAt",
+              "displayName": "InsertedAt",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": false
+            },
+            {
+              "id": "ImportedFrom",
+              "displayName": "ImportedFrom",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "options",
+              "options": [
+                {
+                  "name": "WhatsAppIncoming",
+                  "value": "WhatsAppIncoming"
+                },
+                {
+                  "name": "Manual ",
+                  "value": "Manual "
+                },
+                {
+                  "name": "Sheet",
+                  "value": "Sheet"
+                },
+                {
+                  "name": "CSV",
+                  "value": "CSV"
+                }
+              ],
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "ImportHash",
+              "displayName": "ImportHash",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Notes",
+              "displayName": "Notes",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "DNC",
+              "displayName": "DNC",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "boolean",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "LastUpdatedBy",
+              "displayName": "LastUpdatedBy",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
             }
           ],
           "attemptToConvertTypes": false,
@@ -1579,7 +1959,7 @@
       "typeVersion": 2.1,
       "position": [
         1232,
-        0
+        -32
       ],
       "id": "616c2af7-929a-4b22-a5db-f0d8de714466",
       "name": "Create New Lead Record",
@@ -1602,7 +1982,7 @@
       "typeVersion": 1,
       "position": [
         1904,
-        -96
+        -128
       ],
       "id": "5bd304e9-6dbf-4cad-9dd1-399b8cfb9a6a",
       "name": "Workflow Completion Logger"
@@ -1618,7 +1998,7 @@
       "typeVersion": 2,
       "position": [
         -112,
-        256
+        272
       ],
       "id": "ff3fe25e-9dc0-4c2c-9d58-c932d0818506",
       "name": "Cal.com Cancellation Trigger",
@@ -1650,7 +2030,7 @@
       "typeVersion": 2.1,
       "position": [
         112,
-        256
+        272
       ],
       "id": "40b3b7fc-f372-4da7-a4e9-33abf035877c",
       "name": "Find Cancelled Booking",
@@ -1690,7 +2070,7 @@
       "typeVersion": 2.2,
       "position": [
         336,
-        256
+        272
       ],
       "id": "40ac774f-bfd7-4bbf-9c0e-195128ea839c",
       "name": "Check If Booking Exists"
@@ -1711,9 +2091,9 @@
         "columns": {
           "mappingMode": "defineBelow",
           "value": {
-            "Status": "Cancelled",
             "Meeting Status Summary": "Booking cancelled by user on {{ new Date().toISOString().split('T')[0] }}",
-            "id": "={{ $('Find Cancelled Booking').item.json.id }}"
+            "id": "={{ $('Find Cancelled Booking').item.json.id }}",
+            "Status": "Cancelled"
           },
           "matchingColumns": [
             "id"
@@ -1730,6 +2110,94 @@
               "removed": false
             },
             {
+              "id": "Contact Name",
+              "displayName": "Contact Name",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Phone",
+              "displayName": "Phone",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Subject",
+              "displayName": "Subject",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Message",
+              "displayName": "Message",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Meeting Title",
+              "displayName": "Meeting Title",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Meeting Date",
+              "displayName": "Meeting Date",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "dateTime",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Meeting Time",
+              "displayName": "Meeting Time",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
               "id": "Status",
               "displayName": "Status",
               "required": false,
@@ -1741,10 +2209,6 @@
                 {
                   "name": "Confirmed",
                   "value": "Confirmed"
-                },
-                {
-                  "name": "Canceled",
-                  "value": "Canceled"
                 },
                 {
                   "name": "Cancelled",
@@ -1775,8 +2239,191 @@
               "removed": false
             },
             {
+              "id": "Booking ID",
+              "displayName": "Booking ID",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Cal.com URL",
+              "displayName": "Cal.com URL",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Created Date",
+              "displayName": "Created Date",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "dateTime",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Timezone",
+              "displayName": "Timezone",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Language",
+              "displayName": "Language",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Meeting DateTime",
+              "displayName": "Meeting DateTime",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": false
+            },
+            {
+              "id": "IST Meeting Time",
+              "displayName": "IST Meeting Time",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": false
+            },
+            {
+              "id": "Days Until Meeting",
+              "displayName": "Days Until Meeting",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": false
+            },
+            {
               "id": "Meeting Status Summary",
               "displayName": "Meeting Status Summary",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Edited At",
+              "displayName": "Edited At",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": false
+            },
+            {
+              "id": "InsertedAt",
+              "displayName": "InsertedAt",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": false
+            },
+            {
+              "id": "ImportedFrom",
+              "displayName": "ImportedFrom",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "options",
+              "options": [
+                {
+                  "name": "WhatsAppIncoming",
+                  "value": "WhatsAppIncoming"
+                },
+                {
+                  "name": "Manual ",
+                  "value": "Manual "
+                },
+                {
+                  "name": "Sheet",
+                  "value": "Sheet"
+                },
+                {
+                  "name": "CSV",
+                  "value": "CSV"
+                }
+              ],
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "ImportHash",
+              "displayName": "ImportHash",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Notes",
+              "displayName": "Notes",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "DNC",
+              "displayName": "DNC",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "boolean",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "LastUpdatedBy",
+              "displayName": "LastUpdatedBy",
               "required": false,
               "defaultMatch": false,
               "canBeUsedToMatch": true,
@@ -1797,7 +2444,7 @@
       "typeVersion": 2.1,
       "position": [
         560,
-        256
+        272
       ],
       "id": "d881b143-8afd-42a3-827d-37ae27921ac6",
       "name": "Update Cancelled Status",
@@ -1821,7 +2468,7 @@
       "typeVersion": 2.1,
       "position": [
         784,
-        256
+        272
       ],
       "id": "36ac388c-7197-4b0e-a8a8-df86a0ead3b1",
       "name": "Send Cancellation Email",
@@ -1842,7 +2489,7 @@
       "typeVersion": 1.1,
       "position": [
         1008,
-        256
+        272
       ],
       "id": "6bf336fb-c22a-4c16-a91f-e73e4d6e394f",
       "name": "Wait 7 Days",
@@ -1861,7 +2508,7 @@
       "typeVersion": 2.1,
       "position": [
         1232,
-        256
+        272
       ],
       "id": "4b324ab8-08a5-4c95-910c-e8bcaf7ae1b5",
       "name": "Send Follow-up After Cancellation",
@@ -1908,6 +2555,94 @@
               "removed": false
             },
             {
+              "id": "Contact Name",
+              "displayName": "Contact Name",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Phone",
+              "displayName": "Phone",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Subject",
+              "displayName": "Subject",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Message",
+              "displayName": "Message",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Meeting Title",
+              "displayName": "Meeting Title",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Meeting Date",
+              "displayName": "Meeting Date",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "dateTime",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Meeting Time",
+              "displayName": "Meeting Time",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
               "id": "Status",
               "displayName": "Status",
               "required": false,
@@ -1923,10 +2658,6 @@
                 {
                   "name": "Canceled",
                   "value": "Canceled"
-                },
-                {
-                  "name": "Cancelled",
-                  "value": "Cancelled"
                 },
                 {
                   "name": "In Progress",
@@ -1953,8 +2684,191 @@
               "removed": false
             },
             {
+              "id": "Booking ID",
+              "displayName": "Booking ID",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Cal.com URL",
+              "displayName": "Cal.com URL",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Created Date",
+              "displayName": "Created Date",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "dateTime",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Timezone",
+              "displayName": "Timezone",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Language",
+              "displayName": "Language",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Meeting DateTime",
+              "displayName": "Meeting DateTime",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": false
+            },
+            {
+              "id": "IST Meeting Time",
+              "displayName": "IST Meeting Time",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": false
+            },
+            {
+              "id": "Days Until Meeting",
+              "displayName": "Days Until Meeting",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": false
+            },
+            {
               "id": "Meeting Status Summary",
               "displayName": "Meeting Status Summary",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Edited At",
+              "displayName": "Edited At",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": false
+            },
+            {
+              "id": "InsertedAt",
+              "displayName": "InsertedAt",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": false
+            },
+            {
+              "id": "ImportedFrom",
+              "displayName": "ImportedFrom",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "options",
+              "options": [
+                {
+                  "name": "WhatsAppIncoming",
+                  "value": "WhatsAppIncoming"
+                },
+                {
+                  "name": "Manual ",
+                  "value": "Manual "
+                },
+                {
+                  "name": "Sheet",
+                  "value": "Sheet"
+                },
+                {
+                  "name": "CSV",
+                  "value": "CSV"
+                }
+              ],
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "ImportHash",
+              "displayName": "ImportHash",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Notes",
+              "displayName": "Notes",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "DNC",
+              "displayName": "DNC",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "boolean",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "LastUpdatedBy",
+              "displayName": "LastUpdatedBy",
               "required": false,
               "defaultMatch": false,
               "canBeUsedToMatch": true,
@@ -1975,10 +2889,11 @@
       "typeVersion": 2.1,
       "position": [
         1456,
-        256
+        272
       ],
       "id": "a1507d26-76b8-475e-946d-503d24c21b2c",
       "name": "Update Follow-up Status",
+      "retryOnFail": true,
       "credentials": {
         "airtableTokenApi": {
           "id": "y0MqaXSyaHsVbNbh",
