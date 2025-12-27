@@ -107,5 +107,13 @@ src/app/api/admin/testing/
 
 # Specific n8n Docs to Ignore
 docs/n8n/HOSTING_RECOMMENDATION.md
-docs/n8n/DEMO_VIDEO_SCRIPT.md
+# docs/n8n/DEMO_VIDEO_SCRIPT.md
 docs/n8n/VIDEO_SUBTITLE_GUIDE.md
+docs/social-strategy/ASSETS_CHECKLIST.md
+docs/social-strategy/BLOG_CONTENT_PLAN.md
+docs/social-strategy/LINKEDIN_CONTENT_CALENDAR.md
+docs/social-strategy/LINKEDIN_FEATURED_SECTION.md
+docs/social-strategy/LINKEDIN_PROJECTS_SECTION.md
+docs/social-strategy/README.md
+docs/social-strategy/TWITTER_CONTENT_CALENDAR.md
+docs/n8n/DEMO_VIDEO_SCRIPT.md
