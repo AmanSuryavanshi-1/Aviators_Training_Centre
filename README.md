@@ -60,7 +60,7 @@ A comprehensive, production-ready aviation training platform built for India's p
 
 <img src="https://cdn.jsdelivr.net/gh/AmanSuryavanshi-1/portfolio-assets@main/AviatorsTrainingCentre/Docs_Assets/ASSET-2%20n8n%203%20Production%20Workflows%20Overview.webp" alt="n8n Workflows" width="900"/>
 
-*Three production n8n workflows: 74+ nodes achieving 99.7% reliability, saving owner 3-4 hours daily*
+*Three production n8n workflows: 74+ nodes achieving 99.7% reliability, saving client 3-4 hours daily*
 
 - **3 Production Workflows** - Contact form automation, booking confirmation, cancellation recovery
 - **99.7% Reliability** - Multi-layer validation preventing empty object bugs

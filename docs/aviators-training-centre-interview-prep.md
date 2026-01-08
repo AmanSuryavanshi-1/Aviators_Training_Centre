@@ -20,7 +20,7 @@
 - Designed WhatsApp AI system (discontinued due to Meta policy change)
 
 **The Impact:**
-- Business: ₹3L revenue, infinite ROI, owner saves 3-4 hours daily
+- Business: ₹3L revenue, infinite ROI, Client saves 3-4 hours daily
 - Technical: 95+ Lighthouse, 19.3K impressions, 146 clicks
 - Automation: 3-layer validation, session-based architecture, 15-20% cancellation recovery
 
@@ -52,7 +52,7 @@
 ### n8n Automation Impact
 - **Response time:** 6+ hours → <2 minutes (180x faster)
 - **Follow-up rate:** 20% manual → 100% automated
-- **Owner admin time:** 3-4 hours/day → 30 min/day (85% reduction)
+- **Client admin time:** 3-4 hours/day → 30 min/day (85% reduction)
 - **Cancellation recovery:** 15-20% reschedule rate
 
 ### Innovation
@@ -120,11 +120,11 @@
 
 **The Result:**
 - 60% → 99.7% reliability
-- Owner saves 3-4 hours daily
+- Client saves 3-4 hours daily
 - Complete pipeline visibility in Airtable
 
 **Why It Matters:**
-"Automation isn't just about efficiency—it's about reliability and freeing humans to do what they do best. The owner teaches, the system handles admin."
+"Automation isn't just about efficiency—it's about reliability and freeing humans to do what they do best. The Client teaches, the system handles admin."
 
 ---
 
@@ -549,7 +549,7 @@ But proud of what I built—delivers real business value."
 
 Key innovation: 3-layer validation that checks structure, ID field, and required fields. Improved reliability from 60% to 99.7%.
 
-Business impact: Owner saves 3-4 hours daily, response time went from 6+ hours to <2 minutes, 100% automated follow-ups."
+Business impact: Client saves 3-4 hours daily, response time went from 6+ hours to <2 minutes, 100% automated follow-ups."
 
 ---
 

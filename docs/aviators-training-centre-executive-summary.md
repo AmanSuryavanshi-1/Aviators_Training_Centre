@@ -102,7 +102,7 @@ Transformed India's premier DGCA ground school from 100% paid advertising depend
 
 **The Problem Before Automation:**
 - WhatsApp used as "database" - leads buried under messages
-- Owner spending 3-4 hours daily on admin work
+- Client spending 3-4 hours daily on admin work
 - Zero systematic follow-ups, leads falling through cracks
 - No visibility into lead pipeline
 
@@ -127,7 +127,7 @@ Transformed India's premier DGCA ground school from 100% paid advertising depend
 **Business Impact:**
 - Response time: 6+ hours → <2 minutes (180x faster)
 - Follow-up rate: 20% manual → 100% automated
-- Owner admin time: 3-4 hours/day → 30 min/day (85% reduction)
+- Client admin time: 3-4 hours/day → 30 min/day (85% reduction)
 
 ### 3. LLM-First SEO Strategy (llms.txt)
 
@@ -288,7 +288,7 @@ Meta announced that AI-initiated conversations will be banned from WhatsApp Busi
 2. **Firebase Free Tier:** Zero cost while handling 50+ leads/month
 3. **n8n 3-Layer Validation:** Solved empty object bug, achieved 99.7% reliability
 4. **Non-Blocking Webhooks:** Form submissions never fail even if n8n is down
-5. **Airtable as CRM:** Owner sees entire pipeline, no technical knowledge needed
+5. **Airtable as CRM:** Client sees entire pipeline, no technical knowledge needed
 6. **Lighthouse 95+:** Direct driver of organic rankings and ₹3L+ revenue
 
 ### What I'd Do Differently

@@ -58,7 +58,7 @@ A complete full-stack platform combining modern web technologies, intelligent n8
 - ₹3,00,000+ revenue from organic SEO leads only - 6 conversions (12% conversion rate)
 - 95+ Lighthouse score driving all organic conversions
 - 99.7% automation reliability
-- Owner saves 3-4 hours daily on admin work
+- Client saves 3-4 hours daily on admin work
 
 **ROI:** Infinite on organic channel (₹0 cost vs ₹3L+ revenue)
 
@@ -279,12 +279,12 @@ Before automation, ATC faced a chaotic lead management process that was costing 
 - ⏰ **Zero follow-ups** - Manual reminders that were often forgotten
 - 🔄 **No lead stage tracking** - Couldn't tell who was hot vs cold
 - 📝 **No conversion notes** - No record of why leads didn't join
-- ⏱️ **Owner spending 3-4 hours daily** on admin work instead of teaching
+- ⏱️ **Client spending 3-4 hours daily** on admin work instead of teaching
 
 **Real Example of the Chaos:**
 ```
-Day 1: Lead submits form → Owner sees it 6 hours later
-Day 2: Owner calls, no answer → Forgets to follow up
+Day 1: Lead submits form → Client sees it 6 hours later
+Day 2: Client calls, no answer → Forgets to follow up
 Day 5: Lead books with competitor → Lost revenue
 ```
 
@@ -296,7 +296,7 @@ n8n workflows automate the entire lead journey, with Airtable as the single sour
 - ✅ **Automated follow-ups** (48 hours, 7 days)
 - ✅ **Lead stage tracking** (New → Contacted → Hot → Converted)
 - ✅ **Notes column** to track why leads didn't convert
-- ✅ **Zero manual work** - Owner focuses on teaching
+- ✅ **Zero manual work** - Client focuses on teaching
 - ✅ **Complete visibility** - See entire pipeline at a glance
 
 ### 3.2 n8n Architecture Overview
@@ -311,7 +311,7 @@ n8n workflows automate the entire lead journey, with Airtable as the single sour
 
 **n8n Advantages for ATC:**
 - **Free:** Self-hosted = zero monthly cost
-- **Visual:** Owner can understand workflow logic
+- **Visual:** Client can understand workflow logic
 - **Powerful:** JavaScript code nodes for complex validation
 - **Flexible:** Easy to modify and extend
 - **Reliable:** 99.7% uptime with proper error handling
@@ -332,7 +332,7 @@ atc-n8n-meeting-scheduler/workflows/
 
 <img src="https://cdn.jsdelivr.net/gh/AmanSuryavanshi-1/portfolio-assets@main/AviatorsTrainingCentre/Docs_Assets/ASSET-2%20n8n%203%20Production%20Workflows%20Overview.webp" alt="n8n Workflows Overview" width="900"/>
 
-*Figure 4: Three production n8n workflows handling contact forms, bookings, and cancellation recovery - 74+ nodes with 99.7% reliability saving owner 3-4 hours daily*
+*Figure 4: Three production n8n workflows handling contact forms, bookings, and cancellation recovery - 74+ nodes with 99.7% reliability saving Client 3-4 hours daily*
 
 
 ### 3.4 Website Contact Form to n8n Automation Flow
@@ -1009,7 +1009,7 @@ const startTime = $('Cal.com Booking Trigger').item.json.startTime;
 **5. Airtable as Single Source of Truth**
 - **Problem Solved:** Leads scattered across WhatsApp, Excel, memory
 - **Result:** Complete visibility into pipeline
-- **Impact:** Owner saves 3-4 hours daily
+- **Impact:** Client saves 3-4 hours daily
 
 ---
 
@@ -1054,7 +1054,7 @@ const name = items[0].json.name; // Could be from wrong node
 | Response Time | 6+ hours | < 2 minutes | 180x faster |
 | Follow-up Rate | ~20% (manual) | 100% (automated) | 5x improvement |
 | Lead Tracking | WhatsApp chaos | Airtable pipeline | Complete visibility |
-| Owner Admin Time | 3-4 hours/day | 30 min/day | 85% reduction |
+| Client Admin Time | 3-4 hours/day | 30 min/day | 85% reduction |
 | Email Reliability | N/A | 99.7% | Production-grade |
 | Cancellation Recovery | 0% | 15-20% | New revenue stream |
 
@@ -1067,7 +1067,7 @@ const name = items[0].json.name; // Could be from wrong node
 **Before Airtable:**
 - 📱 WhatsApp messages (lost in conversations)
 - 📊 Excel sheets (no real-time updates)
-- 🧠 Owner's memory (not scalable)
+- 🧠 Client's memory (not scalable)
 
 **After Airtable:**
 - ✅ **Single source of truth** for all leads
@@ -1135,12 +1135,12 @@ const name = items[0].json.name; // Could be from wrong node
 **3. Hot Leads** (Filtered View)
 - Status = "Hot"
 - Immediate action needed
-- Owner checks this daily
+- Client checks this daily
 
 **4. Confirmed Consultations** (Calendar View)
 - Status = "Confirmed"
 - Grouped by Meeting Date
-- Owner's daily schedule
+- Client's daily schedule
 
 **5. Lost Leads** (Filtered View)
 - Status = "Lost"
@@ -1158,7 +1158,7 @@ Cancellation → n8n → Airtable (Update Status: "Cancelled")
                                     ↓
 48hr No Response → n8n → Airtable (Update Status: "Follow Up Sent")
                                     ↓
-Manual Outreach → Owner → Airtable (Add notes, update status)
+Manual Outreach → Client → Airtable (Add notes, update status)
 ```
 
 ---
@@ -1900,7 +1900,7 @@ module.exports = {
 3. **n8n Session Architecture:** 99.7% reliability preventing race conditions
 4. **Systematic Lighthouse Optimization:** Direct driver of organic rankings
 5. **llms.txt Innovation:** First-mover advantage in AI search optimization
-6. **Airtable as CRM:** Owner can see entire pipeline, no technical knowledge needed
+6. **Airtable as CRM:** Client can see entire pipeline, no technical knowledge needed
 7. **Non-blocking webhooks:** Form submissions never fail even if n8n is down
 
 ### What I'd Do Differently
@@ -1954,7 +1954,7 @@ module.exports = {
 | **"Error Occurred" on submit** | Missing Env Vars | Verify `RESEND_API_KEY`, `NEXT_PUBLIC_FIREBASE_*`, `N8N_CONTACT_WEBHOOK_URL` in Vercel. |
 | **Form success but no Firebase data** | Firebase Rules/Config | Check `NEXT_PUBLIC_FIREBASE_DATABASE_URL` matches the project config. |
 | **User receives no email** | Resend API / Spam | Check "Spam" folder. Verify `RESEND_API_KEY`. Check Resend logs for bounces. |
-| **Admin receives no email** | Rate Limit / Spam | Verify `OWNER_EMAIL`. Resend free tier has daily limits. Check if admin email flagged as spam. |
+| **Admin receives no email** | Rate Limit / Spam | Verify `Client_EMAIL`. Resend free tier has daily limits. Check if admin email flagged as spam. |
 
 **Diagnostic Command:**
 ```bash
@@ -2184,7 +2184,7 @@ The Aviators Training Centre platform demonstrates how modern web technologies, 
 - **99.7% automation reliability** with session-based architecture
 - **Zero monthly infrastructure costs** through free tier optimization
 - **LLM-first SEO** with llms.txt (first in India aviation)
-- **3-4 hours saved daily** for owner through automation
+- **3-4 hours saved daily** for Client through automation
 
 The n8n automation system handles the entire lead journey from contact form submission to booking confirmation to cancellation recovery, with multi-layer validation ensuring 99.7% reliability. The decision to discontinue WhatsApp AI development demonstrates the importance of checking platform policies before building.
 
