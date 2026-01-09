@@ -94,7 +94,7 @@ Transformed India's premier DGCA ground school from 100% paid advertising depend
 
 <img src="https://cdn.jsdelivr.net/gh/AmanSuryavanshi-1/portfolio-assets@main/AviatorsTrainingCentre/Docs_Assets/ASSET-2%20n8n%203%20Production%20Workflows%20Overview.webp" alt="n8n Workflows" width="900"/>
 
-*Three production n8n workflows: Firebase contact form automation, Cal.com booking confirmation with 3-layer validation, and cancellation recovery - 74+ nodes achieving 99.7% reliability*
+*Three production n8n workflows: Firebase contact form automation, Cal.com booking confirmation with 3-layer validation, and cancellation recovery - 28 nodes achieving 99.7% reliability*
 
 <img src="https://cdn.jsdelivr.net/gh/AmanSuryavanshi-1/portfolio-assets@main/AviatorsTrainingCentre/Docs_Assets/ASSET-5%20Cal.com%20Booking%20Workflow%20with%203-Layer%20Validation_zoomable.webp" alt="3-Layer Validation" width="800"/>
 
@@ -178,7 +178,7 @@ Meta announced that AI-initiated conversations will be banned from WhatsApp Busi
 - Resend API for transactional emails
 - Zero monthly cost (free tier)
 
-**Automation:** n8n (3 Production Workflows + 74 Nodes)
+**Automation:** n8n (3 Production Workflows + 28 Nodes)
 - Workflow 1: Contact form → Firebase → n8n → Email + Airtable → 48hr follow-up
 - Workflow 2: Cal.com booking → 3-layer validation → Airtable → Confirmation email
 - Workflow 3: Cancellation → Acknowledge → 7-day wait → Re-engagement
