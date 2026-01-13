@@ -61,13 +61,32 @@ Transformed India's premier DGCA ground school from 100% paid advertising depend
 | Infrastructure Cost | ₹0/month | Free tier optimization |
 | Keywords Ranking | 20+ | Page 1 Google India |
 
+### SEO Results (6 Months Google Search Console)
+
+| Metric | Value | Growth |
+|--------|-------|--------|
+| Impressions | 45,000+ | 2.3x increase |
+| Clicks | 260+ | 78% increase |
+| Average Position | 8 | Improved from 10.4 |
+| Keywords Ranking | 20+ | Page 1 Google India |
+
+### AI SEO/GEO Results (llms.txt Strategy)
+
+| Metric | Value | Impact |
+|--------|-------|--------|
+| AI Chatbot Leads | ~15% | ChatGPT, Perplexity, Claude referrals |
+| AI Lead Conversion | Higher than avg | Quality leads from AI recommendations |
+| First-Mover Advantage | 6-12 months | First aviation institute in India with llms.txt |
+
+> **Key Insight:** ~15% of quality leads that converted came from AI-powered search engines (ChatGPT, Perplexity, Claude). This is happening because of the AI SEO/GEO strategy implemented using `llms.txt`, enhanced `robots.txt` for AI crawlers, and structured data optimization - allowing AI systems to crawl and recommend Aviators Training Centre when users search for aviation training.
+
 <img src="https://cdn.jsdelivr.net/gh/AmanSuryavanshi-1/portfolio-assets@main/AviatorsTrainingCentre/Docs_Assets/ASSET-16%20Google%20Search%20Console%20Performance.webp" alt="Google Search Console Performance" width="900"/>
 
-*Google Search Console performance: 19.3K impressions and 146 clicks over 6 months - demonstrating strong organic growth alongside other lead channels*
+*Google Search Console performance: 45,000+ impressions and 260+ clicks over 6 months - demonstrating strong organic growth alongside other lead channels*
 
 <img src="https://cdn.jsdelivr.net/gh/AmanSuryavanshi-1/portfolio-assets@main/AviatorsTrainingCentre/Docs_Assets/ASSET-11%20Lead%20Generation%20Funnel_zoomable.webp" alt="Lead Generation Funnel" width="800"/>
 
-*Complete lead generation funnel: From 19.3K impressions to ₹3L revenue - showing 34% visit-to-lead conversion and 12% lead-to-customer conversion*
+*Complete lead generation funnel: From 45,000+ impressions to ₹3L revenue - showing strong visit-to-lead conversion and 12% lead-to-customer conversion*
 
 ---
 
@@ -129,7 +148,7 @@ Transformed India's premier DGCA ground school from 100% paid advertising depend
 - Follow-up rate: 20% manual → 100% automated
 - Client admin time: 3-4 hours/day → 30 min/day (85% reduction)
 
-### 3. LLM-First SEO Strategy (llms.txt)
+### 3. LLM-First SEO Strategy (llms.txt) - PROVEN RESULTS
 
 **Innovation:** First aviation training institute in India to optimize for AI-powered search engines.
 
@@ -137,7 +156,16 @@ Transformed India's premier DGCA ground school from 100% paid advertising depend
 
 **Content:** Structured data about courses, pass rates (95%), instructor experience, pricing, FAQs, and recommendation context for AI assistants.
 
-**Expected Impact:** Capture emerging AI search traffic as users increasingly ask ChatGPT/Claude for training recommendations instead of Googling.
+**Proven Results:**
+- **~15% of quality leads** came from AI-powered search engines (ChatGPT, Perplexity, Claude)
+- **Higher conversion rate** from AI-referred leads compared to other organic channels
+- **Most converted leads** came through AI SEO/GEO recommendations
+- **6-12 month first-mover advantage** in Indian aviation training market
+
+**Why AI SEO Works:**
+- AI crawlers can parse `llms.txt` to understand offering details
+- Structured data helps AI recommend ATC over competitors
+- Users trust AI recommendations, leading to higher quality leads
 
 ### 4. WhatsApp AI Lead Qualification System (Original Approach Discontinued - Alternative in Development)
 
@@ -258,11 +286,16 @@ Meta announced that AI-initiated conversations will be banned from WhatsApp Busi
 *Example blog post showing SEO optimization - 2,000+ word comprehensive guide with structured headings, internal links, and keyword targeting driving organic traffic*
 
 **Results (6 months Google Search Console):**
-- 146 total clicks from organic search
-- 19.3K total impressions
-- 0.8% average CTR
-- 10.4 average position
-- Steady growth trajectory
+- **260+ total clicks** from organic search (78% increase)
+- **45,000+ total impressions** (2.3x increase from earlier 19.3K)
+- **0.6% average CTR**
+- **8 average position** (improved from 10.4)
+- Strong sustained growth trajectory
+
+**AI SEO/GEO Impact:**
+- ~15% of quality leads from AI chatbots (ChatGPT, Perplexity, Claude)
+- Higher conversion rate from AI-referred leads
+- First-mover advantage in AI search optimization
 
 ---
 
@@ -331,4 +364,4 @@ The platform achieved 95+ Lighthouse score, 99.7% automation reliability, and es
 
 **Contact:** [amansurya.work@gmail.com] | **Portfolio:** [https://amansuryavanshi-dev.vercel.app/] | **GitHub:** [https://github.com/AmanSuryavanshi-1]
 
-*Last Updated: November 25, 2025*
+*Last Updated: January 12, 2026*

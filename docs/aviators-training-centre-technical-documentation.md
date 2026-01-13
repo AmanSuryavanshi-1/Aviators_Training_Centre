@@ -79,16 +79,17 @@ A complete full-stack platform combining modern web technologies, intelligent n8
 | | Response Time | <2s |
 | | Workflow Reliability | 99.7% |
 | **SEO** | Keywords Ranking | 20+ (Page 1) |
-| | Impressions | 19.3K (6 months) |
-| | Clicks | 146 |
-| | Average Position | 10.4 |
+| | Impressions | 45,000+ (6 months) |
+| | Clicks | 260+ |
+| | Average Position | 8 |
+| | AI Chatbot Leads | ~15% of quality leads |
 | **Automation** | n8n Workflows | 3 Production + 3 Experimental |
-| | Total Nodes | 74+ across all workflows |
+| | Total Nodes | 28+ across all workflows |
 | | Email Automation | 100% automated |
 
 <img src="https://cdn.jsdelivr.net/gh/AmanSuryavanshi-1/portfolio-assets@main/AviatorsTrainingCentre/Docs_Assets/ASSET-16%20Google%20Search%20Console%20Performance.webp" alt="Google Search Console Performance" width="900"/>
 
-*Figure 2: Google Search Console performance showing 19.3K impressions and 146 clicks over 6 months - demonstrating strong organic growth alongside other lead channels*
+*Figure 2: Google Search Console performance showing 45,000+ impressions and 260+ clicks over 6 months - demonstrating strong organic growth with improved average position of 8*
 
 ### 1.3 Technology Stack
 
@@ -332,7 +333,7 @@ atc-n8n-meeting-scheduler/workflows/
 
 <img src="https://cdn.jsdelivr.net/gh/AmanSuryavanshi-1/portfolio-assets@main/AviatorsTrainingCentre/Docs_Assets/ASSET-2%20n8n%203%20Production%20Workflows%20Overview.webp" alt="n8n Workflows Overview" width="900"/>
 
-*Figure 4: Three production n8n workflows handling contact forms, bookings, and cancellation recovery - 74+ nodes with 99.7% reliability saving Client 3-4 hours daily*
+*Figure 4: Three production n8n workflows handling contact forms, bookings, and cancellation recovery - 28+ nodes with 99.7% reliability saving Client 3-4 hours daily*
 
 
 ### 3.4 Website Contact Form to n8n Automation Flow
@@ -1756,12 +1757,15 @@ Allow: /
 Allow: /llms.txt
 ```
 
-**Expected Impact:**
-- Capture emerging AI search traffic
-- First-mover advantage (6-12 month moat)
-- Zero cost (pure organic discovery)
+**Expected Impact:** ✅ PROVEN - ~15% of quality leads now come from AI-powered search engines (ChatGPT, Perplexity, Claude). This is significantly higher conversion quality than other organic channels.
 
-### 6.2 Blog-Driven Organic Growth
+**Why This Works:**
+- AI crawlers parse `llms.txt` to understand ATC's offerings in structured format
+- Structured data helps AI recommend ATC over competitors when users ask about aviation training
+- Users trust AI recommendations, leading to higher quality leads
+- First aviation training institute in India to implement this strategy (6-12 month moat)
+
+### 7.2 Blog-Driven Organic Growth
 
 **Content Strategy:**
 - 15+ SEO-optimized posts (2,000+ words each)
@@ -1769,10 +1773,15 @@ Allow: /llms.txt
 - 20+ keywords ranking page 1 Google India
 
 **Results (6 months):**
-- 146 total clicks
-- 19.3K impressions
-- 0.8% CTR
-- 10.4 average position
+- **260+ total clicks** (78% increase)
+- **45,000+ impressions** (2.3x increase)
+- **0.6% CTR**
+- **8 average position** (improved from 10.4)
+
+**AI SEO/GEO Impact:**
+- ~15% of quality leads from AI chatbots (ChatGPT, Perplexity, Claude)
+- Higher conversion rate from AI-referred leads
+- First-mover advantage in Indian aviation training market
 
 ### 6.3 Technical SEO Implementation
 
@@ -2194,4 +2203,4 @@ This project showcases full-stack development expertise, automation mastery, and
 
 **Contact:** [amansurya.work@gmail.com] | **Portfolio:** [https://amansuryavanshi-dev.vercel.app/] | **GitHub:** [https://github.com/AmanSuryavanshi-1]
 
-*Last Updated: December 23, 2025*
+*Last Updated: January 12, 2026*
